@@ -1,0 +1,6 @@
+@import url("common.css");
+@import url("nav.css");
+
+.modal-card{
+    cursor: pointer;
+}
