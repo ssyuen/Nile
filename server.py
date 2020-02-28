@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request,jsonify
+from flask import Flask, render_template, request,jsonify, redirect, flash, session
 from flaskext.mysql import MySQL
 
 from scripts.apps.books import books
@@ -10,6 +10,7 @@ from scripts.apps.users import users
 from scripts.apps.users.user_profile import billing
 from scripts.apps.users.user_profile import payment
 from scripts.apps.users.user_profile import profile
+from nile_decorators import login_required
 
 
 app = Flask(__name__)
@@ -34,6 +35,25 @@ def landing_page():
 def login():
     return render_template('login.html')
 
+@app.route('/validate_login/',methods=['POST'])
+def validate_login():
+  if 'userEmail' in request.form and 'userPassword' in request.form:
+    cursor = mysql.get_db().cursor()
+    email = request.form('userEmail')
+    password = request.form('userPassword')
+    
+    # cursor.execute('SELECT * from users WHERE email =')
+    #search for email in database
+    #if found, search for corresponding password hash
+    #if found, do the following
+    # session['logged_in'] = True
+    # session['userEmail'] = request.form['userEmail']
+    # flash('You have logged in successfully')
+    # return redirect('/')
+  #else
+
+  
+
 @app.route('/register/')
 def reg():
     return render_template('reg.html')
@@ -43,51 +63,62 @@ def shopping_cart():
     return render_template('shoppingcart.html')
 
 
-
+#@login_required func decorator needs to be implemented for all user routes
 """User Routes"""
 @app.route('/user/billingaddress/')
+# @login_required
 def billing_address():
     return render_template('./user pages/billingaddress.html')
 
 @app.route('/user/checkout/')
+# @login_required
 def checkout():
     return render_template('./user pages/checkout.html')
 
 @app.route('/user/orderhist/')
+# @login_required
 def order_history():
     return render_template('./user pages/orderhist.html')
 
 @app.route('/user/paymentinfo/')
+# @login_required
 def payment_info():
     return render_template('./user pages/paymentinfo.html')
 
 @app.route('/user/profile/')
+# @login_required
 def profile():
     return render_template('./user pages/profile.html')
 
 
-
+#@login_required func decorator needs to be implemented for all admin routes
 """Admin Routes"""
 @app.route('/admin/add_books/')
+# @login_required
 def add_books():
     return render_template('./admin pages/add_books.html')
 
 @app.route('/admin/add_promo/')
+# @login_required
 def add_promo():
     return render_template('./admin pages/add_promo.html')
 
 @app.route('/admin/')
+# @login_required
 def admin():
     return render_template('./admin pages/admin.html')
 
 @app.route('/admin/manage_books/')
+# @login_required
 def manage_books():
     return render_template('./admin pages/manage_books.html')
 
 @app.route('/admin/manage_promo/')
+# @login_required
 def manage_promo():
     return render_template('./admin pages/manage_promo.html')
 
 @app.route('/admin/manage_users/')
+# @login_required
 def manage_users():
     return render_template('./admin pages/manage_users.html')
