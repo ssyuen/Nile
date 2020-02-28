@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <!-- Bootstrap core CSS -->
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css">
+    <!-- Google Fonts -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap">
+    <!-- Bootstrap core CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Material Design Bootstrap -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.12.0/css/mdb.min.css" rel="stylesheet">
+
+    <!-- JQuery -->
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <!-- Bootstrap tooltips -->
+    <script type="text/javascript"
+        src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.4/umd/popper.min.js"></script>
+    <!-- Bootstrap core JavaScript -->
+    <script type="text/javascript"
+        src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.4.1/js/bootstrap.min.js"></script>
+    <!-- MDB core JavaScript -->
+    <script type="text/javascript"
+        src="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.12.0/js/mdb.min.js"></script>
+
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans|Oswald&display=swap" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="styles/common.css">
+    <link rel="stylesheet" type="text/css" href="styles/nav.css">
+    <title>Login</title>
+    <style>
+        html,
+        body {
+            height: 100%;
+        }
+
+        .rounded {
+            border-radius: 15px !important;
+        }
+
+        #acctContainer {
+            width: 500px;
+            max-width: 75%;
+            margin-top: 100px;
+            /* margin-bottom: 100px; */
+            min-height: 100%;
+        }
+
+        .form-group input {
+            height: 50px;
+            border-radius: 0px;
+        }
+
+        #myBtn {
+            position: fixed;
+            bottom: 20px;
+            right: 30px;
+            z-index: 99;
+            border: none;
+            cursor: pointer;
+            text-align: center;
+            border-radius: 50%;
+            align-items: center;
+            justify-content: center;
+            padding: .25em;
+            width: 80px;
+            height: 80px;
+        }
+    </style>
+</head>
+
+<body class="our-color complement-light">
+    <div class="pb-5">
+
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+            <a class="navbar-brand primary" href="browse.html">
+                <img src="images/NileLg.png" width="150" class="d-inline-block align top" alt="Nile Logo">
+            </a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse"
+                data-target="#navbarSupportedContent-333" aria-controls="navbarSupportedContent-333"
+                aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent-333">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item active complement">
+                        <a class="nav-link" href="browse.html">Browse
+                            <span class="sr-only">(current)</span>
+                        </a>
+                    </li>
+
+                    <li class="nav-item complement">
+                        <a class="nav-link" href="#">About</a>
+                    </li>
+                </ul>
+                <ul class="navbar-nav navbar-center">
+                    <form class="form-inline complement">
+                        <div class="input-group">
+                            <input id="mainSearchSys" class="form-control" type="text" placeholder="Search"
+                                aria-label="Search" style="width: 500px;">
+                            <div class="input-group-append">
+                                <button id="mainSearchSysBtn"
+                                    class="btn blue-gradient btn-rounded m-0 px-4 py-2 z-depth-0 waves-effect mr-3"
+                                    type="submit"> <i class="fas fa-search" aria-hidden="true"></i></button>
+                            </div>
+                        </div>
+                    </form>
+                </ul>
+                <ul class="navbar-nav ml-auto nav-flex-icons">
+                    <li class="nav-item align-self-center">
+                        <div class="widget-header mr-3 mt-1">
+                            <a href="shoppingcart.html" class="icon icon-sm rounded-circle border text-center">
+                                <i class="fa fa-shopping-cart text-center fa-1x"></i>
+                            </a>
+                            <span class="badge badge-pill badge-danger notify">0</span>
+                        </div>
+                    </li>
+                    <!-- <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink-333" data-toggle="dropdown"
+                        aria-haspopup="true" aria-expanded="false">
+                        <span class=" complement">Welcome, Manu</span>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-right dropdown-default"
+                        aria-labelledby="navbarDropdownMenuLink-333">
+                        <a class="dropdown-item" href="#">My Profile</a>
+                        <a class="dropdown-item" href="#">Order History</a>
+                    </div>
+                </li> -->
+                    <li class="nav-item">
+                        <a href="login.html" class="href">
+                            <button class="btn blue-gradient btn-rounded btn-sm primary waves-effect waves-light"
+                                id="signInBtn">Sign In</button>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="reg.html" class="href">
+                            <button class="btn aqua-gradient btn-rounded btn-sm primary waves-effect waves-light"
+                                id="signUpBtn">Sign Up</button>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <div class="text-center" id="content-header">
+                    <p class="primary-lg" id="account-holder">Ready to Shop?</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container" id="acctContainer">
+        <div class="rounded shadow-lg card p-5" id="acctCard">
+            <div class="card-body">
+                <header style="text-align: center;">
+                    <h3 class="card-title mb-5 primary">Account Login</h3>
+                </header>
+                <form>
+                    <div class="form-group">
+                        <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"
+                            placeholder="Enter email">
+                        <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone
+                            else.</small>
+                    </div>
+                    <div class="form-group">
+                        <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
+                    </div>
+                    <button type="submit" class="btn blue-gradient btn-lg btn-block">Sign in</button>
+                </form>
+
+                <div class="text-center mb-2 mt-5">
+                    <span class="txt1">
+                        Forgot
+                    </span>
+                    <a href="forgot.html" class="txt2 hov1">
+                        Password?
+                    </a>
+                </div>
+                <div class="text-center">
+                    <span class="txt1">
+                        Create an account?
+                    </span>
+                    <a href="reg.html" class="txt2 hov1">
+                        Sign up
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <button class="btn blue-gradient waves-light" id="myBtn" title="Register"><i
+            class="fas fa-angle-down fa-2x"></i></button>
+    <script>
+        $("#myBtn").click(function () {
+            $(function () {
+                var target = $('#acctContainer');
+                if (target.length) {
+                    $('html,body').animate({
+                        scrollTop: target.offset().top - 120
+                    }, 500);
+                    return false;
+                }
+            });
+        });
+    </script>
+    <footer class="py-5 bg-dark">
+        <div class="container text-white">
+            <p class="mb-2 text-center">Copyright &copy; Nile 2020</p>
+            <div class="text-center">
+                <a class="waves-effect waves-light mr-3">
+                    <i class="fab fa-twitter"></i>
+                </a>
+                <a class="waves-effect waves-light mr-3">
+                    <i class="fab fa-instagram"></i>
+                </a>
+                <a class="waves-effect waves-light">
+                    <i class="fab fa-facebook"></i>
+                </a>
+            </div>
+        </div>
+        <!-- /.container -->
+    </footer>
+
+    <!-- <script language="javascript">
+        function autoResizeDiv()
+        {
+            document.getElementById('foot').style.height = window.innerHeight +'px';
+        }
+        window.onresize = autoResizeDiv;
+        autoResizeDiv();
+    </script> -->
+</body>
+
+</html>
