@@ -1,6 +1,17 @@
 from flask import Flask, render_template, request,jsonify
 from flaskext.mysql import MySQL
 
+from scripts.apps.books import books
+from scripts.apps.checkout import checkout
+from scripts.apps.login_registration import login
+from scripts.apps.login_registration import reg
+from scripts.apps.promos import promos
+from scripts.apps.users import users
+from scripts.apps.users.user_profile import billing
+from scripts.apps.users.user_profile import payment
+from scripts.apps.users.user_profile import profile
+
+
 app = Flask(__name__)
 app.config['MYSQL_DATABASE_USER'] = 'root'
 app.config['MYSQL_DATABASE_PASSWORD'] = 'root'
@@ -9,6 +20,7 @@ app.config['MYSQL_DATABASE_HOST'] = 'localhost'
 
 mysql = MySQL()
 mysql.init_app(app)
+
 
 
 """
