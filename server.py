@@ -58,24 +58,24 @@ def profile():
 """Admin Routes"""
 @app.route('/admin/add_books.html')
 def add_books():
-    return render_template('./user pages/add_books.html')
+    return render_template('./admin pages/add_books.html')
 
 @app.route('/admin/add_promo.html')
 def add_promo():
-    return render_template('./user pages/add_promo.html')
+    return render_template('./admin pages/add_promo.html')
 
 @app.route('/admin/admin.html')
 def admin():
-    return render_template('./user pages/admin.html')
+    return render_template('./admin pages/admin.html')
 
 @app.route('/admin/manage_books.html')
 def manage_books():
-    return render_template('./user pages/manage_books.html')
+    return render_template('./admin pages/manage_books.html')
 
 @app.route('/admin/manage_promo.html')
 def manage_promo():
-    return render_template('./user pages/manage_promo.html')
+    return render_template('./admin pages/manage_promo.html')
 
 @app.route('/admin/manage_users.html')
 def manage_users():
-    return render_template('./user pages/manage_users.html')
+    return render_template('./admin pages/manage_users.html')
