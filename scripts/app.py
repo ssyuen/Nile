@@ -30,6 +30,9 @@ def reg():
 def shopping_cart():
     return render_template('shoppingcart.html')
 
+
+
+"""User Routes"""
 @app.route('/user/billingaddress.html')
 def billing_address():
     return render_template('./user pages/billingaddress.html')
@@ -50,6 +53,9 @@ def payment_info():
 def profile():
     return render_template('./user pages/profile.html')
 
+
+
+"""Admin Routes"""
 @app.route('/admin/add_books.html')
 def profile():
     return render_template('./user pages/add_books.html')
