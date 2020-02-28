@@ -8,7 +8,7 @@ Samuel Yuen 	811786923
 
 Implementation Notes:
 
-- None of the directory structure is finalized. We are using the Clask web framework so it mandates a certain structure.
+- None of the directory structure is finalized. We are using the Flask web framework so it mandates a certain structure.
 
 - Views common to both admin and regular user are within the Deliverable 4 folder. Views used only for admins are in the "admin pages" folder. Views used only for regular users are in the "user pages" folder. External CSS files are in the "styles" folder. All images for this deliverable are in the "images" folder
 
