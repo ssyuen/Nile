@@ -38,56 +38,56 @@ def login():
 def reg():
     return render_template('reg.html')
 
-@app.route('/shoppingcart.html')
+@app.route('/shoppingcart/')
 def shopping_cart():
     return render_template('shoppingcart.html')
 
 
 
 """User Routes"""
-@app.route('/user/billingaddress.html')
+@app.route('/user/billingaddress/')
 def billing_address():
     return render_template('./user pages/billingaddress.html')
 
-@app.route('/user/checkout.html')
+@app.route('/user/checkout/')
 def checkout():
     return render_template('./user pages/checkout.html')
 
-@app.route('/user/orderhist.html')
+@app.route('/user/orderhist/')
 def order_history():
     return render_template('./user pages/orderhist.html')
 
-@app.route('/user/paymentinfo.html')
+@app.route('/user/paymentinfo/')
 def payment_info():
     return render_template('./user pages/paymentinfo.html')
 
-@app.route('/user/profile.html')
+@app.route('/user/profile/')
 def profile():
     return render_template('./user pages/profile.html')
 
 
 
 """Admin Routes"""
-@app.route('/admin/add_books.html')
+@app.route('/admin/add_books/')
 def add_books():
     return render_template('./admin pages/add_books.html')
 
-@app.route('/admin/add_promo.html')
+@app.route('/admin/add_promo/')
 def add_promo():
     return render_template('./admin pages/add_promo.html')
 
-@app.route('/admin/admin.html')
+@app.route('/admin/')
 def admin():
     return render_template('./admin pages/admin.html')
 
-@app.route('/admin/manage_books.html')
+@app.route('/admin/manage_books/')
 def manage_books():
     return render_template('./admin pages/manage_books.html')
 
-@app.route('/admin/manage_promo.html')
+@app.route('/admin/manage_promo/')
 def manage_promo():
     return render_template('./admin pages/manage_promo.html')
 
-@app.route('/admin/manage_users.html')
+@app.route('/admin/manage_users/')
 def manage_users():
     return render_template('./admin pages/manage_users.html')
