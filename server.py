@@ -30,11 +30,11 @@ This doubles as the browinsg page and the landing page.
 def landing_page():
     return render_template('browse.html')
 
-@app.route('/login.html')
+@app.route('/login/')
 def login():
     return render_template('login.html')
 
-@app.route('/reg.html')
+@app.route('/register/')
 def reg():
     return render_template('reg.html')
 
