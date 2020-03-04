@@ -77,6 +77,7 @@ def register():
     if request.method == 'GET':
         return render_template('reg.html')
     else:
+        #NEED TO CHECK REQUEST FORM SIZE TO SEE IF OPTIONAL COMPONENNTS HAVE BEEN ADDED
         firstName = request.form.get('firstName')
         lastName = request.form.get('lastName')
         email = request.form.get('email')
@@ -89,9 +90,9 @@ def register():
         state = request.form.get('state')
         country = request.form.get('country')
 
-        cursor = conn.cursor()
-        query = 'SELECT email,password,firstName from users WHERE email = "' + email +  '" AND password = "' + password + '"'
-        cursor.execute(query)
+        # cursor = conn.cursor()
+        # query = 'INSERT INTO users (firstName,lastName,email,password'"'
+        # cursor.execute(query)
         # try:
         #     results = cursor.fetchall()[0]
                 
