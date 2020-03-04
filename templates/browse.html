@@ -93,10 +93,19 @@
                         </div>
                     </li> -->
                     {% if session['logged_in'] %}
-                    <li class="nav-item complement">
-                        <a href="/user/profile/" class="nav-link">{{ session['firstName'] }}
-                            
+                    <li class="nav-item dropdown align-self-center">
+                        <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink-333" data-toggle="dropdown"
+                            aria-haspopup="true" aria-expanded="false">
+                            <span class=" complement">Welcome, {{ session['firstName'] }} <span class="badge badge-primary ml-2">Admin</span></span>
                         </a>
+                        <div class="dropdown-menu dropdown-menu-right dropdown-default"
+                            aria-labelledby="navbarDropdownMenuLink-333">
+                            <a class="dropdown-item" href="/user/profile/">My Profile</a>
+                            <!-- {% session %} ADD ADMIN STATUS TO SESSION-->
+                            <a class="dropdown-item" href="/admin/">My Admin Profile</a>
+                            <a class="dropdown-item" href="/user/orderhist/">Order History</a>
+                            <a class="dropdown-item" href="/">Sign Out</a>
+                        </div>
                     </li>
                     {% else %}
                         <li class="nav-item">
@@ -106,12 +115,15 @@
                             </a>
                         </li>
                     {% endif %}
+
+                    {% if not session['logged_in'] %}
                     <li class="nav-item">
                         <a href="/register/" class="href">
                         <button class="btn aqua-gradient btn-rounded btn-sm primary waves-effect waves-light"
                             id="signUpBtn">Sign Up</button>
                         </a>
                     </li>
+                    {% endif %}
                 </ul>
             </div>
         </nav>
