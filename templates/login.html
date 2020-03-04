@@ -130,12 +130,20 @@
                         <a class="dropdown-item" href="#">Order History</a>
                     </div>
                 </li> -->
+                {% if session['logged_in'] %}
+                    <li class="nav-item complement">
+                        <a href="/user/profile/" class="nav-link">{{ session['firstName'] }}
+                            
+                        </a>
+                    </li>
+                {% else %}
                     <li class="nav-item">
                         <a href="/login/" class="href">
                             <button class="btn blue-gradient btn-rounded btn-sm primary waves-effect waves-light"
                                 id="signInBtn">Sign In</button>
                         </a>
                     </li>
+                {% endif %}
                     <li class="nav-item">
                         <a href="/register/" class="href">
                             <button class="btn aqua-gradient btn-rounded btn-sm primary waves-effect waves-light"
@@ -161,15 +169,25 @@
                 <header style="text-align: center;">
                     <h3 class="card-title mb-5 primary">Account Login</h3>
                 </header>
-                <form>
+                {% with invalid_login = get_flashed_messages()%}
+                    {% if invalid_login %}
+                        
+                        <p class="flashes" style="color: red;">
+                            {% for msg in invalid_login %}
+                            {{ msg }}
+                            {% endfor %}
+                        </p>
+                    {% endif %}
+                {% endwith %}
+                <form method="POST" action="/validate_login/">
                     <div class="form-group">
                         <input type="email" class="form-control" id="userEmail" aria-describedby="emailHelp"
-                            placeholder="Enter email">
+                            placeholder="Enter email" name='email'>
                         <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone
                             else.</small>
                     </div>
                     <div class="form-group">
-                        <input type="password" class="form-control" id="userPassword" placeholder="Password">
+                        <input type="password" class="form-control" id="userPassword" placeholder="Password" name='password'>
                     </div>
                     <button type="submit" class="btn blue-gradient btn-lg btn-block">Sign in</button>
                 </form>
