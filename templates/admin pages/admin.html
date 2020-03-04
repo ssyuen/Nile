@@ -79,7 +79,7 @@
                 <li class="nav-item dropdown align-self-center">
                     <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink-333" data-toggle="dropdown"
                         aria-haspopup="true" aria-expanded="false">
-                        <span class=" complement">Welcome, Vrund <span class="badge badge-primary ml-2">Admin</span></span>
+                        <span class=" complement">Welcome, {{ session['firstName'] }} <span class="badge badge-primary ml-2">Admin</span></span>
                     </a>
                     <div class="dropdown-menu dropdown-menu-right dropdown-default"
                         aria-labelledby="navbarDropdownMenuLink-333">
@@ -96,7 +96,7 @@
         <div class="row mt-xl-5" id="cust-info">
             <div class="col mb-5">
                 <div class="text-left" id="welcome">
-                    <p class="primary-lg" id="account-holder">Welcome Back, <span id="name">Vrund.</span><span class="badge blue-gradient shadow ml-4">Admin</span></p>
+                    <p class="primary-lg" id="account-holder">Welcome Back, <span id="name">{{ session['firstName'] }}.</span><span class="badge blue-gradient shadow ml-4">Admin</span></p>
                 </div>
             </div>
         </div>
