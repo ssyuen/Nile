@@ -1,5 +1,7 @@
-def update_info(args):
+def update_info(request, conn):
+    
     pass
 
-def update_password(args):
+def update_password(request,conn):
+    
     pass
