@@ -31,6 +31,20 @@ def logout():
 @admin_bp.route('/admin/add_books/')
 @login_required
 def add_books():
+    bookTitle       = request.form.get('bookTitle')
+    isbn            = request.form.get('isbn')
+    authorFirstName = request.form.get('authorFirstName')
+    authorLastName  = request.form.get('authorLastName')
+    genre           = request.form.get('genre')
+    numPages        = request.form.get('numPages')
+    datePublished   = request.form.get('datePublished')
+    bindingType     = request.form.get('bindingType')
+    receivedStock   = request.form.get('recvStock')
+    sellingPrice    = request.form.get('price')
+    coverImage      = request.form.get('coverImage')
+    summary         = request.form.get('bookSummary')
+
+    #Do Something now....
     return render_template('./admin pages/add_books.html')
 
 
