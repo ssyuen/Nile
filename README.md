@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="static/images/NileLgNoBkg.png">
+  <img src="static/images/NileLg.png">
 </p>
 
 ## Execution
