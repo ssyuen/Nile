@@ -1,6 +1,8 @@
 from flask import Blueprint, render_template, request, jsonify, redirect, flash, session
 from functools import wraps
 import bcrypt
+# from models.abs_models import abs_models
+# from models.users import User
 from server import conn
 
 user_bp = Blueprint('user_bp', __name__,
