@@ -43,7 +43,7 @@
   - [ ] Shopping Cart
     - [ ] Fill Shopping Cart with user's items from database
     - [ ] Items should be tracked in users table with under items column
-  - [ ] Sign Out
+  - [x] Sign Out
 - [ ] Database Development
   - [ ] Schema Creation
     - [ ] Add field for if admin (necessary to differentiate drop down for My Admin Profile and just My Profile)
