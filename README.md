@@ -42,7 +42,7 @@
   - [ ] Search Bar
   - [ ] Shopping Cart
     - [ ] Fill Shopping Cart with user's items from database
-    - [ ] Items should be tracked in users table with under items column 
+    - [ ] Items should be tracked in users table with under items column
   - [ ] Sign Out
 - [ ] Database Development
   - [ ] Schema Creation
