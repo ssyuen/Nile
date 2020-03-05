@@ -4,6 +4,17 @@ import bcrypt
 # from models.abs_models import abs_models
 # from models.users import User
 from server import conn
+# import conn
+
+# from scripts.apps.books import books
+# from scripts.apps.checkout import checkout
+# from scripts.apps.login_registration import login
+# from scripts.apps.login_registration import reg
+# from scripts.apps.promos import promos
+# from scripts.apps.users import users
+# from scripts.apps.users.user_profile import billing
+# from scripts.apps.users.user_profile import payment
+# from scripts.apps.users.user_profile import profile
 
 user_bp = Blueprint('user_bp', __name__,
                     template_folder='templates', static_folder='static')

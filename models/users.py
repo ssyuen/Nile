@@ -1,4 +1,5 @@
 from abs_models import ObjMapper
+
 class Users(ObjMapper):
     def __init__(self):
         pass

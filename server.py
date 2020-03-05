@@ -2,16 +2,6 @@ from flask import Flask
 from flaskext.mysql import MySQL
 import secrets
 
-# from scripts.apps.books import books
-# from scripts.apps.checkout import checkout
-# from scripts.apps.login_registration import login
-# from scripts.apps.login_registration import reg
-# from scripts.apps.promos import promos
-# from scripts.apps.users import users
-# from scripts.apps.users.user_profile import billing
-# from scripts.apps.users.user_profile import payment
-# from scripts.apps.users.user_profile import profile
-
 app = Flask(__name__)
 
 #MySQL setup
@@ -27,7 +17,6 @@ app.secret_key = secrets.token_urlsafe(256)
 mysql = MySQL()
 mysql.init_app(app)
 conn = mysql.connect()
-
 #if you reformat this code, the imports go up resulting in
 #circular importing which breaks the blueprint architecture
 from routes.user import routes as user_routes

@@ -56,3 +56,9 @@
     - [ ] Increasing quantity of an item should dynamically increase Cart Pricing
     - [ ] Remove Item from cart
     - [ ] Number above Shopping Cart icon needs to adjust to the number of items in the cart dyanmically
+  - [ ] Promotions
+    - [ ] Expiration dates need to be added
+  - [ ] Custom Error pages
+    - [ ] 404
+    - [ ] 400
+    - [ ] 500
