@@ -15,9 +15,9 @@ import random as rand
 # from scripts.apps.users.user_profile import profile
 
 app = Flask(__name__)
-app.config['MYSQL_DATABASE_USER'] = 'root'
-app.config['MYSQL_DATABASE_PASSWORD'] = 'root'
-app.config['MYSQL_DATABASE_DB'] = 'nile_db'
+app.config['MYSQL_DATABASE_USER'] = 'root' #change to ur local username
+app.config['MYSQL_DATABASE_PASSWORD'] = 'root' #change to ur local password
+app.config['MYSQL_DATABASE_DB'] = 'nile_db' #change to whatever the db will be named
 app.config['MYSQL_DATABASE_HOST'] = 'localhost'
 
 app.secret_key = str(rand.randint(0, 100))

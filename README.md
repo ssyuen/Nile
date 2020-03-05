@@ -43,6 +43,8 @@
   - [ ] Shopping Cart
     - [ ] Fill Shopping Cart with user's items from database
     - [ ] Items should be tracked in users table with under items column
+  - [ ] Password Security
+    - [ ] Password hashing before entered into database
   - [x] Sign Out
 - [ ] Database Development
   - [ ] Schema Creation
