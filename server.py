@@ -12,7 +12,7 @@ from scripts.apps.users import users
 from scripts.apps.users.user_profile import billing
 from scripts.apps.users.user_profile import payment
 from scripts.apps.users.user_profile import profile
-# from nile_decorators import login_required
+from nile_decorators import login_required
 import random as rand
 
 app = Flask(__name__)
@@ -46,30 +46,32 @@ This doubles as the browinsg page and the landing page.
 def landing_page():
     return render_template('browse.html')
 
-@app.route('/login/')
+@app.route('/login/',methods=['POST','GET'])
 def login():
-    return render_template('login.html')
+    if request.method == 'POST':
+        email = request.form.get('email')
+        password = request.form.get('password')
 
-@app.route('/validate_login/',methods=['POST'])
-def validate_login():
-    email = request.form.get('email')
-    password = request.form.get('password')
+        cursor = conn.cursor()
+        query = 'SELECT email,password,firstName from users WHERE email = "' + email +  '" AND password = "' + password + '"'
+        cursor.execute(query)
+        try:
+            results = cursor.fetchall()[0]
+            session['logged_in'] = True
+            session['email'] = email
+            session['firstName'] = results[2]
+            flash('Welcome, ' + session['firstName'] + '!')
+            return redirect('/')
+        except IndexError:
+            print('login details incorrect')
+            flash('Your login details were not found. Please try again.')
+            return redirect('/login/')
+    else:
+        return render_template('login.html')
 
-    cursor = conn.cursor()
-    query = 'SELECT email,password,firstName from users WHERE email = "' + email +  '" AND password = "' + password + '"'
-    cursor.execute(query)
-    try:
-        results = cursor.fetchall()[0]
-        print(results)
-        session['logged_in'] = True
-        session['email'] = email
-        session['firstName'] = results[2]
-        flash('Welcome, ' + session['firstName'] + '!')
-        return redirect('/')
-    except IndexError:
-        print('login details incorrect')
-        flash('Your login details were not found. Please try again.')
-        return redirect('/login/')
+# @app.route('/validate_login/',methods=['POST'])
+# def validate_login():
+#     pass
   
 
 @app.route('/register/',methods=['POST','GET'])
@@ -108,59 +110,59 @@ def shopping_cart():
 #@login_required func decorator needs to be implemented for all user routes
 """User Routes"""
 @app.route('/user/billingaddress/')
-# @login_required
-def billing_address():
+@login_required
+def billing_address(route='/user/billingaddress/'):
     return render_template('./user pages/billingaddress.html')
 
 @app.route('/user/checkout/')
-# @login_required
+@login_required
 def checkout():
     return render_template('./user pages/checkout.html')
 
 @app.route('/user/orderhist/')
-# @login_required
+@login_required
 def order_history():
     return render_template('./user pages/orderhist.html')
 
 @app.route('/user/paymentinfo/')
-# @login_required
+@login_required
 def payment_info():
     return render_template('./user pages/paymentinfo.html')
 
 @app.route('/user/profile/')
 @login_required
-def profile():
+def profile(route='/user/profile/'):
     return render_template('./user pages/profile.html')
 
 
 #@login_required func decorator needs to be implemented for all admin routes
 """Admin Routes"""
 @app.route('/admin/add_books/')
-# @login_required
+@login_required
 def add_books():
     return render_template('./admin pages/add_books.html')
 
 @app.route('/admin/add_promo/')
-# @login_required
+@login_required
 def add_promo():
     return render_template('./admin pages/add_promo.html')
 
 @app.route('/admin/')
-# @login_required
+@login_required
 def admin():
     return render_template('./admin pages/admin.html')
 
 @app.route('/admin/manage_books/')
-# @login_required
+@login_required
 def manage_books():
     return render_template('./admin pages/manage_books.html')
 
 @app.route('/admin/manage_promo/')
-# @login_required
+@login_required
 def manage_promo():
     return render_template('./admin pages/manage_promo.html')
 
 @app.route('/admin/manage_users/')
-# @login_required
+@login_required
 def manage_users():
     return render_template('./admin pages/manage_users.html')

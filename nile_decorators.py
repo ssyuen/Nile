@@ -3,7 +3,7 @@ from functools import wraps
 
 def login_required(f):
     @wraps(f)
-    def wrapped_func(session,*args,**kws):
+    def wrapped_func(*args,**kws):
         if 'logged_in' in session:
             return f(*args,**kws)
         else:
