@@ -1,5 +1,4 @@
 from flask import Blueprint, render_template, request, jsonify, redirect, flash, session
-from flaskext.mysql import MySQL
 from functools import wraps
 from server import conn
 
