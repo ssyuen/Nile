@@ -17,6 +17,15 @@ def login_required(f):
             return redirect('/login/')
     return wrapped_func
 
+@admin_bp.route('/logout/', methods=['GET'])
+def logout():
+    if session['logged_in']:
+        session['logged_in'] = False
+        flash('Logged out successfully.')
+        return redirect('/')
+    flash('Error logging out.')
+    return redirect('/')
+
 @admin_bp.route('/admin/add_books/')
 @login_required
 def add_books():
