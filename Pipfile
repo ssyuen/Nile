@@ -8,11 +8,7 @@ autopep8 = "*"
 
 [packages]
 flask = "*"
-flask-session = "*"
-flask-sqlalchemy = "*"
-flask-redis = "*"
 flask-mysql = "*"
-flask-login = "*"
 
 [requires]
 python_version = "3.7"

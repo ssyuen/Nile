@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "aa2bf1ac627ca7816de65ef1999fc5dcf3196a1dc078f3720dcb7b20b4a3d951"
+            "sha256": "c0e749721f6744cbfc84fd712f028e1d0b760767e84161da91db58d0dfb556af"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -31,14 +31,6 @@
             "index": "pypi",
             "version": "==1.1.1"
         },
-        "flask-login": {
-            "hashes": [
-                "sha256:6d33aef15b5bcead780acc339464aae8a6e28f13c90d8b1cf9de8b549d1c0b4b",
-                "sha256:7451b5001e17837ba58945aead261ba425fdf7b4f0448777e597ddab39f4fba0"
-            ],
-            "index": "pypi",
-            "version": "==0.5.0"
-        },
         "flask-mysql": {
             "hashes": [
                 "sha256:7946e6367eaf1d87df3ae6b06af07b33fcd7cc8c04a9d0be2d208f23311d25e5",
@@ -46,30 +38,6 @@
             ],
             "index": "pypi",
             "version": "==1.5.1"
-        },
-        "flask-redis": {
-            "hashes": [
-                "sha256:8d79eef4eb1217095edab603acc52f935b983ae4b7655ee7c82c0dfd87315d17",
-                "sha256:e1fccc11e7ea35c2a4d68c0b9aa58226a098e45e834d615c7b6c4928b01ddd6c"
-            ],
-            "index": "pypi",
-            "version": "==0.4.0"
-        },
-        "flask-session": {
-            "hashes": [
-                "sha256:a31c27e0c3287f00c825b3d9625aba585f4df4cccedb1e7dd5a69a215881a731",
-                "sha256:b9b32126bfc52c3169089f2ed9a40e34b589527bda48b633428e07d39d9c8792"
-            ],
-            "index": "pypi",
-            "version": "==0.3.1"
-        },
-        "flask-sqlalchemy": {
-            "hashes": [
-                "sha256:0078d8663330dc05a74bc72b3b6ddc441b9a744e2f56fe60af1a5bfc81334327",
-                "sha256:6974785d913666587949f7c2946f7001e4fa2cb2d19f4e69ead02e4b8f50b33d"
-            ],
-            "index": "pypi",
-            "version": "==2.4.1"
         },
         "itsdangerous": {
             "hashes": [
@@ -129,19 +97,6 @@
                 "sha256:d8c059dcd81dedb85a9f034d5e22dcb4442c0b201908bede99e306d65ea7c8e7"
             ],
             "version": "==0.9.3"
-        },
-        "redis": {
-            "hashes": [
-                "sha256:0dcfb335921b88a850d461dc255ff4708294943322bd55de6cfd68972490ca1f",
-                "sha256:b205cffd05ebfd0a468db74f0eedbff8df1a7bfc47521516ade4692991bb0833"
-            ],
-            "version": "==3.4.1"
-        },
-        "sqlalchemy": {
-            "hashes": [
-                "sha256:64a7b71846db6423807e96820993fa12a03b89127d278290ca25c0b11ed7b4fb"
-            ],
-            "version": "==1.3.13"
         },
         "werkzeug": {
             "hashes": [
