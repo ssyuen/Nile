@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, request, jsonify, redirect, flash, session
-from flaskext.mysql import MySQL
 from functools import wraps
+import bcrypt
 from server import conn
 
 user_bp = Blueprint('user_bp', __name__,
@@ -32,6 +32,8 @@ def login():
         cursor = conn.cursor()
         query = 'SELECT email,password,firstName from users WHERE email = "' + \
             email + '" AND password = "' + password + '"'
+        #ONCE DB SCHEMA IS SETUP, GET RID 
+        #OF AND PASSWORD AND USE BCRYPT.CHECKPW(PASSWORD,QUERIED PASSWORD)
         cursor.execute(query)
         try:
             results = cursor.fetchall()[0]
@@ -68,6 +70,7 @@ def register():
         lastName = request.form.get('lastName')
         email = request.form.get('email')
         password = request.form.get('password')
+        # password = bcrypt.hashpw(request.form.get('password').encode(), bcrypt.gensalt())
 
         # optional
         address = request.form.get('address')
