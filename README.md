@@ -53,3 +53,4 @@
     - [ ] Cart Pricing needs to reflect price in cart
     - [ ] Increasing quantity of an item should dynamically increase Cart Pricing
     - [ ] Remove Item from cart
+    - [ ] Number above Shopping Cart icon needs to adjust to the number of items in the cart dyanmically
