@@ -87,6 +87,10 @@ def register():
 
     return render_template('reg.html')
 
+@user_bp.route('/register_confirmation/',methods=['POST','GET'])
+def register_confirmation():
+    #system needs to send an email with url back to a page
+    pass
 
 @user_bp.route('/shoppingcart/')
 def shopping_cart():
