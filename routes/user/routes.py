@@ -97,7 +97,7 @@ def shopping_cart():
 """User Routes"""
 @user_bp.route('/user/billingaddress/')
 @login_required
-def billing_address(route='/user/billingaddress/'):
+def billing_address():
     return render_template('./user pages/billingaddress.html')
 
 
@@ -121,5 +121,5 @@ def payment_info():
 
 @user_bp.route('/user/profile/')
 @login_required
-def profile(route='/user/profile/'):
+def profile():
     return render_template('./user pages/profile.html')
