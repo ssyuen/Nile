@@ -2,7 +2,7 @@
 
 ## Execution
 
-- To start the server run `./start.sh`
+- To start the server, make sure you have done `pipenv shell` in the top-level directory of nile, and run `./start.sh`
 
 ## Installation
 
