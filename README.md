@@ -51,9 +51,9 @@ https://www.nilebookstore.com
   - [ ] Password Security
     - [ ] Password hashing before entered into database
   - [x] Sign Out
-- [ ] Database Development
-  - [ ] Schema Creation
-    - [ ] Add field for if admin (necessary to differentiate drop down for My Admin Profile and just My Profile)
+- [x] Database Development
+  - [x] Schema Creation
+    - [x] Add field for if admin (necessary to differentiate drop down for My Admin Profile and just My Profile)
 - [ ] Front-end Development
   - [ ] About page
   - [ ] Shopping Cart
