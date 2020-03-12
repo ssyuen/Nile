@@ -2,6 +2,9 @@
   <img src="static/images/NileLg.png">
 </p>
 
+# Site
+https://www.nilebookstore.com
+
 ## Execution
 
 - To start the server, make sure you have done `pipenv shell` in the top-level directory of nile, and run `./start.sh`
