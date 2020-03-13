@@ -239,19 +239,19 @@ INSERT INTO `mydb`.`status`
 (`statusID`,
 `status`)
 VALUES
-(0,'UNREGISTERED');
+(1,'UNREGISTERED');
 
 INSERT INTO `mydb`.`status`
 (`statusID`,
 `status`)
 VALUES
-(1,'REGISTERED');
+(2,'REGISTERED');
 
 INSERT INTO `mydb`.`status`
 (`statusID`,
 `status`)
 VALUES
-(2,'SUSPENDED');
+(3,'SUSPENDED');
 
 
 -- Insert binding
