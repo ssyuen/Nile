@@ -43,7 +43,7 @@ def login():
         password = request.form.get('password')
 
         cursor = conn.cursor()
-        query = 'SELECT email,password,firstName from users WHERE email = "' + \
+        query = 'SELECT email,password,firstName from user WHERE email = "' + \
             email + '" AND password = "' + password + '"'
         #ONCE DB SCHEMA IS SETUP, GET RID 
         #OF AND PASSWORD AND USE BCRYPT.CHECKPW(PASSWORD,QUERIED PASSWORD)

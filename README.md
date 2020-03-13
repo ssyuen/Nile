@@ -7,6 +7,8 @@ https://www.nilebookstore.com
 
 ## Execution
 
+- Before execution, add `DB_USER` and `DB_PASS` to the local machine environment variables. This represents your
+MySql local instance's username and password
 - To start the server, make sure you have done `pipenv shell` in the top-level directory of nile, and run `./start.sh`
 
 ## Installation
