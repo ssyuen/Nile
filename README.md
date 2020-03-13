@@ -29,7 +29,7 @@ MySql local instance's username and password
 ## Todo List
 
 - [ ] Back-end Development
-  - [ ] Registration
+  - [x] Registration
   - [ ] Jinja2 with sessions in all html files
   - [ ] If web user clicks on checkout, direct to login, redirect to checkout upon successful login
   - [ ] Books
@@ -53,8 +53,8 @@ MySql local instance's username and password
   - [ ] Shopping Cart
     - [ ] Fill Shopping Cart with user's items from database
     - [ ] Items should be tracked in users table with under items column
-  - [ ] Password Security
-    - [ ] Password hashing before entered into database
+  - [x] Password Security
+    - [x] Password hashing before entered into database
   - [x] Sign Out
 - [x] Database Development
   - [x] Schema Creation

@@ -41,34 +41,66 @@ def login():
     if request.method == 'POST':
         email = request.form.get('email')
         password = request.form.get('password')
-
+        cursor = conn.cursor()
         # ONCE DB SCHEMA IS SETUP, GET RID
         # OF AND PASSWORD AND USE BCRYPT.CHECKPW(PASSWORD,QUERIED PASSWORD)
         if '@nile.com' in email:
 
             query = 'SELECT email ,pass, firstName from admin WHERE email = "' + \
-                    email + '" AND pass = "' + password + '"'
+                    email + '"'
+            cursor.execute(query)
+
+            try:
+                results = cursor.fetchall()[0]
+                db_pass = results[1]
+                db_pass = db_pass[2:-1].encode('utf-8')
+                if bcrypt.checkpw(password.encode(),db_pass):
+                    session['logged_in'] = True
+                    session['email'] = email
+                    session['admin'] = True
+                    session['firstName'] = results[2]
+                    flash('Welcome, ' + session['firstName'] + '!')
+                    return redirect('/')
+                else:
+                    print('login details incorrect')
+                    flash('Your login details were incorrect. Please try again.')
+                    return redirect('/login/')
+            except IndexError:
+                print('login details incorrect')
+                flash('Your login details were not found. Please try again.')
+                return redirect('/login/')
         else:
             query = 'SELECT email ,pass, firstName from user WHERE email = "' + \
-                    email + '" AND pass = "' + password + '"'
+                    email + '"'
+            cursor.execute(query)
+            try:
+                results = cursor.fetchall()[0]
+                db_pass = results[1]
+                db_pass = db_pass[2:-1].encode('utf-8')
 
-        print(email)
+                if bcrypt.checkpw(password.encode('utf-8'),db_pass):
+                    session['logged_in'] = True
+                    session['email'] = email
+                    session['admin'] = False
+                    session['firstName'] = results[2]
+                    flash('Welcome, ' + session['firstName'] + '!')
+                    return redirect('/')
+                else:
+                    print('login details incorrect')
+                    flash('Your login details were incorrect. Please try again.')
+                    return redirect('/login/')
+                session['logged_in'] = True
+                session['email'] = email
+                session['firstName'] = results[2]
+                flash('Welcome, ' + session['firstName'] + '!')
+                return redirect('/')
+            except IndexError:
+                print('login details incorrect')
+                flash('Your login details were not found. Please try again.')
+                return redirect('/login/')
 
-        cursor = conn.cursor()
 
-        cursor.execute(query)
-
-        try:
-            results = cursor.fetchall()[0]
-            session['logged_in'] = True
-            session['email'] = email
-            session['firstName'] = results[2]
-            flash('Welcome, ' + session['firstName'] + '!')
-            return redirect('/')
-        except IndexError:
-            print('login details incorrect')
-            flash('Your login details were not found. Please try again.')
-            return redirect('/login/')
+        
     else:
         return render_template('login.html')
 
@@ -93,7 +125,7 @@ def register():
         lastName = request.form.get('inputLastname')
         email = request.form.get('inputEmail')
         password = request.form.get('inputPassword')
-        password = bcrypt.hashpw(password.encode(), bcrypt.gensalt())
+        password = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
         # optional
 
         address = request.form.get('addAddressStreetAddress')
