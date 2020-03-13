@@ -57,6 +57,7 @@ def login():
                 if bcrypt.checkpw(password.encode(),db_pass):
                     session['logged_in'] = True
                     session['email'] = email
+                    session['admin'] = True
                     session['firstName'] = results[2]
                     flash('Welcome, ' + session['firstName'] + '!')
                     return redirect('/')
@@ -80,6 +81,7 @@ def login():
                 if bcrypt.checkpw(password.encode('utf-8'),db_pass):
                     session['logged_in'] = True
                     session['email'] = email
+                    session['admin'] = False
                     session['firstName'] = results[2]
                     flash('Welcome, ' + session['firstName'] + '!')
                     return redirect('/')

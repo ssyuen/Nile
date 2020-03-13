@@ -33,6 +33,7 @@
             </form>
         </ul>
         <ul class="navbar-nav ml-auto nav-flex-icons">
+            {% if not session['admin'] %}
             <li class="nav-item align-self-center">
                 <div class="widget-header mr-3 mt-1">
                     <a href="/shoppingcart/" class="icon icon-sm rounded-circle border text-center">
@@ -41,6 +42,8 @@
                     <span class="badge badge-pill badge-danger notify">0</span>
                 </div>
             </li>
+            {% endif %}
+
             <!-- <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink-333" data-toggle="dropdown"
                     aria-haspopup="true" aria-expanded="false">
@@ -56,13 +59,16 @@
             <li class="nav-item dropdown align-self-center">
                 <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink-333" data-toggle="dropdown"
                     aria-haspopup="true" aria-expanded="false">
-                    <span class=" complement">Welcome, {{ session['firstName'] }} <span class="badge badge-primary ml-2">Admin</span></span>
+                    <span class=" complement">Welcome, {{ session['firstName'] }} {% if session['admin'] %}<span class="badge badge-primary ml-2">Admin</span>{% endif %}</span>
                 </a>
                 <div class="dropdown-menu dropdown-menu-right dropdown-default"
                     aria-labelledby="navbarDropdownMenuLink-333">
+                    {% if not session['admin'] %}
                     <a class="dropdown-item" href="/user/profile/">My Profile</a>
-                    <a class="dropdown-item" href="/admin/">My Admin Profile</a>
                     <a class="dropdown-item" href="/user/orderhist/">Order History</a>
+                    {% else %}
+                    <a class="dropdown-item" href="/admin/">My Admin Profile</a>
+                    {% endif %}
                     <a class="dropdown-item" href="/logout/">Sign Out</a>
                 </div>
             </li>
