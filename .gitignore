@@ -1,3 +1,4 @@
 .vscode
 .replit
 .env
+__pycache__
