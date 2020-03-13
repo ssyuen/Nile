@@ -216,7 +216,22 @@ def payment_info():
     return render_template('./user pages/paymentinfo.html')
 
 
-@user_bp.route('/user/profile/')
+@user_bp.route('/user/profile/', methods=['GET','POST'])
 @login_required
 def profile():
-    return render_template('./user pages/profile.html')
+    # TWO FORMS FOR UPDATING NAME/EMAIL OR UPDATING PASSWORD
+    if request.method == 'GET':
+        return render_template('./user pages/profile.html')
+    else:
+        if 'personalForm' in request.form:
+            firstName = request.form.get('firstName')
+            lastName = request.form.get('lastName')
+            emailAddress = request.form.get('emailAddress')
+
+        else:
+            currentPassword = request.form.get('currentPassword')
+            newPassword = request.form.get('newPassword')
+            confirmPassword = request.form.get('confirmPassword')
+
+        
+        pass

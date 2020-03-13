@@ -47,7 +47,8 @@
 
             <div class="col mb-5">
                 <div class="text-left" id="welcome">
-                    <p class="primary-lg" id="account-holder">Welcome Back, <span id="name">{{ session['firstName'] }}.</span></p>
+                    <p class="primary-lg" id="account-holder">Welcome Back, <span
+                            id="name">{{ session['firstName'] }}.</span></p>
                 </div>
             </div>
         </div>
@@ -121,51 +122,64 @@
                     <!-- Content -->
                     <div class="card-body white">
                         <h4 class="text-uppercase font-weight-bold my-4">Details</h4>
-                        <div class="row">
-                            <div class="col">
-                                <i class="fas fa-user prefix"></i>
-                                <label for="first-name">First Name</label>
-                                <div class="input-group">
-                                    <input id="first-name" type="text" class="form-control" placeholder="First Name"
-                                        aria-label="First Name" aria-describedby="button-addon2">
-                                    <div class="input-group-append">
-                                        <button class="btn btn-outline-warning m-0 px-3 py-2 z-depth-0 waves-effect"
-                                            type="button" id="editIsbnBtn">Edit</button>
+                        <form method="POST">
+                            <div class="form-group">
+                                <div class="form-row">
+                                    <div class="col">
+                                        <i class="fas fa-user prefix"></i>
+                                        <label for="first-name">First Name</label>
+                                        <div class="input-group">
+                                            <input id="first-name" type="text" class="form-control"
+                                                placeholder="First Name" aria-label="First Name"
+                                                aria-describedby="button-addon2" name="firstName">
+                                            <div class="input-group-append">
+                                                <button
+                                                    class="btn btn-outline-warning m-0 px-3 py-2 z-depth-0 waves-effect"
+                                                    type="button" id="editIsbnBtn">Edit</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col">
+                                        <label for="last-name">Last Name</label>
+                                        <div class="input-group">
+                                            <input id="last-name" type="text" class="form-control"
+                                                placeholder="Last Name" aria-label="Last Name"
+                                                aria-describedby="button-addon2" name="lastName">
+                                            <div class="input-group-append">
+                                                <button
+                                                    class="btn btn-outline-warning m-0 px-3 py-2 z-depth-0 waves-effect"
+                                                    type="button" id="editIsbnBtn">Edit</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="col">
+                                        <i class="fas fa-envelope prefix"></i>
+                                        <label class="mt-4" for="email">Email Address</label>
+                                        <div class="input-group">
+                                            <input id="email" type="email" class="form-control"
+                                                placeholder="Email Address" aria-label="email"
+                                                aria-describedby="button-addon2" name="emailAddress">
+                                            <div class="input-group-append">
+                                                <button
+                                                    class="btn btn-outline-warning m-0 px-3 py-2 z-depth-0 waves-effect"
+                                                    type="button" id="editIsbnBtn">Edit</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-row mt-4">
+                                    <div class="col">
+                                        <!--PLEASE FOR THE LOVE OF GOD CHANGE THIS MARGIN TOP VALUEs-->
+                                        <button class="btn blue-gradient btn-block"
+                                            style="margin-top: 95px;" name="personalForm">Update</button>
                                     </div>
                                 </div>
                             </div>
-                            <div class="col">
-                                <label for="last-name">Last Name</label>
-                                <div class="input-group">
-                                    <input id="last-name" type="text" class="form-control" placeholder="Last Name"
-                                        aria-label="Last Name" aria-describedby="button-addon2">
-                                    <div class="input-group-append">
-                                        <button class="btn btn-outline-warning m-0 px-3 py-2 z-depth-0 waves-effect"
-                                            type="button" id="editIsbnBtn">Edit</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col">
-                                <i class="fas fa-envelope prefix"></i>
-                                <label class="mt-4" for="email">Email Address</label>
-                                <div class="input-group">
-                                    <input id="email" type="email" class="form-control" placeholder="Email Address"
-                                        aria-label="email" aria-describedby="button-addon2">
-                                    <div class="input-group-append">
-                                        <button class="btn btn-outline-warning m-0 px-3 py-2 z-depth-0 waves-effect"
-                                            type="button" id="editIsbnBtn">Edit</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row mt-4">
-                            <div class="col">
-                                <!--PLEASE FOR THE LOVE OF GOD CHANGE THIS MARGIN TOP VALUEs-->
-                                <button class="btn blue-gradient btn-block" style="margin-top: 95px;">Update</button>
-                            </div>
-                        </div>
+
+
+                        </form>
                     </div>
                 </div>
             </div>
@@ -200,37 +214,43 @@
                     </div>
                     <!-- Content -->
                     <div class="card-body white">
-                        <h4 class="text-uppercase font-weight-bold my-4">Details</h4>
-                        <div class="row">
-                            <div class="col">
-                                <i class="fas fa-lock prefix"></i>
-                                <label for="inputValidationEx2" data-error="wrong" data-success="right">Current
-                                    Password</label>
-                                <input type="password" id="inputValidationEx2" class="form-control validate">
-                            </div>
-                        </div>
-                        <div class="row mt-4">
-                            <div class="col">
-                                <i class="fas fa-lock prefix"></i>
-                                <label for="inputValidationEx2" data-error="wrong" data-success="right">New
-                                    Password</label>
-                                <input type="password" id="inputValidationEx2" class="form-control validate">
-                            </div>
-                        </div>
-                        <div class="row mt-4">
-                            <div class="col">
-                                <i class="fas fa-lock prefix"></i>
-                                <label for="inputValidationEx2" data-error="wrong" data-success="right">Confirm
-                                    Password</label>
-                                <input type="password" id="inputValidationEx2" class="form-control validate">
-                            </div>
-                        </div>
-                        <div class="row mt-4">
-                            <div class="col">
-                                <button type="submit" class="btn blue-gradient btn-block">Update</button>
-                            </div>
 
+                        <h4 class="text-uppercase font-weight-bold my-4">Details</h4>
+                        <form method="POST"></form>
+                        <div class="form-group">
+                            <div class="form-row">
+                                <div class="col">
+                                    <i class="fas fa-lock prefix"></i>
+                                    <label for="inputValidationEx2" data-error="wrong" data-success="right">Current
+                                        Password</label>
+                                    <input type="password" id="inputValidationEx2" class="form-control validate" name="currentPassword">
+                                </div>
+                            </div>
+                            <div class="form-row mt-4">
+                                <div class="col">
+                                    <i class="fas fa-lock prefix"></i>
+                                    <label for="inputValidationEx2" data-error="wrong" data-success="right">New
+                                        Password</label>
+                                    <input type="password" id="inputValidationEx2" class="form-control validate" name="newPassword">
+                                </div>
+                            </div>
+                            <div class="form-row mt-4">
+                                <div class="col">
+                                    <i class="fas fa-lock prefix"></i>
+                                    <label for="inputValidationEx2" data-error="wrong" data-success="right">Confirm
+                                        Password</label>
+                                    <input type="password" id="inputValidationEx2" class="form-control validate" name="confirmPassword">
+                                </div>
+                            </div>
+                            <div class="form-row mt-4">
+                                <div class="col">
+                                    <button type="submit" class="btn blue-gradient btn-block" name="pwForm">Update</button>
+                                </div>
+
+                            </div>
                         </div>
+
+                        </form>
                     </div>
                 </div>
                 <!-- Card -->
@@ -271,7 +291,8 @@
                         <p class="complement">NOTE: This button will redirect your page</p>
                         <div class="row mt-4">
                             <div class="col">
-                                <a href="/user/paymentinfo/" type="submit" class="btn blue-gradient btn-block">Manage Payment Methods</a>
+                                <a href="/user/paymentinfo/" type="submit" class="btn blue-gradient btn-block">Manage
+                                    Payment Methods</a>
                             </div>
                         </div>
                     </div>
@@ -315,7 +336,8 @@
                         <p class="complement">NOTE: This button will redirect your page</p>
                         <div class="row mt-4">
                             <div class="col">
-                                <a href="/user/billingaddress/" type="submit" class="btn blue-gradient btn-block">Manage Billing Addresses</a>
+                                <a href="/user/billingaddress/" type="submit" class="btn blue-gradient btn-block">Manage
+                                    Billing Addresses</a>
                             </div>
                         </div>
                     </div>
