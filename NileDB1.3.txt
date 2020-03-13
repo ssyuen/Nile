@@ -235,19 +235,19 @@ SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
 
 -- Insert Status
-INSERT INTO `mydb`.`status`
+INSERT INTO `status`
 (`statusID`,
 `status`)
 VALUES
 (1,'UNREGISTERED');
 
-INSERT INTO `mydb`.`status`
+INSERT INTO `status`
 (`statusID`,
 `status`)
 VALUES
 (2,'REGISTERED');
 
-INSERT INTO `mydb`.`status`
+INSERT INTO `status`
 (`statusID`,
 `status`)
 VALUES
