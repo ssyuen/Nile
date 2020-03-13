@@ -50,7 +50,7 @@ CREATE TABLE IF NOT EXISTS  `book` (
   `image` LONGBLOB NULL,
   `edition` VARCHAR(45) NULL,
   `publisher` VARCHAR(45) NULL,
-  `publicationYear` VARCHAR(45) NULL,
+  `publicationDate` VARCHAR(45) NULL,
   `stock` INT NULL,
   `authorFirstName` VARCHAR(45) NULL,
   `authorLastName` VARCHAR(45) NULL,
