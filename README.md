@@ -29,7 +29,7 @@ MySql local instance's username and password
 ## Todo List
 
 - [ ] Back-end Development
-  - [ ] Registration
+  - [x] Registration
   - [ ] Jinja2 with sessions in all html files
   - [ ] If web user clicks on checkout, direct to login, redirect to checkout upon successful login
   - [ ] Books
