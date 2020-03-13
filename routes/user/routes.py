@@ -54,7 +54,7 @@ def login():
                 results = cursor.fetchall()[0]
                 db_pass = results[1]
                 db_pass = db_pass[2:-1].encode('utf-8')
-                if bcrypt.checkpw(password.encode(),db_pass):
+                if bcrypt.checkpw(password.encode(), db_pass):
                     session['logged_in'] = True
                     session['email'] = email
                     session['admin'] = True
