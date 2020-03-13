@@ -42,12 +42,21 @@ def login():
         email = request.form.get('email')
         password = request.form.get('password')
 
+        # ONCE DB SCHEMA IS SETUP, GET RID
+        # OF AND PASSWORD AND USE BCRYPT.CHECKPW(PASSWORD,QUERIED PASSWORD)
+        if '@nile.com' in email:
+
+            query = 'SELECT email ,pass, firstName from admin WHERE email = "' + \
+                    email + '" AND pass = "' + password + '"'
+        else:
+            query = 'SELECT email ,pass, firstName from user WHERE email = "' + \
+                    email + '" AND pass = "' + password + '"'
+
+        print(email)
+
         cursor = conn.cursor()
-        query = 'SELECT email,password,firstName from user WHERE email = "' + \
-            email + '" AND password = "' + password + '"'
-        #ONCE DB SCHEMA IS SETUP, GET RID 
-        #OF AND PASSWORD AND USE BCRYPT.CHECKPW(PASSWORD,QUERIED PASSWORD)
         cursor.execute(query)
+
         try:
             results = cursor.fetchall()[0]
             session['logged_in'] = True
