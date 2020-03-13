@@ -55,6 +55,7 @@ CREATE TABLE IF NOT EXISTS  `book` (
   `authorFirstName` VARCHAR(45) NULL,
   `authorLastName` VARCHAR(45) NULL,
   `summary` VARCHAR(500) NULL,
+  `numPages` INT NULL,
   PRIMARY KEY (`bookID`),
   INDEX `Key` (`title` ASC, `price` ASC) VISIBLE,
   INDEX `bindingID_idx` (`bindingID` ASC) VISIBLE,
