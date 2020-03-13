@@ -126,19 +126,19 @@
                     <div class="form-group">
                         <label for="inputPassword">Password</label>
                         <input type="password" id="inputPassword" class="form-control" placeholder="Password"
-                            name="inputPassword" required>
+                               name="inputPassword" required>
                     </div>
 
                     <div class="form-group">
                         <label for="inputConfirmPassword">Confirm Password</label>
                         <input type="password" id="inputConfirmPassword" class="form-control"
-                            placeholder="Confirm Password" name="inputConfirmPassword" required>
+                               placeholder="Confirm Password" name="inputConfirmPassword" required>
                     </div>
 
-                    <a data-toggle="collapse" data-target="#demo" href="">Add Address (Optional)</a>
+                    <a data-toggle="collapse" data-target="#demo" href="" id="addressToggler">Add Address (Optional)</a>
                     <small class="text-muted"><i>You can always add it later</i></small>
 
-                    <div class="form-group mt-2">
+                    <div class="form-group mt-2 addr-opt">
                         <div id="demo" class="collapse">
                             <div class="form-row">
                                 <div class="form-group col">
@@ -146,7 +146,7 @@
                                     <label for="addAddressStreetAddress">Street Address</label>
                                     <div class="input-group">
                                         <input type="text" class="form-control" id="addAddressStreetAddress"
-                                            placeholder="Street Address" name="addAddressStreetAddress">
+                                               placeholder="Street Address" name="addAddressStreetAddress">
                                     </div>
                                 </div>
                             </div>
@@ -242,16 +242,13 @@
             });
         });
     </script>
+    <script>
+        document.getElementById("addressToggler").addEventListener("click", function () {
+            $('.addr-opt input, select').each(function () {
+                $(this)[0].toggleAttribute("required");
+            })
+        });
+    </script>
 
-
-    <!-- <script language="javascript">
-        function autoResizeDiv()
-        {
-            document.getElementById('foot').style.height = window.innerHeight +'px';
-        }
-        window.onresize = autoResizeDiv;
-        autoResizeDiv();
-    </script> -->
 </body>
-
 </html>
