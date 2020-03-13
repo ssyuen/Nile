@@ -12,7 +12,7 @@ app = Flask(__name__)
 app.config['MYSQL_DATABASE_USER'] = os.environ['DB_USER']  # change to ur local username
 app.config['MYSQL_DATABASE_PASSWORD'] = os.environ['DB_PASS']  # change to ur local password
 
-app.config['MYSQL_DATABASE_DB'] = 'nile_db'  # change to whatever the db will be named
+app.config['MYSQL_DATABASE_DB'] = 'niledb'  # change to whatever the db will be named
 app.config['MYSQL_DATABASE_HOST'] = 'localhost'
 
 #secret_key generation

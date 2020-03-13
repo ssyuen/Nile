@@ -105,7 +105,7 @@ def register():
 
         cursor = conn.cursor()
 
-        query = 'INSERT INTO shoppingcart (cartID) VALUES(0);'
+        query = 'INSERT INTO shoppingCart (cartID) VALUES(0);'
         cursor.execute(query)
         db_cart = 'SELECT cartID FROM shoppingCart ORDER BY cartID DESC LIMIT 1'
         cursor.execute(db_cart)
