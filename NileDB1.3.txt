@@ -234,3 +234,84 @@ SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
 
+-- Insert Status
+INSERT INTO `mydb`.`status`
+(`statusID`,
+`status`)
+VALUES
+(0,'UNREGISTERED');
+
+INSERT INTO `mydb`.`status`
+(`statusID`,
+`status`)
+VALUES
+(1,'REGISTERED');
+
+INSERT INTO `mydb`.`status`
+(`statusID`,
+`status`)
+VALUES
+(2,'SUSPENDED');
+
+
+-- Insert binding
+INSERT INTO `binding`(`bindingID`, `binding`)
+VALUES(1, 'Textbook');
+
+INSERT INTO `binding`(`bindingID`, `binding`)
+VALUES(2, 'Novel');
+
+INSERT INTO `binding`(`bindingID`, `binding`)
+VALUES(3, 'E-book (Electronic)');
+
+INSERT INTO `binding`(`bindingID`, `binding`)
+VALUES(4, 'Audio CD');
+
+INSERT INTO `binding`(`bindingID`, `binding`)
+VALUES(5, 'Audiobook');
+
+INSERT INTO `binding`(`bindingID`, `binding`)
+VALUES(6,'Paperback');
+
+INSERT INTO `binding`(`bindingID`, `binding`) 
+VALUES(7,'Hardback');
+
+-- Insert genre
+INSERT INTO `genre`(`genreID`, `genre`)
+VALUES(1, 'Horror');
+
+INSERT INTO `genre`(`genreID`, `genre`)
+VALUES(2, 'Adventure');
+
+INSERT INTO `genre`(`genreID`, `genre`)
+VALUES(3, 'Fantasy');
+
+INSERT INTO `genre`(`genreID`, `genre`)
+VALUES(4, 'Romance');
+
+INSERT INTO `genre`(`genreID`, `genre`)
+VALUES(5, 'Sci-Fi');
+
+INSERT INTO `genre`(`genreID`, `genre`)
+VALUES(6, 'Dystopian');
+
+INSERT INTO `genre`(`genreID`, `genre`)
+VALUES(7, 'Humor');
+
+INSERT INTO `genre`(`genreID`, `genre`)
+VALUES(8, 'Non-fiction');
+
+INSERT INTO `genre`(`genreID`, `genre`)
+VALUES(9, 'Biography');
+
+INSERT INTO `genre`(`genreID`, `genre`)
+VALUES(10, 'Cartoon');
+
+INSERT INTO `genre`(`genreID`, `genre`)
+VALUES(11, 'Graphic Novels');
+
+INSERT INTO `genre`(`genreID`, `genre`)
+VALUES(12, 'Children');
+
+INSERT INTO `genre`(`genreID`, `genre`)
+VALUES(13, 'Anthology');
