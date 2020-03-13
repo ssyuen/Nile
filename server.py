@@ -6,9 +6,6 @@ import os
 app = Flask(__name__)
 
 #MySQL setup
-# app.config['MYSQL_DATABASE_USER'] = 'root' #change to ur local username
-# app.config['MYSQL_DATABASE_PASSWORD'] = 'root' #change to ur local password
-# app.config['MYSQL_DATABASE_DB'] = 'niledb' #change to whatever the db will be named
 app.config['MYSQL_DATABASE_USER'] = os.environ['DB_USER']  # change to ur local username
 app.config['MYSQL_DATABASE_PASSWORD'] = os.environ['DB_PASS']  # change to ur local password
 
