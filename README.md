@@ -32,8 +32,13 @@ MySql local instance's username and password
   - [x] Registration
   - [ ] Jinja2 with sessions in all html files
   - [ ] If web user clicks on checkout, direct to login, redirect to checkout upon successful login
+  - [ ] Install third party libraries (bootstrap, JQuery, JS)
   - [ ] Books
-    - [ ] TBA
+    - [x] Add Books
+    - [ ] Manage Books
+    - [ ] Add Promotions
+    - [ ] Manage Promotions
+    - [ ] Manage Users
   - [ ] User Profile
     - [ ] Update My Info
       - [ ] Individual Edit Buttons
@@ -61,13 +66,17 @@ MySql local instance's username and password
     - [x] Add field for if admin (necessary to differentiate drop down for My Admin Profile and just My Profile)
 - [ ] Front-end Development
   - [ ] About page
-  - [ ] Shopping Cart
-    - [ ] Cart Pricing needs to reflect price in cart
-    - [ ] Increasing quantity of an item should dynamically increase Cart Pricing
-    - [ ] Remove Item from cart
-    - [ ] Number above Shopping Cart icon needs to adjust to the number of items in the cart dyanmically
   - [ ] Promotions
-    - [ ] Expiration dates need to be added
+    - [ ] Expiration dates need to be added for admin
+  - [ ] Scripting
+    - [ ] Required columns for address when the user chooses the optional
+    - [ ] Password & Confirm Password Restrictions
+    - [ ] Shopping Cart
+      - [ ] Cart Pricing needs to reflect price in cart
+      - [ ] Increasing quantity of an item should dynamically increase Cart Pricing
+      - [ ] Remove Item from cart
+      - [ ] Number above Shopping Cart icon needs to adjust to the number of items in the cart dyanmically
+    - [ ] User Profile edit buttons (change from readonly state)
   - [ ] Custom Error pages
     - [ ] 404
     - [ ] 400
