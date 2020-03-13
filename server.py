@@ -21,7 +21,9 @@ mysql.init_app(app)
 conn = mysql.connect()
 #if you reformat this code, the imports go up resulting in
 #circular importing which breaks the blueprint architecture
+
 from routes.user import routes as user_routes
 from routes.admin import routes as admin_routes
+
 app.register_blueprint(admin_routes.admin_bp)
 app.register_blueprint(user_routes.user_bp)
