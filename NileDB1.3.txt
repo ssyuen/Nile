@@ -55,12 +55,12 @@ CREATE TABLE IF NOT EXISTS `book` (
   INDEX `genreID_idx` (`genreID` ASC) VISIBLE,
   CONSTRAINT `bindingID`
     FOREIGN KEY (`bindingID`)
-    REFERENCES `mydb`.`binding` (`bindingID`)
+    REFERENCES `binding` (`bindingID`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `genreID`
     FOREIGN KEY (`genreID`)
-    REFERENCES `mydb`.`genre` (`genreID`)
+    REFERENCES `genre` (`genreID`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION);
 
@@ -115,7 +115,7 @@ CREATE TABLE IF NOT EXISTS `orders` (
   INDEX `Key` (`total` ASC, `date` ASC) VISIBLE,
   CONSTRAINT `promotionID`
     FOREIGN KEY (`promotionID`)
-    REFERENCES `mydb`.`promotion` (`promotionID`)
+    REFERENCES `promotion` (`promotionID`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION);
 
@@ -143,7 +143,7 @@ CREATE TABLE IF NOT EXISTS `shoppingCart` (
   INDEX `FK` (`orderID` ASC) VISIBLE,
   CONSTRAINT `orderID`
     FOREIGN KEY (`orderID`)
-    REFERENCES `mydb`.`orders` (`orderID`)
+    REFERENCES `orders` (`orderID`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION);
 
@@ -169,22 +169,22 @@ CREATE TABLE IF NOT EXISTS `user` (
   UNIQUE INDEX `email_UNIQUE` (`email` ASC) VISIBLE,
   CONSTRAINT `cartID`
     FOREIGN KEY (`cartID`)
-    REFERENCES `mydb`.`shoppingCart` (`cartID`)
+    REFERENCES `shoppingCart` (`cartID`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `addressID`
     FOREIGN KEY (`addressID`)
-    REFERENCES `mydb`.`address` (`addressID`)
+    REFERENCES `address` (`addressID`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `paymentID`
     FOREIGN KEY (`paymentID`)
-    REFERENCES `mydb`.`payment` (`paymentID`)
+    REFERENCES `payment` (`paymentID`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `statusID`
     FOREIGN KEY (`statusID`)
-    REFERENCES `mydb`.`status` (`statusID`)
+    REFERENCES `status` (`statusID`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION);
 
@@ -201,12 +201,12 @@ CREATE TABLE IF NOT EXISTS `orderDetails` (
   INDEX `bookID_idx` (`bookID` ASC) VISIBLE,
   CONSTRAINT `bookID`
     FOREIGN KEY (`bookID`)
-    REFERENCES `mydb`.`book` (`bookID`)
+    REFERENCES `book` (`bookID`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_orderDetails_orders1`
     FOREIGN KEY (`orderID`)
-    REFERENCES `mydb`.`orders` (`orderID`)
+    REFERENCES `orders` (`orderID`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION);
 
