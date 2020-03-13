@@ -74,22 +74,24 @@
                     </div>
                     <!-- Content -->
                     <div class="card-body white">
-                        <form>
+                        <form method="POST">
                             <div class="form-row">
                                 <div class="form-group col-md-6">
                                     <i class="fas fa-book"></i>
                                     <label for="bookTitle">Book Title</label>
                                     <div class="input-group">
-                                        <input type="text" class="form-control" id="bookTitle" placeholder="Book Title"
-                                            required>
+                                        <input name="bookTitle" type="text" class="form-control" id="bookTitle"
+                                               placeholder="Book Title"
+                                               required>
                                     </div>
                                 </div>
                                 <div class="form-group col-md-6">
                                     <i class="fas fa-barcode"></i>
                                     <label for="isbn">ISBN-13</label>
                                     <div class="input-group">
-                                        <input type="text" class="form-control" id="isbn" placeholder="ISBN-13"
-                                            required>
+                                        <input name="isbn" type="text" class="form-control" id="isbn"
+                                               placeholder="ISBN-13"
+                                               required>
                                     </div>
                                 </div>
                             </div>
@@ -98,16 +100,34 @@
                                     <i class="fas fa-signature"></i>
                                     <label for="authorFirstName">Author First Name</label>
                                     <div class="input-group">
-                                        <input type="text" class="form-control" id="authorFirstName"
-                                            placeholder="Author First Name" required>
+                                        <input name="authorFirstName" type="text" class="form-control"
+                                               id="authorFirstName"
+                                               placeholder="Author First Name" required>
                                     </div>
                                 </div>
                                 <div class="form-group col-md-6">
                                     <i class="fas fa-signature"></i>
                                     <label for="authorLastName">Author Last Name</label>
                                     <div class="input-group">
-                                        <input type="text" class="form-control" id="authorLastName"
-                                            placeholder="Author Last Name">
+                                        <input name="authorLastName" type="text" class="form-control"
+                                               id="authorLastName"
+                                               placeholder="Author Last Name">
+                                    </div>
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <i class="fas fa-signature"></i>
+                                    <label for="edition">Edition</label>
+                                    <div class="input-group">
+                                        <input name="edition" type="text" class="form-control" id="edition"
+                                               placeholder="Book Edition">
+                                    </div>
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <i class="fas fa-signature"></i>
+                                    <label for="publisher">Publisher</label>
+                                    <div class="input-group">
+                                        <input name="publisher" type="text" class="form-control" id="publisher"
+                                               placeholder="Book Publisher">
                                     </div>
                                 </div>
                             </div>
@@ -116,7 +136,7 @@
                                     <i class="far fa-laugh-squint"></i>
                                     <label for="genre">Genre</label>
                                     <div class="input-group">
-                                        <select id="genre" class="form-control">
+                                        <select name="genre" id="genre" class="form-control">
                                             <option selected>Choose...</option>
                                             <option>Mystery</option>
                                             <option>Horror</option>
@@ -129,16 +149,16 @@
                                     <i class="fas fa-list-ol"></i>
                                     <label for="numPages">Number of Pages</label>
                                     <div class="input-group">
-                                        <input type="number" class="form-control" id="numPages"
-                                            placeholder="Number of Pages">
+                                        <input name="numPages" type="number" class="form-control" id="numPages"
+                                               placeholder="Number of Pages">
                                     </div>
                                 </div>
                                 <div class="form-group col">
                                     <i class="far fa-clock"></i>
                                     <label for="datePublished">Date Published</label>
                                     <div class="input-group">
-                                        <input type="date" class="form-control" id="datePublished"
-                                            placeholder="Date Published" required>
+                                        <input name="datePublished" type="date" class="form-control" id="datePublished"
+                                               placeholder="Date Published" required>
                                     </div>
                                 </div>
                             </div>
@@ -147,9 +167,9 @@
                                     <i class="fas fa-scroll"></i>
                                     <label for="bindingType">Binding Type</label>
                                     <div class="input-group">
-                                        <select id="bindingType" class="form-control">
+                                        <select name="bindingType" id="bindingType" class="form-control">
                                             <option selected>Paperback</option>
-                                            <option>Hardcover</option>
+                                            <option>Hardback</option>
                                         </select>
                                     </div>
                                 </div>
@@ -157,8 +177,8 @@
                                     <i class="fas fa-cubes"></i>
                                     <label for="recvStock">Received Stock</label>
                                     <div class="input-group">
-                                        <input type="number" class="form-control" id="recvStock"
-                                            placeholder="Received Stock" required>
+                                        <input name="recvStock" type="number" class="form-control" id="recvStock"
+                                               placeholder="Received Stock" required>
                                     </div>
                                 </div>
                             </div>
@@ -167,17 +187,17 @@
                                     <i class="fas fa-dollar-sign"></i>
                                     <label for="price">Selling Price ($)</label>
                                     <div class="input-group">
-                                        <input type="number" class="form-control" id="price"
-                                            placeholder="Selling Price in USD ($)" required>
+                                        <input name="price" step="0.01" type="number" class="form-control" id="price"
+                                               placeholder="Selling Price in USD ($)" required>
                                     </div>
                                 </div>
                                 <div class="form-group col">
                                     <i class="far fa-file-image"></i>
                                     <label for="coverImage">Cover Image</label>
                                     <div class="custom-file">
-                                        <input type="file" class="custom-file-input" id="coverImage"
-                                            aria-describedby="coverImage" accept=".png,.jpeg,.gif,.jpg,.heic"
-                                            style="cursor: pointer;">
+                                        <input name="coverImage" type="file" class="custom-file-input" id="coverImage"
+                                               aria-describedby="coverImage" accept=".png,.jpeg,.gif,.jpg,.heic"
+                                               style="cursor: pointer;">
                                         <label class="custom-file-label" for="coverImage">Upload Image</label>
                                     </div>
                                 </div>
@@ -187,12 +207,14 @@
                                     <i class="fas fa-comment-alt"></i>
                                     <label for="bookSummary">Book Summary</label>
                                     <div class="input-group blue-border-focus">
-                                        <textarea class="form-control" id="bookSummary" rows="4" placeholder="Book Summary" maxlength="500"></textarea>
+                                        <textarea name="bookSummary" class="form-control" id="bookSummary" rows="4"
+                                                  placeholder="Book Summary" maxlength="500"></textarea>
                                     </div>
                                 </div>
                             </div>
                             <button type="submit" id="updateBtn" class="btn blue-gradient btn-block">Create New Book
-                                Entry</button>
+                                Entry
+                            </button>
                         </form>
                     </div>
                 </div>
