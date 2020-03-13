@@ -18,9 +18,9 @@ CREATE SCHEMA IF NOT EXISTS `mydb` DEFAULT CHARACTER SET utf8 ;
 USE `mydb` ;
 
 -- -----------------------------------------------------
--- Table `mydb`.`binding`
+-- Table  `binding`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `mydb`.`binding` (
+CREATE TABLE IF NOT EXISTS  `binding` (
   `bindingID` INT NOT NULL AUTO_INCREMENT,
   `binding` VARCHAR(45) NULL,
   PRIMARY KEY (`bindingID`))
@@ -28,9 +28,9 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `mydb`.`genre`
+-- Table  `genre`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `mydb`.`genre` (
+CREATE TABLE IF NOT EXISTS  `genre` (
   `genreID` INT NOT NULL AUTO_INCREMENT,
   `genre` VARCHAR(45) NULL,
   PRIMARY KEY (`genreID`))
@@ -38,9 +38,9 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `mydb`.`book`
+-- Table  `book`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `mydb`.`book` (
+CREATE TABLE IF NOT EXISTS  `book` (
   `bookID` INT NOT NULL AUTO_INCREMENT,
   `bindingID` INT NULL,
   `genreID` INT NULL,
@@ -61,20 +61,20 @@ CREATE TABLE IF NOT EXISTS `mydb`.`book` (
   INDEX `genreID_idx` (`genreID` ASC) VISIBLE,
   CONSTRAINT `bindingID`
     FOREIGN KEY (`bindingID`)
-    REFERENCES `mydb`.`binding` (`bindingID`)
+    REFERENCES  `binding` (`bindingID`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `genreID`
     FOREIGN KEY (`genreID`)
-    REFERENCES `mydb`.`genre` (`genreID`)
+    REFERENCES  `genre` (`genreID`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION);
 
 
 -- -----------------------------------------------------
--- Table `mydb`.`status`
+-- Table  `status`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `mydb`.`status` (
+CREATE TABLE IF NOT EXISTS  `status` (
   `statusID` INT NOT NULL,
   `status` VARCHAR(45) NOT NULL,
   PRIMARY KEY (`statusID`),
@@ -82,9 +82,9 @@ CREATE TABLE IF NOT EXISTS `mydb`.`status` (
 
 
 -- -----------------------------------------------------
--- Table `mydb`.`payment`
+-- Table  `payment`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `mydb`.`payment` (
+CREATE TABLE IF NOT EXISTS  `payment` (
   `paymentID` INT NOT NULL AUTO_INCREMENT,
   `cardNumber` INT NULL DEFAULT NULL,
   `address` VARCHAR(255) NULL DEFAULT NULL,
@@ -94,9 +94,9 @@ CREATE TABLE IF NOT EXISTS `mydb`.`payment` (
 
 
 -- -----------------------------------------------------
--- Table `mydb`.`promotion`
+-- Table  `promotion`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `mydb`.`promotion` (
+CREATE TABLE IF NOT EXISTS  `promotion` (
   `promotionID` INT NOT NULL AUTO_INCREMENT,
   `code` VARCHAR(45) NULL,
   `discount` DOUBLE NULL,
@@ -107,9 +107,9 @@ CREATE TABLE IF NOT EXISTS `mydb`.`promotion` (
 
 
 -- -----------------------------------------------------
--- Table `mydb`.`orders`
+-- Table  `orders`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `mydb`.`orders` (
+CREATE TABLE IF NOT EXISTS  `orders` (
   `orderID` INT NOT NULL AUTO_INCREMENT,
   `promotionID` INT NULL,
   `total` DOUBLE NULL DEFAULT NULL,
@@ -121,15 +121,15 @@ CREATE TABLE IF NOT EXISTS `mydb`.`orders` (
   INDEX `Key` (`total` ASC, `date` ASC) VISIBLE,
   CONSTRAINT `promotionID`
     FOREIGN KEY (`promotionID`)
-    REFERENCES `mydb`.`promotion` (`promotionID`)
+    REFERENCES  `promotion` (`promotionID`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION);
 
 
 -- -----------------------------------------------------
--- Table `mydb`.`address`
+-- Table  `address`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `mydb`.`address` (
+CREATE TABLE IF NOT EXISTS  `address` (
   `addressID` INT NOT NULL AUTO_INCREMENT,
   `street` VARCHAR(45) NULL DEFAULT NULL,
   `city` VARCHAR(45) NULL DEFAULT NULL,
@@ -140,24 +140,24 @@ CREATE TABLE IF NOT EXISTS `mydb`.`address` (
 
 
 -- -----------------------------------------------------
--- Table `mydb`.`shoppingCart`
+-- Table  `shoppingCart`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `mydb`.`shoppingCart` (
+CREATE TABLE IF NOT EXISTS  `shoppingCart` (
   `cartID` INT NOT NULL AUTO_INCREMENT,
   `orderID` INT NULL,
   PRIMARY KEY (`cartID`),
   INDEX `FK` (`orderID` ASC) VISIBLE,
   CONSTRAINT `orderID`
     FOREIGN KEY (`orderID`)
-    REFERENCES `mydb`.`orders` (`orderID`)
+    REFERENCES  `orders` (`orderID`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION);
 
 
 -- -----------------------------------------------------
--- Table `mydb`.`user`
+-- Table  `user`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `mydb`.`user` (
+CREATE TABLE IF NOT EXISTS  `user` (
   `email` VARCHAR(45) NOT NULL,
   `addressID` INT NULL,
   `paymentID` INT NULL,
@@ -175,30 +175,30 @@ CREATE TABLE IF NOT EXISTS `mydb`.`user` (
   UNIQUE INDEX `email_UNIQUE` (`email` ASC) VISIBLE,
   CONSTRAINT `cartID`
     FOREIGN KEY (`cartID`)
-    REFERENCES `mydb`.`shoppingCart` (`cartID`)
+    REFERENCES  `shoppingCart` (`cartID`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `addressID`
     FOREIGN KEY (`addressID`)
-    REFERENCES `mydb`.`address` (`addressID`)
+    REFERENCES `address` (`addressID`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `paymentID`
     FOREIGN KEY (`paymentID`)
-    REFERENCES `mydb`.`payment` (`paymentID`)
+    REFERENCES  `payment` (`paymentID`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `statusID`
     FOREIGN KEY (`statusID`)
-    REFERENCES `mydb`.`status` (`statusID`)
+    REFERENCES  `status` (`statusID`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION);
 
 
 -- -----------------------------------------------------
--- Table `mydb`.`orderDetails`
+-- Table  `orderDetails`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `mydb`.`orderDetails` (
+CREATE TABLE IF NOT EXISTS  `orderDetails` (
   `orderID` INT NOT NULL,
   `bookID` INT NOT NULL,
   `quantity` INT ZEROFILL NULL DEFAULT NULL,
@@ -207,20 +207,20 @@ CREATE TABLE IF NOT EXISTS `mydb`.`orderDetails` (
   INDEX `bookID_idx` (`bookID` ASC) VISIBLE,
   CONSTRAINT `bookID`
     FOREIGN KEY (`bookID`)
-    REFERENCES `mydb`.`book` (`bookID`)
+    REFERENCES  `book` (`bookID`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_orderDetails_orders1`
     FOREIGN KEY (`orderID`)
-    REFERENCES `mydb`.`orders` (`orderID`)
+    REFERENCES  `orders` (`orderID`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION);
 
 
 -- -----------------------------------------------------
--- Table `mydb`.`Admin`
+-- Table  `Admin`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `mydb`.`Admin` (
+CREATE TABLE IF NOT EXISTS  `Admin` (
   `email` VARCHAR(45) NOT NULL,
   `firstName` VARCHAR(45) NOT NULL,
   `lastName` VARCHAR(45) NOT NULL,
