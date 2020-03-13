@@ -53,8 +53,8 @@ MySql local instance's username and password
   - [ ] Shopping Cart
     - [ ] Fill Shopping Cart with user's items from database
     - [ ] Items should be tracked in users table with under items column
-  - [ ] Password Security
-    - [ ] Password hashing before entered into database
+  - [x] Password Security
+    - [x] Password hashing before entered into database
   - [x] Sign Out
 - [x] Database Development
   - [x] Schema Creation
