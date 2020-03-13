@@ -6,6 +6,9 @@ import os
 app = Flask(__name__)
 
 #MySQL setup
+# app.config['MYSQL_DATABASE_USER'] = 'root' #change to ur local username
+# app.config['MYSQL_DATABASE_PASSWORD'] = 'root' #change to ur local password
+# app.config['MYSQL_DATABASE_DB'] = 'niledb' #change to whatever the db will be named
 app.config['MYSQL_DATABASE_USER'] = os.environ['DB_USER']  # change to ur local username
 app.config['MYSQL_DATABASE_PASSWORD'] = os.environ['DB_PASS']  # change to ur local password
 
@@ -19,6 +22,7 @@ app.secret_key = secrets.token_urlsafe(256)
 mysql = MySQL()
 mysql.init_app(app)
 conn = mysql.connect()
+
 #if you reformat this code, the imports go up resulting in
 #circular importing which breaks the blueprint architecture
 
