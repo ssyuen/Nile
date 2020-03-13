@@ -105,7 +105,15 @@ def register():
 
         cursor = conn.cursor()
 
-        query = 'INSERT INTO shoppingCart (cartID) VALUES(0);'
+        query = 'INSERT INTO orders (orderID) VALUES(0)'
+        cursor.execute(query)
+        db_order = 'SELECT orderID FROM orders ORDER BY orderID DESC LIMIT 1'
+        cursor.execute(db_order)
+        results = cursor.fetchall()[0]
+        order_id = results[0]  
+        print('' + str(order_id) + ' THIS IS THE ORDERID')
+
+        query = 'INSERT INTO shoppingCart (orderID) VALUES("' + str(order_id) + '")'
         cursor.execute(query)
         db_cart = 'SELECT cartID FROM shoppingCart ORDER BY cartID DESC LIMIT 1'
         cursor.execute(db_cart)
