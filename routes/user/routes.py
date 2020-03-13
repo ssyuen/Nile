@@ -55,6 +55,7 @@ def login():
         print(email)
 
         cursor = conn.cursor()
+
         cursor.execute(query)
 
         try:
@@ -88,31 +89,61 @@ def register():
         return render_template('reg.html')
     else:
         # NEED TO CHECK REQUEST FORM SIZE TO SEE IF OPTIONAL COMPONENNTS HAVE BEEN ADDED
-        firstName = request.form.get('firstName')
-        lastName = request.form.get('lastName')
-        email = request.form.get('email')
-        password = request.form.get('password')
-        # password = bcrypt.hashpw(request.form.get('password').encode(), bcrypt.gensalt())
-
+        firstName = request.form.get('inputFirstname')
+        lastName = request.form.get('inputLastname')
+        email = request.form.get('inputEmail')
+        password = request.form.get('inputPassword')
+        password = bcrypt.hashpw(password.encode(), bcrypt.gensalt())
         # optional
-        address = request.form.get('address')
-        apt = request.form.get('apt')
-        city = request.form.get('city')
-        state = request.form.get('state')
-        country = request.form.get('country')
 
-        # cursor = conn.cursor()
-        # query = 'INSERT INTO users (firstName,lastName,email,password'"'
-        # cursor.execute(query)
-        # try:
-        #     results = cursor.fetchall()[0]
+        address = request.form.get('addAddressStreetAddress')
+        apt = request.form.get('addAddressApartmentOrSuite')
+        zipcode = request.form.get('addZipcode')
+        city = request.form.get('addAddressCity')
+        state = request.form.get('addAddressState')
+        country = request.form.get('addAddressCountry')
 
-    return render_template('reg.html')
+        cursor = conn.cursor()
 
-@user_bp.route('/register_confirmation/',methods=['POST','GET'])
+        query = 'INSERT INTO shoppingCart (cartID) VALUES(0);'
+        cursor.execute(query)
+        db_cart = 'SELECT cartID FROM shoppingCart ORDER BY cartID DESC LIMIT 1'
+        cursor.execute(db_cart)
+        results = cursor.fetchall()[0]
+        cart_id = results[0]        
+
+        # FRONT-END NEEDS TO PROHIBIT ADDRESS FROM BEING PARTIALLY FILLED OUT
+        if address or apt or city or state or country is None:
+            query = 'INSERT INTO user (email,statusID,cartID,pass, firstname, lastname) VALUES ("' + email + \
+                '", "' + str(1) + '","' + str(cart_id) + '", "' + str(password) + '", "' + firstName + '", "' + lastName + '")'
+            cursor.execute(query)
+            conn.commit()
+
+        else:  # insert with address
+            query = 'INSERT INTO `address`(`street`, `city`, `state`, `zip`) VALUES("' + \
+                        address + '","' + city + '","' + state + '","' + zipcode + '")'
+            cursor.execute(query)
+            db_address = 'SELECT addressID FROM address ORDER BY addressID DESC LIMIT 1'
+            cursor.execute(db_address)
+            results = cursor.fetchall()[0]
+            address_id = results[0]
+            print(address_id)
+            query = 'INSERT INTO user (email, addressID, statusID,cartID,pass, firstname, lastname) VALUES ("' + email + '", "' + \
+                str(address_id) + '", "' + str(1) + '", "' + str(cart_id) + '", "' + \
+                    str(password) + '", "'  + firstName + '", "' + lastName + '")'
+            cursor.execute(query)
+            conn.commit()
+
+        return render_template('reg_conf.html')
+
+
+@user_bp.route('/register_confirmation/', methods=['POST', 'GET'])
 def register_confirmation():
-    #system needs to send an email with url back to a page
-    pass
+    # system needs to send an email with url back to a page
+    # if request.method == 'GET':
+
+    return render_template('reg_conf.html')
+
 
 @user_bp.route('/shoppingcart/')
 def shopping_cart():

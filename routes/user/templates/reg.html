@@ -100,37 +100,39 @@
         <div class="rounded shadow-lg card p-5" id="acctCard">
             <div class="card-body">
                 <h4 class="card-title text-center primary-md pb-4">Registration</h4>
-                <form class="registration-form">
+                <form class="registration-form" method="POST">
 
                     <div class="form-group">
                         <div class="form-row">
                             <div class="col">
                                 <label for="inputFirstname">First Name</label>
                                 <input type="firstname" id="inputFirstname" class="form-control"
-                                    placeholder="First Name" required>
+                                    placeholder="First Name" name="inputFirstname" required>
                             </div>
                             <div class="col">
                                 <label for="inputLastname">Last Name</label>
                                 <input type="lastname" id="inputLastname" class="form-control" placeholder="Last Name"
-                                    required>
+                                    name="inputLastname" required>
                             </div>
                         </div>
                     </div>
 
                     <div class="form-group">
                         <label for="inputEmail">Email address</label>
-                        <input type="email" id="inputEmail" class="form-control" placeholder="Email address" required>
+                        <input type="email" id="inputEmail" class="form-control" placeholder="Email address"
+                            name="inputEmail" required>
                     </div>
 
                     <div class="form-group">
                         <label for="inputPassword">Password</label>
-                        <input type="password" id="inputPassword" class="form-control" placeholder="Password" required>
+                        <input type="password" id="inputPassword" class="form-control" placeholder="Password"
+                            name="inputPassword" required>
                     </div>
 
                     <div class="form-group">
                         <label for="inputConfirmPassword">Confirm Password</label>
-                        <input type="confirmPassword" id="inputConfirmPassword" class="form-control"
-                            placeholder="Confirm Password" required>
+                        <input type="password" id="inputConfirmPassword" class="form-control"
+                            placeholder="Confirm Password" name="inputConfirmPassword" required>
                     </div>
 
                     <a data-toggle="collapse" data-target="#demo" href="">Add Address (Optional)</a>
@@ -144,7 +146,7 @@
                                     <label for="addAddressStreetAddress">Street Address</label>
                                     <div class="input-group">
                                         <input type="text" class="form-control" id="addAddressStreetAddress"
-                                            placeholder="Street Address">
+                                            placeholder="Street Address" name="addAddressStreetAddress">
                                     </div>
                                 </div>
                             </div>
@@ -154,7 +156,17 @@
                                     <label for="addAddressApartmentOrSuite">Apartment or Suite</label>
                                     <div class="input-group">
                                         <input type="text" class="form-control" id="addAddressApartmentOrSuite"
-                                            placeholder="Apartment or Suite">
+                                            placeholder="Apartment or Suite (optional)" name="addAddressApartmentOrSuite">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col">
+                                    <i class="fas fa-map-marker"></i>
+                                    <label for="addAddressApartmentOrSuite">Zipcode</label>
+                                    <div class="input-group">
+                                        <input type="number" class="form-control" id="addZipcode"
+                                            placeholder="Zipcode" name="addZipcode">
                                     </div>
                                 </div>
                             </div>
@@ -163,7 +175,7 @@
                                     <i class="fas fa-city"></i>
                                     <label for="addAddressCity">City</label>
                                     <div class="input-group">
-                                        <select id="addAddressCity" class="form-control">
+                                        <select id="addAddressCity" class="form-control" name="addAddressCity">
                                             <option selected>Atlanta</option>
                                             <option>Los Angeles</option>
                                         </select>
@@ -173,7 +185,7 @@
                                     <i class="fas fa-city"></i>
                                     <label for="addAddressState">State</label>
                                     <div class="input-group">
-                                        <select id="addAddressState" class="form-control">
+                                        <select id="addAddressState" class="form-control" name="addAddressState">
                                             <option selected>Georgia</option>
                                             <option>California</option>
                                         </select>
@@ -183,7 +195,7 @@
                                     <i class="fas fa-globe-americas"></i>
                                     <label for="addAddressCountry">Country</label>
                                     <div class="input-group">
-                                        <select id="addAddressCountry" class="form-control">
+                                        <select id="addAddressCountry" class="form-control" name="addAddressCountry">
                                             <option selected>United States</option>
                                         </select>
                                     </div>
