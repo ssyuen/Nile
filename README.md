@@ -69,7 +69,7 @@ MySql local instance's username and password
   - [ ] Promotions
     - [ ] Expiration dates need to be added for admin
   - [ ] Scripting
-    - [ ] Required columns for address when the user chooses the optional
+    - [x] Required columns for address when the user chooses the optional
     - [x] Change active on Browse to unactive when About is clicked on
     - [ ] Password & Confirm Password Restrictions
     - [ ] Shopping Cart

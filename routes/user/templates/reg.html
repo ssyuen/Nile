@@ -135,7 +135,7 @@
                             placeholder="Confirm Password" name="inputConfirmPassword" required>
                     </div>
 
-                    <a data-toggle="collapse" data-target="#demo" href="">Add Address (Optional)</a>
+                    <a id="optSection" data-toggle="collapse" data-target="#demo" href="">Add Address (Optional)</a>
                     <small class="text-muted"><i>You can always add it later</i></small>
 
                     <div class="form-group mt-2">
@@ -145,7 +145,7 @@
                                     <i class="fas fa-map-marker"></i>
                                     <label for="addAddressStreetAddress">Street Address</label>
                                     <div class="input-group">
-                                        <input type="text" class="form-control" id="addAddressStreetAddress"
+                                        <input type="text" class="form-control opt" id="addAddressStreetAddress"
                                             placeholder="Street Address" name="addAddressStreetAddress">
                                     </div>
                                 </div>
@@ -155,7 +155,7 @@
                                     <i class="fas fa-map-marker"></i>
                                     <label for="addAddressApartmentOrSuite">Apartment or Suite</label>
                                     <div class="input-group">
-                                        <input type="text" class="form-control" id="addAddressApartmentOrSuite"
+                                        <input type="text" class="form-control opt" id="addAddressApartmentOrSuite"
                                             placeholder="Apartment or Suite (optional)" name="addAddressApartmentOrSuite">
                                     </div>
                                 </div>
@@ -165,7 +165,7 @@
                                     <i class="fas fa-map-marker"></i>
                                     <label for="addAddressApartmentOrSuite">Zipcode</label>
                                     <div class="input-group">
-                                        <input type="number" class="form-control" id="addZipcode"
+                                        <input type="number" class="form-control opt" id="addZipcode"
                                             placeholder="Zipcode" name="addZipcode">
                                     </div>
                                 </div>
@@ -242,7 +242,17 @@
             });
         });
     </script>
+    <script>
+        $("#optSection").click(function(){
+            if ($(".opt").attr('required') === "required"){
+                $(".opt").removeAttr('required')
+            }
+            else if($(".opt").attr('required') !== typeof undefined && $(".opt").attr('required') !== false){
+                $(".opt").attr('required',"true");
+            }                        
+        })
 
+    </script>
 
     <!-- <script language="javascript">
         function autoResizeDiv()
