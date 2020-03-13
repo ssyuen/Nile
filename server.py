@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, render_template
 from flaskext.mysql import MySQL
 import secrets
 import os
@@ -28,3 +28,7 @@ from routes.admin import routes as admin_routes
 
 app.register_blueprint(admin_routes.admin_bp)
 app.register_blueprint(user_routes.user_bp)
+
+@app.route('/about/')
+def about():
+    return render_template('about.html')
