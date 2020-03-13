@@ -1,32 +1,43 @@
+<script>
+    $(document).ready(function(){
+        if(window.location.pathname === '/'){
+            $("#browse").addClass('active');
+            $("#about").removeClass('active');
+        }
+        else if(window.location.href.includes('/about/')){
+            $("#about").addClass('active');
+            $("#browse").removeClass('active');
+        }
+    })
+</script>
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <a class="navbar-brand primary" href="/">
         <img src="../../static/images/NileLg.png" width="150" class="d-inline-block align top" alt="Nile Logo">
     </a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse"
-            data-target="#navbarSupportedContent-333" aria-controls="navbarSupportedContent-333"
-            aria-expanded="false" aria-label="Toggle navigation">
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent-333"
+        aria-controls="navbarSupportedContent-333" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarSupportedContent-333">
         <ul class="navbar-nav mr-auto">
-            <li class="nav-item active complement">
+            <li class="nav-item complement browseOrActive" id="browse">
                 <a class="nav-link" href="/">Browse
                     <span class="sr-only">(current)</span>
                 </a>
             </li>
 
-            <li class="nav-item complement">
+            <li class="nav-item complement browseOrActive" id="about">
                 <a class="nav-link" href="/about/">About</a>
             </li>
         </ul>
         <ul class="navbar-nav navbar-center">
             <form class="form-inline complement">
                 <div class="input-group">
-                    <input id="mainSearchSys" class="form-control" type="text" placeholder="Search"
-                           aria-label="Search" style="width: 500px;">
+                    <input id="mainSearchSys" class="form-control" type="text" placeholder="Search" aria-label="Search"
+                        style="width: 500px;">
                     <div class="input-group-append">
                         <button id="mainSearchSysBtn"
-                                class="btn blue-gradient btn-rounded m-0 px-4 py-2 z-depth-0 waves-effect mr-3"
+                            class="btn blue-gradient btn-rounded m-0 px-4 py-2 z-depth-0 waves-effect mr-3"
                             type="submit"> <i class="fas fa-search" aria-hidden="true"></i></button>
                     </div>
                 </div>
@@ -59,7 +70,8 @@
             <li class="nav-item dropdown align-self-center">
                 <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink-333" data-toggle="dropdown"
                     aria-haspopup="true" aria-expanded="false">
-                    <span class=" complement">Welcome, {{ session['firstName'] }} {% if session['admin'] %}<span class="badge badge-primary ml-2">Admin</span>{% endif %}</span>
+                    <span class=" complement">Welcome, {{ session['firstName'] }} {% if session['admin'] %}<span
+                            class="badge badge-primary ml-2">Admin</span>{% endif %}</span>
                 </a>
                 <div class="dropdown-menu dropdown-menu-right dropdown-default"
                     aria-labelledby="navbarDropdownMenuLink-333">
@@ -73,19 +85,19 @@
                 </div>
             </li>
             {% else %}
-                <li class="nav-item">
-                    <a href="/login/" class="href">
-                        <button class="btn blue-gradient btn-rounded btn-sm primary waves-effect waves-light"
-                            id="signInBtn">Sign In</button>
-                    </a>
-                </li>
+            <li class="nav-item">
+                <a href="/login/" class="href">
+                    <button class="btn blue-gradient btn-rounded btn-sm primary waves-effect waves-light"
+                        id="signInBtn">Sign In</button>
+                </a>
+            </li>
             {% endif %}
 
             {% if not session['logged_in'] %}
             <li class="nav-item">
                 <a href="/register/" class="href">
-                <button class="btn aqua-gradient btn-rounded btn-sm primary waves-effect waves-light"
-                    id="signUpBtn">Sign Up</button>
+                    <button class="btn aqua-gradient btn-rounded btn-sm primary waves-effect waves-light"
+                        id="signUpBtn">Sign Up</button>
                 </a>
             </li>
             {% endif %}
