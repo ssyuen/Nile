@@ -201,7 +201,7 @@ CREATE TABLE IF NOT EXISTS  `user` (
 CREATE TABLE IF NOT EXISTS  `orderDetails` (
   `orderID` INT NOT NULL,
   `bookID` INT NOT NULL,
-  `quantity` INT ZEROFILL NULL DEFAULT NULL,
+  `quantity` INT NULL DEFAULT 0,
   INDEX `FK` (`orderID` ASC, `bookID` ASC) VISIBLE,
   INDEX `Key` (`quantity` ASC) VISIBLE,
   INDEX `bookID_idx` (`bookID` ASC) VISIBLE,
