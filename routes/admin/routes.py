@@ -27,7 +27,7 @@ def logout():
     return redirect('/')
 
 
-@admin_bp.route('/admin/add_books/', methods=['GET', 'POST'])
+@admin_bp.route('/add_books/', methods=['GET', 'POST'])
 @login_required
 def add_books():
     if request.method == 'POST':
@@ -71,34 +71,34 @@ def add_books():
         cursor.execute(query)
         conn.commit()
 
-    return render_template('./admin pages/add_books.html')
+    return render_template('./add_books.html')
 
 
-@admin_bp.route('/admin/add_promo/')
+@admin_bp.route('/add_promo/')
 @login_required
 def add_promo():
-    return render_template('./admin pages/add_promo.html')
+    return render_template('./add_promo.html')
 
 
 @admin_bp.route('/admin/')
 @login_required
 def admin():
-    return render_template('./admin pages/admin.html')
+    return render_template('./admin.html')
 
 
-@admin_bp.route('/admin/manage_books/')
+@admin_bp.route('/manage_books/')
 @login_required
 def manage_books():
-    return render_template('./admin pages/manage_books.html')
+    return render_template('./manage_books.html')
 
 
-@admin_bp.route('/admin/manage_promo/')
+@admin_bp.route('/manage_promo/')
 @login_required
 def manage_promo():
-    return render_template('./admin pages/manage_promo.html')
+    return render_template('./manage_promo.html')
 
 
-@admin_bp.route('/admin/manage_users/')
+@admin_bp.route('/manage_users/')
 @login_required
 def manage_users():
-    return render_template('./admin pages/manage_users.html')
+    return render_template('./manage_users.html')

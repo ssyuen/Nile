@@ -192,31 +192,31 @@ def shopping_cart():
 
 # @login_required func decorator needs to be implemented for all user routes
 """User Routes"""
-@user_bp.route('/user/billingaddress/')
+@user_bp.route('/billingaddress/')
 @login_required
 def billing_address():
-    return render_template('./user pages/billingaddress.html')
+    return render_template('./billingaddress.html')
 
 
-@user_bp.route('/user/checkout/')
+@user_bp.route('/checkout/')
 @login_required
 def checkout():
-    return render_template('./user pages/checkout.html')
+    return render_template('./checkout.html')
 
 
-@user_bp.route('/user/orderhist/')
+@user_bp.route('/orderhist/')
 @login_required
 def order_history():
-    return render_template('./user pages/orderhist.html')
+    return render_template('./orderhist.html')
 
 
-@user_bp.route('/user/paymentinfo/')
+@user_bp.route('/paymentinfo/')
 @login_required
 def payment_info():
-    return render_template('./user pages/paymentinfo.html')
+    return render_template('./paymentinfo.html')
 
 
-@user_bp.route('/user/profile/')
+@user_bp.route('/profile/')
 @login_required
 def profile():
-    return render_template('./user pages/profile.html')
+    return render_template('./profile.html')
