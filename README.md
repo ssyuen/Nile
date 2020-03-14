@@ -65,7 +65,7 @@ MySql local instance's username and password
   - [x] Schema Creation
     - [x] Add field for if admin (necessary to differentiate drop down for My Admin Profile and just My Profile)
 - [ ] Front-end Development
-  - [ ] About page
+  - [x] About page
   - [ ] Promotions
     - [ ] Expiration dates need to be added for admin
   - [ ] Scripting
