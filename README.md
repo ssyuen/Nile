@@ -32,7 +32,7 @@ MySql local instance's username and password
   - [x] Registration
   - [ ] Jinja2 with sessions in all html files
   - [ ] If web user clicks on checkout, direct to login, redirect to checkout upon successful login
-  - [ ] Install third party libraries (bootstrap, JQuery, JS)
+  - [x] Install third party libraries (bootstrap, JQuery, JS)
   - [ ] Books
     - [x] Add Books
     - [ ] Manage Books
