@@ -11,20 +11,13 @@
 
     {% include 'style.html' %}
 
-    <!-- JQuery -->
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.4/umd/popper.min.js"></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.4.1/js/bootstrap.min.js"></script>
-    <!-- MDB core JavaScript -->
-    <script type="text/javascript"
-        src="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.12.0/js/mdb.min.js"></script>
-    <link rel="stylesheet" type="text/css" href="../static/styles/browse.css">
+    <link rel="stylesheet" type="text/css" href="../../../static/styles/browse.css">
 </head>
 
 <body class="our-color">
-    <div class="pb-5">
-        <!-- Navigation -->
-        {% include 'nav.html' %}
+<div class="pb-5">
+    <!-- Navigation -->
+    {% include 'nav.html' %}
     </div>
     {% with valid_login = get_flashed_messages()%}
     {% if valid_login %}
@@ -36,34 +29,29 @@
     </p>
     {% endif %}
     {% endwith %}
-    <!-- <div class="container">
-        <div class="row">
-            <div class="col mb-4">
-                <div class="text-left" id="content-header">
-                    <p class="primary-lg" id="account-holder">Browse Our Books.</p>
-                </div>
+<div class="container">
+    <div class="row">
+        <div class="col mb-4">
+            <div class="text-left" id="content-header">
+                <p class="primary-lg" id="account-holder">Welcome to The Nile.</p>
             </div>
         </div>
-    </div> -->
-    <!-- Page Content -->
-    <div class="container pb-5" id="mainContent">
-        <h1 class="title-page text-center">
-            <b>Welcome to The Nile!</b>
-        </h1>
-        <p class="text-center">
-            Nile is an online Bookstore Platform. We have have books that all ages can enjoy!
-            Come explore the variety of categories which include fictional adventures, informational columns,
-            and children's stories that your little one can enjoy. Dive into our platform and see all that
-            you can discover!
-        </p>
-        <div id="image-profile">
-            
-        </div>
+    </div>
+</div>
+<!-- Page Content -->
+<div class="container pb-5" id="mainContent">
+    <p class="text-left">
+        Nile is an online Bookstore Platform. We have have books that all ages can enjoy!
+        Come explore the variety of categories which include fictional adventures, informational columns,
+        and children's stories that your little one can enjoy. Dive into our platform and see all that
+        you can discover!
+    </p>
+    <div id="image-profile">
 
     </div>
+</div>
 
-
-    </div>
+</div>
     <!-- Footer -->
     <footer class="py-5 bg-dark">
         <div class="container text-white">

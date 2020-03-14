@@ -12,15 +12,8 @@
 
     {% include 'style.html' %}
 
-    <!-- JQuery -->
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.4/umd/popper.min.js"></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.4.1/js/bootstrap.min.js"></script>
-    <!-- MDB core JavaScript -->
-    <script type="text/javascript"
-        src="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.12.0/js/mdb.min.js"></script>
-    <link rel="stylesheet" type="text/css" href="../static/styles/common.css">
-    <link rel="stylesheet" type="text/css" href="../static/styles/nav.css">
+    <link rel="stylesheet" type="text/css" href="../../../static/styles/common.css">
+    <link rel="stylesheet" type="text/css" href="../../../static/styles/nav.css">
     <style>
         html,
         body {
@@ -235,15 +228,15 @@
         });
     </script>
     <script>
-        $("#inputConfirmPassword").on('input',function(){
+        $("#inputConfirmPassword").on('input', function () {
             var pw = document.getElementById('inputPassword').innerText;
-            console.log(pw)
+            console.log(pw);
             var cpw = document.getElementById('inputConfirmPassword').innerText;
-            if (pw !== cpw){
+            if (pw !== cpw) {
                 document.getElementById('inputConfirmPassword').parentElement.append("<p class='text-danger'>Passwords do not match!</p>")
             }
         })
-        
+
 
     </script>
 
