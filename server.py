@@ -12,7 +12,7 @@ SQLALCHEMY_DATABASE_URI = "mysql+mysqlconnector://{username}:{password}@{hostnam
     username=os.environ['DB_USER'],
     password=os.environ['DB_PASS'],
     hostname="localhost",
-    databasename="alctest",
+    databasename="orderdet",
 )
 
 app.config["SQLALCHEMY_DATABASE_URI"] = SQLALCHEMY_DATABASE_URI
