@@ -1,8 +1,8 @@
 from flask import Blueprint, render_template, request, jsonify, redirect, flash, session
 from functools import wraps
 import bcrypt
-# from models import *
-# from sqlalchemy import desc
+from models import *
+from sqlalchemy import desc
 # from models.abs_models import abs_models
 # from models.users import User
 # from server import conn
@@ -137,60 +137,32 @@ def register():
         state = request.form.get('addAddressState')
         country = request.form.get('addAddressCountry')
 
-        cursor = conn.cursor()
+        # cursor = conn.cursor()
 
         # initialize User, ShoppingCart, Order, Address
         
         order = Order(orderID = 0)
         db.session.add(order)
-        shoppingCart = ShoppingCart(orderID = Order.query.filter_by(Order.orderID).order_by(desc).limit(1))
+        shoppingCart = ShoppingCart(orderID=Order.query.filter(Order.orderID))
         db.session.add(shoppingCart)
-        cart_id = ShoppingCart.query.filter_by(ShoppingCart.cartID).order_by(desc).limit(1)
+        cart_id = ShoppingCart.query.filter(ShoppingCart.cartID).order_by(desc).limit(1)
 
-        # user = User()
-
-        # query = 'INSERT INTO orders (orderID) VALUES(0)'
-        # cursor.execute(query)
-        # db_order = 'SELECT orderID FROM orders ORDER BY orderID DESC LIMIT 1'
-        # cursor.execute(db_order)
-        # results = cursor.fetchall()[0]
-        # order_id = results[0]  
-        # print('' + str(order_id) + ' THIS IS THE ORDERID')
-
-        # query = 'INSERT INTO shoppingCart (orderID) VALUES("' + str(order_id) + '")'
-        # cursor.execute(query)
-        # db_cart = 'SELECT cartID FROM shoppingCart ORDER BY cartID DESC LIMIT 1'
-        # cursor.execute(db_cart)
-        # results = cursor.fetchall()[0]
-        # cart_id = results[0]        
 
         # FRONT-END NEEDS TO PROHIBIT ADDRESS FROM BEING PARTIALLY FILLED OUT
         if address or apt or city or state or country is None:
             user = User(email=email,statusID=1,cartID=cart_id,pw=password,firstname=firstName,lastname=lastName)
             db.session.add(user)
             db.session.commit()
-            # query = 'INSERT INTO user (email,statusID,cartID,pass, firstname, lastname) VALUES ("' + email + \
-            #     '", "' + str(1) + '","' + str(cart_id) + '", "' + str(password) + '", "' + firstName + '", "' + lastName + '")'
-            # cursor.execute(query)
-            # conn.commit()
+
 
         else:  # insert with address
             address = Address(street=address,city=city,state=state,zipcode=zipcode)
-            # query = 'INSERT INTO `address`(`street`, `city`, `state`, `zip`) VALUES("' + \
-            #             address + '","' + city + '","' + state + '","' + zipcode + '")'
-            # cursor.execute(query)
-            address_id = Address.query.filter_by(Address.addressID).order_by(desc).limit(1)
-            # db_address = 'SELECT addressID FROM address ORDER BY addressID DESC LIMIT 1'
-            # cursor.execute(db_address)
-            # results = cursor.fetchall()[0]
-            # address_id = results[0]
+            address_id = Address.query.filter(Address.addressID).order_by(desc).limit(1)
+
             print(address_id)
             user = User(email=email,addressID=address_id,statusID=1,cartID=cart_id,pw=password,firstname=firstName,lastname=lastName)
-            # query = 'INSERT INTO user (email, addressID, statusID,cartID,pass, firstname, lastname) VALUES ("' + email + '", "' + \
-            #     str(address_id) + '", "' + str(1) + '", "' + str(cart_id) + '", "' + \
-            #         str(password) + '", "'  + firstName + '", "' + lastName + '")'
-            # cursor.execute(query)
-            # conn.commit()
+            db.session.commit()
+
 
         return render_template('reg_conf.html')
 

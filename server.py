@@ -20,7 +20,7 @@ app.config["SQLALCHEMY_POOL_RECYCLE"] = 299
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
 db = SQLAlchemy(app)
-import models
+# import models
 #MySQL setup
 #app.config['MYSQL_DATABASE_USER'] = os.environ['DB_USER']  # change to ur local username
 #app.config['MYSQL_DATABASE_PASSWORD'] = os.environ['DB_PASS']  # change to ur local password
