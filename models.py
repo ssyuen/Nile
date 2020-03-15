@@ -1,12 +1,12 @@
 from server import db
 
-from sqlalchemy import Column, Date, Float, ForeignKey, Index, String, Table, Time, text
+# from sqlalchemy import Column, Date, Float, ForeignKey, Index, String, Table, Time, text
 from sqlalchemy.dialects.mysql import INTEGER, LONGBLOB
-from sqlalchemy.orm import relationship
-from sqlalchemy.ext.declarative import declarative_base
+# from sqlalchemy.orm import relationship
+# from sqlalchemy.ext.declarative import declarative_base
 
-Base = declarative_base()
-metadata = Base.metadata
+# Base = declarative_base()
+# metadata = Base.metadata
 
 
 class Admin(db.Model):
@@ -24,14 +24,14 @@ class Admin(db.Model):
 class Address(db.Model):
     __tablename__ = 'address'
     __table_args__ = (
-        db.Index('Key', 'street', 'city', 'state', 'zip'),
+        db.Index('Key', 'street', 'city', 'state', 'zipcode'),
     )
 
     addressID = db.Column(db.Integer(), primary_key=True)
     street = db.Column(db.String(45, 'utf8mb4_general_ci'))
     city = db.Column(db.String(45, 'utf8mb4_general_ci'))
     state = db.Column(db.String(45, 'utf8mb4_general_ci'))
-    zip = db.Column(db.String(45, 'utf8mb4_general_ci'))
+    zipcode = db.Column(db.String(45, 'utf8mb4_general_ci'))
 
 
 class Binding(db.Model):
