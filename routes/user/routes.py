@@ -1,9 +1,10 @@
 from flask import Blueprint, render_template, request, jsonify, redirect, flash, session
 from functools import wraps
 import bcrypt
+from server.models import user
 # from models.abs_models import abs_models
 # from models.users import User
-from server import conn
+# from server import conn
 # import conn
 
 # from scripts.apps.books import books

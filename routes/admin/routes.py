@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, request, jsonify, redirect, flash, session
 from functools import wraps
-from server import conn
+# from server import conn
 
 admin_bp = Blueprint('admin_bp', __name__,
                      template_folder='templates', static_folder='static')

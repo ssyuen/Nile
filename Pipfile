@@ -11,6 +11,7 @@ flask = "*"
 flask-mysql = "*"
 bcrypt = "*"
 flask-sqlalchemy = "*"
+mysql-connector-python = "*"
 
 [requires]
 python_version = "3.7"
