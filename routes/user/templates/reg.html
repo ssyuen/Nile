@@ -78,14 +78,13 @@
         <div class="rounded shadow-lg card p-5" id="acctCard">
             <div class="card-body">
                 <h4 class="card-title text-center primary-md pb-4">Registration</h4>
-                <form class="registration-form" method="POST">
-
+                <form id="regForm" class="registration-form" method="POST">
                     <div class="form-group">
                         <div class="form-row">
                             <div class="col">
                                 <label for="inputFirstname">First Name</label>
                                 <input type="firstname" id="inputFirstname" class="form-control"
-                                    placeholder="First Name" name="inputFirstname" required>
+                                       placeholder="First Name" name="inputFirstname" required>
                             </div>
                             <div class="col">
                                 <label for="inputLastname">Last Name</label>
@@ -227,18 +226,7 @@
             })
         });
     </script>
-    <script>
-        $("#inputConfirmPassword").on('input', function () {
-            var pw = document.getElementById('inputPassword').innerText;
-            console.log(pw);
-            var cpw = document.getElementById('inputConfirmPassword').innerText;
-            if (pw !== cpw) {
-                document.getElementById('inputConfirmPassword').parentElement.append("<p class='text-danger'>Passwords do not match!</p>")
-            }
-        })
-
-
-    </script>
+    <script defer src="../../../static/user/js/formval.js"></script>
 
 </body>
 </html>
