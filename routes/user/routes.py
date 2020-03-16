@@ -145,7 +145,7 @@ def register():
         db.session.add(order)
         shoppingCart = ShoppingCart(orderID=Order.query.filter(Order.orderID))
         db.session.add(shoppingCart)
-        cart_id = ShoppingCart.query.filter(ShoppingCart.cartID).order_by(desc).limit(1)
+        cart_id = ShoppingCart.query.filter(ShoppingCart.cartID).order_by(desc(ShoppingCart.cartID)).limit(1)
 
 
         # FRONT-END NEEDS TO PROHIBIT ADDRESS FROM BEING PARTIALLY FILLED OUT

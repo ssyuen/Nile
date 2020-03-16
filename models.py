@@ -28,24 +28,24 @@ class Address(db.Model):
     )
 
     addressID = db.Column(db.Integer(), primary_key=True)
-    street = db.Column(db.String(45, 'utf8mb4_general_ci'))
-    city = db.Column(db.String(45, 'utf8mb4_general_ci'))
-    state = db.Column(db.String(45, 'utf8mb4_general_ci'))
-    zipcode = db.Column(db.String(45, 'utf8mb4_general_ci'))
+    street = db.Column(db.String(45, 'utf8mb4_general_ci'),nullable=True)
+    city = db.Column(db.String(45, 'utf8mb4_general_ci'),nullable=True)
+    state = db.Column(db.String(45, 'utf8mb4_general_ci'),nullable=True)
+    zipcode = db.Column(db.String(45, 'utf8mb4_general_ci'),nullable=True)
 
 
 class Binding(db.Model):
     __tablename__ = 'binding'
 
     bindingID = db.Column(db.Integer(), primary_key=True)
-    binding = db.Column(db.String(45, 'utf8mb4_general_ci'))
+    binding = db.Column(db.String(45, 'utf8mb4_general_ci'),nullable=True)
 
 
 class Genre(db.Model):
     __tablename__ = 'genre'
 
     genreID = db.Column(db.Integer(), primary_key=True)
-    genre = db.Column(db.String(45, 'utf8mb4_general_ci'))
+    genre = db.Column(db.String(45, 'utf8mb4_general_ci'),nullable=True)
 
 
 class Payment(db.Model):
@@ -55,9 +55,9 @@ class Payment(db.Model):
     )
 
     paymentID = db.Column(db.Integer(), primary_key=True)
-    cardNumber = db.Column(db.Integer())
-    address = db.Column(db.String(255, 'utf8mb4_general_ci'))
-    expirationDate = db.Column(db.Date)
+    cardNumber = db.Column(db.Integer(),nullable=True)
+    address = db.Column(db.String(255, 'utf8mb4_general_ci'),nullable=True)
+    expirationDate = db.Column(db.Date,nullable=True)
 
 
 class Promotion(db.Model):
@@ -67,10 +67,10 @@ class Promotion(db.Model):
     )
 
     promotionID = db.Column(db.Integer(), primary_key=True)
-    code = db.Column(db.String(45, 'utf8mb4_general_ci'))
-    discount = db.Column(db.Float(asdecimal=True))
-    startDate = db.Column(db.Date)
-    endDate = db.Column(db.Date)
+    code = db.Column(db.String(45, 'utf8mb4_general_ci'),nullable=True)
+    discount = db.Column(db.Float(asdecimal=True),nullable=True)
+    startDate = db.Column(db.Date,nullable=True)
+    endDate = db.Column(db.Date,nullable=True)
 
 
 class Status(db.Model):
@@ -78,6 +78,13 @@ class Status(db.Model):
 
     statusID = db.Column(db.Integer(), primary_key=True)
     status = db.Column(db.String(45, 'utf8mb4_general_ci'), nullable=False, index=True)
+
+UNREGISTERED = Status(status='UNREGISTERED')
+db.session.add(UNREGISTERED)
+REGISTERED = Status(status='REGISTERED')
+db.session.add(REGISTERED)
+SUSPENDED = Status(status='SUSPENDED')
+db.session.add(SUSPENDED)
 
 
 class Book(db.Model):
@@ -87,19 +94,19 @@ class Book(db.Model):
     )
 
     isbn = db.Column(db.Integer(), primary_key=True)
-    bindingID = db.Column(db.ForeignKey('binding.bindingID'), index=True)
-    genreID = db.Column(db.ForeignKey('genre.genreID'), index=True)
-    title = db.Column(db.String(45, 'utf8mb4_general_ci'))
-    price = db.Column(db.Float(asdecimal=True))
-    numPages = db.Column(db.Integer())
-    image = db.Column(LONGBLOB)
-    edition = db.Column(db.String(45, 'utf8mb4_general_ci'))
-    publisher = db.Column(db.String(45, 'utf8mb4_general_ci'))
-    publicationDate = db.Column(db.Date)
-    stock = db.Column(db.Integer())
-    authorFirstName = db.Column(db.String(45, 'utf8mb4_general_ci'))
-    authorLastName = db.Column(db.String(45, 'utf8mb4_general_ci'))
-    summary = db.Column(db.String(500, 'utf8mb4_general_ci'))
+    bindingID = db.Column(db.ForeignKey('binding.bindingID'), index=True,nullable=True)
+    genreID = db.Column(db.ForeignKey('genre.genreID'), index=True,nullable=True)
+    title = db.Column(db.String(45, 'utf8mb4_general_ci'),nullable=True)
+    price = db.Column(db.Float(asdecimal=True),nullable=True)
+    numPages = db.Column(db.Integer(),nullable=True)
+    image = db.Column(LONGBLOB,nullable=True)
+    edition = db.Column(db.String(45, 'utf8mb4_general_ci'),nullable=True)
+    publisher = db.Column(db.String(45, 'utf8mb4_general_ci'),nullable=True)
+    publicationDate = db.Column(db.Date,nullable=True)
+    stock = db.Column(db.Integer(),nullable=True)
+    authorFirstName = db.Column(db.String(45, 'utf8mb4_general_ci'),nullable=True)
+    authorLastName = db.Column(db.String(45, 'utf8mb4_general_ci'),nullable=True)
+    summary = db.Column(db.String(500, 'utf8mb4_general_ci'),nullable=True)
 
     binding = db.relationship('Binding')
     genre = db.relationship('Genre')
@@ -112,11 +119,11 @@ class Order(db.Model):
     )
 
     orderID = db.Column(db.Integer(), primary_key=True)
-    promotionID = db.Column(db.ForeignKey('promotion.promotionID'), index=True)
-    total = db.Column(db.Float(asdecimal=True))
-    date = db.Column(db.Date)
-    confirmationNumber = db.Column(db.Integer())
-    orderTime = db.Column(db.Time)
+    promotionID = db.Column(db.ForeignKey('promotion.promotionID'), index=True,nullable=True)
+    total = db.Column(db.Float(asdecimal=True),nullable=True)
+    date = db.Column(db.Date,nullable=True)
+    confirmationNumber = db.Column(db.Integer(),nullable=True)
+    orderTime = db.Column(db.Time,nullable=True)
 
     promotion = db.relationship('Promotion')
 
@@ -137,14 +144,14 @@ class OrderDetails(db.Model):
     )
     orderID = db.Column(db.ForeignKey('orders.orderID'),nullable=False,primary_key=True)
     isbn = db.Column(db.ForeignKey('book.isbn'), nullable=False, index=True,primary_key=True)
-    quantity = db.Column(db.Integer(),index=True,server_default=db.text("0"))
+    quantity = db.Column(db.Integer(),index=True,server_default=db.text("0"),nullable=True)
 
 
 class ShoppingCart(db.Model):
     __tablename__ = 'shoppingCart'
 
     cartID = db.Column(db.Integer(), primary_key=True)
-    orderID = db.Column(db.ForeignKey('orders.orderID'), index=True)
+    orderID = db.Column(db.ForeignKey('orders.orderID'), index=True,nullable=True)
 
     order = db.relationship('Order')
 
@@ -171,3 +178,4 @@ class User(db.Model):
     status = db.relationship('Status')
 
 db.create_all()
+db.session.commit()
