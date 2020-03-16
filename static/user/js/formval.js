@@ -5,7 +5,6 @@
     ASSOCIATED HTML:    reg.html
     REVISIONS:          N/A
  */
-import * as $ from "jquery";
 const form = document.getElementById("regForm");
 const fName = document.getElementById("inputFirstname");
 const lName = document.getElementById("inputLastname");

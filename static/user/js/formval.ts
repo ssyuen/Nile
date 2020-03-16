@@ -6,8 +6,6 @@
     REVISIONS:          N/A
  */
 
-import * as $ from "jquery";
-
 
 const form: HTMLElement = document.getElementById("regForm");
 const fName: HTMLElement = document.getElementById("inputFirstname");
