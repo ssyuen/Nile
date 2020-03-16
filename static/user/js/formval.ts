@@ -5,35 +5,45 @@
     ASSOCIATED HTML:    reg.html
     REVISIONS:          N/A
  */
+
 import * as $ from "jquery";
-const form = document.getElementById("regForm");
-const fName = document.getElementById("inputFirstname");
-const lName = document.getElementById("inputLastname");
-const email = document.getElementById("inputEmail");
-const pass = document.getElementById("inputPassword");
-const passConf = document.getElementById("inputConfirmPassword");
+
+
+const form: HTMLElement = document.getElementById("regForm");
+const fName: HTMLElement = document.getElementById("inputFirstname");
+const lName: HTMLElement = document.getElementById("inputLastname");
+const email: HTMLElement = document.getElementById("inputEmail");
+const pass: HTMLElement = document.getElementById("inputPassword");
+const passConf: HTMLElement = document.getElementById("inputConfirmPassword");
+
 /*
     Optional Address Fields
     There's no need for city, state, country, and apt/suite because they aren't error prone
 */
-const streetAddress = document.getElementById("addAddressStreetAddress");
-const zip = document.getElementById("addZipcode");
+const streetAddress: HTMLElement = document.getElementById("addAddressStreetAddress");
+const zip: HTMLElement = document.getElementById("addZipcode");
+
 let validity = new Map();
+
 /*
     Possible errors:
 
     If the required validation false and address selection is false --> FAIL
     If the required validation true and address selection is true && address validation false --> FAIL
  */
-form.addEventListener('submit', (e) => {
-    let errorHTML = `<p class="text-center text-danger" id="somethingWrong">One or more of the fields were incomplete or invalid</p>`;
+form.addEventListener('submit', (e: Event) => {
+    let errorHTML: string = `<p class="text-center text-danger" id="somethingWrong">One or more of the fields were incomplete or invalid</p>`;
+
     for (let key in validity) {
-        let value = validity.get(key);
-        let req = document.getElementById(key).hasAttribute('required');
+        let value: boolean = validity.get(key);
+        let req: boolean = document.getElementById(key).hasAttribute('required');
+
         if (req && !value) {
-            let ct = $('.card-title');
+            let ct: JQuery<HTMLElement> = $('.card-title');
+
             if ($('#somethingWrong').length === 0)
                 ct.after(errorHTML);
+
             $([document.documentElement, document.body]).animate({
                 scrollTop: ct.offset().top
             }, 200);
@@ -42,61 +52,76 @@ form.addEventListener('submit', (e) => {
         }
     }
 });
+
 document.getElementById("addressToggler").addEventListener("click", function () {
     $('.addr-opt input, select').each(() => {
         if ($(this)[0].id !== 'addAddressApartmentOrSuite') {
             $(this)[0].toggleAttribute("required");
         }
-    });
+    })
 });
-['input', 'focusin'].forEach((evt) => {
+
+['input', 'focusin'].forEach((evt: string) => {
+
     fName.addEventListener(evt, () => {
-        let val = document.getElementById(fName.id).value;
+        let val = (<HTMLInputElement>document.getElementById(fName.id)).value;
         validity[fName.id] = validate(fName, invalidFName, '#invalidFName', val.length >= 1);
     });
+
     lName.addEventListener(evt, () => {
-        let val = document.getElementById(fName.id).value;
+        let val = (<HTMLInputElement>document.getElementById(fName.id)).value;
         validity[lName.id] = validate(lName, invalidLName, '#invalidLName', val.length >= 2);
     });
+
     email.addEventListener(evt, () => {
         validity[email.id] = validate(email, invalidEmail, '#invalidEmail', emailConstraint());
     });
+
     pass.addEventListener(evt, () => {
         validity[pass.id] = validate(pass, invalidPass, '#invalidPass', validateConstraint());
         validity[passConf.id] = validate(passConf, invalidPassConf, '#invalidPassConf', confirmConstraint());
     });
+
     passConf.addEventListener(evt, () => {
         validity[passConf.id] = validate(passConf, invalidPassConf, '#invalidPassConf', confirmConstraint());
     });
+
     streetAddress.addEventListener(evt, () => {
-        let constr = document.getElementById(streetAddress.id).value.length !== 0;
+        let constr = (<HTMLInputElement>document.getElementById(streetAddress.id)).value.length !== 0;
         validity[streetAddress.id] = validate(streetAddress, invalidStreet, '#invalidStreet', constr);
     });
+
     zip.addEventListener(evt, () => {
         validity[zip.id] = validate(zip, invalidZip, '#invalidZip', zipCodeConstraint());
     });
 });
-function emailConstraint() {
-    let val = document.getElementById(email.id).value;
-    return val.match(/^(([^<>()\[\].,;:\s@"]+(\.[^<>()\[\].,;:\s@"]+)*)|(".+"))@(([^<>()[\].,;:\s@"]+\.)+[^<>()[\].,;:\s@"]{2,})$/i);
+
+function emailConstraint(): RegExpMatchArray {
+    let val: string = (<HTMLInputElement>document.getElementById(email.id)).value;
+    return val.match(/^(([^<>()\[\].,;:\s@"]+(\.[^<>()\[\].,;:\s@"]+)*)|(".+"))@(([^<>()[\].,;:\s@"]+\.)+[^<>()[\].,;:\s@"]{2,})$/i)
 }
-function validateConstraint() {
-    let val = document.getElementById(pass.id).value;
-    return val.match((/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$/));
+
+function validateConstraint(): RegExpMatchArray {
+    let val: string = (<HTMLInputElement>document.getElementById(pass.id)).value;
+    return val.match((/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$/))
 }
-function confirmConstraint() {
-    let pConf = document.getElementById(pass.id).value;
-    let pConfVal = document.getElementById(passConf.id).value;
+
+function confirmConstraint(): boolean {
+    let pConf: string = (<HTMLInputElement>document.getElementById(pass.id)).value;
+    let pConfVal: string = (<HTMLInputElement>document.getElementById(passConf.id)).value;
     return pConf === pConfVal;
 }
-function zipCodeConstraint() {
-    let val = document.getElementById(zip.id).value;
+
+function zipCodeConstraint(): RegExpMatchArray {
+    let val: string = (<HTMLInputElement>document.getElementById(zip.id)).value;
     return val.match(/^\d{5}$|^\d{5}-\d{4}$/);
 }
+
 /*
     Generalized validation function
  */
-function validate(inputType, invalidMessageType, invalidMessageTypeId, constraintType) {
+function validate(inputType, invalidMessageType, invalidMessageTypeId, constraintType): boolean {
+
     if (constraintType) {
         if ($(invalidMessageTypeId).length) {
             $(invalidMessageTypeId).remove();
@@ -122,52 +147,60 @@ function validate(inputType, invalidMessageType, invalidMessageTypeId, constrain
         return false;
     }
 }
+
 /*
     Error HTML Injection's
  */
-const invalidPass = `
+
+const invalidPass: string = `
     <div class="error-message" id="invalidPass">
         <small class="text-danger">
           Password be more than 8 or more characters long, contain at least 1 uppercase character, 1 lowercase character, and 1 number.
         </small>
     </div>
 `;
-const invalidPassConf = `
+
+const invalidPassConf: string = `
     <div class="error-message" id="invalidPassConf">
         <small class="text-danger">
           Password's do not match.
         </small>
     </div>
 `;
-const invalidEmail = `
+
+const invalidEmail: string = `
     <div class="error-message" id="invalidEmail">
         <small class="text-danger">
           Email is not valid.
         </small>
     </div>
 `;
-const invalidFName = `
+
+const invalidFName: string = `
     <div class="error-message" id="invalidFName">
         <small class="text-danger">
           Firstname must be more than 1 character.
         </small>
     </div>
 `;
-const invalidLName = `
+
+const invalidLName: string = `
     <div class="error-message" id="invalidLName">
         <small class="text-danger">
           Lastname must be more than 2 characters.
         </small>
     </div>
 `;
-const invalidStreet = `
+
+const invalidStreet: string = `
     <div class="error-message" id="invalidStreet">
         <small class="text-danger">
           Street Address cannot be empty.
         </small>
     </div>
 `;
-const invalidZip = `
+
+const invalidZip: string = `
     <div class="error-message" id="invalidZip">
         <small class="text-danger">
           ZIP code is not valid.
