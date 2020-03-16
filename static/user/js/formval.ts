@@ -23,7 +23,7 @@ const passConf: HTMLElement = document.getElementById("inputConfirmPassword");
 const streetAddress: HTMLElement = document.getElementById("addAddressStreetAddress");
 const zip: HTMLElement = document.getElementById("addZipcode");
 
-let validity = new Map();
+let validity = new Map<string, boolean>();
 
 /*
     Possible errors:
@@ -35,7 +35,7 @@ form.addEventListener('submit', (e: Event) => {
     let errorHTML: string = `<p class="text-center text-danger" id="somethingWrong">One or more of the fields were incomplete or invalid</p>`;
 
     for (let key in validity) {
-        let value: boolean = validity.get(key);
+        let value: boolean = validity[key];
         let req: boolean = document.getElementById(key).hasAttribute('required');
 
         if (req && !value) {
@@ -120,7 +120,8 @@ function zipCodeConstraint(): RegExpMatchArray {
 /*
     Generalized validation function
  */
-function validate(inputType, invalidMessageType, invalidMessageTypeId, constraintType): boolean {
+function validate(inputType: HTMLElement, invalidMessageType: string,
+                  invalidMessageTypeId: string, constraintType: (boolean | RegExpMatchArray)): boolean {
 
     if (constraintType) {
         if ($(invalidMessageTypeId).length) {
@@ -149,7 +150,7 @@ function validate(inputType, invalidMessageType, invalidMessageTypeId, constrain
 }
 
 /*
-    Error HTML Injection's
+    Error HTML injection templates
  */
 
 const invalidPass: string = `

@@ -28,7 +28,7 @@ let validity = new Map();
 form.addEventListener('submit', (e) => {
     let errorHTML = `<p class="text-center text-danger" id="somethingWrong">One or more of the fields were incomplete or invalid</p>`;
     for (let key in validity) {
-        let value = validity.get(key);
+        let value = validity[key];
         let req = document.getElementById(key).hasAttribute('required');
         if (req && !value) {
             let ct = $('.card-title');
@@ -122,8 +122,9 @@ function validate(inputType, invalidMessageType, invalidMessageTypeId, constrain
         return false;
     }
 }
+
 /*
-    Error HTML Injection's
+    Error HTML injection templates
  */
 const invalidPass = `
     <div class="error-message" id="invalidPass">
