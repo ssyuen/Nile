@@ -20,7 +20,6 @@ const passConf = document.getElementById("inputConfirmPassword");
 const streetAddress = document.getElementById("addAddressStreetAddress");
 const zip = document.getElementById("addZipcode");
 
-let isAddrSel = false;
 let validity = {};
 
 /*
@@ -52,7 +51,6 @@ form.addEventListener('submit', (e) => {
 });
 
 document.getElementById("addressToggler").addEventListener("click", function () {
-    isAddrSel = !isAddrSel;
     $('.addr-opt input, select').each(function () {
         if ($(this)[0].id !== 'addAddressApartmentOrSuite') {
             $(this)[0].toggleAttribute("required");
