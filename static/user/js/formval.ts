@@ -45,19 +45,29 @@ form.addEventListener('submit', (e: Event) => {
             $([document.documentElement, document.body]).animate({
                 scrollTop: ct.offset().top
             }, 200);
+
             e.preventDefault();
             break;
         }
     }
 });
 
+let tog = false;
+
 document.getElementById("addressToggler").addEventListener("click", function () {
-    $('.addr-opt input, select').each(() => {
-        if ($(this)[0].id !== 'addAddressApartmentOrSuite') {
-            $(this)[0].toggleAttribute("required");
+    $('.addr-opt input, select').each((i: number, e: HTMLElement) => {
+        if (e.id !== 'addAddressApartmentOrSuite') {
+            e.toggleAttribute("required");
         }
-    })
+    });
+    tog = !tog;
+    tog == true ? scr('#addressToggler') : scr('#acctCard', 45);
 });
+
+function scr(selector: string, off: number = 0) {
+    let el = $(selector);
+    $(window).scrollTop(el.offset().top - off);
+}
 
 Array<string>('input', 'focusin').forEach((evt: string) => {
 

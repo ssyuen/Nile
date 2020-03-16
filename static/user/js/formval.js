@@ -41,13 +41,21 @@ form.addEventListener('submit', (e) => {
         }
     }
 });
+let tog = false;
 document.getElementById("addressToggler").addEventListener("click", function () {
-    $('.addr-opt input, select').each(() => {
-        if ($(this)[0].id !== 'addAddressApartmentOrSuite') {
-            $(this)[0].toggleAttribute("required");
+    $('.addr-opt input, select').each((i, e) => {
+        if (e.id !== 'addAddressApartmentOrSuite') {
+            e.toggleAttribute("required");
         }
     });
+    tog = !tog;
+    tog == true ? scr('#addressToggler') : scr('#acctCard', 45);
 });
+
+function scr(selector, off = 0) {
+    let el = $(selector);
+    $(window).scrollTop(el.offset().top - off);
+}
 Array('input', 'focusin').forEach((evt) => {
     fName.addEventListener(evt, () => {
         let val = document.getElementById(fName.id).value;
