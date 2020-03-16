@@ -61,7 +61,7 @@ document.getElementById("addressToggler").addEventListener("click", function () 
     })
 });
 
-['input', 'focusin'].forEach((evt: string) => {
+Array<string>('input', 'focusin').forEach((evt: string) => {
 
     fName.addEventListener(evt, () => {
         let val = (<HTMLInputElement>document.getElementById(fName.id)).value;

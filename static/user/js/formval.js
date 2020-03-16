@@ -49,7 +49,7 @@ document.getElementById("addressToggler").addEventListener("click", function () 
         }
     });
 });
-['input', 'focusin'].forEach((evt) => {
+Array('input', 'focusin').forEach((evt) => {
     fName.addEventListener(evt, () => {
         let val = document.getElementById(fName.id).value;
         validity[fName.id] = validate(fName, invalidFName, '#invalidFName', val.length >= 1);
@@ -122,7 +122,6 @@ function validate(inputType, invalidMessageType, invalidMessageTypeId, constrain
         return false;
     }
 }
-
 /*
     Error HTML injection templates
  */
