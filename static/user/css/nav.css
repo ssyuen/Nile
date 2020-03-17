@@ -27,8 +27,43 @@
     border: 1.5px solid #f2f2f2 !important;
 }
 
-.icon-sm{
+.icon-sm {
     width: 48px;
     height: 48px;
     line-height: 48px !important;
+}
+
+@media (min-width: 1920px) {
+    .container {
+        max-width: 1580px;
+    }
+}
+
+@media (max-width: 1199px) {
+
+    #nileLogo {
+        margin-bottom: 10px;
+    }
+
+    .search-group {
+        margin-top: 20px;
+        margin-bottom: 20px;
+    }
+
+    .user-centric-btn {
+        margin-bottom: 20px;
+    }
+
+    .search-group-parent {
+        justify-content: left;
+        padding: 0;
+    }
+
+    .search-group-parent > .input-group {
+        width: 100%;
+    }
+
+    #mainSearchSys {
+        width: auto !important;
+    }
 }

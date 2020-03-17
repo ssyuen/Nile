@@ -1,6 +1,6 @@
 <script>
-    $(document).ready(function(){
-        if(window.location.pathname === '/'){
+    $(document).ready(function () {
+        if (window.location.pathname === '/') {
             $("#browse").addClass('active');
             $("#about").removeClass('active');
         } else if (window.location.href.includes('/about/')) {
@@ -9,9 +9,10 @@
         }
     })
 </script>
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+<nav class="navbar navbar-expand-xl navbar-dark bg-dark">
     <a class="navbar-brand primary" href="/">
-        <img src="../static/images/NileLg.png" width="150" class="d-inline-block align top" alt="Nile Logo">
+        <img src="../static/images/NileLg.png" width="150" class="d-inline-block align top" alt="Nile Logo"
+             id="nileLogo">
     </a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent-333"
             aria-controls="navbarSupportedContent-333" aria-expanded="false" aria-label="Toggle navigation">
@@ -29,29 +30,32 @@
                 <a class="nav-link" href="/about/">About</a>
             </li>
         </ul>
-        <ul class="navbar-nav navbar-center">
+        <ul class="navbar-nav navbar-center search-group">
             <form class="form-inline complement">
-                <div class="input-group">
-                    <input id="mainSearchSys" class="form-control" type="text" placeholder="Search" aria-label="Search"
-                        style="width: 500px;">
-                    <div class="input-group-append">
-                        <button id="mainSearchSysBtn"
-                            class="btn blue-gradient btn-rounded m-0 px-4 py-2 z-depth-0 waves-effect mr-3"
-                            type="submit"> <i class="fas fa-search" aria-hidden="true"></i></button>
+                <div class="container-fluid search-group-parent">
+                    <div class="input-group">
+                        <input id="mainSearchSys" class="form-control" type="text" placeholder="Search"
+                               aria-label="Search"
+                               style="width: 500px;">
+                        <div class="input-group-append">
+                            <button id="mainSearchSysBtn"
+                                    class="btn blue-gradient btn-rounded m-0 px-4 py-2 z-depth-0 waves-effect mr-3"
+                                    type="submit"><i class="fas fa-search" aria-hidden="true"></i></button>
+                        </div>
                     </div>
                 </div>
             </form>
         </ul>
-        <ul class="navbar-nav ml-auto nav-flex-icons">
+        <ul class="navbar-nav ml-auto nav-flex-icons user-centric-btn">
             {% if not session['admin'] %}
-            <li class="nav-item align-self-center">
-                <div class="widget-header mr-3 mt-1">
-                    <a href="/shoppingcart/" class="icon icon-sm rounded-circle border text-center">
-                        <i class="fa fa-shopping-cart text-center fa-1x"></i>
-                    </a>
-                    <span class="badge badge-pill badge-danger notify">0</span>
-                </div>
-            </li>
+                <li class="nav-item align-self-center">
+                    <div class="widget-header mr-3 mt-1">
+                        <a href="/shoppingcart/" class="icon icon-sm rounded-circle border text-center">
+                            <i class="fa fa-shopping-cart text-center fa-1x"></i>
+                        </a>
+                        <span class="badge badge-pill badge-danger notify">0</span>
+                    </div>
+                </li>
             {% endif %}
 
             <!-- <li class="nav-item dropdown">
@@ -66,39 +70,41 @@
                 </div>
             </li> -->
             {% if session['logged_in'] %}
-            <li class="nav-item dropdown align-self-center">
-                <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink-333" data-toggle="dropdown"
-                    aria-haspopup="true" aria-expanded="false">
-                    <span class=" complement">Welcome, {{ session['firstName'] }} {% if session['admin'] %}<span
-                            class="badge badge-primary ml-2">Admin</span>{% endif %}</span>
-                </a>
-                <div class="dropdown-menu dropdown-menu-right dropdown-default"
-                    aria-labelledby="navbarDropdownMenuLink-333">
-                    {% if not session['admin'] %}
-                    <a class="dropdown-item" href="/profile/">My Profile</a>
-                    <a class="dropdown-item" href="/orderhist/">Order History</a>
-                    {% else %}
-                    <a class="dropdown-item" href="/admin/">My Admin Profile</a>
-                    {% endif %}
-                    <a class="dropdown-item" href="/logout/">Sign Out</a>
-                </div>
-            </li>
+                <li class="nav-item dropdown align-self-center">
+                    <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink-333" data-toggle="dropdown"
+                       aria-haspopup="true" aria-expanded="false">
+                        <span class=" complement">Welcome, {{ session['firstName'] }} {% if session['admin'] %}<span
+                                class="badge badge-primary ml-2">Admin</span>{% endif %}</span>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-right dropdown-default"
+                         aria-labelledby="navbarDropdownMenuLink-333">
+                        {% if not session['admin'] %}
+                            <a class="dropdown-item" href="/profile/">My Profile</a>
+                            <a class="dropdown-item" href="/orderhist/">Order History</a>
+                        {% else %}
+                            <a class="dropdown-item" href="/admin/">My Admin Profile</a>
+                        {% endif %}
+                        <a class="dropdown-item" href="/logout/">Sign Out</a>
+                    </div>
+                </li>
             {% else %}
-            <li class="nav-item">
-                <a href="/login/" class="href">
-                    <button class="btn blue-gradient btn-rounded btn-sm primary waves-effect waves-light"
-                        id="signInBtn">Sign In</button>
-                </a>
-            </li>
+                <li class="nav-item">
+                    <a href="/login/" class="href">
+                        <button class="btn blue-gradient btn-rounded btn-sm primary waves-effect waves-light sign-btn"
+                                id="signInBtn">Sign In
+                        </button>
+                    </a>
+                </li>
             {% endif %}
 
             {% if not session['logged_in'] %}
-            <li class="nav-item">
-                <a href="/register/" class="href">
-                    <button class="btn aqua-gradient btn-rounded btn-sm primary waves-effect waves-light"
-                        id="signUpBtn">Sign Up</button>
-                </a>
-            </li>
+                <li class="nav-item">
+                    <a href="/register/" class="href">
+                        <button class="btn aqua-gradient btn-rounded btn-sm primary waves-effect waves-light sign-btn"
+                                id="signUpBtn">Sign Up
+                        </button>
+                    </a>
+                </li>
             {% endif %}
         </ul>
     </div>
