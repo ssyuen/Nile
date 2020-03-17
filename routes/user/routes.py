@@ -220,3 +220,9 @@ def payment_info():
 @login_required
 def profile():
     return render_template('./profile.html')
+
+
+@user_bp.route('/forgot/')
+@login_required
+def profile():
+    return render_template('./forgot.html')
