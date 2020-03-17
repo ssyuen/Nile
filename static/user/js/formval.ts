@@ -61,7 +61,7 @@ document.getElementById("addressToggler").addEventListener("click", function () 
         }
     });
     tog = !tog;
-    if (tog == true) {
+    if (tog) {
         scr('#addressToggler');
         $("#toggleCaption").text("Great! We're recording your address now");
     } else {
@@ -69,6 +69,7 @@ document.getElementById("addressToggler").addEventListener("click", function () 
         $("#toggleCaption").text("This is optional. You can always add it later");
     }
 });
+
 
 function scr(selector: string, off: number = 0) {
     let el = $(selector);

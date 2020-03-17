@@ -49,7 +49,7 @@ document.getElementById("addressToggler").addEventListener("click", function () 
         }
     });
     tog = !tog;
-    if (tog == true) {
+    if (tog) {
         scr('#addressToggler');
         $("#toggleCaption").text("Great! We're recording your address now");
     } else {
