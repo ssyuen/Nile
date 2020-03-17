@@ -5,34 +5,34 @@
     ASSOCIATED HTML:    reg.html
     REVISIONS:          N/A
  */
-const form = document.getElementById("regForm");
-const fName = document.getElementById("inputFirstname");
-const lName = document.getElementById("inputLastname");
-const email = document.getElementById("inputEmail");
-const pass = document.getElementById("inputPassword");
-const passConf = document.getElementById("inputConfirmPassword");
+const FORM = document.getElementById("regForm");
+const F_NAME = document.getElementById("inputFirstname");
+const L_NAME = document.getElementById("inputLastname");
+const EMAIL = document.getElementById("inputEmail");
+const PASS = document.getElementById("inputPassword");
+const PASS_CONF = document.getElementById("inputConfirmPassword");
 /*
     Optional Address Fields
     There's no need for city, state, country, and apt/suite because they aren't error prone
 */
-const streetAddress = document.getElementById("addAddressStreetAddress");
-const zip = document.getElementById("addZipcode");
+const STREET_ADDR = document.getElementById("addAddressStreetAddress");
+const ZIP = document.getElementById("addZipcode");
 /*
     Keeps track of each input element along with its validity.
     On submit, every value of an input with the 'required' attribute
     must be true.
  */
-const validity = new Map();
+const VALIDITY = new Map();
 /*
     Possible errors:
 
     If the required validation false and address selection is false --> FAIL
     If the required validation true and address selection is true && address validation false --> FAIL
  */
-form.addEventListener('submit', (e) => {
+FORM.addEventListener('submit', (e) => {
     let errorHTML = `<p class="text-center text-danger" id="somethingWrong">One or more of the fields were incomplete or invalid</p>`;
-    for (let key in validity) {
-        let value = validity[key];
+    for (let key in VALIDITY) {
+        let value = VALIDITY[key];
         let req = document.getElementById(key).hasAttribute('required');
         if (req && !value) {
             let ct = $('.card-title');
@@ -67,47 +67,47 @@ function scr(selector, off = 0) {
     $(window).scrollTop(el.offset().top - off);
 }
 Array('input', 'focusin').forEach((evt) => {
-    fName.addEventListener(evt, () => {
-        let val = document.getElementById(fName.id).value;
-        validity[fName.id] = validate(fName, invalidFName, '#invalidFName', val.length >= 1);
+    F_NAME.addEventListener(evt, () => {
+        let val = document.getElementById(F_NAME.id).value;
+        VALIDITY[F_NAME.id] = validate(F_NAME, invalidFName, '#invalidFName', val.length >= 1);
     });
-    lName.addEventListener(evt, () => {
-        let val = document.getElementById(lName.id).value;
-        validity[lName.id] = validate(lName, invalidLName, '#invalidLName', val.length >= 2);
+    L_NAME.addEventListener(evt, () => {
+        let val = document.getElementById(L_NAME.id).value;
+        VALIDITY[L_NAME.id] = validate(L_NAME, invalidLName, '#invalidLName', val.length >= 2);
     });
-    email.addEventListener(evt, () => {
-        validity[email.id] = validate(email, invalidEmail, '#invalidEmail', emailConstraint());
+    EMAIL.addEventListener(evt, () => {
+        VALIDITY[EMAIL.id] = validate(EMAIL, invalidEmail, '#invalidEmail', emailConstraint());
     });
-    pass.addEventListener(evt, () => {
-        validity[pass.id] = validate(pass, invalidPass, '#invalidPass', validateConstraint());
-        validity[passConf.id] = validate(passConf, invalidPassConf, '#invalidPassConf', confirmConstraint());
+    PASS.addEventListener(evt, () => {
+        VALIDITY[PASS.id] = validate(PASS, invalidPass, '#invalidPass', validateConstraint());
+        VALIDITY[PASS_CONF.id] = validate(PASS_CONF, invalidPassConf, '#invalidPassConf', confirmConstraint());
     });
-    passConf.addEventListener(evt, () => {
-        validity[passConf.id] = validate(passConf, invalidPassConf, '#invalidPassConf', confirmConstraint());
+    PASS_CONF.addEventListener(evt, () => {
+        VALIDITY[PASS_CONF.id] = validate(PASS_CONF, invalidPassConf, '#invalidPassConf', confirmConstraint());
     });
-    streetAddress.addEventListener(evt, () => {
-        let constr = document.getElementById(streetAddress.id).value.length !== 0;
-        validity[streetAddress.id] = validate(streetAddress, invalidStreet, '#invalidStreet', constr);
+    STREET_ADDR.addEventListener(evt, () => {
+        let constr = document.getElementById(STREET_ADDR.id).value.length !== 0;
+        VALIDITY[STREET_ADDR.id] = validate(STREET_ADDR, invalidStreet, '#invalidStreet', constr);
     });
-    zip.addEventListener(evt, () => {
-        validity[zip.id] = validate(zip, invalidZip, '#invalidZip', zipCodeConstraint());
+    ZIP.addEventListener(evt, () => {
+        VALIDITY[ZIP.id] = validate(ZIP, invalidZip, '#invalidZip', zipCodeConstraint());
     });
 });
 function emailConstraint() {
-    let val = document.getElementById(email.id).value;
+    let val = document.getElementById(EMAIL.id).value;
     return val.match(/^(([^<>()\[\].,;:\s@"]+(\.[^<>()\[\].,;:\s@"]+)*)|(".+"))@(([^<>()[\].,;:\s@"]+\.)+[^<>()[\].,;:\s@"]{2,})$/i);
 }
 function validateConstraint() {
-    let val = document.getElementById(pass.id).value;
+    let val = document.getElementById(PASS.id).value;
     return val.match((/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$/));
 }
 function confirmConstraint() {
-    let pConf = document.getElementById(pass.id).value;
-    let pConfVal = document.getElementById(passConf.id).value;
+    let pConf = document.getElementById(PASS.id).value;
+    let pConfVal = document.getElementById(PASS_CONF.id).value;
     return pConf === pConfVal;
 }
 function zipCodeConstraint() {
-    let val = document.getElementById(zip.id).value;
+    let val = document.getElementById(ZIP.id).value;
     return val.match(/^\d{5}$|^\d{5}-\d{4}$/);
 }
 /*
