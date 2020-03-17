@@ -223,6 +223,5 @@ def profile():
 
 
 @user_bp.route('/forgot/')
-@login_required
-def profile():
+def forgot():
     return render_template('./forgot.html')
