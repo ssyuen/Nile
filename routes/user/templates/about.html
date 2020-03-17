@@ -11,24 +11,44 @@
 
     {% include 'style.html' %}
 
-    <link rel="stylesheet" type="text/css" href="../../../static/user/css/browse.css">
+    <style>
+        html {
+            position: relative;
+            min-height: 100%;
+        }
+
+        footer {
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            height: 158px;
+            width: 100%;
+        }
+
+        /* Might be a hacky solution */
+        .hrst {
+            margin-top: 50px;
+            width: 50%;
+            border-top: 1px solid #8c8b8b;
+        }
+    </style>
 </head>
 
 <body class="our-color">
 <div class="pb-5">
     <!-- Navigation -->
     {% include 'nav.html' %}
-    </div>
-    {% with valid_login = get_flashed_messages()%}
+</div>
+{% with valid_login = get_flashed_messages() %}
     {% if valid_login %}
 
-    <p class="flashes h5 text-center" style="color: green;">
-        {% for msg in valid_login %}
-        {{ msg }}
-        {% endfor %}
-    </p>
+        <p class="flashes h5 text-center" style="color: green;">
+            {% for msg in valid_login %}
+                {{ msg }}
+            {% endfor %}
+        </p>
     {% endif %}
-    {% endwith %}
+{% endwith %}
 <div class="container">
     <div class="row">
         <div class="col mb-4">
@@ -40,36 +60,35 @@
 </div>
 <!-- Page Content -->
 <div class="container pb-5" id="mainContent">
-    <p class="text-left">
+    <p class="text-left complement-light">
         Nile is an online Bookstore Platform. We have have books that all ages can enjoy!
         Come explore the variety of categories which include fictional adventures, informational columns,
         and children's stories that your little one can enjoy. Dive into our platform and see all that
         you can discover!
     </p>
+    <hr class="hrst">
     <div id="image-profile">
 
     </div>
 </div>
-
-</div>
-    <!-- Footer -->
-    <footer class="py-5 bg-dark">
-        <div class="container text-white">
-            <p class="mb-2 text-center">Copyright &copy; Nile 2020</p>
-            <div class="text-center">
-                <a class="waves-effect waves-light mr-3">
-                    <i class="fab fa-twitter"></i>
-                </a>
-                <a class="waves-effect waves-light mr-3">
-                    <i class="fab fa-instagram"></i>
-                </a>
-                <a class="waves-effect waves-light">
-                    <i class="fab fa-facebook"></i>
-                </a>
-            </div>
+<!-- Footer -->
+<footer class="py-5 bg-dark">
+    <div class="container text-white">
+        <p class="mb-2 text-center">Copyright &copy; Nile 2020</p>
+        <div class="text-center">
+            <a class="waves-effect waves-light mr-3">
+                <i class="fab fa-twitter"></i>
+            </a>
+            <a class="waves-effect waves-light mr-3">
+                <i class="fab fa-instagram"></i>
+            </a>
+            <a class="waves-effect waves-light">
+                <i class="fab fa-facebook"></i>
+            </a>
         </div>
-        <!-- /.container -->
-    </footer>
+    </div>
+    <!-- /.container -->
+</footer>
 </body>
 
 </html>
