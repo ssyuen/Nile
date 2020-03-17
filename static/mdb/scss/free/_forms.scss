@@ -1,5 +1,5 @@
 // Forms basic
-// Input +  label wrapper styles
+// Input +  label wrapper css
 .md-form {
 
   // Text inputs
@@ -40,7 +40,7 @@
       }
     }
 
-    // Form message shared styles
+    // Form message shared css
     + label::after {
       position: absolute;
       top: $input-label-after-top;

@@ -1,0 +1,24 @@
+@import url("common.css");
+@import url("nav.css");
+
+.modal-card {
+    cursor: pointer;
+}
+
+
+@media (min-width: 1920px) {
+    .container {
+        max-width: 1580px;
+    }
+}
+
+.titleHolder {
+    height: 50%;
+}
+
+.book-price {
+    align-self: flex-end;
+    color: #f2f2f2;
+    font-size: large;
+}
+

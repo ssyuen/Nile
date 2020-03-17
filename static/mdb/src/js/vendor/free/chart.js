@@ -21,16 +21,16 @@ module.exports = {
    getHwb: getHwb,
    getAlpha: getAlpha,
 
-   hexString: hexString,
-   rgbString: rgbString,
-   rgbaString: rgbaString,
-   percentString: percentString,
-   percentaString: percentaString,
-   hslString: hslString,
-   hslaString: hslaString,
-   hwbString: hwbString,
-   keyword: keyword
-}
+	hexString: hexString,
+	rgbString: rgbString,
+	rgbaString: rgbaString,
+	percentString: percentString,
+	percentaString: percentaString,
+	hslString: hslString,
+	hslaString: hslaString,
+	hwbString: hwbString,
+	keyword: keyword
+};
 
 function getRgba(string) {
    if (!string) {
@@ -765,17 +765,17 @@ module.exports = {
   keyword2xyz: keyword2xyz,
 
   xyz2rgb: xyz2rgb,
-  xyz2lab: xyz2lab,
-  xyz2lch: xyz2lch,
+	xyz2lab: xyz2lab,
+	xyz2lch: xyz2lch,
 
-  lab2xyz: lab2xyz,
-  lab2rgb: lab2rgb,
-  lab2lch: lab2lch,
+	lab2xyz: lab2xyz,
+	lab2rgb: lab2rgb,
+	lab2lch: lab2lch,
 
-  lch2lab: lch2lab,
-  lch2xyz: lch2xyz,
-  lch2rgb: lch2rgb
-}
+	lch2lab: lch2lab,
+	lch2xyz: lch2xyz,
+	lch2rgb: lch2rgb
+};
 
 
 function rgb2hsl(rgb) {
@@ -1422,9 +1422,9 @@ for (var key in cssKeywords) {
 },{}],5:[function(require,module,exports){
 var conversions = require(4);
 
-var convert = function() {
-   return new Converter();
-}
+		var convert = function () {
+			return new Converter();
+		};
 
 for (var func in conversions) {
   // export Raw versions
@@ -1513,7 +1513,7 @@ Converter.prototype.getValues = function(space) {
 
 module.exports = convert;
 },{"4":4}],6:[function(require,module,exports){
-'use strict'
+		'use strict';
 
 module.exports = {
 	"aliceblue": [240, 248, 255],
@@ -2769,7 +2769,7 @@ module.exports = function(Chart) {
 
 			var model = arc._model;
 
-			// Resets the visual styles
+			// Resets the visual css
 			var custom = arc.custom || {};
 			var valueOrDefault = helpers.valueAtIndexOrDefault;
 			var elementOpts = this.chart.options.elements.arc;

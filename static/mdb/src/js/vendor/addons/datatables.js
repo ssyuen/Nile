@@ -61,18 +61,17 @@
 			if ( ! $ ) {
 				$ = typeof window !== 'undefined' ? // jQuery's factory checks for a global window
 					require('jquery') :
-					require('jquery')( root );
+					require('jquery')(root);
 			}
 
-			return factory( $, root, root.document );
+			return factory($, root, root.document);
 		};
-	}
-	else {
+	} else {
 		// Browser
-		factory( jQuery, window, document );
+		factory(jQuery, window, document);
 	}
-}
-(function( $, window, document, undefined ) {
+};
+(function ($, window, document, undefined) {
 	"use strict";
 
 	/**
@@ -5332,25 +5331,25 @@
 		else if ( scrollXInner !== "" ) {
 			// legacy x scroll inner has been given - use it
 			tableStyle.width = _fnStringToCss(scrollXInner);
-	
+
 			// Recalculate the sanity width
 			sanityWidth = table.outerWidth();
 		}
-	
+
 		// Hidden header should have zero height, so remove padding and borders. Then
 		// set the width based on the real headers
-	
-		// Apply all styles in one pass
-		_fnApplyToChildren( zeroOut, headerSrcEls );
-	
+
+		// Apply all css in one pass
+		_fnApplyToChildren(zeroOut, headerSrcEls);
+
 		// Read all widths in next pass
-		_fnApplyToChildren( function(nSizer) {
-			headerContent.push( nSizer.innerHTML );
-			headerWidths.push( _fnStringToCss( $(nSizer).css('width') ) );
-		}, headerSrcEls );
-	
+		_fnApplyToChildren(function (nSizer) {
+			headerContent.push(nSizer.innerHTML);
+			headerWidths.push(_fnStringToCss($(nSizer).css('width')));
+		}, headerSrcEls);
+
 		// Apply all widths in final pass
-		_fnApplyToChildren( function(nToSize, i) {
+		_fnApplyToChildren(function (nToSize, i) {
 			// Only apply widths to the DataTables detected header cells - this
 			// prevents complex headers from having contradictory sizes applied
 			if ( $.inArray( nToSize, dtHeaderCells ) !== -1 ) {
@@ -6416,17 +6415,17 @@
 					if ( col.visible !== undefined ) {
 						columns[i].bVisible = col.visible;
 					}
-	
+
 					// Search
-					if ( col.search !== undefined ) {
-						$.extend( settings.aoPreSearchCols[i], _fnSearchToHung( col.search ) );
+					if (col.search !== undefined) {
+						$.extend(settings.aoPreSearchCols[i], _fnSearchToHung(col.search));
 					}
 				}
 			}
-	
-			_fnCallbackFire( settings, 'aoStateLoaded', 'stateLoaded', [settings, s] );
+
+			_fnCallbackFire(settings, 'aoStateLoaded', 'stateLoaded', [settings, s]);
 			callback();
-		}
+		};
 	
 		if ( ! settings.oFeatures.bStateSave ) {
 			callback();

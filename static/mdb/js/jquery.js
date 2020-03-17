@@ -2827,7 +2827,7 @@ function nodeName( elem, name ) {
 
   return elem.nodeName && elem.nodeName.toLowerCase() === name.toLowerCase();
 
-};
+}
 var rsingleTag = ( /^<([a-z][^\/\0>:\x20\t\r\n\f]*)[\x20\t\r\n\f]*\/?>(?:<\/\1>|)$/i );
 
 
@@ -6259,22 +6259,22 @@ var rboxStyle = new RegExp( cssExpand.join( "|" ), "i" );
 			"position:relative;display:block;box-sizing:border-box;overflow:scroll;" +
 			"margin:auto;border:1px;padding:1px;" +
 			"width:60%;top:1%";
-		documentElement.appendChild( container ).appendChild( div );
+		documentElement.appendChild(container).appendChild(div);
 
-		var divStyle = window.getComputedStyle( div );
+		var divStyle = window.getComputedStyle(div);
 		pixelPositionVal = divStyle.top !== "1%";
 
 		// Support: Android 4.0 - 4.3 only, Firefox <=3 - 44
-		reliableMarginLeftVal = roundPixelMeasures( divStyle.marginLeft ) === 12;
+		reliableMarginLeftVal = roundPixelMeasures(divStyle.marginLeft) === 12;
 
 		// Support: Android 4.0 - 4.3 only, Safari <=9.1 - 10.1, iOS <=7.0 - 9.3
-		// Some styles come back with percentage values, even though they shouldn't
+		// Some css come back with percentage values, even though they shouldn't
 		div.style.right = "60%";
-		pixelBoxStylesVal = roundPixelMeasures( divStyle.right ) === 36;
+		pixelBoxStylesVal = roundPixelMeasures(divStyle.right) === 36;
 
 		// Support: IE 9 - 11 only
 		// Detect misreporting of content dimensions for box-sizing:border-box elements
-		boxSizingReliableVal = roundPixelMeasures( divStyle.width ) === 36;
+		boxSizingReliableVal = roundPixelMeasures(divStyle.width) === 36;
 
 		// Support: IE 9 only
 		// Detect overflow:scroll screwiness (gh-3699)
@@ -6649,15 +6649,15 @@ jQuery.extend( {
 	// Get and set the style property on a DOM Node
 	style: function( elem, name, value, extra ) {
 
-		// Don't set styles on text and comment nodes
-		if ( !elem || elem.nodeType === 3 || elem.nodeType === 8 || !elem.style ) {
+		// Don't set css on text and comment nodes
+		if (!elem || elem.nodeType === 3 || elem.nodeType === 8 || !elem.style) {
 			return;
 		}
 
 		// Make sure that we're working with the right name
 		var ret, type, hooks,
-			origName = camelCase( name ),
-			isCustomProp = rcustomProp.test( name ),
+			origName = camelCase(name),
+			isCustomProp = rcustomProp.test(name),
 			style = elem.style;
 
 		// Make sure that we're working with the right name. We don't
@@ -6789,9 +6789,9 @@ jQuery.each( [ "height", "width" ], function( i, dimension ) {
 
 		set: function( elem, value, extra ) {
 			var matches,
-				styles = getStyles( elem ),
+				styles = getStyles(elem),
 
-				// Only read styles.position if the test has a chance to fail
+				// Only read css.position if the test has a chance to fail
 				// to avoid forcing a reflow.
 				scrollboxSizeBuggy = !support.scrollboxSize() &&
 					styles.position === "absolute",
@@ -6799,7 +6799,7 @@ jQuery.each( [ "height", "width" ], function( i, dimension ) {
 				// To avoid forcing a reflow, only fetch boxSizing if we need it (gh-3991)
 				boxSizingNeeded = scrollboxSizeBuggy || extra,
 				isBorderBox = boxSizingNeeded &&
-					jQuery.css( elem, "boxSizing", false, styles ) === "border-box",
+					jQuery.css(elem, "boxSizing", false, styles) === "border-box",
 				subtract = extra ?
 					boxModelAdjustment(
 						elem,
@@ -7132,24 +7132,24 @@ function defaultPrefilter( elem, props, opts ) {
 					continue;
 				}
 			}
-			orig[ prop ] = dataShow && dataShow[ prop ] || jQuery.style( elem, prop );
+			orig[prop] = dataShow && dataShow[prop] || jQuery.style(elem, prop);
 		}
 	}
 
 	// Bail out if this is a no-op like .hide().hide()
-	propTween = !jQuery.isEmptyObject( props );
-	if ( !propTween && jQuery.isEmptyObject( orig ) ) {
+	propTween = !jQuery.isEmptyObject(props);
+	if (!propTween && jQuery.isEmptyObject(orig)) {
 		return;
 	}
 
-	// Restrict "overflow" and "display" styles during box animations
-	if ( isBox && elem.nodeType === 1 ) {
+	// Restrict "overflow" and "display" css during box animations
+	if (isBox && elem.nodeType === 1) {
 
 		// Support: IE <=9 - 11, Edge 12 - 15
 		// Record all 3 overflow attributes because IE does not infer the shorthand
 		// from identically-valued overflowX and overflowY and Edge just mirrors
 		// the overflowX value there.
-		opts.overflow = [ style.overflow, style.overflowX, style.overflowY ];
+		opts.overflow = [style.overflow, style.overflowX, style.overflowY];
 
 		// Identify a display type, preferring old show/hide data over the CSS cascade
 		restoreDisplay = dataShow && dataShow.display;
