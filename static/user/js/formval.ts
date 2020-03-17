@@ -61,13 +61,20 @@ document.getElementById("addressToggler").addEventListener("click", function () 
         }
     });
     tog = !tog;
-    tog == true ? scr('#addressToggler') : scr('#acctCard', 45);
+    if (tog == true) {
+        scr('#addressToggler');
+        $("#toggleCaption").text("Great! We're recording your address now");
+    } else {
+        scr('#acctCard', 45);
+        $("#toggleCaption").text("This is optional. You can always add it later");
+    }
 });
 
 function scr(selector: string, off: number = 0) {
     let el = $(selector);
     $(window).scrollTop(el.offset().top - off);
 }
+
 
 Array<string>('input', 'focusin').forEach((evt: string) => {
 
