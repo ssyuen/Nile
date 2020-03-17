@@ -21,7 +21,12 @@ const passConf: HTMLElement = document.getElementById("inputConfirmPassword");
 const streetAddress: HTMLElement = document.getElementById("addAddressStreetAddress");
 const zip: HTMLElement = document.getElementById("addZipcode");
 
-let validity = new Map<string, boolean>();
+/*
+    Keeps track of each input element along with its validity.
+    On submit, every value of an input with the 'required' attribute
+    must be true.
+ */
+const validity = new Map<string, boolean>();
 
 /*
     Possible errors:
