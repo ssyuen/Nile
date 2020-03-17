@@ -51,90 +51,96 @@
 </head>
 
 <body class="our-color complement-light">
-    <div class="pb-5">
+<div class="pb-5">
 
-        {% include 'nav.html' %}
-    </div>
-    <div class="container">
-        <div class="row">
-            <div class="col">
-                <div class="text-center" id="content-header">
-                    <p class="primary-lg" id="account-holder">Dont Worry! We've got your Back.</p>
-                </div>
+    {% include 'nav.html' %}
+</div>
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <div class="text-center" id="content-header">
+                <p class="primary-lg" id="account-holder">Dont Worry! We've got your Back.</p>
             </div>
         </div>
     </div>
-    <div class="container" id="acctContainer">
-        <div class="rounded shadow-lg card p-5" id="acctCard">
-            <div class="card-body">
-                <header style="text-align: center;">
-                    <h3 class="card-title mb-5 primary">Forgot Password</h3>
-                </header>
-                <form>
-                    <div class="form-group">
-                        <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"
-                               placeholder="Enter email">
-                        <small id="emailHelp" class="form-text text-muted">A confirmation email will be sent to change
-                            your
-                            password.
-                        </small>
-                    </div>
-                    <button type="submit" class="btn blue-gradient btn-lg btn-block">Submit</button>
-                </form>
+</div>
+<div class="container" id="acctContainer">
+    <div class="rounded shadow-lg card p-5" id="acctCard">
+        <div class="card-body">
+            <header style="text-align: center;">
+                <h3 class="card-title mb-5 primary">Forgot Password</h3>
+            </header>
+            <form>
+                <div class="form-group">
+                    <input type="email" class="form-control" id="forgotEmailInput" aria-describedby="emailHelp"
+                           placeholder="Enter email" required>
+                    <small id="emailHelp" class="form-text text-muted"><i>A confirmation email will be sent to change
+                        your password.</i>
+                    </small>
+                </div>
+                <button type="submit" class="btn blue-gradient btn-lg btn-block">Submit</button>
+            </form>
 
-                <div class="text-center mb-2 mt-5">
+            <div class="text-center mb-2 mt-5">
                     <span class="txt1">
                         Don't Have an account?
                     </span>
-                    <a href="/register/" class="txt2 hov1">
-                        Create One.
-                    </a>
-                </div>
+                <a href="/register/" class="txt2 hov1">
+                    Create One.
+                </a>
             </div>
         </div>
     </div>
+</div>
 
-    <button class="btn blue-gradient waves-light" id="myBtn" title="Register"><i
-            class="fas fa-angle-down fa-2x"></i></button>
-    <script>
-        $("#myBtn").click(function () {
-            $(function () {
-                var target = $('#acctContainer');
-                if (target.length) {
-                    $('html,body').animate({
-                        scrollTop: target.offset().top - 120
-                    }, 500);
-                    return false;
-                }
-            });
+<button class="btn blue-gradient waves-light" id="myBtn" title="Register"><i
+        class="fas fa-angle-down fa-2x"></i></button>
+<script>
+    $("#myBtn").click(function () {
+        $(function () {
+            var target = $('#acctContainer');
+            if (target.length) {
+                $('html,body').animate({
+                    scrollTop: target.offset().top - 120
+                }, 500);
+                return false;
+            }
         });
-    </script>
-    <footer class="py-5 bg-dark">
-        <div class="container text-white">
-            <p class="mb-2 text-center">Copyright &copy; Nile 2020</p>
-            <div class="text-center">
-                <a class="waves-effect waves-light mr-3">
-                    <i class="fab fa-twitter"></i>
-                </a>
-                <a class="waves-effect waves-light mr-3">
-                    <i class="fab fa-instagram"></i>
-                </a>
-                <a class="waves-effect waves-light">
-                    <i class="fab fa-facebook"></i>
-                </a>
-            </div>
+    });
+</script>
+<footer class="py-5 bg-dark">
+    <div class="container text-white">
+        <p class="mb-2 text-center">Copyright &copy; Nile 2020</p>
+        <div class="text-center">
+            <a class="waves-effect waves-light mr-3">
+                <i class="fab fa-twitter"></i>
+            </a>
+            <a class="waves-effect waves-light mr-3">
+                <i class="fab fa-instagram"></i>
+            </a>
+            <a class="waves-effect waves-light">
+                <i class="fab fa-facebook"></i>
+            </a>
         </div>
-        <!-- /.container -->
-    </footer>
+    </div>
+    <!-- /.container -->
+</footer>
 
-    <!-- <script language="javascript">
-        function autoResizeDiv()
-        {
-            document.getElementById('foot').style.height = window.innerHeight +'px';
-        }
-        window.onresize = autoResizeDiv;
-        autoResizeDiv();
-    </script> -->
+<script type="module">
+    import {
+        emailConstraint,
+        invalidEmail,
+        validator
+    } from "../../../static/user/js/genericval.js";
+
+    let elem = document.getElementById("forgotEmailInput");
+    ['input', 'focusin'].forEach((evt) => {
+        elem.addEventListener(evt, () => {
+            validator(elem, invalidEmail, "#invalidEmail", emailConstraint(elem.id));
+        });
+    });
+</script>
+
 </body>
 
 </html>
