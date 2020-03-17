@@ -71,7 +71,7 @@ MySql local instance's username and password
   - [ ] Scripting
     - [x] Required columns for address when the user chooses the optional
     - [x] Change active on Browse to unactive when About is clicked on
-    - [ ] Password & Confirm Password Restrictions
+    - [x] Password & Confirm Password Restrictions
     - [ ] Shopping Cart
       - [ ] Cart Pricing needs to reflect price in cart
       - [ ] Increasing quantity of an item should dynamically increase Cart Pricing
