@@ -9,10 +9,10 @@
 import {
     confirmConstraint,
     emailConstraint,
-    invalidEmail, invalidFName,
-    invalidLName,
-    invalidPass,
-    invalidPassConf, invalidStreet, invalidZip,
+    INVALID_EMAIL_MSS, INVALID_F_NAME_MSS,
+    INVALID_L_NAME_MSS,
+    INVALID_PASS_MSS,
+    INVALID_PASS_CONF_MSS, INVALID_STREET_MSS, INVALID_ZIP_MSS,
     validateConstraint,
     validator, zipCodeConstraint
 } from "./genericval.js";
@@ -96,33 +96,33 @@ Array<string>('input', 'focusin').forEach((evt: string) => {
 
     F_NAME.addEventListener(evt, () => {
         let val = (<HTMLInputElement>document.getElementById(F_NAME.id)).value;
-        VALIDITY[F_NAME.id] = validator(F_NAME, invalidFName, '#invalidFName', val.length >= 1);
+        VALIDITY[F_NAME.id] = validator(F_NAME, INVALID_F_NAME_MSS, '#invalidFName', val.length >= 1);
     });
 
     L_NAME.addEventListener(evt, () => {
         let val = (<HTMLInputElement>document.getElementById(L_NAME.id)).value;
-        VALIDITY[L_NAME.id] = validator(L_NAME, invalidLName, '#invalidLName', val.length >= 2);
+        VALIDITY[L_NAME.id] = validator(L_NAME, INVALID_L_NAME_MSS, '#invalidLName', val.length >= 2);
     });
 
     EMAIL.addEventListener(evt, () => {
-        VALIDITY[EMAIL.id] = validator(EMAIL, invalidEmail, '#invalidEmail', emailConstraint(EMAIL.id));
+        VALIDITY[EMAIL.id] = validator(EMAIL, INVALID_EMAIL_MSS, '#invalidEmail', emailConstraint(EMAIL.id));
     });
 
     PASS.addEventListener(evt, () => {
-        VALIDITY[PASS.id] = validator(PASS, invalidPass, '#invalidPass', validateConstraint(PASS.id));
-        VALIDITY[PASS_CONF.id] = validator(PASS_CONF, invalidPassConf, '#invalidPassConf', confirmConstraint(PASS.id, PASS_CONF.id));
+        VALIDITY[PASS.id] = validator(PASS, INVALID_PASS_MSS, '#invalidPass', validateConstraint(PASS.id));
+        VALIDITY[PASS_CONF.id] = validator(PASS_CONF, INVALID_PASS_CONF_MSS, '#invalidPassConf', confirmConstraint(PASS.id, PASS_CONF.id));
     });
 
     PASS_CONF.addEventListener(evt, () => {
-        VALIDITY[PASS_CONF.id] = validator(PASS_CONF, invalidPassConf, '#invalidPassConf', confirmConstraint(PASS.id, PASS_CONF.id));
+        VALIDITY[PASS_CONF.id] = validator(PASS_CONF, INVALID_PASS_CONF_MSS, '#invalidPassConf', confirmConstraint(PASS.id, PASS_CONF.id));
     });
 
     STREET_ADDR.addEventListener(evt, () => {
         let constr = (<HTMLInputElement>document.getElementById(STREET_ADDR.id)).value.length !== 0;
-        VALIDITY[STREET_ADDR.id] = validator(STREET_ADDR, invalidStreet, '#invalidStreet', constr);
+        VALIDITY[STREET_ADDR.id] = validator(STREET_ADDR, INVALID_STREET_MSS, '#invalidStreet', constr);
     });
 
     ZIP.addEventListener(evt, () => {
-        VALIDITY[ZIP.id] = validator(ZIP, invalidZip, '#invalidZip', zipCodeConstraint(ZIP.id));
+        VALIDITY[ZIP.id] = validator(ZIP, INVALID_ZIP_MSS, '#invalidZip', zipCodeConstraint(ZIP.id));
     });
 });

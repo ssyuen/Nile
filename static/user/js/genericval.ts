@@ -62,7 +62,7 @@ export function validator(inputType: HTMLElement, invalidMessageType: string,
     Error HTML injection templates
  */
 
-export const invalidPass: string = `
+export const INVALID_PASS_MSS: string = `
     <div class="error-message" id="invalidPass">
         <small class="text-danger">
           Password be more than 8 or more characters long, contain at least 1 uppercase character, 1 lowercase character, and 1 number.
@@ -70,7 +70,7 @@ export const invalidPass: string = `
     </div>
 `;
 
-export const invalidPassConf: string = `
+export const INVALID_PASS_CONF_MSS: string = `
     <div class="error-message" id="invalidPassConf">
         <small class="text-danger">
           Password's do not match.
@@ -78,7 +78,7 @@ export const invalidPassConf: string = `
     </div>
 `;
 
-export const invalidEmail: string = `
+export const INVALID_EMAIL_MSS: string = `
     <div class="error-message" id="invalidEmail">
         <small class="text-danger">
           Email is not valid.
@@ -86,7 +86,7 @@ export const invalidEmail: string = `
     </div>
 `;
 
-export const invalidFName: string = `
+export const INVALID_F_NAME_MSS: string = `
     <div class="error-message" id="invalidFName">
         <small class="text-danger">
           Firstname must be more than 1 character.
@@ -94,7 +94,7 @@ export const invalidFName: string = `
     </div>
 `;
 
-export const invalidLName: string = `
+export const INVALID_L_NAME_MSS: string = `
     <div class="error-message" id="invalidLName">
         <small class="text-danger">
           Lastname must be more than 2 characters.
@@ -102,7 +102,7 @@ export const invalidLName: string = `
     </div>
 `;
 
-export const invalidStreet: string = `
+export const INVALID_STREET_MSS: string = `
     <div class="error-message" id="invalidStreet">
         <small class="text-danger">
           Street Address cannot be empty.
@@ -110,7 +110,7 @@ export const invalidStreet: string = `
     </div>
 `;
 
-export const invalidZip: string = `
+export const INVALID_ZIP_MSS: string = `
     <div class="error-message" id="invalidZip">
         <small class="text-danger">
           ZIP code is not valid.

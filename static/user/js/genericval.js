@@ -54,49 +54,49 @@ export function validator(inputType, invalidMessageType, invalidMessageTypeId, c
 /*
     Error HTML injection templates
  */
-export const invalidPass = `
+export const INVALID_PASS_MSS = `
     <div class="error-message" id="invalidPass">
         <small class="text-danger">
           Password be more than 8 or more characters long, contain at least 1 uppercase character, 1 lowercase character, and 1 number.
         </small>
     </div>
 `;
-export const invalidPassConf = `
+export const INVALID_PASS_CONF_MSS = `
     <div class="error-message" id="invalidPassConf">
         <small class="text-danger">
           Password's do not match.
         </small>
     </div>
 `;
-export const invalidEmail = `
+export const INVALID_EMAIL_MSS = `
     <div class="error-message" id="invalidEmail">
         <small class="text-danger">
           Email is not valid.
         </small>
     </div>
 `;
-export const invalidFName = `
+export const INVALID_F_NAME_MSS = `
     <div class="error-message" id="invalidFName">
         <small class="text-danger">
           Firstname must be more than 1 character.
         </small>
     </div>
 `;
-export const invalidLName = `
+export const INVALID_L_NAME_MSS = `
     <div class="error-message" id="invalidLName">
         <small class="text-danger">
           Lastname must be more than 2 characters.
         </small>
     </div>
 `;
-export const invalidStreet = `
+export const INVALID_STREET_MSS = `
     <div class="error-message" id="invalidStreet">
         <small class="text-danger">
           Street Address cannot be empty.
         </small>
     </div>
 `;
-export const invalidZip = `
+export const INVALID_ZIP_MSS = `
     <div class="error-message" id="invalidZip">
         <small class="text-danger">
           ZIP code is not valid.
