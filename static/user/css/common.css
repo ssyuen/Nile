@@ -1,24 +1,24 @@
 .primary{
-    font-family: 'Oswald';
+    font-family: 'Oswald', sans-serif;
 }
 
-.primary-md{
-    font-family: 'Oswald';
+.primary-md {
+    font-family: 'Oswald', sans-serif;
     font-size: 2em;
 }
 
-.primary-lg{
-    font-family: 'Oswald';
+.primary-lg {
+    font-family: 'Oswald', sans-serif;
     font-size: 4em;
 }
 
 .complement {
-    font-family: 'Open Sans';
-    font-weight: bold;
+    font-family: 'Open Sans', sans-serif;
+    font-weight: normal;
 }
 
 .complement-light {
-    font-family: 'Open Sans';
+    font-family: 'Open Sans', sans-serif;
 }
 
 .our-color{
