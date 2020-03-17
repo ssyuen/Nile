@@ -77,7 +77,7 @@ Array<string>('input', 'focusin').forEach((evt: string) => {
     });
 
     lName.addEventListener(evt, () => {
-        let val = (<HTMLInputElement>document.getElementById(fName.id)).value;
+        let val = (<HTMLInputElement>document.getElementById(lName.id)).value;
         validity[lName.id] = validate(lName, invalidLName, '#invalidLName', val.length >= 2);
     });
 

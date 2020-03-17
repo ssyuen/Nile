@@ -51,7 +51,6 @@ document.getElementById("addressToggler").addEventListener("click", function () 
     tog = !tog;
     tog == true ? scr('#addressToggler') : scr('#acctCard', 45);
 });
-
 function scr(selector, off = 0) {
     let el = $(selector);
     $(window).scrollTop(el.offset().top - off);
@@ -62,7 +61,7 @@ Array('input', 'focusin').forEach((evt) => {
         validity[fName.id] = validate(fName, invalidFName, '#invalidFName', val.length >= 1);
     });
     lName.addEventListener(evt, () => {
-        let val = document.getElementById(fName.id).value;
+        let val = document.getElementById(lName.id).value;
         validity[lName.id] = validate(lName, invalidLName, '#invalidLName', val.length >= 2);
     });
     email.addEventListener(evt, () => {
