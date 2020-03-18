@@ -38,7 +38,7 @@
     </div>
 </div>
 <!-- Page Content -->
-<div class="container pb-5" id="mainContent">
+<div class="container footer-sep" id="mainContent">
     <div class="row">
         <aside class="col mb-4">
             <div class="card">
@@ -474,7 +474,7 @@
                 <small class="text-muted">&#9733; &#9733; &#9733; &#9733; &#9734;</small>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn blue-gradient btn-block">Add to Cart
+                <button type="button" class="btn blue-gradient btn-block add-to-cart">Add to Cart
                     <i class="fas fa-shopping-cart fa-1x"></i>
                 </button>
             </div>
@@ -511,6 +511,21 @@
         document.getElementById("modalGenre").innerText = genre;
         $('#myModal').modal('show');
     }
+
+    /* FOR THE LOVE OF GOD - Please don't touch this I am working on it */
+    $(".add-to-cart")[0].addEventListener("click", (e) => {
+        let ct = $("#cartTotal");
+        let total = parseInt(ct.text());
+        console.log(total);
+        ct.text(++total);
+
+        let tar = $(e.target.id);
+        console.log(tar);
+        tar.text("Added to cart");
+        tar.prop("disabled", true);
+
+    });
+
 </script>
 </body>
 
