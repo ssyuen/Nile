@@ -5,26 +5,30 @@
 # Site
 https://www.nilebookstore.com
 
-- LET SAM KNOW IF YOU NEED HIM TO PULL CHANGES TO MASTER ON HOSTING SERVER
+- **LET SAM KNOW IF YOU NEED HIM TO PULL CHANGES TO MASTER ON HOSTING SERVER**
 
-## Execution
-
-- DO NOT TEST ANYTHING ON THE ACTUAL WEBSITE AS SAM HAS NOT ADDED APPROPRIATE ENV VARS.
-- Before execution, add `DB_USER` and `DB_PASS` to the local machine environment variables. This represents your
-MySql local instance's username and password
-- To start the server, make sure you have done `pipenv shell` in the top-level directory of nile, and run `./start.sh`
 
 ## Installation
 
 1. Clone this repository to your local via git clone <hhttps://github.com/ssyuen/Nile.git>
 
-2. cd into the cloned directory
+2. Install MySql. Create a schema name `niledb`. Run the `NileDBX.X.sql` script to create the necessary tables.
 
-3. `pipenv shell` will activate the virtual environment.
+3. cd into the cloned directory
 
-4. `pipenv install` will install the dependencies (i.e. requests.py and pandas)
+4. `pipenv shell` will activate the virtual environment.
 
-5. Make sure when you are done with development, run `exit` to exit out of the virtual environment. This is important to make sure you will not have to delete and re-clone the repository.
+5. `pipenv install` will install the dependencies (i.e. requests.py and pandas)
+
+6. Make sure when you are done with development, run `exit` to exit out of the virtual environment. 
+This is important to make sure you will not have to delete and re-clone the repository.
+
+## Execution
+
+- DO NOT TEST ANYTHING ON THE ACTUAL WEBSITE AS SAM HAS NOT ADDED APPROPRIATE ENV VARS.
+- To start the server, make sure you have done `pipenv shell` in the top-level directory of nile, and run `./start.sh`
+- If `DB_USER` and `DB_PASS` are not found in the local machine environment variables, the shell script will prompt you
+for it. Read the instructions at the top of the script.
 
 ## Todo List
 
