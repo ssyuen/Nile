@@ -10,9 +10,22 @@
 
     <title>Login</title>
     <style>
-        html,
-        body {
-            height: 100%;
+        @media (max-width: 768px) {
+            #sep {
+                display: table !important;
+                width: 100% !important;
+                padding-bottom: 20px;
+            }
+
+            #acctContainer {
+                display: table-cell;
+                width: auto !important;
+            }
+
+            #acctContainer > #acctCard {
+                width: auto !important;
+                padding: 12px !important;
+            }
         }
 
         .rounded {
@@ -23,7 +36,6 @@
             width: 500px;
             max-width: 75%;
             margin-top: 100px;
-            /* margin-bottom: 100px; */
             min-height: 100%;
         }
 
@@ -31,51 +43,36 @@
             height: 50px;
             border-radius: 0px;
         }
-
-        #myBtn {
-            position: fixed;
-            bottom: 20px;
-            right: 30px;
-            z-index: 99;
-            border: none;
-            cursor: pointer;
-            text-align: center;
-            border-radius: 50%;
-            align-items: center;
-            justify-content: center;
-            padding: .25em;
-            width: 80px;
-            height: 80px;
-        }
     </style>
 </head>
 
 <body class="our-color complement-light">
-    <div class="pb-5">
+<div class="pb-5">
 
-        {% include 'nav.html' %}
-    </div>
-    <div class="container">
-        <div class="row">
-            <div class="col">
-                <div class="text-center" id="content-header">
-                    <p class="primary-lg" id="account-holder">Ready to Shop?</p>
-                </div>
+    {% include 'nav.html' %}
+</div>
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <div class="text-center" id="content-header">
+                <p class="primary-lg" id="account-holder">Ready to Shop?</p>
             </div>
         </div>
     </div>
+</div>
+<div id="sep" class="footer-sep">
     <div class="container" id="acctContainer">
         <div class="rounded shadow-lg card p-5" id="acctCard">
             <div class="card-body">
                 <header style="text-align: center;">
                     <h3 class="card-title mb-5 primary">Account Login</h3>
                 </header>
-                {% with invalid_login = get_flashed_messages()%}
+                {% with invalid_login = get_flashed_messages() %}
                     {% if invalid_login %}
-                        
+
                         <p class="flashes" style="color: red;">
                             {% for msg in invalid_login %}
-                            {{ msg }}
+                                {{ msg }}
                             {% endfor %}
                         </p>
                     {% endif %}
@@ -113,43 +110,40 @@
             </div>
         </div>
     </div>
-
-    <button class="btn blue-gradient waves-light" id="myBtn" title="Register"><i
-            class="fas fa-angle-down fa-2x"></i></button>
-    <script>
-        $("#myBtn").click(function () {
-            $(function () {
-                var target = $('#acctContainer');
-                if (target.length) {
-                    $('html,body').animate({
-                        scrollTop: target.offset().top - 120
-                    }, 500);
-                    return false;
-                }
-            });
+</div>
+<button class="btn blue-gradient waves-light my-button" title="Register"><i
+        class="fas fa-angle-down fa-2x"></i></button>
+<script>
+    $(".myButton").click(function () {
+        $(function () {
+            var target = $('#acctContainer');
+            if (target.length) {
+                $('html,body').animate({
+                    scrollTop: target.offset().top - 120
+                }, 500);
+                return false;
+            }
         });
-    </script>
-    <footer class="py-5 bg-dark">
-        <div class="container text-white">
-            <p class="mb-2 text-center">Copyright &copy; Nile 2020</p>
-            <div class="text-center">
-                <a class="waves-effect waves-light mr-3">
-                    <i class="fab fa-twitter"></i>
-                </a>
-                <a class="waves-effect waves-light mr-3">
-                    <i class="fab fa-instagram"></i>
-                </a>
-                <a class="waves-effect waves-light">
-                    <i class="fab fa-facebook"></i>
-                </a>
-            </div>
+    });
+</script>
+<footer class="py-5 bg-dark">
+    <div class="container text-white">
+        <p class="mb-2 text-center">Copyright &copy; Nile 2020</p>
+        <div class="text-center">
+            <a class="waves-effect waves-light mr-3">
+                <i class="fab fa-twitter"></i>
+            </a>
+            <a class="waves-effect waves-light mr-3">
+                <i class="fab fa-instagram"></i>
+            </a>
+            <a class="waves-effect waves-light">
+                <i class="fab fa-facebook"></i>
+            </a>
         </div>
-        <!-- /.container -->
-    </footer>
+    </div>
+    <!-- /.container -->
+</footer>
 
-    <script>
-
-    </script>
 </body>
 
 </html>
