@@ -36,5 +36,7 @@ else
   exit
 fi
 
+# DEBUG TRUE - FLASK RESTARTS FOR EVERY CHANGE :)
+export FLASK_DEBUG=1
 export FLASK_APP=./server.py
 flask run -h 127.0.0.1
