@@ -14,7 +14,6 @@ printf "\n\n"
 
 echo "Hello $(whoami)"
 
-
 if [[ -z "${DB_USER}" ]]; then
   read -r -p "Enter Your MySQL Username: "  uname
   eval "export DB_USER=$uname"
@@ -29,12 +28,18 @@ fi
 
 if [[ ! -z "`mysql -qfsBe "SELECT SCHEMA_NAME FROM INFORMATION_SCHEMA.SCHEMATA WHERE SCHEMA_NAME='niledb'" 2>&1`" ]];
 then
-  echo "niledb registered"
+  echo "INFO: niledb registered"
 else
-  echo "niledb does not exist"
+  echo "ERROR: niledb could not be found on the MySQL instance"
   read
   exit
 fi
+
+printf "==ALL SQL CHECKS PASSED==\n\n"
+
+ls
+
+printf "\n\n"
 
 # DEBUG TRUE - FLASK RESTARTS FOR EVERY CHANGE :)
 export FLASK_DEBUG=1
