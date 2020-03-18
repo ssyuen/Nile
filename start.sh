@@ -6,7 +6,7 @@ AUTHOR: MANU\n
 DESCRIPTION: This is a bash script for initiating Flask and Nile. Make sure that you have
 MySQL installed locally on your machine. The server.py file requires a username and password.
 This script checks if you have them as global environment variables. If not, the script will add
-it locally. If you're don't seem to be registering, restart your IDE or terminal."
+it locally. If your don't seem to be registering, restart your IDE or terminal."
 
 printf "\n\n"
 echo "--------------------------------------------------------------------"
