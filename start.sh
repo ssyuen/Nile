@@ -31,7 +31,7 @@ then
   echo "INFO: niledb registered"
 else
   echo "ERROR: niledb could not be found on the MySQL instance"
-  read
+  read -r
   exit
 fi
 
@@ -44,4 +44,8 @@ printf "\n\n"
 # DEBUG TRUE - FLASK RESTARTS FOR EVERY CHANGE :)
 export FLASK_DEBUG=1
 export FLASK_APP=./server.py
-flask run -h 127.0.0.1
+flask run -h 127.0.0.1 &
+python -mwebbrowser http://127.0.0.1:5000
+
+read -r
+
