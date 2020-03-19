@@ -65,7 +65,7 @@ re='^[0-9]+$'
 if [[ -z "$version" || $version =~ re ]];
 then
     echo "PYTHON WAS NOT FOUND ON THE SYSTEM."
-    cancel.
+    cancel
 fi
 
 verAsInt=${version//[\.]/}
