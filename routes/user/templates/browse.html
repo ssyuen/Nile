@@ -473,11 +473,13 @@
                 <p><b>Reviews:</b></p>
                 <small class="text-muted">&#9733; &#9733; &#9733; &#9733; &#9734;</small>
             </div>
-            <div class="modal-footer">
-                <button type="button" class="btn blue-gradient btn-block add-to-cart">Add to Cart
-                    <i class="fas fa-shopping-cart fa-1x"></i>
-                </button>
-            </div>
+            {% if not session['admin'] %}
+                <div class="modal-footer">
+                    <button type="button" class="btn blue-gradient btn-block add-to-cart">Add to Cart
+                        <i class="fas fa-shopping-cart fa-1x"></i>
+                    </button>
+                </div>
+            {% endif %}
         </div>
     </div>
 </div>
