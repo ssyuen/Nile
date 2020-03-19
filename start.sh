@@ -1,8 +1,26 @@
 #!/bin/sh
 
+trap "trap_ctrlc" 2
+
 cancel(){
-  read -r
+  read -r -p "Press ENTER to EXIT"
   exit
+}
+
+trap_ctrlc ()
+{
+    echo "Ctrl-C caught...performing clean up"
+    echo "Killing...$f_pid"
+    kill "$f_pid"
+
+    # Allow the user to see the message, so sleep for 4 seconds
+    echo "Exiting In: "
+    for i in 4 3 2 1
+    do
+       echo "$i... "
+       sleep 1
+    done
+    exit
 }
 
 printf "BASH SCRIPT FOR NILE\n
@@ -46,7 +64,7 @@ version=$(python -c 'import sys; print("".join(map(str, sys.version_info[:3])))'
 re='^[0-9]+$'
 if [[ -z "$version" || $version =~ re ]];
 then
-    echo "PYTHON WAS NOT FOUND ON THE SYSTEM. NOW EXITING..."
+    echo "PYTHON WAS NOT FOUND ON THE SYSTEM."
     cancel.
 fi
 
@@ -63,9 +81,10 @@ printf "==ALL PYTHON CHECKS PASSED==\n\n"
 # DEBUG TRUE - FLASK RESTARTS FOR EVERY CHANGE :)
 export FLASK_DEBUG=1
 export FLASK_APP=./server.py
+
 flask run -h 127.0.0.1 &
+f_pid=$!
+
 python -mwebbrowser http://127.0.0.1:5000
-
-read -r
-
+wait
 
