@@ -166,21 +166,65 @@
                     </header>
                     <div class="filter-content collapse show" id="collapse_3">
                         <div class="card-body">
-                            <input type="range" class="custom-range" min="0" max="100" name="">
+                            <div class="pb-3">
+                                <div id="slider-range"></div>
+                            </div>
                             <div class="form-row">
-                                <div class="form-group col-md-6">
+                                <div class="form-group col">
                                     <label>Min</label>
-                                    <input class="form-control" placeholder="$0" type="number">
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <div class="input-group-text">$</div>
+                                        </div>
+                                        <input class="form-control numbersOnly" type="number" pattern="[0-9]"
+                                               id="minRange">
+                                    </div>
                                 </div>
-                                <div class="form-group text-right col-md-6">
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col">
                                     <label>Max</label>
-                                    <input class="form-control" placeholder="$1,0000" type="number">
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <div class="input-group-text">$</div>
+                                        </div>
+                                        <input class="form-control numbersOnly" type="number" pattern="[0-9]"
+                                               id="maxRange">
+                                    </div>
                                 </div>
                             </div> <!-- form-row.// -->
                             <button class="btn btn-block btn-primary">Apply</button>
                         </div><!-- card-body.// -->
                     </div>
                 </article> <!-- filter-group .// -->
+                <script>
+                    let sr = $("#slider-range");
+
+                    $(() => {
+                        sr.slider({
+                            range: true,
+                            min: 0,
+                            max: 100,
+                            values: [0, 100],
+                            step: 1,
+                            slide: (event, ui) => {
+                                $("#minRange").val(ui.values[0]);
+                                $("#maxRange").val(ui.values[1]);
+                            }
+                        });
+                        $("#minRange").attr("placeholder", sr.slider("values", 0));
+                        $("#maxRange").attr("placeholder", sr.slider("values", 1));
+                    });
+
+                    $("#minRange")[0].addEventListener("input", evt => {
+                        sr.slider("values", 0, evt.target.value);
+                    });
+
+                    $("#maxRange")[0].addEventListener("input", evt => {
+                        sr.slider("values", 1, evt.target.value);
+                    });
+
+                </script>
                 <article class="filter-group">
                     <header class="card-header">
                         <a href="#" data-toggle="collapse" data-target="#collapse_4" aria-expanded="true" class="">
