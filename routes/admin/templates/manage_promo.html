@@ -24,129 +24,133 @@
 </head>
 
 <body class="our-color">
-    {% include 'nav.html' %}
-    <div class="container">
-        <div class="row mt-xl-5" id="cust-info">
-            <div class="col mb-5">
-                <div class="text-left" id="welcome">
-                    <p class="primary-lg" id="account-holder">Manage Promotions</span></p>
-                </div>
+{% include 'nav.html' %}
+<div class="container">
+    <div class="row mt-xl-5" id="cust-info">
+        <div class="col mb-5">
+            <div class="text-left" id="welcome">
+                <p class="primary-lg" id="account-holder">Manage Promotions</span></p>
             </div>
         </div>
     </div>
-    <div class="container">
-        <!--Grid row-->
-        <div class="row">
-            <div class="col">
-                <div class="md-form mt-0">
-                    <input class="form-control" type="text" placeholder="Enter Promotion ID" aria-label="Search">
-                </div>
-            </div>
-            <div class="col-sm-2 text-right">
-                <button class="btn blue-gradient btn-rounded btn-sm" type="submit">Search</button>
+</div>
+<div class="container footer-sep">
+    <!--Grid row-->
+    <div class="row">
+        <div class="col">
+            <div class="md-form mt-0">
+                <input class="form-control" type="text" placeholder="Enter Promotion ID" aria-label="Search">
             </div>
         </div>
-        <div class="row">
-            <!--Grid column-->
-            <div class="col mb-4">
-                <!-- Card -->
-                <div class="card gradient-card h-100">
-                    <div class="card-image"
-                        style="background-image: url(https://mdbootstrap.com/img/Photos/Horizontal/Work/4-col/img%20%2814%29.jpg)">
-                        <!-- Content -->
-                        <div class="text-white mask card-contextual-info">
+        <div class="col-sm-2 text-right">
+            <button class="btn blue-gradient btn-rounded btn-sm" type="submit">Search</button>
+        </div>
+    </div>
+    <div class="row">
+        <!--Grid column-->
+        <div class="col mb-4">
+            <!-- Card -->
+            <div class="card gradient-card h-100">
+                <div class="card-image"
+                     style="background-image: url(https://mdbootstrap.com/img/Photos/Horizontal/Work/4-col/img%20%2814%29.jpg)">
+                    <!-- Content -->
+                    <div class="text-white mask card-contextual-info">
 
-                            <div class="row">
-                                <div class="col align-self-center">
-                                    <div class="first-content p-3">
-                                        <h3 class="card-title">Readonly Promotion Information</h3>
-                                    </div>
+                        <div class="row">
+                            <div class="col align-self-center">
+                                <div class="first-content p-3">
+                                    <h3 class="card-title">Readonly Promotion Information</h3>
                                 </div>
-                                <div class="col align-self-center">
-                                    <div class="second-content pr-3" style="float: right;">
-                                        <i class="fas fa-edit fa-3x"></i>
-                                    </div>
+                            </div>
+                            <div class="col align-self-center">
+                                <div class="second-content pr-3" style="float: right;">
+                                    <i class="fas fa-edit fa-3x"></i>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <!-- Content -->
-                    <div class="card-body white">
-                        <form>
-                            <div class="form-row">
-                                <div class="form-group col-md-6">
-                                    <i class="fas fa-list-ol"></i>
-                                    <label for="promoId">Promo Id</label>
-                                    <div class="input-group">
-                                        <input type="text" class="form-control" id="promoId" placeholder="Promotion ID" readonly>
-                                    </div>
-                                </div>
-                                <div class="form-group col-md-6">
-                                    <i class="fas fa-signature"></i>
-                                    <label for="promoName">Promo Name</label>
-                                    <div class="input-group">
-                                        <input type="text" class="form-control" id="promoName" placeholder="Promotion Name" readonly>
-                                    </div>
+                </div>
+                <!-- Content -->
+                <div class="card-body white">
+                    <form>
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <i class="fas fa-list-ol"></i>
+                                <label for="promoId">Promo Id</label>
+                                <div class="input-group">
+                                    <input type="text" class="form-control" id="promoId" placeholder="Promotion ID"
+                                           readonly>
                                 </div>
                             </div>
-                            <div class="form-row">
-                                <div class="form-group col">
-                                    <i class="fas fa-barcode"></i>
-                                    <label for="promoCode">Promo Code</label>
-                                    <div class="input-group">
-                                        <input type="text" class="form-control" id="promoCode"
-                                            placeholder="Promotion Code" readonly>
-                                    </div>
-                                </div>
-
-                                <div class="form-group col">
-                                    <i class="fas fa-dollar-sign"></i>
-                                    <label for="promoAmt">Promo Amount</label>
-                                    <div class="input-group">
-                                        <input type="percent" class="form-control" id="promoAmt"
-                                        placeholder="Promotion Amount" readonly>
-                                    </div>
+                            <div class="form-group col-md-6">
+                                <i class="fas fa-signature"></i>
+                                <label for="promoName">Promo Name</label>
+                                <div class="input-group">
+                                    <input type="text" class="form-control" id="promoName" placeholder="Promotion Name"
+                                           readonly>
                                 </div>
                             </div>
-                            <div class="form-row">
-                                <div class="form-group col">
-                                    <i class="fas fa-pen-alt"></i>
-                                    <label for="exampleFormControlTextarea3">Promotion Notes</label>
-                                    <textarea class="form-control" id="exampleFormControlTextarea3" rows="4" placeholder="Notes" readonly></textarea>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col">
+                                <i class="fas fa-barcode"></i>
+                                <label for="promoCode">Promo Code</label>
+                                <div class="input-group">
+                                    <input type="text" class="form-control" id="promoCode"
+                                           placeholder="Promotion Code" readonly>
                                 </div>
                             </div>
 
+                            <div class="form-group col">
+                                <i class="fas fa-dollar-sign"></i>
+                                <label for="promoAmt">Promo Amount</label>
+                                <div class="input-group">
+                                    <input type="percent" class="form-control" id="promoAmt"
+                                           placeholder="Promotion Amount" readonly>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col">
+                                <i class="fas fa-pen-alt"></i>
+                                <label for="exampleFormControlTextarea3">Promotion Notes</label>
+                                <textarea class="form-control" id="exampleFormControlTextarea3" rows="4"
+                                          placeholder="Notes" readonly></textarea>
+                            </div>
+                        </div>
 
-                        </form>
-                    </div>
+
+                    </form>
                 </div>
             </div>
-            <!--Grid column-->
         </div>
-        <div class="row">
-            <div class="col">
-                <button type="button" id="deleteBtn" class="btn btn-danger btn-rounded btn-block mb-5">Delete
-                    Promotion</button>
-            </div>
-        </div>
-        <!--Grid row-->
+        <!--Grid column-->
     </div>
-    <footer class="py-5 bg-dark">
-        <div class="container text-white">
-            <p class="mb-2 text-center">Copyright &copy; Nile 2020</p>
-            <div class="text-center">
-                <a class="waves-effect waves-light mr-3">
-                    <i class="fab fa-twitter"></i>
-                </a>
-                <a class="waves-effect waves-light mr-3">
-                    <i class="fab fa-instagram"></i>
-                </a>
-                <a class="waves-effect waves-light">
-                    <i class="fab fa-facebook"></i>
-                </a>
-            </div>
+    <div class="row">
+        <div class="col">
+            <button type="button" id="deleteBtn" class="btn btn-danger btn-rounded btn-block mb-5">Delete
+                Promotion
+            </button>
         </div>
-        <!-- /.container -->
-    </footer>
+    </div>
+    <!--Grid row-->
+</div>
+<footer class="py-5 bg-dark">
+    <div class="container text-white">
+        <p class="mb-2 text-center">Copyright &copy; Nile 2020</p>
+        <div class="text-center">
+            <a class="waves-effect waves-light mr-3">
+                <i class="fab fa-twitter"></i>
+            </a>
+            <a class="waves-effect waves-light mr-3">
+                <i class="fab fa-instagram"></i>
+            </a>
+            <a class="waves-effect waves-light">
+                <i class="fab fa-facebook"></i>
+            </a>
+        </div>
+    </div>
+    <!-- /.container -->
+</footer>
 </body>
 </html>

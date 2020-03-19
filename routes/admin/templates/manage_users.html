@@ -24,194 +24,207 @@
 </head>
 
 <body class="our-color">
-    {% include 'nav.html' %}
-    <div class="container">
-        <div class="row mt-xl-5" id="cust-info">
-            <div class="col mb-5">
-                <div class="text-left" id="welcome">
-                    <p class="primary-lg" id="account-holder">Manage a User</span></p>
-                </div>
+{% include 'nav.html' %}
+<div class="container">
+    <div class="row mt-xl-5" id="cust-info">
+        <div class="col mb-5">
+            <div class="text-left" id="welcome">
+                <p class="primary-lg" id="account-holder">Manage a User</span></p>
             </div>
         </div>
     </div>
-    <div class="container">
-        <!--Grid row-->
-        <div class="row">
-            <div class="col">
-                <div class="md-form mt-0">
-                    <input class="form-control" type="text" placeholder="Enter User Email Address" aria-label="Search">
-                </div>
-            </div>
-            <div class="col-sm-3 text-right">
-                <button class="btn blue-gradient btn-rounded btn-sm" type="submit">Search</button>
-                <button class="btn blue-gradient btn-rounded btn-sm">Clear Form</button>
+</div>
+<div class="container footer-sep">
+    <!--Grid row-->
+    <div class="row">
+        <div class="col">
+            <div class="md-form mt-0">
+                <input class="form-control" type="text" placeholder="Enter User Email Address" aria-label="Search">
             </div>
         </div>
-        <div class="row">
-            <!--Grid column-->
-            <div class="col mb-4">
-                <!-- Card -->
-                <div class="card gradient-card h-100">
-                    <div class="card-image"
-                        style="background-image: url(https://mdbootstrap.com/img/Photos/Horizontal/Work/4-col/img%20%2814%29.jpg)">
-                        <!-- Content -->
-                        <div class="text-white mask card-contextual-info">
+        <div class="col-sm-3 text-right">
+            <button class="btn blue-gradient btn-rounded btn-sm" type="submit">Search</button>
+            <button class="btn blue-gradient btn-rounded btn-sm">Clear Form</button>
+        </div>
+    </div>
+    <div class="row">
+        <!--Grid column-->
+        <div class="col mb-4">
+            <!-- Card -->
+            <div class="card gradient-card h-100">
+                <div class="card-image"
+                     style="background-image: url(https://mdbootstrap.com/img/Photos/Horizontal/Work/4-col/img%20%2814%29.jpg)">
+                    <!-- Content -->
+                    <div class="text-white mask card-contextual-info">
 
-                            <div class="row">
-                                <div class="col align-self-center">
-                                    <div class="first-content p-3">
-                                        <h3 class="card-title">Submit the Form</h3>
-                                    </div>
+                        <div class="row">
+                            <div class="col align-self-center">
+                                <div class="first-content p-3">
+                                    <h3 class="card-title">Submit the Form</h3>
                                 </div>
-                                <div class="col align-self-center">
-                                    <div class="second-content pr-3" style="float: right;">
-                                        <i class="fas fa-edit fa-3x"></i>
-                                    </div>
+                            </div>
+                            <div class="col align-self-center">
+                                <div class="second-content pr-3" style="float: right;">
+                                    <i class="fas fa-edit fa-3x"></i>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <!-- Content -->
-                    <div class="card-body white">
-                        <form>
-                            <div class="form-row">
-                                <div class="form-group col-md-6">
-                                    <i class="fas fa-signature"></i>                                    <label for="firstName">User First Name</label>
-                                    <div class="input-group">
-                                        <input type="text" class="form-control" id="firstName" placeholder="User's First Name">
-                                        <div class="input-group-append">
-                                            <button class="btn btn-outline-warning m-0 px-3 py-2 z-depth-0 waves-effect"
-                                                type="button" id="editFirstNameBtn">Edit</button>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="form-group col-md-6">
-                                    <i class="fas fa-signature"></i>                                    <label for="lastName">User Last Name</label>
-                                    <div class="input-group">
-                                        <input type="text" class="form-control" id="lastName" placeholder="User's Last Name">
-                                        <div class="input-group-append">
-                                            <button class="btn btn-outline-warning m-0 px-3 py-2 z-depth-0 waves-effect"
-                                                type="button" id="editLastNameBtn">Edit</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="form-row">
-                                <div class="form-group col">
-                                    <i class="fas fa-at"></i>                                    
-                                    <label for="emailAddr">User email address</label>
-                                    <div class="input-group">
-                                        <input type="email" class="form-control" id="emailAddr"
-                                            placeholder="User's Email Address">
-                                        <div class="input-group-append">
-                                            <button class="btn btn-outline-warning m-0 px-3 py-2 z-depth-0 waves-effect"
-                                                type="button" id="editEmailAddrBtn">Edit</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="form-row">
-                                <div class="form-group col">
-                                    <i class="fas fa-road"></i>
-                                    <label for="streetAddress">User's Street Address</label>
-                                    <div class="input-group">
-                                        <input type="text" class="form-control" id="streetAddress"
-                                        placeholder="User's City">
-                                        <div class="input-group-append">
-                                            <button class="btn btn-outline-warning m-0 px-3 py-2 z-depth-0 waves-effect"
-                                                type="button" id="editStreetAddressBtn">Edit</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="form-row">
-                                <div class="form-group col">
-                                    <i class="fas fa-city"></i>
-                                    <label for="city">City</label>
-                                    <div class="input-group">
-                                        <input type="text" class="form-control" id="city"
-                                        placeholder="Street Address">
-                                        <div class="input-group-append">
-                                            <button class="btn btn-outline-warning m-0 px-3 py-2 z-depth-0 waves-effect"
-                                                type="button" id="editCityBtn">Edit</button>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="form-group col">
-                                    <i class="fas fa-map-marker"></i>
-                                    <label for="state">State</label>
-                                    <div class="input-group">
-                                        <select id="state" class="form-control">
-                                            <option selected>Georgia</option>
-                                            <option>California</option>
-                                        </select>
+                </div>
+                <!-- Content -->
+                <div class="card-body white">
+                    <form>
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <i class="fas fa-signature"></i> <label for="firstName">User First Name</label>
+                                <div class="input-group">
+                                    <input type="text" class="form-control" id="firstName"
+                                           placeholder="User's First Name">
+                                    <div class="input-group-append">
                                         <button class="btn btn-outline-warning m-0 px-3 py-2 z-depth-0 waves-effect"
-                                            type="button" id="editStateBtn">Edit</button>
+                                                type="button" id="editFirstNameBtn">Edit
+                                        </button>
                                     </div>
                                 </div>
                             </div>
-                            <div class="form-row">
-                                <div class="form-group col">
-                                    <i class="fas fa-map-marker"></i>
-                                    <label for="zip">Zip Code</label>
-                                    <div class="input-group">
-                                        <input type="number" class="form-control" id="zip"
-                                        placeholder="Zip Code">
-                                        <div class="input-group-append">
-                                            <button class="btn btn-outline-warning m-0 px-3 py-2 z-depth-0 waves-effect"
-                                                type="button" id="ediZipBtn">Edit</button>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="form-group col">
-                                    <i class="fas fa-globe-americas"></i>
-                                    <label for="country">Country</label>
-                                    <div class="input-group">
-                                        <select id="country" class="form-control">
-                                            <option selected>U.S.A</option>
-                                            <option>U.K.</option>
-                                        </select>
+                            <div class="form-group col-md-6">
+                                <i class="fas fa-signature"></i> <label for="lastName">User Last Name</label>
+                                <div class="input-group">
+                                    <input type="text" class="form-control" id="lastName"
+                                           placeholder="User's Last Name">
+                                    <div class="input-group-append">
                                         <button class="btn btn-outline-warning m-0 px-3 py-2 z-depth-0 waves-effect"
-                                            type="button" id="editBindingTypeBtn">Edit</button>
+                                                type="button" id="editLastNameBtn">Edit
+                                        </button>
                                     </div>
                                 </div>
                             </div>
-                            <button type="submit" id="updateBtn" class="btn blue-gradient btn-block">Save & Update
-                                Information</button>
-                        </form>
-                    </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col">
+                                <i class="fas fa-at"></i>
+                                <label for="emailAddr">User email address</label>
+                                <div class="input-group">
+                                    <input type="email" class="form-control" id="emailAddr"
+                                           placeholder="User's Email Address">
+                                    <div class="input-group-append">
+                                        <button class="btn btn-outline-warning m-0 px-3 py-2 z-depth-0 waves-effect"
+                                                type="button" id="editEmailAddrBtn">Edit
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col">
+                                <i class="fas fa-road"></i>
+                                <label for="streetAddress">User's Street Address</label>
+                                <div class="input-group">
+                                    <input type="text" class="form-control" id="streetAddress"
+                                           placeholder="User's City">
+                                    <div class="input-group-append">
+                                        <button class="btn btn-outline-warning m-0 px-3 py-2 z-depth-0 waves-effect"
+                                                type="button" id="editStreetAddressBtn">Edit
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col">
+                                <i class="fas fa-city"></i>
+                                <label for="city">City</label>
+                                <div class="input-group">
+                                    <input type="text" class="form-control" id="city"
+                                           placeholder="Street Address">
+                                    <div class="input-group-append">
+                                        <button class="btn btn-outline-warning m-0 px-3 py-2 z-depth-0 waves-effect"
+                                                type="button" id="editCityBtn">Edit
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group col">
+                                <i class="fas fa-map-marker"></i>
+                                <label for="state">State</label>
+                                <div class="input-group">
+                                    <select id="state" class="form-control">
+                                        <option selected>Georgia</option>
+                                        <option>California</option>
+                                    </select>
+                                    <button class="btn btn-outline-warning m-0 px-3 py-2 z-depth-0 waves-effect"
+                                            type="button" id="editStateBtn">Edit
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col">
+                                <i class="fas fa-map-marker"></i>
+                                <label for="zip">Zip Code</label>
+                                <div class="input-group">
+                                    <input type="number" class="form-control" id="zip"
+                                           placeholder="Zip Code">
+                                    <div class="input-group-append">
+                                        <button class="btn btn-outline-warning m-0 px-3 py-2 z-depth-0 waves-effect"
+                                                type="button" id="ediZipBtn">Edit
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group col">
+                                <i class="fas fa-globe-americas"></i>
+                                <label for="country">Country</label>
+                                <div class="input-group">
+                                    <select id="country" class="form-control">
+                                        <option selected>U.S.A</option>
+                                        <option>U.K.</option>
+                                    </select>
+                                    <button class="btn btn-outline-warning m-0 px-3 py-2 z-depth-0 waves-effect"
+                                            type="button" id="editBindingTypeBtn">Edit
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <button type="submit" id="updateBtn" class="btn blue-gradient btn-block">Save & Update
+                            Information
+                        </button>
+                    </form>
                 </div>
             </div>
-            <!--Grid column-->
         </div>
-        <!--Grid row-->
-        <div class="row">
-            <div class="col">
-                <button type="button" id="deleteBtn" class="btn btn-warning btn-rounded btn-block mb-5">Promote
-                    User</button>
-            </div>
-            <div class="col">
-                <button type="button" id="deleteBtn" class="btn btn-danger btn-rounded btn-block mb-5">Suspend
-                    User</button>
-            </div>
+        <!--Grid column-->
+    </div>
+    <!--Grid row-->
+    <div class="row">
+        <div class="col">
+            <button type="button" id="deleteBtn" class="btn btn-warning btn-rounded btn-block mb-5">Promote
+                User
+            </button>
+        </div>
+        <div class="col">
+            <button type="button" id="deleteBtn" class="btn btn-danger btn-rounded btn-block mb-5">Suspend
+                User
+            </button>
         </div>
     </div>
-    <footer class="py-5 bg-dark">
-        <div class="container text-white">
-            <p class="mb-2 text-center">Copyright &copy; Nile 2020</p>
-            <div class="text-center">
-                <a class="waves-effect waves-light mr-3">
-                    <i class="fab fa-twitter"></i>
-                </a>
-                <a class="waves-effect waves-light mr-3">
-                    <i class="fab fa-instagram"></i>
-                </a>
-                <a class="waves-effect waves-light">
-                    <i class="fab fa-facebook"></i>
-                </a>
-            </div>
+</div>
+<footer class="py-5 bg-dark">
+    <div class="container text-white">
+        <p class="mb-2 text-center">Copyright &copy; Nile 2020</p>
+        <div class="text-center">
+            <a class="waves-effect waves-light mr-3">
+                <i class="fab fa-twitter"></i>
+            </a>
+            <a class="waves-effect waves-light mr-3">
+                <i class="fab fa-instagram"></i>
+            </a>
+            <a class="waves-effect waves-light">
+                <i class="fab fa-facebook"></i>
+            </a>
         </div>
-        <!-- /.container -->
-    </footer>
+    </div>
+    <!-- /.container -->
+</footer>
 </body>
 </html>
