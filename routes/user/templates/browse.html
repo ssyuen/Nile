@@ -207,6 +207,7 @@
                             max: 100,
                             values: [0, 100],
                             step: 1,
+                            animate: true,
                             slide: (event, ui) => {
                                 $("#minRange").val(ui.values[0]);
                                 $("#maxRange").val(ui.values[1]);
@@ -289,7 +290,7 @@
 
                     <div class="row h-100 view-selection">
                         <div class="col view-selection-opt" style="align-self: center">
-                            <select class="custom-select custom-select-lg" style="border: 2px solid black">
+                            <select class="custom-select custom-select-lg our-color" style="border: 2px solid black;">
                                 <option>Latest items</option>
                                 <option>Most Popular</option>
                                 <option>Cheapest</option>
