@@ -1,0 +1,127 @@
+import { CountUp } from '../../jsplugin/countUp.min.js';
+const NILE_ISBN_ATTR = "nile-isbn";
+const NILE_BUY_PR_ATTR = "buying-price";
+const DURATION_SEC = 0.5;
+const DURATION_M_SEC = 500;
+const SESSION = {};
+/* DEFAULT COUNTER */
+SESSION['totalCounter'] = new CountUp("totalPrice", 0, {
+    decimalPlaces: 2,
+    duration: DURATION_SEC,
+    startVal: 0.00
+});
+SESSION['totalCounter'].start();
+// POC
+// const session = {
+//     "9789667234578": new CountUp("xcvu", 20.99, options),
+//     "9789651234578": new CountUp("xcvv", 20.99, options)
+// };
+//
+//
+// session['9789667234578'].start();
+// session['9789651234578'].start();
+/*
+ * I used window.sessionStorage to store information about quantity.
+ * This allows the browser to remember the quantity of each product
+ * rather than send a get request every time we go to the addToCart page.
+ * The ONLY TIME that we update the quantity in the DB is when the user
+ * clicks checkout
+ */
+$(function () {
+    if (!isCartEmpty()) {
+        let allSelect = $("select.form-control");
+        for (let sel of allSelect) {
+            let isbn = sel.getAttribute(NILE_ISBN_ATTR);
+            if (isbn in window.sessionStorage) {
+                $(sel).children(`option[value=${window.sessionStorage[isbn]}]`).attr('selected', 'selected');
+                updateIndividual(sel);
+            }
+            else {
+                window.sessionStorage[isbn] = '1';
+            }
+        }
+        setTimeout(updateTotal, DURATION_M_SEC);
+    }
+});
+$("select.form-control").change(function (evt) {
+    let x = (evt.target);
+    updateIndividual(x);
+    setTimeout(updateTotal, DURATION_M_SEC);
+});
+function updateIndividual(x) {
+    let origPrice = parseFloat(x.getAttribute(NILE_BUY_PR_ATTR));
+    let isbn = x.getAttribute(NILE_ISBN_ATTR);
+    let sel = parseInt(x.value);
+    let priceElem = getPrice(x);
+    if (isbn in SESSION) {
+        let counter = SESSION[isbn];
+        if (sel === 1) {
+            counter.update(origPrice);
+        }
+        else {
+            counter.update(origPrice * sel);
+        }
+    }
+    else {
+        let options = {
+            decimalPlaces: 2,
+            duration: DURATION_SEC,
+            startVal: origPrice
+        };
+        if (sel === 1) {
+            SESSION[isbn] = new CountUp(priceElem, origPrice, options);
+        }
+        else {
+            SESSION[isbn] = new CountUp(priceElem, origPrice * sel, options);
+        }
+        startAnimation(SESSION[isbn]);
+    }
+    window.sessionStorage.setItem(isbn, sel.toString());
+}
+function updateTotal() {
+    let inst = SESSION['totalCounter'];
+    inst.update(calcTotal());
+}
+function calcTotal() {
+    let allSelect = $("select.form-control");
+    let total = 0.00;
+    for (let val of allSelect) {
+        let priceOfBook = parseFloat(getPrice(val).innerHTML);
+        total += priceOfBook;
+    }
+    return total;
+}
+function startAnimation(ctr, callback = null) {
+    if (!ctr.error) {
+        ctr.start(callback);
+    }
+    else {
+        console.error(ctr.error);
+    }
+}
+function getPrice(selectElement) {
+    return $(selectElement).parent().next().find('div.quant-price')[0];
+}
+$('.table-shopping-cart').on('click', 'button', function (e) {
+    $(this).closest('tr').remove();
+    setTimeout(updateTotal, DURATION_M_SEC);
+    isCartEmpty();
+    /*
+         REMOVE FROM DATABASE SCRIPT CALL
+     */
+});
+function isCartEmpty() {
+    if ($('.table-shopping-cart > tbody > tr').length === 0) {
+        $("#checkoutBtn").addClass("d-none");
+        $("#cartEmptyCard").removeClass("d-none");
+        return true;
+    }
+    return false;
+}
+/* This event listener is a fail safe. Ignore it for now. */
+$("#checkoutBtn").on("click", (evt) => {
+    if (isCartEmpty()) {
+        alert("You're Cart is empty");
+        evt.preventDefault();
+    }
+});
