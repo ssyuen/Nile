@@ -1,6 +1,12 @@
-.primary{
+.primary {
     font-family: 'Oswald', sans-serif;
 }
+
+.primary-sm {
+    font-family: 'Oswald', sans-serif;
+    font-size: large;
+}
+
 
 .primary-md {
     font-family: 'Oswald', sans-serif;
