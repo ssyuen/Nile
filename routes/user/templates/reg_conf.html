@@ -9,27 +9,14 @@
 
     {% include 'style.html' %}
 
-    <style>
-        #registrationCard {
-            min-width: 500px;
-            margin-top: 150px;
-        }
-
-        .logo {
-            display: block;
-            margin-left: auto;
-            margin-right: auto;
-        }
-    </style>
 </head>
 
-
 <body class="our-color">
-    <div class="pb-5">
-        <!-- Navigation -->
-        {% include 'nav.html' %}
-        </nav>
-    </div>
+<div class="pb-5">
+    <!-- Navigation -->
+    {% include 'nav.html' %}
+</div>
+<div class="footer-sep">
     <div class="row">
         <div class="col-5 mx-auto my-5">
             <div class="card">
@@ -42,4 +29,22 @@
             </div>
         </div>
     </div>
+</div>
+<footer class="py-5 bg-dark">
+    <div class="container text-white">
+        <p class="mb-2 text-center">Copyright &copy; Nile 2020</p>
+        <div class="text-center">
+            <a class="waves-effect waves-light mr-3">
+                <i class="fab fa-twitter"></i>
+            </a>
+            <a class="waves-effect waves-light mr-3">
+                <i class="fab fa-instagram"></i>
+            </a>
+            <a class="waves-effect waves-light">
+                <i class="fab fa-facebook"></i>
+            </a>
+        </div>
+    </div>
+    <!-- /.container -->
+</footer>
 </body>
