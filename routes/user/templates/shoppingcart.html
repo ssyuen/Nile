@@ -21,7 +21,7 @@
         .table-borderless th,
         .table-borderless td,
         .table-borderless thead th,
-        .table-borderless tbody + tbody {
+        .table-borderless tbody+tbody {
             border: 0;
         }
 
@@ -48,217 +48,221 @@
                 padding-top: 20px;
             }
         }
-
     </style>
 </head>
 
 <body class="our-color">
-<div class="pb-5">
-    {% include 'nav.html' %}
-</div>
+    <div class="pb-5">
+        {% include 'nav.html' %}
+    </div>
 
-<div class="container">
-    <div class="row">
-        <div class="col mb-4">
-            <div class="text-left" id="content-header">
-                <p class="primary-lg" id="account-holder">My Shopping Cart.</p>
+    <div class="container">
+        <div class="row">
+            <div class="col mb-4">
+                <div class="text-left" id="content-header">
+                    <p class="primary-lg" id="account-holder">My Shopping Cart.</p>
+                </div>
             </div>
         </div>
     </div>
-</div>
 
-<div class="footer-sep mb-5">
-    <div class="container">
-        <div class="row">
-            <main class="col-md-9">
-                <div class="card" id="cartCard">
-                    <div class="table-responsive">
+    <div class="footer-sep mb-5">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-9">
+                    <div class="card" id="cartCard">
+                        <div class="table-responsive">
 
-                        <table class="table table-borderless table-shopping-cart">
-                            <thead class="text-muted">
-                            <tr class="small text-uppercase">
-                                <th scope="col">Product</th>
-                                <th scope="col" width="120">Quantity</th>
-                                <th scope="col" width="120">Price</th>
-                                <th scope="col" class="text-right" width="200"></th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <tr>
-                                <td>
-                                    <div class="row">
-                                        <div class="col col-sm-4">
-                                            <div>
-                                                <img src="../static/images/Books/DiaryofAWimpyKid.jpg" width="95">
+                            <table class="table table-borderless table-shopping-cart">
+                                <thead class="text-muted">
+                                    <tr class="small text-uppercase">
+                                        <th scope="col">Product</th>
+                                        <th scope="col" width="120">Quantity</th>
+                                        <th scope="col" width="120">Price</th>
+                                        <th scope="col" class="text-right" width="200"></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>
+                                            <div class="row">
+                                                <div class="col col-sm-4">
+                                                    <div>
+                                                        <img src="../static/images/Books/DiaryofAWimpyKid.jpg"
+                                                            width="95">
+                                                    </div>
+                                                </div>
+                                                <div class="col">
+                                                    <a href="#" class="primary-sm text-dark">Diary of a Wimpy
+                                                        Kid</a>
+                                                    <p class="small text-muted">ISBN: 9789336234578, Author: Jeffrey
+                                                        Kinney</p>
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div class="col">
-                                            <a href="#" class="primary-sm text-dark">Diary of a Wimpy
-                                                Kid</a>
-                                            <p class="small text-muted">ISBN: 9789336234578, Author: Jeffrey
-                                                Kinney</p>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td>
-                                    <select class="form-control" nile-isbn="9789336234578" buying-price="9.99">
-                                        <option value="1">1</option>
-                                        <option value="2">2</option>
-                                        <option value="3">3</option>
-                                        <option value="4">4</option>
-                                    </select>
-                                </td>
-                                <td class="price-data">
-                                    <div class="price-wrap primary-sm">
-                                        <div class="d-inline-flex">$
-                                            <div class="quant-price ml-1" id="xcvt">9.99</div>
-                                        </div>
-                                    </div> <!-- price-wrap .// -->
-                                    <p class="text-muted"><i>$9.99 each</i></p>
-                                </td>
-                                <td class="text-right">
-                                    <button class="btn btn-outline-danger btn-rounded-complement waves-effect">
-                                        Remove
-                                    </button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <div class="row">
-                                        <div class="col col-sm-4">
-                                            <div>
-                                                <img src="../static/images/Books/TheBFG.jpg" width="95">
+                                        </td>
+                                        <td>
+                                            <select class="form-control" nile-isbn="9789336234578" buying-price="9.99">
+                                                <option value="1">1</option>
+                                                <option value="2">2</option>
+                                                <option value="3">3</option>
+                                                <option value="4">4</option>
+                                            </select>
+                                        </td>
+                                        <td class="price-data">
+                                            <div class="price-wrap primary-sm">
+                                                <div class="d-inline-flex">$
+                                                    <div class="quant-price ml-1" id="xcvt">9.99</div>
+                                                </div>
+                                            </div> <!-- price-wrap .// -->
+                                            <p class="text-muted"><i>$9.99 each</i></p>
+                                        </td>
+                                        <td class="text-right">
+                                            <button
+                                                class="btn btn-outline-danger btn-rounded-complement waves-effect waves-red remove-btn">
+                                                Remove
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <div class="row">
+                                                <div class="col col-sm-4">
+                                                    <div>
+                                                        <img src="../static/images/Books/TheBFG.jpg" width="95">
+                                                    </div>
+                                                </div>
+                                                <div class="col">
+                                                    <a href="#" class="primary-sm text-dark">The BFG</a>
+                                                    <p class="small text-muted">ISBN: 9789667234578, Author: Roald Dahl
+                                                    </p>
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div class="col">
-                                            <a href="#" class="primary-sm text-dark">The BFG</a>
-                                            <p class="small text-muted">ISBN: 9789667234578, Author: Roald Dahl
-                                            </p>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td>
-                                    <select class="form-control" nile-isbn="9789667234578" buying-price="9.99">
-                                        <option value="1">1</option>
-                                        <option value="2">2</option>
-                                        <option value="3">3</option>
-                                        <option value="4">4</option>
-                                    </select>
-                                </td>
-                                <td class="price-data">
-                                    <div class="price-wrap primary-sm">
-                                        <div class="d-inline-flex">$
-                                            <div class="quant-price ml-1" id="xcvu">9.99</div>
-                                        </div>
-                                    </div> <!-- price-wrap .// -->
-                                    <p class="text-muted"><i>$9.99 each</i></p>
-                                </td>
-                                <td class="text-right">
-                                    <button class="btn btn-outline-danger btn-rounded-complement waves-effect">
-                                        Remove
-                                    </button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <div class="row">
-                                        <div class="col col-sm-4">
-                                            <div>
-                                                <img src="../static/images/Books/Narnia.jpg" width="95">
+                                        </td>
+                                        <td>
+                                            <select class="form-control" nile-isbn="9789667234578" buying-price="9.99">
+                                                <option value="1">1</option>
+                                                <option value="2">2</option>
+                                                <option value="3">3</option>
+                                                <option value="4">4</option>
+                                            </select>
+                                        </td>
+                                        <td class="price-data">
+                                            <div class="price-wrap primary-sm">
+                                                <div class="d-inline-flex">$
+                                                    <div class="quant-price ml-1" id="xcvu">9.99</div>
+                                                </div>
+                                            </div> <!-- price-wrap .// -->
+                                            <p class="text-muted"><i>$9.99 each</i></p>
+                                        </td>
+                                        <td class="text-right">
+                                            <button
+                                                class="btn btn-outline-danger btn-rounded-complement waves-effect waves-red remove-btn">
+                                                Remove
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <div class="row">
+                                                <div class="col col-sm-4">
+                                                    <div>
+                                                        <img src="../static/images/Books/Narnia.jpg" width="95">
+                                                    </div>
+                                                </div>
+                                                <div class="col">
+                                                    <a href="#" class="primary-sm text-dark">Chrnonicles of
+                                                        Narnia</a>
+                                                    <p class="small text-muted">ISBN: 9789651234578, Author: C.S. Lewis
+                                                    </p>
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div class="col">
-                                            <a href="#" class="primary-sm text-dark">Chrnonicles of
-                                                Narnia</a>
-                                            <p class="small text-muted">ISBN: 9789651234578, Author: C.S. Lewis
-                                            </p>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td>
-                                    <select class="form-control" nile-isbn="9789651234578" buying-price="10.99">
-                                        <option value="1">1</option>
-                                        <option value="2">2</option>
-                                        <option value="3">3</option>
-                                        <option value="4">4</option>
-                                    </select>
-                                </td>
-                                <td class="price-data">
-                                    <div class="price-wrap primary-sm">
-                                        <div class="d-inline-flex">$
-                                            <div class="quant-price ml-1" id="xcvv">10.99</div>
-                                        </div>
-                                    </div> <!-- price-wrap .// -->
-                                    <p class="text-muted"><i>$10.99 each</i></p>
-                                </td>
-                                <td class="text-right">
-                                    <button class="btn btn-outline-danger btn-rounded-complement waves-effect">
-                                        Remove
-                                    </button>
-                                </td>
-                            </tr>
-                            </tbody>
-                        </table>
+                                        </td>
+                                        <td>
+                                            <select class="form-control" nile-isbn="9789651234578" buying-price="10.99">
+                                                <option value="1">1</option>
+                                                <option value="2">2</option>
+                                                <option value="3">3</option>
+                                                <option value="4">4</option>
+                                            </select>
+                                        </td>
+                                        <td class="price-data">
+                                            <div class="price-wrap primary-sm">
+                                                <div class="d-inline-flex">$
+                                                    <div class="quant-price ml-1" id="xcvv">10.99</div>
+                                                </div>
+                                            </div> <!-- price-wrap .// -->
+                                            <p class="text-muted"><i>$10.99 each</i></p>
+                                        </td>
+                                        <td class="text-right">
+                                            <button
+                                                class="btn btn-outline-danger btn-rounded-complement waves-effect waves-red remove-btn">
+                                                Remove
+                                            </button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="card-body border-top">
+                            <a href="/browse/" class="waves-effect w-100">
+                                <button class="btn btn-outline-primary btn-block w-100 waves-effect z-depth-0" id="continueShoppingBtn">
+                                    <i class="fa fa-chevron-left"></i>
+                                    Continue Shopping
+                                </button>
+                            </a>
+                        </div>
+                    </div> <!-- card.// -->
+                    <div class="card mt-5 d-none" id="cartEmptyCard">
+                        <div class="card-body border-top primary-lg align-self-center">
+                            <p>You're cart is empty</p>
+                        </div>
                     </div>
 
-                    <div class="card-body border-top">
-                        <a href="/user/checkout/" class="float-md-right waves-effect" id="checkoutBtn">
-                            <button class="btn blue-gradient">Checkout
+                </main> <!-- col.// -->
+                <aside class="col-md-3" id="cartPricingWrapper">
+                    <h4 class="d-flex justify-content-between align-items-center mb-3">
+                        <span class="text-muted">Cart Pricing</span>
+                    </h4>
+                    <li class="list-group-item justify-content-between">
+                        <p class="primary-sm">Total (USD):</p>
+
+                        <div class="price-wrap primary-md" id="totalPriceWrapContainer">
+                            <div class="d-inline-flex">$
+                                <div class="quant-price ml-1" id="totalPrice">0.00</div>
+                            </div>
+                        </div>
+                        <p class="text-muted"><i>Excludes Shipping, Tax, and Discounts</i></p>
+                    </li>
+                    <div class="w-100 pt-3">
+                        <a href="/user/checkout/" class="waves-effect w-100" id="checkoutBtn">
+                            <button class="btn blue-gradient btn-block w-100">Checkout
                                 <i class="fa fa-chevron-right"></i>
                             </button>
                         </a>
-                        <a href="/browse/" class="float-md-left waves-effect">
-                            <button class="btn btn-outline-primary">
-                                <i class="fa fa-chevron-left"></i>
-                                Continue Shopping
-                            </button>
-                        </a>
                     </div>
-                </div> <!-- card.// -->
-                <div class="card mt-5 d-none" id="cartEmptyCard">
-                    <div class="card-body border-top primary-lg align-self-center">
-                        <p>You're cart is empty</p>
-                    </div>
-                </div>
+                </aside> <!-- col.// -->
+            </div>
 
-            </main> <!-- col.// -->
-            <aside class="col-md-3" id="cartPricingWrapper">
-                <h4 class="d-flex justify-content-between align-items-center mb-3">
-                    <span class="text-muted">Cart Pricing</span>
-                </h4>
-                <li class="list-group-item justify-content-between">
-                    <p class="primary-sm">Total (USD):</p>
-
-                    <div class="price-wrap primary-md" id="totalPriceWrapContainer">
-                        <div class="d-inline-flex">$
-                            <div class="quant-price ml-1" id="totalPrice">0.00</div>
-                        </div>
-                    </div>
-                    <p class="text-muted"><i>Excludes Shipping, Tax, and Discounts</i></p>
-                </li>
-            </aside> <!-- col.// -->
-        </div>
-
-    </div> <!-- container .//  -->
-</div>
-<footer class="py-5 bg-dark">
-    <div class="container text-white">
-        <p class="mb-2 text-center">Copyright &copy; Nile 2020</p>
-        <div class="text-center">
-            <a class="waves-effect waves-light mr-3">
-                <i class="fab fa-twitter"></i>
-            </a>
-            <a class="waves-effect waves-light mr-3">
-                <i class="fab fa-instagram"></i>
-            </a>
-            <a class="waves-effect waves-light">
-                <i class="fab fa-facebook"></i>
-            </a>
-        </div>
+        </div> <!-- container .//  -->
     </div>
-</footer>
+    <footer class="py-5 bg-dark">
+        <div class="container text-white">
+            <p class="mb-2 text-center">Copyright &copy; Nile 2020</p>
+            <div class="text-center">
+                <a class="waves-effect waves-light mr-3">
+                    <i class="fab fa-twitter"></i>
+                </a>
+                <a class="waves-effect waves-light mr-3">
+                    <i class="fab fa-instagram"></i>
+                </a>
+                <a class="waves-effect waves-light">
+                    <i class="fab fa-facebook"></i>
+                </a>
+            </div>
+        </div>
+    </footer>
 
-<script src="../../../static/user/js/shoppingcart.js" type="module"></script>
+    <script src="../../../static/user/js/shoppingcart.js" type="module"></script>
 
 </body>
 
