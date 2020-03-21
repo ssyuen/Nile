@@ -43,14 +43,6 @@
     margin-bottom: 300px !important;
 }
 
-.waves-effect.waves-red .waves-ripple{
-    background-color: rgb(218, 129, 129)
-} 
-
-btn.remove-btn:active{
-    color: #ffffff;
-}
-
 html {
     position: relative;
     min-height: 100%;
