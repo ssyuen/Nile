@@ -24,7 +24,6 @@
  * clicks checkout
  */
 import {CountUp} from '../../jsplugin/countUp.min.js';
-
 const NILE_ISBN_ATTR = "nile-isbn";
 const NILE_BUY_PR_ATTR = "buying-price";
 const DURATION_SEC = 0.5; //ANIMATION DURATION IN SECONDS
@@ -57,7 +56,6 @@ $("select.form-control").change(evt => {
     updateIndividual(x);
     setTimeout(updateTotal, DURATION_M_SEC);
 });
-
 function updateIndividual(sel) {
     let origPrice = parseFloat(sel.getAttribute(NILE_BUY_PR_ATTR));
     let isbn = sel.getAttribute(NILE_ISBN_ATTR);
@@ -89,7 +87,6 @@ function updateTotal() {
     let inst = SESSION['totalCounter'];
     inst.update(calcTotal());
 }
-
 function calcTotal() {
     let allSelect = $("select.form-control");
     let total = 0.00;
@@ -99,7 +96,6 @@ function calcTotal() {
     }
     return total;
 }
-
 function startAnimation(ctr, callback) {
     if (!ctr.error) {
         ctr.start(callback);
@@ -107,11 +103,9 @@ function startAnimation(ctr, callback) {
         console.error(ctr.error);
     }
 }
-
 function getPrice(selectElement) {
     return $(selectElement).parent().next().find('div.quant-price')[0];
 }
-
 $('.table-shopping-cart').on('click', 'button', () => {
     $(this).closest('tr').remove();
     setTimeout(updateTotal, DURATION_M_SEC);
