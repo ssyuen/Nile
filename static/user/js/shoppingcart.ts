@@ -1,25 +1,15 @@
-import {CountUp} from '../../jsplugin/countUp.min.js';
-
-const NILE_ISBN_ATTR = "nile-isbn";
-const NILE_BUY_PR_ATTR = "buying-price";
-
-const DURATION_SEC = 0.5;
-const DURATION_M_SEC = 500;
-
-const SESSION = {};
-
-/* DEFAULT COUNTER */
-SESSION['totalCounter'] = new CountUp("totalPrice", 0, {
-    decimalPlaces: 2,
-    duration: DURATION_SEC,
-    startVal: 0.00
-});
-SESSION['totalCounter'].start();
+/*
+    TYPE:               SCRIPT
+    FILE NAME:          shoppingcart.ts
+    DESCRIPTION:        Adds functionality for the shopping cart page
+    ASSOCIATED HTML:    reg.html
+    REVISIONS:          3rd - As of 3/20/2020
+ */
 
 // POC
-// const session = {
-//     "9789667234578": new CountUp("xcvu", 20.99, options),
-//     "9789651234578": new CountUp("xcvv", 20.99, options)
+// const SESSION = {
+//     "9789667234578": new CountUp(target: "xcvu", 20.99, options),
+//     "9789651234578": new CountUp(target: "xcvv", 20.99, options)
 // };
 //
 //
@@ -29,13 +19,34 @@ SESSION['totalCounter'].start();
 
 /*
  * I used window.sessionStorage to store information about quantity.
- * This allows the browser to remember the quantity of each product
+ * This allows the browser session to remember the quantity of each product
  * rather than send a get request every time we go to the addToCart page.
+ * To view the application storage, open the browser dev tools, and go
+ * to the Application tab. Under storage, go to session storage.
  * The ONLY TIME that we update the quantity in the DB is when the user
  * clicks checkout
  */
 
-$(function () {
+
+import {CountUp} from '../../jsplugin/countUp.min.js';
+
+const NILE_ISBN_ATTR: string = "nile-isbn";
+const NILE_BUY_PR_ATTR: string = "buying-price";
+
+const DURATION_SEC: number = 0.5;   //ANIMATION DURATION IN SECONDS
+const DURATION_M_SEC: number = 500; //PROPORTIONAL TIMEOUT DURATION IN MILLISECONDS
+
+const SESSION = new Map<string, CountUp>();
+
+/* DEFAULT COUNTER */
+SESSION['totalCounter'] = new CountUp("totalPrice", 0, {
+    decimalPlaces: 2,
+    duration: DURATION_SEC,
+    startVal: 0.00
+});
+SESSION['totalCounter'].start();
+
+$(() => {
     if (!isCartEmpty()) {
         let allSelect = $("select.form-control");
 
@@ -52,51 +63,47 @@ $(function () {
     }
 });
 
-
-$("select.form-control").change(function (evt) {
+$("select.form-control").change(evt => {
     let x: HTMLInputElement = (evt.target) as HTMLInputElement;
     updateIndividual(x);
     setTimeout(updateTotal, DURATION_M_SEC);
 });
 
-
-function updateIndividual(x: HTMLInputElement) {
-    let origPrice = parseFloat(x.getAttribute(NILE_BUY_PR_ATTR));
-    let isbn = x.getAttribute(NILE_ISBN_ATTR);
-    let sel = parseInt(x.value);
-    let priceElem = getPrice(x);
+function updateIndividual(sel: HTMLInputElement): any {
+    let origPrice = parseFloat(sel.getAttribute(NILE_BUY_PR_ATTR));
+    let isbn = sel.getAttribute(NILE_ISBN_ATTR);
+    let quantity = parseInt(sel.value);
+    let priceElem = getPrice(sel);
 
     if (isbn in SESSION) {
         let counter = SESSION[isbn];
-        if (sel === 1) {
+        if (quantity === 1) {
             counter.update(origPrice)
         } else {
-            counter.update(origPrice * sel);
+            counter.update(origPrice * quantity);
         }
     } else {
-        let options = {
+        const options = {
             decimalPlaces: 2,
             duration: DURATION_SEC,
             startVal: origPrice
         };
-        if (sel === 1) {
+        if (quantity === 1) {
             SESSION[isbn] = new CountUp(priceElem, origPrice, options)
         } else {
-            SESSION[isbn] = new CountUp(priceElem, origPrice * sel, options)
+            SESSION[isbn] = new CountUp(priceElem, origPrice * quantity, options)
         }
         startAnimation(SESSION[isbn]);
     }
-    window.sessionStorage.setItem(isbn, sel.toString());
+    window.sessionStorage.setItem(isbn, quantity.toString());
 }
 
-
-function updateTotal() {
+function updateTotal(): any {
     let inst = SESSION['totalCounter'];
     inst.update(calcTotal());
 }
 
-
-function calcTotal() {
+function calcTotal(): number {
     let allSelect = $("select.form-control");
     let total: number = 0.00;
     for (let val of allSelect) {
@@ -106,8 +113,7 @@ function calcTotal() {
     return total;
 }
 
-
-function startAnimation(ctr: CountUp, callback: Function = null) {
+function startAnimation(ctr: CountUp, callback?: Function): any {
     if (!ctr.error) {
         ctr.start(callback);
     } else {
@@ -115,13 +121,11 @@ function startAnimation(ctr: CountUp, callback: Function = null) {
     }
 }
 
-
 function getPrice(selectElement: HTMLElement): HTMLElement {
     return $(selectElement).parent().next().find('div.quant-price')[0];
 }
 
-
-$('.table-shopping-cart').on('click', 'button', function (e) {
+$('.table-shopping-cart').on('click', 'button', () => {
     $(this).closest('tr').remove();
     setTimeout(updateTotal, DURATION_M_SEC);
     isCartEmpty();
@@ -131,7 +135,6 @@ $('.table-shopping-cart').on('click', 'button', function (e) {
 });
 
 function isCartEmpty(): boolean {
-
     if ($('.table-shopping-cart > tbody > tr').length === 0) {
         $("#checkoutBtn").addClass("d-none");
         $("#cartEmptyCard").removeClass("d-none");
@@ -146,4 +149,7 @@ $("#checkoutBtn").on("click", (evt) => {
         alert("You're Cart is empty");
         evt.preventDefault();
     }
+    /*
+        ADD TO DATABASE SCRIPT CALL
+     */
 });
