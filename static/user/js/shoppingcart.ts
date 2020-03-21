@@ -125,7 +125,7 @@ function getPrice(selectElement: HTMLElement): HTMLElement {
     return $(selectElement).parent().next().find('div.quant-price')[0];
 }
 
-$('.table-shopping-cart').on('click', 'button', () => {
+$('.table-shopping-cart').on('click', 'button', function () {
     $(this).closest('tr').remove();
     setTimeout(updateTotal, DURATION_M_SEC);
     isCartEmpty();
