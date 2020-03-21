@@ -109,6 +109,9 @@ def login():
 def logout():
     if session['logged_in']:
         session['logged_in'] = False
+        if 'admin' in session:
+            if session['admin'] is True:
+                session['admin'] = False
         flash('Logged out successfully.')
         return redirect('/')
     flash('Error logging out.')
