@@ -15,7 +15,7 @@ trap_ctrlc ()
 
     # Allow the user to see the message, so sleep for 4 seconds
     echo "Exiting In: "
-    for i in 4 3 2 1
+    for i in 2 1
     do
        echo "$i... "
        sleep 1
