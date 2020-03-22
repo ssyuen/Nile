@@ -21,6 +21,7 @@ def login_required(f):
 def logout():
     if session['logged_in']:
         session['logged_in'] = False
+        session['admin'] = False
         flash('Logged out successfully.')
         return redirect('/')
     flash('Error logging out.')

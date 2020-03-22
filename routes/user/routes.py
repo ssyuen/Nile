@@ -33,6 +33,13 @@ def login_required(f):
 
 @user_bp.route('/')
 def landing_page():
+    print(session)
+    if 'admin' in session:
+        print('ADMIN VAR')
+        print(session['admin'])
+    if 'logged_in' in session:
+        print('LOGGED IN VAR')
+        print(session['logged_in'])
     return render_template('browse.html')
 
 
@@ -58,7 +65,9 @@ def login():
                     session['logged_in'] = True
                     session['email'] = email
                     session['admin'] = True
+                    
                     session['firstName'] = results[2]
+                    print(session)
                     flash('Welcome, ' + session['firstName'] + '!')
                     return redirect('/')
                 else:
@@ -108,14 +117,12 @@ def login():
 @user_bp.route('/logout/', methods=['GET'])
 def logout():
     if session['logged_in']:
+        session['admin'] = False
         session['logged_in'] = False
-        if 'admin' in session:
-            if session['admin'] is True:
-                session['admin'] = False
-        flash('Logged out successfully.')
+        # flash('Logged out successfully.')
         return redirect('/')
-    flash('Error logging out.')
-    return redirect('/')
+    else:
+        return redirect('/')
 
 
 @user_bp.route('/register/', methods=['POST', 'GET'])
