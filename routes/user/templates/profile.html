@@ -19,307 +19,276 @@
 
 <body class="our-color">
 {% include 'nav.html' %}
-    <div class="container">
-        <div class="row mt-xl-5" id="cust-info">
+<div class="container">
+    <div class="row mt-xl-5" id="cust-info">
 
-            <div class="col mb-5">
-                <div class="text-left" id="welcome">
-                    <p class="primary-lg" id="account-holder">Welcome Back, <span id="name">{{ session['firstName'] }}.</span></p>
-                </div>
+        <div class="col mb-5">
+            <div class="text-left" id="welcome">
+                <p class="primary-lg" id="account-holder">Welcome Back, <span
+                        id="name">{{ session['firstName'] }}.</span></p>
             </div>
         </div>
     </div>
-    <!-- <div class="container">
-        <div class="row">
-            <div class="col-md-4">
-                <div class="card text-white bg-primary mb-3">
-                    <div class="card-header">Header</div>
-                    <div class="card-body">
-                        <h5 class="card-title">Secondary card title</h5>
-                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of
-                            the card's content.</p>
-                    </div>
+</div>
+
+<div class="container footer-sep">
+    <!--Grid row-->
+
+    <div class="row">
+        <!--Grid column-->
+        <div class="col-md-6 mb-4">
+            <!-- Card -->
+            <div class="card gradient-card h-100">
+                <div class="card-image"
+                     style="background-image: url(https://mdbootstrap.com/img/Photos/Horizontal/Work/4-col/img%20%2814%29.jpg)">
+                    <!-- Content -->
+                    <a href="#!">
+                        <div class="text-white d-flex h-100 mask card-contextual-info">
+                            <div class="container-fluid give">
+                                <div class="row py-3 pr-3">
+                                    <div class="col-10">
+                                        <div class="first-content">
+                                            <h3 class="card-title">My Info</h3>
+                                            <p class="lead mb-0">View Information About your Account</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-2 align-self-center">
+                                        <div class="second-content" style="float: right;">
+                                            <i class="fas fa-user-circle fa-3x"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
                 </div>
-            </div>
-            <div class="col-md-4">
-                <div class="card text-white bg-primary mb-3">
-                    <div class="card-header">Header</div>
-                    <div class="card-body">
-                        <h5 class="card-title">Secondary card title</h5>
-                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of
-                            the card's content.</p>
+                <!-- Content -->
+                <div class="card-body white">
+                    <h4 class="text-uppercase font-weight-bold my-4">Details</h4>
+                    <div class="row">
+                        <div class="col">
+                            <i class="fas fa-user prefix"></i>
+                            <label for="first-name">First Name</label>
+                            <div class="input-group">
+                                <input id="first-name" type="text" class="form-control" placeholder="First Name"
+                                       aria-label="First Name" aria-describedby="button-addon2">
+                                <div class="input-group-append">
+                                    <button class="btn btn-outline-warning m-0 px-3 py-2 z-depth-0 waves-effect"
+                                            type="button" id="editIsbnBtn">Edit
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <label for="last-name">Last Name</label>
+                            <div class="input-group">
+                                <input id="last-name" type="text" class="form-control" placeholder="Last Name"
+                                       aria-label="Last Name" aria-describedby="button-addon2">
+                                <div class="input-group-append">
+                                    <button class="btn btn-outline-warning m-0 px-3 py-2 z-depth-0 waves-effect"
+                                            type="button" id="editIsbnBtn">Edit
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="card text-white bg-primary mb-3">
-                    <div class="card-header">Header</div>
-                    <div class="card-body">
-                        <h5 class="card-title">Secondary card title</h5>
-                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of
-                            the card's content.</p>
+                    <div class="row">
+                        <div class="col">
+                            <i class="fas fa-envelope prefix"></i>
+                            <label class="mt-4" for="email">Email Address</label>
+                            <div class="input-group">
+                                <input id="email" type="email" class="form-control" placeholder="Email Address"
+                                       aria-label="email" aria-describedby="button-addon2">
+                                <div class="input-group-append">
+                                    <button class="btn btn-outline-warning m-0 px-3 py-2 z-depth-0 waves-effect"
+                                            type="button" id="editIsbnBtn">Edit
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mt-4">
+                        <div class="col">
+                            <!--PLEASE FOR THE LOVE OF GOD CHANGE THIS MARGIN TOP VALUEs-->
+                            <button class="btn blue-gradient btn-block" style="margin-top: 95px;">Update</button>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div> -->
+        <!--Grid column-->
 
-    <div class="container">
-        <!--Grid row-->
-
-        <div class="row">
-            <!--Grid column-->
-            <div class="col-md-6 mb-4">
-                <!-- Card -->
-                <div class="card gradient-card h-100">
-                    <div class="card-image"
-                        style="background-image: url(https://mdbootstrap.com/img/Photos/Horizontal/Work/4-col/img%20%2814%29.jpg)">
-                        <!-- Content -->
-                        <a href="#!">
-                            <div class="text-white d-flex h-100 mask card-contextual-info">
-                                <div class="container-fluid give">
-                                    <div class="row py-3 pr-3">
-                                        <div class="col-10">
-                                            <div class="first-content">
-                                                <h3 class="card-title">My Info</h3>
-                                                <p class="lead mb-0">View Information About your Account</p>
-                                            </div>
+        <!--Grid column-->
+        <div class="col-md-6 mb-4">
+            <!-- Card -->
+            <div class="card gradient-card h-100">
+                <div class="card-image"
+                     style="background-image: url(https://mdbootstrap.com/img/Photos/Horizontal/Work/4-col/img%20%2814%29.jpg);">
+                    <!--Content-->
+                    <a href="#!">
+                        <div class="text-white d-flex h-100 mask card-contextual-info">
+                            <div class="container-fluid give">
+                                <div class="row py-3 pr-3">
+                                    <div class="col-10">
+                                        <div class="first-content">
+                                            <h3 class="card-title">Security</h3>
+                                            <p class="lead mb-0">Manage your Password</p>
                                         </div>
-                                        <div class="col-2 align-self-center">
-                                            <div class="second-content" style="float: right;">
-                                                <i class="fas fa-user-circle fa-3x"></i>
-                                            </div>
+                                    </div>
+                                    <div class="col-2 align-self-center">
+                                        <div class="second-content" style="float: right;">
+                                            <i class="fas fa-shield-alt fa-3x"></i>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </a>
+                        </div>
+                    </a>
+                </div>
+                <!-- Content -->
+                <div class="card-body white">
+                    <h4 class="text-uppercase font-weight-bold my-4">Details</h4>
+                    <div class="row">
+                        <div class="col">
+                            <i class="fas fa-lock prefix"></i>
+                            <label for="inputValidationEx2" data-error="wrong" data-success="right">Current
+                                Password</label>
+                            <input type="password" id="inputValidationEx2" class="form-control validate">
+                        </div>
                     </div>
+                    <div class="row mt-4">
+                        <div class="col">
+                            <i class="fas fa-lock prefix"></i>
+                            <label for="inputValidationEx2" data-error="wrong" data-success="right">New
+                                Password</label>
+                            <input type="password" id="inputValidationEx2" class="form-control validate">
+                        </div>
+                    </div>
+                    <div class="row mt-4">
+                        <div class="col">
+                            <i class="fas fa-lock prefix"></i>
+                            <label for="inputValidationEx2" data-error="wrong" data-success="right">Confirm
+                                Password</label>
+                            <input type="password" id="inputValidationEx2" class="form-control validate">
+                        </div>
+                    </div>
+                    <div class="row mt-4">
+                        <div class="col">
+                            <button type="submit" class="btn blue-gradient btn-block">Update</button>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <!-- Card -->
+        </div>
+        <!--Grid column-->
+
+        <!--Grid column-->
+        <div class="col-md-6 mb-4">
+            <!-- Card -->
+            <div class="card gradient-card h-100">
+                <div class="card-image"
+                     style="background-image: url(https://mdbootstrap.com/img/Photos/Horizontal/Work/4-col/img%20%2814%29.jpg);">
                     <!-- Content -->
-                    <div class="card-body white">
-                        <h4 class="text-uppercase font-weight-bold my-4">Details</h4>
-                        <div class="row">
-                            <div class="col">
-                                <i class="fas fa-user prefix"></i>
-                                <label for="first-name">First Name</label>
-                                <div class="input-group">
-                                    <input id="first-name" type="text" class="form-control" placeholder="First Name"
-                                        aria-label="First Name" aria-describedby="button-addon2">
-                                    <div class="input-group-append">
-                                        <button class="btn btn-outline-warning m-0 px-3 py-2 z-depth-0 waves-effect"
-                                            type="button" id="editIsbnBtn">Edit</button>
+                    <a href="#!">
+                        <div class="text-white d-flex h-100 mask card-contextual-info">
+
+                            <div class="container-fluid give">
+                                <div class="row py-3 pr-3">
+                                    <div class="col-10">
+                                        <div class="first-content">
+                                            <h3 class="card-title">Payment Information</h3>
+                                            <p class="lead mb-0">Manage How you Pay</p>
+                                        </div>
                                     </div>
-                                </div>
-                            </div>
-                            <div class="col">
-                                <label for="last-name">Last Name</label>
-                                <div class="input-group">
-                                    <input id="last-name" type="text" class="form-control" placeholder="Last Name"
-                                        aria-label="Last Name" aria-describedby="button-addon2">
-                                    <div class="input-group-append">
-                                        <button class="btn btn-outline-warning m-0 px-3 py-2 z-depth-0 waves-effect"
-                                            type="button" id="editIsbnBtn">Edit</button>
+                                    <div class="col-2 align-self-center">
+                                        <div class="second-content" style="float: right;">
+                                            <i class="far fa-money-bill-alt fa-3x"></i>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="col">
-                                <i class="fas fa-envelope prefix"></i>
-                                <label class="mt-4" for="email">Email Address</label>
-                                <div class="input-group">
-                                    <input id="email" type="email" class="form-control" placeholder="Email Address"
-                                        aria-label="email" aria-describedby="button-addon2">
-                                    <div class="input-group-append">
-                                        <button class="btn btn-outline-warning m-0 px-3 py-2 z-depth-0 waves-effect"
-                                            type="button" id="editIsbnBtn">Edit</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row mt-4">
-                            <div class="col">
-                                <!--PLEASE FOR THE LOVE OF GOD CHANGE THIS MARGIN TOP VALUEs-->
-                                <button class="btn blue-gradient btn-block" style="margin-top: 95px;">Update</button>
-                            </div>
+                    </a>
+                </div>
+                <!-- Content -->
+                <div class="card-body white">
+                    <h4 class="text-uppercase font-weight-bold my-4">Details</h4>
+                    <p class="complement">NOTE: This button will redirect your page</p>
+                    <div class="row mt-4">
+                        <div class="col">
+                            <a href="/paymentinfo/" type="submit" class="btn blue-gradient btn-block">Manage Payment
+                                Methods</a>
                         </div>
                     </div>
                 </div>
             </div>
-            <!--Grid column-->
+            <!-- Card -->
+        </div>
+        <!--Grid column-->
 
-            <!--Grid column-->
-            <div class="col-md-6 mb-4">
-                <!-- Card -->
-                <div class="card gradient-card h-100">
-                    <div class="card-image"
-                        style="background-image: url(https://mdbootstrap.com/img/Photos/Horizontal/Work/4-col/img%20%2814%29.jpg);">
-                        <!--Content-->
-                        <a href="#!">
-                            <div class="text-white d-flex h-100 mask card-contextual-info">
-                                <div class="container-fluid give">
-                                    <div class="row py-3 pr-3">
-                                        <div class="col-10">
-                                            <div class="first-content">
-                                                <h3 class="card-title">Security</h3>
-                                                <p class="lead mb-0">Manage your Password</p>
-                                            </div>
+        <!--Grid column-->
+        <div class="col-md-6 mb-4">
+            <!-- Card -->
+            <div class="card gradient-card">
+                <div class="card-image"
+                     style="background-image: url(https://mdbootstrap.com/img/Photos/Horizontal/Work/4-col/img%20%2814%29.jpg);">
+                    <!-- Content -->
+                    <a href="#!">
+                        <div class="text-white d-flex h-100 mask card-contextual-info">
+
+                            <div class="container-fluid give">
+                                <div class="row py-3 pr-3">
+                                    <div class="col-10">
+                                        <div class="first-content">
+                                            <h3 class="card-title">Billing Address</h3>
+                                            <p class="lead mb-0">Mange your addresses</p>
                                         </div>
-                                        <div class="col-2 align-self-center">
-                                            <div class="second-content" style="float: right;">
-                                                <i class="fas fa-shield-alt fa-3x"></i>
-                                            </div>
+                                    </div>
+                                    <div class="col-2 align-self-center">
+                                        <div class="second-content" style="float: right;">
+                                            <i class="far fa-address-card fa-3x"></i>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </a>
-                    </div>
-                    <!-- Content -->
-                    <div class="card-body white">
-                        <h4 class="text-uppercase font-weight-bold my-4">Details</h4>
-                        <div class="row">
-                            <div class="col">
-                                <i class="fas fa-lock prefix"></i>
-                                <label for="inputValidationEx2" data-error="wrong" data-success="right">Current
-                                    Password</label>
-                                <input type="password" id="inputValidationEx2" class="form-control validate">
-                            </div>
                         </div>
-                        <div class="row mt-4">
-                            <div class="col">
-                                <i class="fas fa-lock prefix"></i>
-                                <label for="inputValidationEx2" data-error="wrong" data-success="right">New
-                                    Password</label>
-                                <input type="password" id="inputValidationEx2" class="form-control validate">
-                            </div>
-                        </div>
-                        <div class="row mt-4">
-                            <div class="col">
-                                <i class="fas fa-lock prefix"></i>
-                                <label for="inputValidationEx2" data-error="wrong" data-success="right">Confirm
-                                    Password</label>
-                                <input type="password" id="inputValidationEx2" class="form-control validate">
-                            </div>
-                        </div>
-                        <div class="row mt-4">
-                            <div class="col">
-                                <button type="submit" class="btn blue-gradient btn-block">Update</button>
-                            </div>
-
-                        </div>
-                    </div>
+                    </a>
                 </div>
-                <!-- Card -->
-            </div>
-            <!--Grid column-->
 
-            <!--Grid column-->
-            <div class="col-md-6 mb-4">
-                <!-- Card -->
-                <div class="card gradient-card h-100">
-                    <div class="card-image"
-                        style="background-image: url(https://mdbootstrap.com/img/Photos/Horizontal/Work/4-col/img%20%2814%29.jpg);">
-                        <!-- Content -->
-                        <a href="#!">
-                            <div class="text-white d-flex h-100 mask card-contextual-info">
-
-                                <div class="container-fluid give">
-                                    <div class="row py-3 pr-3">
-                                        <div class="col-10">
-                                            <div class="first-content">
-                                                <h3 class="card-title">Payment Information</h3>
-                                                <p class="lead mb-0">Manage How you Pay</p>
-                                            </div>
-                                        </div>
-                                        <div class="col-2 align-self-center">
-                                            <div class="second-content" style="float: right;">
-                                                <i class="far fa-money-bill-alt fa-3x"></i>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </a>
-                    </div>
-                    <!-- Content -->
-                    <div class="card-body white">
-                        <h4 class="text-uppercase font-weight-bold my-4">Details</h4>
-                        <p class="complement">NOTE: This button will redirect your page</p>
-                        <div class="row mt-4">
-                            <div class="col">
-                                <a href="/paymentinfo/" type="submit" class="btn blue-gradient btn-block">Manage Payment Methods</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!-- Card -->
-            </div>
-            <!--Grid column-->
-
-            <!--Grid column-->
-            <div class="col-md-6 mb-4">
-                <!-- Card -->
-                <div class="card gradient-card">
-                    <div class="card-image"
-                        style="background-image: url(https://mdbootstrap.com/img/Photos/Horizontal/Work/4-col/img%20%2814%29.jpg);">
-                        <!-- Content -->
-                        <a href="#!">
-                            <div class="text-white d-flex h-100 mask card-contextual-info">
-
-                                <div class="container-fluid give">
-                                    <div class="row py-3 pr-3">
-                                        <div class="col-10">
-                                            <div class="first-content">
-                                                <h3 class="card-title">Billing Address</h3>
-                                                <p class="lead mb-0">Mange your addresses</p>
-                                            </div>
-                                        </div>
-                                        <div class="col-2 align-self-center">
-                                            <div class="second-content" style="float: right;">
-                                                <i class="far fa-address-card fa-3x"></i>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </a>
-                    </div>
-
-                    <!-- Content -->
-                    <div class="card-body white">
-                        <h4 class="text-uppercase font-weight-bold my-4">Details</h4>
-                        <p class="complement">NOTE: This button will redirect your page</p>
-                        <div class="row mt-4">
-                            <div class="col">
-                                <a href="/billingaddress/" type="submit" class="btn blue-gradient btn-block">Manage Billing Addresses</a>
-                            </div>
+                <!-- Content -->
+                <div class="card-body white">
+                    <h4 class="text-uppercase font-weight-bold my-4">Details</h4>
+                    <p class="complement">NOTE: This button will redirect your page</p>
+                    <div class="row mt-4">
+                        <div class="col">
+                            <a href="/billingaddress/" type="submit" class="btn blue-gradient btn-block">Manage Billing
+                                Addresses</a>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    <footer class="py-5 bg-dark">
-        <div class="container text-white">
-            <p class="mb-2 text-center">Copyright &copy; Nile 2020</p>
-            <div class="text-center">
-                <a class="waves-effect waves-light mr-3">
-                    <i class="fab fa-twitter"></i>
-                </a>
-                <a class="waves-effect waves-light mr-3">
-                    <i class="fab fa-instagram"></i>
-                </a>
-                <a class="waves-effect waves-light">
-                    <i class="fab fa-facebook"></i>
-                </a>
-            </div>
+</div>
+<footer class="py-5 bg-dark">
+    <div class="container text-white">
+        <p class="mb-2 text-center">Copyright &copy; Nile 2020</p>
+        <div class="text-center">
+            <a class="waves-effect waves-light mr-3">
+                <i class="fab fa-twitter"></i>
+            </a>
+            <a class="waves-effect waves-light mr-3">
+                <i class="fab fa-instagram"></i>
+            </a>
+            <a class="waves-effect waves-light">
+                <i class="fab fa-facebook"></i>
+            </a>
         </div>
-        <!-- /.container -->
-    </footer>
-
-
-
+    </div>
+    <!-- /.container -->
+</footer>
 
 
 </body>

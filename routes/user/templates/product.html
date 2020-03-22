@@ -59,12 +59,15 @@
                     </div>
                 </li>
 
-                <div class="mt-3">
-                    <button id="addToCartBtn" class="btn blue-gradient btn-block w-250">
-                        <span>Add To Cart</span>
-                        <i class="fa fa-shopping-cart"></i>
-                    </button>
-                </div>
+                {% if not session['admin'] %}
+                    <div class="mt-3">
+                        <button id="addToCartBtn" class="btn blue-gradient btn-block w-250">
+                            <span>Add To Cart</span>
+                            <i class="fa fa-shopping-cart"></i>
+                        </button>
+                    </div>
+                {% endif %}
+
             </aside>
         </div>
         <div class="col-lg-9">
