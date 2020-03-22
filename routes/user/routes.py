@@ -33,13 +33,6 @@ def login_required(f):
 
 @user_bp.route('/')
 def landing_page():
-    print(session)
-    if 'admin' in session:
-        print('ADMIN VAR')
-        print(session['admin'])
-    if 'logged_in' in session:
-        print('LOGGED IN VAR')
-        print(session['logged_in'])
     return render_template('browse.html')
 
 
@@ -67,15 +60,12 @@ def login():
                     session['admin'] = True
                     
                     session['firstName'] = results[2]
-                    print(session)
                     flash('Welcome, ' + session['firstName'] + '!')
                     return redirect('/')
                 else:
-                    print('login details incorrect')
                     flash('Your login details were incorrect. Please try again.')
                     return redirect('/login/')
             except IndexError:
-                print('login details incorrect')
                 flash('Your login details were not found. Please try again.')
                 return redirect('/login/')
         else:
@@ -95,7 +85,6 @@ def login():
                     flash('Welcome, ' + session['firstName'] + '!')
                     return redirect('/')
                 else:
-                    print('login details incorrect')
                     flash('Your login details were incorrect. Please try again.')
                     return redirect('/login/')
                 session['logged_in'] = True
@@ -104,7 +93,6 @@ def login():
                 flash('Welcome, ' + session['firstName'] + '!')
                 return redirect('/')
             except IndexError:
-                print('login details incorrect')
                 flash('Your login details were not found. Please try again.')
                 return redirect('/login/')
 
@@ -153,7 +141,6 @@ def register():
         cursor.execute(db_order)
         results = cursor.fetchall()[0]
         order_id = results[0]  
-        print('' + str(order_id) + ' THIS IS THE ORDERID')
 
         query = 'INSERT INTO shoppingCart (orderID) VALUES("' + str(order_id) + '")'
         cursor.execute(query)
@@ -177,7 +164,6 @@ def register():
             cursor.execute(db_address)
             results = cursor.fetchall()[0]
             address_id = results[0]
-            print(address_id)
             query = 'INSERT INTO user (email, addressID, statusID,cartID,pass, firstname, lastname) VALUES ("' + email + '", "' + \
                 str(address_id) + '", "' + str(1) + '", "' + str(cart_id) + '", "' + \
                     str(password) + '", "'  + firstName + '", "' + lastName + '")'
