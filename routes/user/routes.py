@@ -58,15 +58,14 @@ def login():
                     session['logged_in'] = True
                     session['email'] = email
                     session['admin'] = True
+                    
                     session['firstName'] = results[2]
                     flash('Welcome, ' + session['firstName'] + '!')
                     return redirect('/')
                 else:
-                    print('login details incorrect')
                     flash('Your login details were incorrect. Please try again.')
                     return redirect('/login/')
             except IndexError:
-                print('login details incorrect')
                 flash('Your login details were not found. Please try again.')
                 return redirect('/login/')
         else:
@@ -86,7 +85,6 @@ def login():
                     flash('Welcome, ' + session['firstName'] + '!')
                     return redirect('/')
                 else:
-                    print('login details incorrect')
                     flash('Your login details were incorrect. Please try again.')
                     return redirect('/login/')
                 session['logged_in'] = True
@@ -95,7 +93,6 @@ def login():
                 flash('Welcome, ' + session['firstName'] + '!')
                 return redirect('/')
             except IndexError:
-                print('login details incorrect')
                 flash('Your login details were not found. Please try again.')
                 return redirect('/login/')
 
@@ -108,14 +105,12 @@ def login():
 @user_bp.route('/logout/', methods=['GET'])
 def logout():
     if session['logged_in']:
+        session['admin'] = False
         session['logged_in'] = False
-        if 'admin' in session:
-            if session['admin'] is True:
-                session['admin'] = False
-        flash('Logged out successfully.')
+        # flash('Logged out successfully.')
         return redirect('/')
-    flash('Error logging out.')
-    return redirect('/')
+    else:
+        return redirect('/')
 
 
 @user_bp.route('/register/', methods=['POST', 'GET'])
@@ -146,7 +141,6 @@ def register():
         cursor.execute(db_order)
         results = cursor.fetchall()[0]
         order_id = results[0]  
-        print('' + str(order_id) + ' THIS IS THE ORDERID')
 
         query = 'INSERT INTO shoppingCart (orderID) VALUES("' + str(order_id) + '")'
         cursor.execute(query)
@@ -170,7 +164,6 @@ def register():
             cursor.execute(db_address)
             results = cursor.fetchall()[0]
             address_id = results[0]
-            print(address_id)
             query = 'INSERT INTO user (email, addressID, statusID,cartID,pass, firstname, lastname) VALUES ("' + email + '", "' + \
                 str(address_id) + '", "' + str(1) + '", "' + str(cart_id) + '", "' + \
                     str(password) + '", "'  + firstName + '", "' + lastName + '")'
