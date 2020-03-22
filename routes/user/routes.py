@@ -228,3 +228,7 @@ def profile():
 @user_bp.route('/forgot/')
 def forgot():
     return render_template('./forgot.html')
+
+@user_bp.route('/product/')
+def product():
+    return render_template('/product.html')
