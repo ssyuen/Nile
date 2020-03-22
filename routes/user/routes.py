@@ -1,5 +1,6 @@
-from flask import Blueprint, render_template, request, jsonify, redirect, flash, session
+from flask import Blueprint, render_template, request, jsonify, redirect, flash, session, url_for
 from functools import wraps
+from flaskext.mysql import pymysql
 import bcrypt
 # from models.abs_models import abs_models
 # from models.users import User
@@ -60,7 +61,7 @@ def login():
                     session['admin'] = True
                     
                     session['firstName'] = results[2]
-                    flash('Welcome, ' + session['firstName'] + '!')
+                    # flash('Welcome, ' + session['firstName'] + '!')
                     return redirect('/')
                 else:
                     flash('Your login details were incorrect. Please try again.')
@@ -82,7 +83,7 @@ def login():
                     session['email'] = email
                     session['admin'] = False
                     session['firstName'] = results[2]
-                    flash('Welcome, ' + session['firstName'] + '!')
+                    # flash('Welcome, ' + session['firstName'] + '!')
                     return redirect('/')
                 else:
                     flash('Your login details were incorrect. Please try again.')
@@ -153,8 +154,13 @@ def register():
         if address or apt or city or state or country is None:
             query = 'INSERT INTO user (email,statusID,cartID,pass, firstname, lastname) VALUES ("' + email + \
                 '", "' + str(1) + '","' + str(cart_id) + '", "' + str(password) + '", "' + firstName + '", "' + lastName + '")'
-            cursor.execute(query)
-            conn.commit()
+            try:
+                cursor.execute(query)
+                conn.commit()
+            except(pymysql.err.IntegrityError):
+                flash('An account with this email already exists.')
+                return redirect(url_for('user_bp.register'))
+            
 
         else:  # insert with address
             query = 'INSERT INTO `address`(`street`, `city`, `state`, `zip`) VALUES("' + \

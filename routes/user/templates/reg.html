@@ -73,6 +73,16 @@
         <div class="rounded shadow-lg card p-5" id="acctCard">
             <div class="card-body">
                 <h4 class="card-title text-center primary-md pb-4">Registration</h4>
+                {% with invalid_reg = get_flashed_messages() %}
+                {% if invalid_reg %}
+
+                    <p class="flashes h5 text-center" style="color: red;">
+                        {% for msg in invalid_reg %}
+                            {{ msg }}
+                        {% endfor %}
+                        </p>
+                    {% endif %}
+                {% endwith %} 
                 <form id="regForm" class="registration-form" method="POST">
                     <div class="form-group">
                         <div class="form-row">
