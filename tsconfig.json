@@ -1,9 +1,9 @@
 {
-  "compilerOptions": {
-    "target": "es6",
-    "lib": [
-      "ES6",
-      "dom"
+  compilerOptions: {
+    target: es6,
+    lib: [
+      ES6,
+      dom
     ]
   }
-}
+}%
