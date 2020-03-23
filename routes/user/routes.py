@@ -24,16 +24,28 @@ user_bp = Blueprint('user_bp', __name__,
 def login_required(f):
     @wraps(f)
     def wrapped_func(*args, **kws):
-        if 'logged_in' in session:
+        if 'logged_in' in session and session['logged_in']:
             return f(*args, **kws)
         else:
             flash('You need to login to access this area!')
-            return redirect('/login/')
+            # return redirect('/login/')
+            return redirect(url_for('user_bp.login',ctx=f.__name__))
     return wrapped_func
 
+def cart_session(f):
+    @wraps(f)
+    def wrapped_func(*args, **kws):
+        if 'shopping_cart' in session:
+            return f(*args, **kws)
+        else:
+            session['shopping_cart'] = []
+            return f(*args, **kws)
+    return wrapped_func
 
 @user_bp.route('/')
+@cart_session
 def landing_page():
+    print(session['shopping_cart'])
     # STEP 1: Make call to database to return all books, need ISBN for query in /product/?isbn=<isbn>
     cursor = conn.cursor()
     query = 'SELECT * FROM books'
@@ -46,7 +58,8 @@ def landing_page():
 
 
 @user_bp.route('/login/', methods=['POST', 'GET'])
-def login():
+@cart_session
+def login(ctx=None):
     if request.method == 'POST':
         email = request.form.get('email')
         password = request.form.get('password')
@@ -70,7 +83,8 @@ def login():
                     
                     session['firstName'] = results[2]
                     # flash('Welcome, ' + session['firstName'] + '!')
-                    return redirect('/')
+                    ctx = request.args.get('next')
+                    return redirect(ctx or url_for('user_bp.landing_page'))
                 else:
                     flash('Your login details were incorrect. Please try again.')
                     return redirect('/login/')
@@ -92,7 +106,13 @@ def login():
                     session['admin'] = False
                     session['firstName'] = results[2]
                     # flash('Welcome, ' + session['firstName'] + '!')
-                    return redirect('/')
+                    ctx = request.args.get('ctx')
+                    print(ctx, 'PRINTING')
+                    if ctx is not None:
+                        return redirect(url_for('user_bp.' + ctx))
+                    else:
+                        return redirect('/')
+                    # return redirect('/')
                 else:
                     flash('Your login details were incorrect. Please try again.')
                     return redirect('/login/')
@@ -112,6 +132,7 @@ def login():
 
 
 @user_bp.route('/logout/', methods=['GET'])
+@cart_session
 def logout():
     if session['logged_in']:
         session['admin'] = False
@@ -123,6 +144,7 @@ def logout():
 
 
 @user_bp.route('/register/', methods=['POST', 'GET'])
+@cart_session
 def register():
     if request.method == 'GET':
         return render_template('reg.html')
@@ -188,6 +210,7 @@ def register():
 
 
 @user_bp.route('/register_confirmation/', methods=['POST', 'GET'])
+@cart_session
 def register_confirmation():
     # system needs to send an email with url back to a page
     # if request.method == 'GET':
@@ -196,50 +219,66 @@ def register_confirmation():
 
 
 @user_bp.route('/shoppingcart/')
+@cart_session
 def shopping_cart():
     return render_template('shoppingcart.html')
 
 @user_bp.route('/product/')
+@cart_session
 def product():
     # STEP 1: User clicks on a book from browse.html
 
     # STEP 2: Link sends 
     return render_template('/product.html')
 
+@user_bp.route('/add_to_cart/',methods=['POST'])
+@cart_session
+def add_to_cart():
+    book_name = request.form.get('bookName')
+    session['shopping_cart'].append(book_name)
+    print(session['shopping_cart'])
+    return jsonify(session['shopping_cart'])
+
 
 # @login_required func decorator needs to be implemented for all user routes
 """User Routes"""
 @user_bp.route('/billingaddress/')
 @login_required
+@cart_session
 def billing_address():
     return render_template('./billingaddress.html')
 
 
 @user_bp.route('/checkout/')
 @login_required
+@cart_session
 def checkout():
     return render_template('./checkout.html')
 
 
 @user_bp.route('/orderhist/')
 @login_required
+@cart_session
 def order_history():
     return render_template('./orderhist.html')
 
 
 @user_bp.route('/paymentinfo/')
 @login_required
+@cart_session
 def payment_info():
     return render_template('./paymentinfo.html')
 
 
 @user_bp.route('/profile/')
 @login_required
+@cart_session
 def profile():
     return render_template('./profile.html')
 
 
 @user_bp.route('/forgot/')
+@cart_session
 def forgot():
     return render_template('./forgot.html')
 

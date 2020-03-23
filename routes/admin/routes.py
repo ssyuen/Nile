@@ -28,7 +28,9 @@ def login_required(f):
 
 @admin_bp.route('/logout/', methods=['GET'])
 def logout():
-    if 'logged_in' in session and session['logged_in']  and 'admin' in session and session['admin']:
+    if 'logged_in' in session and session['logged_in']:
+        if 'admin' in session:
+            session['admin'] = False
         session['logged_in'] = False
         session['admin'] = False
         flash('Logged out successfully.')
