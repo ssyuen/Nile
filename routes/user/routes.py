@@ -24,11 +24,12 @@ user_bp = Blueprint('user_bp', __name__,
 def login_required(f):
     @wraps(f)
     def wrapped_func(*args, **kws):
-        if 'logged_in' in session:
+        if 'logged_in' in session and session['logged_in']:
             return f(*args, **kws)
         else:
             flash('You need to login to access this area!')
-            return redirect('/login/')
+            # return redirect('/login/')
+            return redirect(url_for('user_bp.login',ctx=f.__name__))
     return wrapped_func
 
 def cart_session(f):
@@ -58,7 +59,7 @@ def landing_page():
 
 @user_bp.route('/login/', methods=['POST', 'GET'])
 @cart_session
-def login():
+def login(ctx=None):
     if request.method == 'POST':
         email = request.form.get('email')
         password = request.form.get('password')
@@ -82,7 +83,8 @@ def login():
                     
                     session['firstName'] = results[2]
                     # flash('Welcome, ' + session['firstName'] + '!')
-                    return redirect('/')
+                    ctx = request.args.get('next')
+                    return redirect(ctx or url_for('user_bp.landing_page'))
                 else:
                     flash('Your login details were incorrect. Please try again.')
                     return redirect('/login/')
@@ -104,7 +106,13 @@ def login():
                     session['admin'] = False
                     session['firstName'] = results[2]
                     # flash('Welcome, ' + session['firstName'] + '!')
-                    return redirect('/')
+                    ctx = request.args.get('ctx')
+                    print(ctx, 'PRINTING')
+                    if ctx is not None:
+                        return redirect(url_for('user_bp.' + ctx))
+                    else:
+                        return redirect('/')
+                    # return redirect('/')
                 else:
                     flash('Your login details were incorrect. Please try again.')
                     return redirect('/login/')
