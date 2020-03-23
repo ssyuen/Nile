@@ -68,7 +68,7 @@ def login(ctx=None):
         # OF AND PASSWORD AND USE BCRYPT.CHECKPW(PASSWORD,QUERIED PASSWORD)
         if '@nile.com' in email:
 
-            query = 'SELECT email ,pass, firstName from admin WHERE email = "' + \
+            query = 'SELECT email ,pass, firstName, lastName from admin WHERE email = "' + \
                     email + '"'
             cursor.execute(query)
 
@@ -80,7 +80,7 @@ def login(ctx=None):
                     session['logged_in'] = True
                     session['email'] = email
                     session['admin'] = True
-                    
+                    session['lastName'] = results[3]
                     session['firstName'] = results[2]
                     # flash('Welcome, ' + session['firstName'] + '!')
                     ctx = request.args.get('next')
@@ -92,7 +92,7 @@ def login(ctx=None):
                 flash('Your login details were not found. Please try again.')
                 return redirect('/login/')
         else:
-            query = 'SELECT email ,pass, firstName from user WHERE email = "' + \
+            query = 'SELECT email ,pass, firstName, lastName from user WHERE email = "' + \
                     email + '"'
             cursor.execute(query)
             try:
@@ -104,6 +104,7 @@ def login(ctx=None):
                     session['logged_in'] = True
                     session['email'] = email
                     session['admin'] = False
+                    session['lastName'] = results[3]
                     session['firstName'] = results[2]
                     # flash('Welcome, ' + session['firstName'] + '!')
                     ctx = request.args.get('ctx')
