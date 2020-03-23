@@ -1,0 +1,158 @@
+<div class="card gradient-card mb-5">
+    <div class="card-image"
+         style="background-image: url(https://mdbootstrap.com/img/Photos/Horizontal/Work/4-col/img%20%2814%29.jpg)">
+        <!-- Content -->
+        <div class="text-white mask card-contextual-info">
+            <div class="row">
+                <div class="col align-self-center">
+                    <div class="first-content p-3">
+                        <h3 class="card-title">Payment Method 1</h3>
+                    </div>
+                </div>
+                <div class="col align-self-center">
+                    <div class="second-content pr-3" style="float: right;">
+                        <i class="fas fa-dollar-sign fa-3x"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Content -->
+    <div class="card-body white">
+        <form>
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <i class="fas fa-signature"></i>
+                    <label for="pm1FirstName">Card Holder First Name</label>
+                    <div class="input-group">
+                        <input type="text" class="form-control" id="pm1FirstName"
+                               placeholder="First Name" required>
+                        <div class="input-group-append">
+                            <button class="btn btn-outline-warning m-0 px-3 py-2 z-depth-0 waves-effect"
+                                    type="button" id="editPm1FirstName">Edit
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group col-md-6">
+                    <i class="fas fa-signature"></i>
+                    <label for="pm1LastName">Card Holder Last Name</label>
+                    <div class="input-group">
+                        <input type="text" class="form-control" id="pm1LastName"
+                               placeholder="Last Name" required>
+                        <div class="input-group-append">
+                            <button class="btn btn-outline-warning m-0 px-3 py-2 z-depth-0 waves-effect"
+                                    type="button" id="editPm1LastName">Edit
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col">
+                    <i class="far fa-credit-card"></i>
+                    <label for="pm1CCN">Credit Card Number</label>
+                    <div class="input-group">
+                        <input type="text" class="form-control" id="pmCCN"
+                               placeholder="Credit Card Number" required>
+                        <div class="input-group-append">
+                            <button class="btn btn-outline-warning m-0 px-3 py-2 z-depth-0 waves-effect"
+                                    type="button" id="editPmCCN">Edit
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group col">
+                    <i class="far fa-clock"></i>
+                    <label for="pm1Expiry">Expiriration Date</label>
+                    <div class="input-group">
+                        <input type="month" class="form-control" id="pm1Expiry"
+                               value="2020-05">
+                        <div class="input-group-append">
+                            <button class="btn btn-outline-warning m-0 px-3 py-2 z-depth-0 waves-effect"
+                                    type="button" id="editPm1Expiry">Edit
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-row mt-5">
+                <div class="col-9">
+                    <button type="button" id="savePaymentInformation"
+                            class="btn blue-gradient btn-block">Save and Update
+                    </button>
+                </div>
+                <div class="col-3">
+                    <button type="button" id="removePaymentInformation"
+                            class="btn btn-outline-danger btn-block">Remove Payment Method
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<div class="card gradient-card">
+    <div class="card-image"
+         style="background-image: url(https://mdbootstrap.com/img/Photos/Horizontal/Work/4-col/img%20%2814%29.jpg)">
+        <!-- Content -->
+        <div class="text-white mask card-contextual-info">
+            <div class="row">
+                <div class="col align-self-center">
+                    <div class="first-content p-3">
+                        <h3 class="card-title">Add Payment Method</h3>
+                    </div>
+                </div>
+                <div class="col align-self-center">
+                    <div class="second-content pr-3" style="float: right;">
+                        <i class="fas fa-plus fa-3x"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Content -->
+    <div class="card-body white">
+        <form>
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <i class="fas fa-signature"></i>
+                    <label for="addFirstName">Card Holder First Name</label>
+                    <div class="input-group">
+                        <input type="text" class="form-control" id="addFirstName"
+                               placeholder="First Name" required>
+                    </div>
+                </div>
+                <div class="form-group col-md-6">
+                    <i class="fas fa-signature"></i>
+                    <label for="addLastName">Card Holder Last Name</label>
+                    <div class="input-group">
+                        <input type="text" class="form-control" id="addLastName"
+                               placeholder="Last Name" required>
+                    </div>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col">
+                    <i class="far fa-credit-card"></i>
+                    <label for="addCCN">Credit Card Number</label>
+                    <div class="input-group">
+                        <input type="text" class="form-control" id="pmCCN"
+                               placeholder="Credit Card Number" required>
+                    </div>
+                </div>
+                <div class="form-group col">
+                    <i class="far fa-clock"></i>
+                    <label for="addExpiry">Expiriration Date</label>
+                    <div class="input-group">
+                        <input type="month" class="form-control" id="addExpiry"
+                               value="2020-05">
+                    </div>
+                </div>
+            </div>
+            <button type="submit" id="addNewPaymentMethod" class="btn blue-gradient btn-block mt-5">Add
+                New Payment
+                Method
+            </button>
+        </form>
+    </div>
+</div>
