@@ -11,6 +11,7 @@
 
     {% include 'style.html' %}
     <link rel="stylesheet" type="text/css" href="../../../static/user/css/browse.css">
+    <script src="../../../static/user/js/browse.js"></script>
 </head>
 
 <body class="our-color">
@@ -18,7 +19,7 @@
     <!-- Navigation -->
     {% include 'nav.html' %}
 </div>
-{% with valid_login = get_flashed_messages() %}
+<!-- {% with valid_login = get_flashed_messages() %}
     {% if valid_login %}
 
         <p class="flashes h5 text-center" style="color: green;">
@@ -27,7 +28,7 @@
             {% endfor %}
         </p>
     {% endif %}
-{% endwith %}
+{% endwith %} -->
 <div class="container">
     <div class="row">
         <div class="col mb-4">
@@ -55,9 +56,9 @@
 
                             <form class="pb-3">
                                 <div class="input-group shadow">
-                                    <input type="text" class="form-control" placeholder="Search">
+                                    <input id="searchInput" type="text" class="form-control" placeholder="Search">
                                     <div class="input-group-append">
-                                        <button class="btn blue-gradient m-0 px-3 py-2 z-depth-0 waves-effect"
+                                        <button id="searchButton" class="btn blue-gradient m-0 px-3 py-2 z-depth-0 waves-effect"
                                                 type="button"><i class="fa fa-search"></i></button>
                                     </div>
                                 </div>
@@ -311,223 +312,216 @@
                 </div>
             </header>
 
-            <div class="row">
-                <div class="col-lg-3 col-md-6 mb-4">
-                    <div class="card h-100 bg-dark text-white modal-card"
-                         onclick="startModal('Harry Potter and the Sourcerer\'s Stone', 'This marvelous book is about a young boy who finds a new journey through a magical world of adventure.', 'J.K.Rowling', '059035342X', '1/1/1999', '568', 'Paperback', 'Fantasy')">
-                        <img class="card-img-top" src="../static/images/Books/HP_Sourcerer.jpg" alt="" width="250">
-                        <div class="card-body">
-                            <div class="titleHolder">
-                                <h6 class="card-title">Harry Potter and the Sorcercer's Stone</h6>
-                            </div>
-                            <div class="flex-fill">
-                                <p class="book-price">$5.99</p>
+            <!-- ORIGINAL -->
+
+            <div class="row" id="table">
+                <div class="col-lg-3 col-md-6 mb-4" nile-isbn="9789336234578" nile-author="J.K. Rowling" nile-title="Harry Potter and the Sorcercer's Stone" nile-genre="Childrens">
+                    <a href="/product/">
+                        <div class="card h-100 bg-dark text-white modal-card waves-effect" id="hp">
+                            <img class="card-img-top" src="../static/images/Books/HP_Sourcerer.jpg" alt="" width="250">
+                            <div class="card-body">
+                                <div class="titleHolder">
+                                    <h6 class="card-title">Harry Potter and the Sorcercer's Stone</h6>
+                                </div>
+                                <div class="flex-fill">
+                                    <p class="book-price">$5.99</p>
+                                </div>
                             </div>
                         </div>
-                    </div>
+                    </a>
                 </div>
                 <div class="col-lg-3 col-md-6 mb-4">
-                    <div class="card h-100 bg-dark text-white modal-card"
-                         onclick="startModal('The BFG', 'The BFG is no ordinary bone-crunching giant. He is far too nice and jumbly. It\'s lucky for Sophie that he is. Had she been carried off in the middle of the night by the Bloodbottler, or any of the other giants—rather than the BFG—she would have soon become breakfast. When Sophie hears that the giants are flush-bunking off to England to swollomp a few nice little chiddlers, she decides she must stop them once and for all. And the BFG is going to help her!', 'Roald Dahl', '9780142410387', '8/16/2007', '224', 'Paperback', 'Childrens')">
-                        <img class="card-img-top" src="../static/images/Books/TheBFG.jpg" alt="Book Image" width="250">
-                        <div class="card-body">
-                            <div class="titleHolder">
-                                <h6 class="card-title">The BFG</h6>
-                            </div>
-                            <div class="flex-fill">
-                                <p class="book-price">$9.99</p>
+                    <a href="/product/">
+                        <div class="card h-100 bg-dark text-white modal-card waves-effect">
+                            <img class="card-img-top" src="../static/images/Books/TheBFG.jpg" alt="Book Image"
+                                 width="250">
+                            <div class="card-body">
+                                <div class="titleHolder">
+                                    <h6 class="card-title">The BFG</h6>
+                                </div>
+                                <div class="flex-fill">
+                                    <p class="book-price">$9.99</p>
+                                </div>
                             </div>
                         </div>
-                    </div>
+                    </a>
                 </div>
                 <div class="col-lg-3 col-md-6 mb-4">
-                    <div class="card h-100 bg-dark text-white modal-card" data-toggle="modal"
-                         onclick="startModal('The Incredible Hulk', 'The All-New X-Men meet the Indestructible Hulk and the Superior Spider-Man! Doctor Octopus confronts the time-desplaced young X-Men, but how is he alive?! Ock\'s appearance gets the immediate attention of the Superior Spider-Man (who we all know is Doc Ock\'s mind in Spider-Man\'s body), and Bruce Banner helps Spidey and the young X-Men investigate the mysterious paradox - but before they learn the truth, they\'re shocked by the return of the believed-dead Abomination! Who is in league with these returned villains, and how can our heroes defeat them?', 'Marvel Comics', '0785184384', '1/21/2014', '96', 'Paperback', 'Graphic Novel')">
-                        <img class="card-img-top" src="../static/images/Books/TheHulk.jpg" alt="Book Image" width="250">
-                        <div class="card-body">
-                            <div class="titleHolder">
-                                <h6 class="card-title">The Hulk</h6>
-                            </div>
-                            <div>
-                                <p class="book-price">$5.99</p>
+                    <a href="/product/">
+                        <div class="card h-100 bg-dark text-white modal-card waves-effect">
+                            <img class="card-img-top" src="../static/images/Books/TheHulk.jpg" alt="Book Image"
+                                 width="250">
+                            <div class="card-body">
+                                <div class="titleHolder">
+                                    <h6 class="card-title">The Hulk</h6>
+                                </div>
+                                <div>
+                                    <p class="book-price">$5.99</p>
+                                </div>
                             </div>
                         </div>
-                    </div>
+                    </a>
                 </div>
                 <div class="col-lg-3 col-md-6 mb-4">
-                    <div class="card h-100 bg-dark text-white modal-card"
-                         onclick="startModal('Harry Potter and the Sourcerer\'s stone', 'This marvelous book is about a young boy who finds a new journey through a magical world of adventure.', 'J.K.Rowling', '059035342X', '1/1/1999', '568', 'Paperback', 'Fantasy')">
-                        <img class="card-img-top" src="../static/images/Books/TheLightningThief.jpg" alt="Book Image"
-                             width="250">
-                        <div class="card-body">
-                            <div class="titleHolder">
-                                <h6 class="card-title">Percy Jackson and the Lightning Thief</h6>
-                            </div>
-                            <div>
-                                <p class="book-price">$9.99</p>
+                    <a href="/product/">
+                        <div class="card h-100 bg-dark text-white modal-card waves-effect">
+                            <img class="card-img-top" src="../static/images/Books/TheLightningThief.jpg"
+                                 alt="Book Image"
+                                 width="250">
+                            <div class="card-body">
+                                <div class="titleHolder">
+                                    <h6 class="card-title">Percy Jackson and the Lightning Thief</h6>
+                                </div>
+                                <div>
+                                    <p class="book-price">$9.99</p>
+                                </div>
                             </div>
                         </div>
-                    </div>
+                    </a>
                 </div>
                 <div class="col-lg-3 col-md-6 mb-4">
-                    <div class="card h-100 bg-dark text-white modal-card"
-                         onclick="startModal('Harry Potter and the Sourcerer\'s stone', 'This marvelous book is about a young boy who finds a new journey through a magical world of adventure.', 'J.K.Rowling', '059035342X', '1/1/1999', '568', 'Paperback', 'Fantasy')">
-                        <img class="card-img-top" src="../static/images/Books/tkmb.jpg" alt="Book Image" width="250">
-                        <div class="card-body">
-                            <div class="titleHolder">
-                                <h6 class="card-title">To Kill a Mockingbird</h6>
-                            </div>
-                            <div>
-                                <p class="book-price">$12.99</p>
+                    <a href="/product/">
+                        <div class="card h-100 bg-dark text-white modal-card waves-effect">
+                            <img class="card-img-top" src="../static/images/Books/tkmb.jpg" alt="Book Image"
+                                 width="250">
+                            <div class="card-body">
+                                <div class="titleHolder">
+                                    <h6 class="card-title">To Kill a Mockingbird</h6>
+                                </div>
+                                <div>
+                                    <p class="book-price">$12.99</p>
+                                </div>
                             </div>
                         </div>
-                    </div>
+                    </a>
                 </div>
                 <div class="col-lg-3 col-md-6 mb-4">
-                    <div class="card h-100 bg-dark text-white modal-card"
-                         onclick="startModal('Harry Potter and the Sourcerer\'s stone', 'This marvelous book is about a young boy who finds a new journey through a magical world of adventure.', 'J.K.Rowling', '059035342X', '1/1/1999', '568', 'Paperback', 'Fantasy')">
-                        <img class="card-img-top" src="../static/images/Books/GordonRamsayHomeCooking.jpg"
-                             alt="Book Image" width="250">
-                        <div class="card-body">
-                            <div class="titleHolder">
-                                <h6 class="card-title">Gordon Ramsay Home Cooking</h6>
-                            </div>
-                            <div>
-                                <p class="book-price">$32.99</p>
+                    <a href="/product/">
+                        <div class="card h-100 bg-dark text-white modal-card waves-effect">
+                            <img class="card-img-top" src="../static/images/Books/GordonRamsayHomeCooking.jpg"
+                                 alt="Book Image" width="250">
+                            <div class="card-body">
+                                <div class="titleHolder">
+                                    <h6 class="card-title">Gordon Ramsay Home Cooking</h6>
+                                </div>
+                                <div>
+                                    <p class="book-price">$32.99</p>
+                                </div>
                             </div>
                         </div>
-                    </div>
+                    </a>
                 </div>
                 <div class="col-lg-3 col-md-6 mb-4">
-                    <div class="card h-100 bg-dark text-white modal-card"
-                         onclick="startModal('Harry Potter and the Sourcerer\'s stone', 'This marvelous book is about a young boy who finds a new journey through a magical world of adventure.', 'J.K.Rowling', '059035342X', '1/1/1999', '568', 'Paperback', 'Fantasy')">
-                        <img class="card-img-top" src="../static/images/Books/Narnia.jpg" alt="Book Image" width="250">
-                        <div class="card-body">
-                            <div class="titleHolder">
-                                <h6 class="card-title">Narnia</h6>
-                            </div>
-                            <div>
-                                <p class="book-price">$10.99</p>
+                    <a href="/product/">
+                        <div class="card h-100 bg-dark text-white modal-card waves-effect">
+                            <img class="card-img-top" src="../static/images/Books/Narnia.jpg" alt="Book Image"
+                                 width="250">
+                            <div class="card-body">
+                                <div class="titleHolder">
+                                    <h6 class="card-title">Narnia</h6>
+                                </div>
+                                <div>
+                                    <p class="book-price">$10.99</p>
+                                </div>
                             </div>
                         </div>
-                    </div>
+                    </a>
                 </div>
                 <div class="col-lg-3 col-md-6 mb-4">
-                    <div class="card h-100 bg-dark text-white modal-card"
-                         onclick="startModal('Harry Potter and the Sourcerer\'s stone', 'This marvelous book is about a young boy who finds a new journey through a magical world of adventure.', 'J.K.Rowling', '059035342X', '1/1/1999', '568', 'Paperback', 'Fantasy')">
-                        <img class="card-img-top" src="../static/images/Books/SpiderMan.jpg" alt="Book Image"
-                             width="250">
-                        <div class="card-body">
-                            <div class="titleHolder">
-                                <h6 class="card-title">Spider Man</h6>
-                            </div>
-                            <div>
-                                <p class="book-price">$5.99</p>
+                    <a href="/product/">
+                        <div class="card h-100 bg-dark text-white modal-card waves-effect">
+                            <img class="card-img-top" src="../static/images/Books/SpiderMan.jpg" alt="Book Image"
+                                 width="250">
+                            <div class="card-body">
+                                <div class="titleHolder">
+                                    <h6 class="card-title">Spider Man</h6>
+                                </div>
+                                <div>
+                                    <p class="book-price">$5.99</p>
+                                </div>
                             </div>
                         </div>
-                    </div>
+                    </a>
                 </div>
                 <div class="col-lg-3 col-md-6 mb-4">
-                    <div class="card h-100 bg-dark text-white modal-card"
-                         onclick="startModal('Harry Potter and the Sourcerer\'s stone', 'This marvelous book is about a young boy who finds a new journey through a magical world of adventure.', 'J.K.Rowling', '059035342X', '1/1/1999', '568', 'Paperback', 'Fantasy')">
-                        <img class="card-img-top" src="../static/images/Books/JavaForDummies.jpg" alt="Book Image"
-                             width="250">
-                        <div class="card-body">
-                            <div class="titleHolder">
-                                <h6 class="card-title">Java For Dummies</h6>
-                            </div>
-                            <div>
-                                <p class="book-price">$15.99</p>
+                    <a href="/product/">
+                        <div class="card h-100 bg-dark text-white modal-card waves-effect">
+                            <img class="card-img-top" src="../static/images/Books/JavaForDummies.jpg" alt="Book Image"
+                                 width="250">
+                            <div class="card-body">
+                                <div class="titleHolder">
+                                    <h6 class="card-title">Java For Dummies</h6>
+                                </div>
+                                <div>
+                                    <p class="book-price">$15.99</p>
+                                </div>
                             </div>
                         </div>
-                    </div>
+                    </a>
                 </div>
                 <div class="col-lg-3 col-md-6 mb-4">
-                    <div class="card h-100 bg-dark text-white modal-card"
-                         onclick="startModal('Harry Potter and the Sourcerer\'s stone', 'This marvelous book is about a young boy who finds a new journey through a magical world of adventure.', 'J.K.Rowling', '059035342X', '1/1/1999', '568', 'Paperback', 'Fantasy')">
-                        <img class="card-img-top" src="../static/images/Books/DiaryofAWimpyKid.jpg" alt="Book Image"
-                             width="250">
-                        <div class="card-body">
-                            <div class="titleHolder">
-                                <h6 class="card-title">Diary of a Wimpy Kid</h6>
-                            </div>
-                            <div>
-                                <p class="book-price">$9.99</p>
+                    <a href="/product/">
+                        <div class="card h-100 bg-dark text-white modal-card waves-effect">
+                            <img class="card-img-top" src="../static/images/Books/DiaryofAWimpyKid.jpg" alt="Book Image"
+                                 width="250">
+                            <div class="card-body">
+                                <div class="titleHolder">
+                                    <h6 class="card-title">Diary of a Wimpy Kid</h6>
+                                </div>
+                                <div>
+                                    <p class="book-price">$9.99</p>
+                                </div>
                             </div>
                         </div>
-                    </div>
+                    </a>
                 </div>
                 <div class="col-lg-3 col-md-6 mb-4">
-                    <div class="card h-100 bg-dark text-white modal-card"
-                         onclick="startModal('Harry Potter and the Sourcerer\'s stone', 'This marvelous book is about a young boy who finds a new journey through a magical world of adventure.', 'J.K.Rowling', '059035342X', '1/1/1999', '568', 'Paperback', 'Fantasy')">
-                        <img class="card-img-top" src="../static/images/Books/TheHulk.jpg" alt="Book Image" width="250">
-                        <div class="card-body">
-                            <div class="titleHolder">
-                                <h6 class="card-title">The Hulk</h6>
-                            </div>
-                            <div>
-                                <p class="book-price">$5.99</p>
+                    <a href="/product/">
+                        <div class="card h-100 bg-dark text-white modal-card waves-effect">
+                            <img class="card-img-top" src="../static/images/Books/TheHulk.jpg" alt="Book Image"
+                                 width="250">
+                            <div class="card-body">
+                                <div class="titleHolder">
+                                    <h6 class="card-title">The Hulk</h6>
+                                </div>
+                                <div>
+                                    <p class="book-price">$5.99</p>
+                                </div>
                             </div>
                         </div>
-                    </div>
+                    </a>
                 </div>
                 <div class="col-lg-3 col-md-6 mb-4">
-                    <div class="card h-100 bg-dark text-white modal-card"
-                         onclick="startModal('Harry Potter and the Sourcerer\'s stone', 'This marvelous book is about a young boy who finds a new journey through a magical world of adventure.', 'J.K.Rowling', '059035342X', '1/1/1999', '568', 'Paperback', 'Fantasy')">
-                        <img class="card-img-top" src="../static/images/Books/KobeBryantMambaMentality.jpg"
-                             alt="Book Image" width="250">
-                        <div class="card-body">
-                            <div class="titleHolder">
-                                <h6 class="card-title">Kobe Bryant - Mamba Mentality</h6>
-                            </div>
-                            <div>
-                                <p class="book-price">$8.24</p>
+                    <a href="/product/">
+                        <div class="card h-100 bg-dark text-white modal-card waves-effect">
+                            <img class="card-img-top" src="../static/images/Books/KobeBryantMambaMentality.jpg"
+                                 alt="Book Image" width="250">
+                            <div class="card-body">
+                                <div class="titleHolder">
+                                    <h6 class="card-title">Kobe Bryant - Mamba Mentality</h6>
+                                </div>
+                                <div>
+                                    <p class="book-price">$8.24</p>
+                                </div>
                             </div>
                         </div>
-                    </div>
+                    </a>
                 </div>
             </div>
+
+            <nav id="bar" aria-label="Page navigation example">
+                
+            </nav>
+
             <!-- /.row -->
         </div>
         <!-- /.col-lg-9 -->
     </div>
     <!-- /.row -->
 </div>
-<!-- /.container -->
 
-<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-     aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title primary-md" id="modalBookTitle">Harry Potter and the Sourcerer's Stone</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <p><b>Summary:</b><br>
-                    <span id="modalSummary">This marvelous book is about a young boy who finds a new journey through
-                    a magical world of adventure.</span></p>
-                <p><b>Author: </b><span id="modalAuthor">J.K. Rowling</span></p>
-                <p><b>ISBN-13: </b><span id="modalIsbn">059035342X</span></p>
-                <p><b>Publishing Date: </b><span id="modalPublished">1/1/1999</span></p>
-                <p><b>Number of Pages: </b><span id="modalNumberPages">568</span></p>
-                <p><b>Binding Type: </b><span id="modalBindingType">Paperback</span></p>
-                <p><b>Genre: </b><span id="modalGenre">Fantasy</span></p>
-                <p><b>Reviews:</b></p>
-                <small class="text-muted">&#9733; &#9733; &#9733; &#9733; &#9734;</small>
-            </div>
-            {% if not session['admin'] %}
-                <div class="modal-footer">
-                    <button type="button" class="btn blue-gradient btn-block add-to-cart">Add to Cart
-                        <i class="fas fa-shopping-cart fa-1x"></i>
-                    </button>
-                </div>
-            {% endif %}
-        </div>
-    </div>
-</div>
+
+<!-- /.container -->
 <!-- Footer -->
 <footer class="py-5 bg-dark">
     <div class="container text-white">
@@ -546,34 +540,60 @@
     </div>
     <!-- /.container -->
 </footer>
+
+</body>
+
 <script>
-    function startModal(bookTitle, summary, author, isbn, publishingDate, numPages, bindingType, genre) {
-        document.getElementById("modalBookTitle").innerText = bookTitle;
-        document.getElementById("modalSummary").innerText = summary;
-        document.getElementById("modalAuthor").innerText = author;
-        document.getElementById("modalIsbn").innerText = isbn;
-        document.getElementById("modalPublished").innerText = publishingDate;
-        document.getElementById("modalNumberPages").innerText = numPages;
-        document.getElementById("modalBindingType").innerText = bindingType;
-        document.getElementById("modalGenre").innerText = genre;
-        $('#myModal').modal('show');
-    }
+    $(document).ready(function() {
+        var shownRows = 8; 
+        var rowsTotal = $("#table > div").length; // selects all div elements where parent is id = table
+        var pageNumbers = rowsTotal / shownRows;
 
-    /* FOR THE LOVE OF GOD - Please don't touch this I am working on it */
-    $(".add-to-cart")[0].addEventListener("click", (e) => {
-        let ct = $("#cartTotal");
-        let total = parseInt(ct.text());
-        console.log(total);
-        ct.text(++total);
+        var html = "<ul class='pagination justify-content-center'> <li class='page-item'> <a class='page-link' href='#'' aria-label='Previous'> <span aria-hidden='true'>&laquo;</span> <span class='sr-only'>Previous</span> </a> </li>";        
+        for (i = 0; i < pageNumbers; i++) {
+            var paginationNum = i + 1; // 1 2 3 4 ... etc 
+            html += "<li class='page-item'> <a class='page-link waves-effect waves-effect' href='#' rel='" + i + "'>" + paginationNum + "</a> </li>";
+        }
+        html += "<li class='page-item'> <a class='page-link' href='#'' aria-label='Next'> <span aria-hidden='true'>&raquo;</span> <span class='sr-only'>Next</span> </a> </li> </ul>";
 
-        let tar = $(e.target.id);
-        console.log(tar);
-        tar.text("Added to cart");
-        tar.prop("disabled", true);
+        $("#bar").append(html);
 
+        $("#table > div").hide();
+        $("#table > div").slice(0, shownRows).show();
+
+        $('#bar a:first').addClass('active'); // The current active page of books to be shown 
+        $('#bar a').bind('click', function(){ // Upon clicking change the active page of books to next
+            $('#bar a').removeClass('active'); 
+            $(this).addClass('active');
+            var currentPage = $(this).attr('rel');
+            var startItem = currentPage * shownRows;
+            var endItem = startItem + shownRows;
+            $('#table > div').css('opacity','0.0').hide().slice(startItem, endItem).
+            css('display','table-row').animate({opacity:1}, 300);
+        });
     });
 
+    $(document).ready(function(){
+        $("#searchButton").on("click", function(){
+        // Retrieve the input field text 
+        var querry = $("#searchInput").val().toLowerCase();
+        console.log(querry)
+ 
+        // Loop through TITLE, AUTHOR, ISBN, GENRE
+        $("#table > div").each(function(){
+            // If the list item does not contain the text phrase fade it out
+            if ($(this).text().search(new RegExp(querry, "gi")) < 0) {
+                $(this).fadeOut();
+            // Show the list item if the phrase matches
+            } else {
+                $(this).show();
+            }
+        });
+ 
+        
+    });
+});
+
 </script>
-</body>
 
 </html>
