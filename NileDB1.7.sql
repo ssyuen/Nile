@@ -10,12 +10,12 @@ SET @OLD_SQL_MODE = @@SQL_MODE, SQL_MODE =
 -- -----------------------------------------------------
 -- Schema nileDB
 -- -----------------------------------------------------
-CREATE SCHEMA IF NOT EXISTS `nileDB` DEFAULT CHARACTER SET utf8;
-USE `nileDB`;
+CREATE SCHEMA IF NOT EXISTS `niledb` DEFAULT CHARACTER SET utf8;
+USE `niledb`;
 
 CREATE TABLE `address`
 (
-    `addressID` int(11) NOT NULL AUTO_INCREMENT,
+    `addressID` INT NOT NULL AUTO_INCREMENT,
     `street`    varchar(45) COLLATE utf8mb4_general_ci DEFAULT NULL,
     `city`      varchar(45) COLLATE utf8mb4_general_ci DEFAULT NULL,
     `state`     varchar(45) COLLATE utf8mb4_general_ci DEFAULT NULL,
@@ -41,7 +41,7 @@ CREATE TABLE `Admin`
 
 CREATE TABLE `binding`
 (
-    `bindingID` int(11) NOT NULL,
+    `bindingID` INT NOT NULL,
     `binding`   varchar(45) COLLATE utf8mb4_general_ci DEFAULT NULL,
     PRIMARY KEY (`bindingID`)
 ) ENGINE = InnoDB
@@ -50,7 +50,7 @@ CREATE TABLE `binding`
 
 CREATE TABLE `genre`
 (
-    `genreID` int(11) NOT NULL,
+    `genreID` INT NOT NULL,
     `genre`   varchar(45) COLLATE utf8mb4_general_ci DEFAULT NULL,
     PRIMARY KEY (`genreID`)
 ) ENGINE = InnoDB
@@ -59,17 +59,17 @@ CREATE TABLE `genre`
 
 CREATE TABLE `book`
 (
-    `ISBN`            int(11) NOT NULL AUTO_INCREMENT,
-    `bindingID`       int(11)                                 DEFAULT NULL,
-    `genreID`         int(11)                                 DEFAULT NULL,
+    `ISBN`            varchar(20) NOT NULL,
+    `bindingID`       INT                                     DEFAULT NULL,
+    `genreID`         INT                                     DEFAULT NULL,
     `title`           varchar(45) COLLATE utf8mb4_general_ci  DEFAULT NULL,
     `price`           double                                  DEFAULT NULL,
-    `numPages`        int(11)                                 DEFAULT NULL,
+    `numPages`        INT                                     DEFAULT NULL,
     `image`           longblob,
     `edition`         varchar(45) COLLATE utf8mb4_general_ci  DEFAULT NULL,
     `publisher`       varchar(45) COLLATE utf8mb4_general_ci  DEFAULT NULL,
     `publicationDate` date                                    DEFAULT NULL,
-    `stock`           int(11)                                 DEFAULT NULL,
+    `stock`           INT                                     DEFAULT NULL,
     `authorFirstName` varchar(45) COLLATE utf8mb4_general_ci  DEFAULT NULL,
     `authorLastName`  varchar(45) COLLATE utf8mb4_general_ci  DEFAULT NULL,
     `summary`         varchar(500) COLLATE utf8mb4_general_ci DEFAULT NULL,
@@ -87,9 +87,9 @@ CREATE TABLE `book`
 
 CREATE TABLE `orderDetails`
 (
-    `orderID`  int(11) NOT NULL,
-    `ISBN`     int(11) NOT NULL,
-    `quantity` int(10) DEFAULT '0',
+    `orderID`  INT         NOT NULL,
+    `ISBN`     varchar(20) NOT NULL,
+    `quantity` INT DEFAULT 0,
     KEY `FK` (`orderID`, `ISBN`),
     KEY `Key` (`quantity`),
     KEY `bookID_idx` (`ISBN`),
@@ -101,7 +101,7 @@ CREATE TABLE `orderDetails`
 
 CREATE TABLE `promotion`
 (
-    `promotionID` int(11) NOT NULL AUTO_INCREMENT,
+    `promotionID` INT NOT NULL AUTO_INCREMENT,
     `code`        varchar(45) COLLATE utf8mb4_general_ci DEFAULT NULL,
     `discount`    double                                 DEFAULT NULL,
     `startDate`   date                                   DEFAULT NULL,
@@ -114,12 +114,12 @@ CREATE TABLE `promotion`
 
 CREATE TABLE `orders`
 (
-    `orderID`            int(11) NOT NULL AUTO_INCREMENT,
-    `promotionID`        int(11) DEFAULT NULL,
-    `total`              double  DEFAULT NULL,
-    `date`               date    DEFAULT NULL,
-    `confirmationNumber` int(11) DEFAULT NULL,
-    `orderTime`          time    DEFAULT NULL,
+    `orderID`            INT NOT NULL AUTO_INCREMENT,
+    `promotionID`        INT    DEFAULT NULL,
+    `total`              double DEFAULT NULL,
+    `date`               date   DEFAULT NULL,
+    `confirmationNumber` INT    DEFAULT NULL,
+    `orderTime`          time   DEFAULT NULL,
     PRIMARY KEY (`orderID`),
     KEY `FK` (`promotionID`),
     KEY `Key` (`total`, `date`),
@@ -131,8 +131,8 @@ CREATE TABLE `orders`
 
 CREATE TABLE `payment`
 (
-    `paymentID`      int(11) NOT NULL AUTO_INCREMENT,
-    `cardNumber`     int(11)                                 DEFAULT NULL,
+    `paymentID`      INT NOT NULL AUTO_INCREMENT,
+    `cardNumber`     INT                                     DEFAULT NULL,
     `address`        varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
     `expirationDate` date                                    DEFAULT NULL,
     PRIMARY KEY (`paymentID`),
@@ -145,8 +145,8 @@ CREATE TABLE `payment`
 
 CREATE TABLE `shoppingCart`
 (
-    `cartID`  int(11) NOT NULL AUTO_INCREMENT,
-    `orderID` int(11) DEFAULT NULL,
+    `cartID`  INT NOT NULL AUTO_INCREMENT,
+    `orderID` INT DEFAULT NULL,
     PRIMARY KEY (`cartID`),
     KEY `FK` (`orderID`),
     CONSTRAINT `orderID` FOREIGN KEY (`orderID`) REFERENCES `orders` (`orderID`)
@@ -157,7 +157,7 @@ CREATE TABLE `shoppingCart`
 
 CREATE TABLE `status`
 (
-    `statusID` int(11)                                NOT NULL,
+    `statusID` INT                                    NOT NULL,
     `status`   varchar(45) COLLATE utf8mb4_general_ci NOT NULL,
     PRIMARY KEY (`statusID`),
     KEY `Key` (`status`)
@@ -168,10 +168,10 @@ CREATE TABLE `status`
 CREATE TABLE `user`
 (
     `email`     varchar(45) COLLATE utf8mb4_general_ci  NOT NULL,
-    `addressID` int(11) DEFAULT NULL,
-    `paymentID` int(11) DEFAULT NULL,
-    `statusID`  int(11)                                 NOT NULL,
-    `cartID`    int(11)                                 NOT NULL,
+    `addressID` INT DEFAULT NULL,
+    `paymentID` INT DEFAULT NULL,
+    `statusID`  INT                                     NOT NULL,
+    `cartID`    INT                                     NOT NULL,
     `pass`      varchar(100) COLLATE utf8mb4_general_ci NOT NULL,
     `firstname` varchar(45) COLLATE utf8mb4_general_ci  NOT NULL,
     `lastname`  varchar(45) COLLATE utf8mb4_general_ci  NOT NULL,
@@ -189,8 +189,6 @@ CREATE TABLE `user`
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4
   COLLATE = utf8mb4_general_ci;
-
-
 
 SET SQL_MODE = @OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS = @OLD_FOREIGN_KEY_CHECKS;
