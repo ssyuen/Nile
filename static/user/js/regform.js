@@ -6,7 +6,7 @@
     REVISIONS:          N/A
  */
 import {
-    confirmConstraint,
+    passwordConfConstraint,
     emailConstraint,
     INVALID_EMAIL_MSS,
     INVALID_F_NAME_MSS,
@@ -15,7 +15,7 @@ import {
     INVALID_PASS_CONF_MSS,
     INVALID_STREET_MSS,
     INVALID_ZIP_MSS,
-    validateConstraint,
+    passwordConstraint,
     validator,
     zipCodeConstraint
 } from "./genericval.js";
@@ -93,11 +93,11 @@ Array('input', 'focusin').forEach((evt) => {
         VALIDITY[EMAIL.id] = validator(EMAIL, INVALID_EMAIL_MSS, '#invalidEmail', emailConstraint(EMAIL.id));
     });
     PASS.addEventListener(evt, () => {
-        VALIDITY[PASS.id] = validator(PASS, INVALID_PASS_MSS, '#invalidPass', validateConstraint(PASS.id));
-        VALIDITY[PASS_CONF.id] = validator(PASS_CONF, INVALID_PASS_CONF_MSS, '#invalidPassConf', confirmConstraint(PASS.id, PASS_CONF.id));
+        VALIDITY[PASS.id] = validator(PASS, INVALID_PASS_MSS, '#invalidPass', passwordConstraint(PASS.id));
+        VALIDITY[PASS_CONF.id] = validator(PASS_CONF, INVALID_PASS_CONF_MSS, '#invalidPassConf', passwordConfConstraint(PASS.id, PASS_CONF.id));
     });
     PASS_CONF.addEventListener(evt, () => {
-        VALIDITY[PASS_CONF.id] = validator(PASS_CONF, INVALID_PASS_CONF_MSS, '#invalidPassConf', confirmConstraint(PASS.id, PASS_CONF.id));
+        VALIDITY[PASS_CONF.id] = validator(PASS_CONF, INVALID_PASS_CONF_MSS, '#invalidPassConf', passwordConfConstraint(PASS.id, PASS_CONF.id));
     });
     STREET_ADDR.addEventListener(evt, () => {
         let constr = document.getElementById(STREET_ADDR.id).value.length !== 0;
