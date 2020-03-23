@@ -61,7 +61,7 @@
 
                 {% if not session['admin'] %}
                     <div class="mt-3">
-                        <button id="addToCartBtn" class="btn blue-gradient btn-block w-250">
+                        <button id="addToCartBtn" class="btn blue-gradient btn-block w-250" onclick="addToCart(document.getElementById('addToCartBtn'))">
                             <span>Add To Cart</span>
                             <i class="fa fa-shopping-cart"></i>
                         </button>
@@ -168,6 +168,20 @@
         $(btn).addClass("blue-gradient");
         $(btn).children("span").html("Add to Cart");
     }
+</script>
+
+<script>
+    // $("addToCartBtn").
+    // $.post('/add_to_cart/',$('addToCartBtn').ser)
+    function addToCart(){
+        $.ajax({
+            url:'/add_to_cart/',
+            type:'POST',
+            data:{'bookName':document.getElementById('bookTitle').textContent}
+        });
+        console.log('posted');
+    }
+    
 </script>
 
 </body>
