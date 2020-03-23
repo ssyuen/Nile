@@ -11,10 +11,28 @@
 
     <style>
         .input-group .btn-outline-warning {
-            border-top-right-radius: 10px;
-            border-bottom-right-radius: 10px;
+            border-top-right-radius: 5px;
+            border-bottom-right-radius: 5px;
         }
+
+        input, select {
+            height: 50px !important;
+            border-radius: 0 !important;
+        }
+
+        @media (max-width: 991px) {
+            #accountListings {
+                margin-bottom: 20px;
+            }
+        }
+
+
     </style>
+
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.20/css/dataTables.bootstrap4.min.css">
+    <script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js"></script>
+
 </head>
 
 <body class="our-color">
@@ -33,12 +51,107 @@
 
 <div class="container footer-sep">
     <!--Grid row-->
-
     <div class="row">
-        <!--Grid column-->
-        <div class="col-md-6 mb-4">
-            <!-- Card -->
-            <div class="card gradient-card h-100">
+        <aside class="col-md-3" id="accountListings">
+            <ul class="list-group">
+                <a class="list-group-item active" id="accountOverview" href="#"> Account overview </a>
+                <a class="list-group-item" id="changeMyName" href="#"> Change my Name</a>
+                <a class="list-group-item" id="changeMyPass" href="#"> Change my Password </a>
+                <a class="list-group-item" id="orderHist" href="#">Order History </a>
+                <a class="list-group-item" id="manageAddress" href="#">Manage Shipping Address</a>
+                <a class="list-group-item" id="manageBilling" href="#">Manage Billing Address</a>
+                <a class="list-group-item" id="managePaymentInfo" href="#">Manage your Payment Information</a>
+                <a class="list-group-item" id="returnRefund" href="#"> Return and Refunds </a>
+            </ul>
+        </aside> <!-- col.// -->
+        <main class="col-md-9 main-content" id="mainContent">
+
+
+            <!--
+
+
+            ACCOUNT OVERVIEW TEMPLATE
+
+
+            -->
+
+
+            <div class="content" id="accountOverviewTemplate">
+                <article class="card mb-3">
+                    <div class="card-body">
+                        <h5 class="card-title mb-4">My Info</h5>
+                        <figure class="icontext">
+                            <div class="text">
+                                <strong> {{ session['firstName'] }}</strong> <br>
+                                manujp@live.com<br>
+                                <a href="#">Edit</a>
+                            </div>
+                        </figure>
+                        <hr>
+                        <i class="fa fa-map-marker text-muted"></i> My address:
+                        <div class="text" id="My Address">
+                            Tashkent city, Street name, Building 123, House 321
+                        </div>
+                        <p><a href="#">Edit</a></p>
+
+                        <article class="card-group">
+                            <div class="card mr-3 bg-light">
+                                <div class="p-3">
+                                    <h5 class="card-title primary-md">2</h5>
+                                    <span>Orders</span>
+                                </div>
+                            </div>
+                            <div class="card bg-light">
+                                <div class="p-3">
+                                    <h5 class="card-title primary-md">1</h5>
+                                    <span>Delivered items</span>
+                                </div>
+                            </div>
+                        </article>
+                    </div> <!-- card-body .// -->
+                </article> <!-- card.// -->
+                <article class="card  mb-3">
+                    <div class="card-body">
+                        <h5 class="card-title mb-4">Active Orders</h5>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <figure class="itemside  mb-3">
+                                    <figcaption class="info">
+                                        <time class="text-muted"><i class="fa fa-calendar-alt"></i> 12.09.2019
+                                        </time>
+                                        <p>Order Number: 82710234782934</p>
+                                        <span class="text-warning">Pending</span>
+                                    </figcaption>
+                                </figure>
+                            </div> <!-- col.// -->
+                            <div class="col-md-6">
+                                <figure class="itemside  mb-3">
+                                    <figcaption class="info">
+                                        <time class="text-muted"><i class="fa fa-calendar-alt"></i> 12.09.2019
+                                        </time>
+                                        <p>Order Number: 82710231874934</p>
+                                        <span class="text-success">Departured</span>
+                                    </figcaption>
+                                </figure>
+                            </div> <!-- col.// -->
+                            <div class="col-md-6">
+                                <figure class="itemside mb-3">
+                                    <figcaption class="info">
+                                        <time class="text-muted"><i class="fa fa-calendar-alt"></i> 12.09.2019
+                                        </time>
+                                        <p>Order Number: 82316425782934</p>
+                                        <span class="text-success">Shipped</span>
+                                    </figcaption>
+                                </figure>
+                            </div> <!-- col.// -->
+                        </div> <!-- row.// -->
+                        <a href="#" class="btn btn-outline-primary waves-effect"> See all orders </a>
+                    </div> <!-- card-body .// -->
+                </article> <!-- card.// -->
+            </div>
+
+
+            <div class="card gradient-card d-none" id="changeNameTemplate">
                 <div class="card-image"
                      style="background-image: url(https://mdbootstrap.com/img/Photos/Horizontal/Work/4-col/img%20%2814%29.jpg)">
                     <!-- Content -->
@@ -105,6 +218,7 @@
                                     </button>
                                 </div>
                             </div>
+                            <small><i>Your email is one of your login credentials, along with your password</i></small>
                         </div>
                     </div>
                     <div class="row mt-4">
@@ -115,13 +229,9 @@
                     </div>
                 </div>
             </div>
-        </div>
-        <!--Grid column-->
 
-        <!--Grid column-->
-        <div class="col-md-6 mb-4">
-            <!-- Card -->
-            <div class="card gradient-card h-100">
+
+            <div class="card gradient-card d-none" id="changePasswordTemplate">
                 <div class="card-image"
                      style="background-image: url(https://mdbootstrap.com/img/Photos/Horizontal/Work/4-col/img%20%2814%29.jpg);">
                     <!--Content-->
@@ -153,7 +263,8 @@
                             <i class="fas fa-lock prefix"></i>
                             <label for="inputValidationEx2" data-error="wrong" data-success="right">Current
                                 Password</label>
-                            <input type="password" id="inputValidationEx2" class="form-control validate">
+                            <input type="password" id="currentPassword" placeholder="Current Password"
+                                   class="form-control validate">
                         </div>
                     </div>
                     <div class="row mt-4">
@@ -161,7 +272,8 @@
                             <i class="fas fa-lock prefix"></i>
                             <label for="inputValidationEx2" data-error="wrong" data-success="right">New
                                 Password</label>
-                            <input type="password" id="inputValidationEx2" class="form-control validate">
+                            <input type="password" id="newPassword" placeholder="New Password"
+                                   class="form-control validate">
                         </div>
                     </div>
                     <div class="row mt-4">
@@ -169,7 +281,8 @@
                             <i class="fas fa-lock prefix"></i>
                             <label for="inputValidationEx2" data-error="wrong" data-success="right">Confirm
                                 Password</label>
-                            <input type="password" id="inputValidationEx2" class="form-control validate">
+                            <input type="password" id="confirmNewPassword" placeholder="Confirm New Password"
+                                   class="form-control validate">
                         </div>
                     </div>
                     <div class="row mt-4">
@@ -180,98 +293,961 @@
                     </div>
                 </div>
             </div>
-            <!-- Card -->
-        </div>
-        <!--Grid column-->
 
-        <!--Grid column-->
-        <div class="col-md-6 mb-4">
-            <!-- Card -->
-            <div class="card gradient-card h-100">
-                <div class="card-image"
-                     style="background-image: url(https://mdbootstrap.com/img/Photos/Horizontal/Work/4-col/img%20%2814%29.jpg);">
-                    <!-- Content -->
-                    <a href="#!">
-                        <div class="text-white d-flex h-100 mask card-contextual-info">
 
-                            <div class="container-fluid give">
-                                <div class="row py-3 pr-3">
-                                    <div class="col-10">
-                                        <div class="first-content">
-                                            <h3 class="card-title">Payment Information</h3>
-                                            <p class="lead mb-0">Manage How you Pay</p>
+            <!--
+
+
+            ORDER HISTORY TEMPLATE
+
+
+            -->
+
+
+            <div class="d-none" id="orderHistTemplate">
+                <div class="row">
+                    <!--Grid column-->
+                    <div class="col mb-4">
+                        <!-- Card -->
+                        <div class="card gradient-card h-100">
+                            <div class="card-image"
+                                 style="background-image: url(https://mdbootstrap.com/img/Photos/Horizontal/Work/4-col/img%20%2814%29.jpg)">
+                                <!-- Content -->
+                                <div class="text-white mask card-contextual-info">
+
+                                    <div class="row">
+                                        <div class="col align-self-center">
+                                            <div class="first-content p-3">
+                                                <h3 class="card-title">Your Orders</h3>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="col-2 align-self-center">
-                                        <div class="second-content" style="float: right;">
-                                            <i class="far fa-money-bill-alt fa-3x"></i>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-                <!-- Content -->
-                <div class="card-body white">
-                    <h4 class="text-uppercase font-weight-bold my-4">Details</h4>
-                    <p class="complement">NOTE: This button will redirect your page</p>
-                    <div class="row mt-4">
-                        <div class="col">
-                            <a href="/paymentinfo/" type="submit" class="btn blue-gradient btn-block">Manage Payment
-                                Methods</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- Card -->
-        </div>
-        <!--Grid column-->
-
-        <!--Grid column-->
-        <div class="col-md-6 mb-4">
-            <!-- Card -->
-            <div class="card gradient-card">
-                <div class="card-image"
-                     style="background-image: url(https://mdbootstrap.com/img/Photos/Horizontal/Work/4-col/img%20%2814%29.jpg);">
-                    <!-- Content -->
-                    <a href="#!">
-                        <div class="text-white d-flex h-100 mask card-contextual-info">
-
-                            <div class="container-fluid give">
-                                <div class="row py-3 pr-3">
-                                    <div class="col-10">
-                                        <div class="first-content">
-                                            <h3 class="card-title">Billing Address</h3>
-                                            <p class="lead mb-0">Mange your addresses</p>
-                                        </div>
-                                    </div>
-                                    <div class="col-2 align-self-center">
-                                        <div class="second-content" style="float: right;">
-                                            <i class="far fa-address-card fa-3x"></i>
+                                        <div class="col align-self-center">
+                                            <div class="second-content pr-3" style="float: right;">
+                                                <i class="fas fa-history fa-3x"></i>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </a>
+                    </div>
                 </div>
+                <div class="row">
+                    <div class="col">
+                        <table id="orderHistory" class="table table-dark table-striped table-bordered" cellspacing="0"
+                               width="100%">
+                            <thead>
+                            <tr>
+                                <th>Order No.</th>
+                                <th>Price</th>
+                                <th>ISBN</th>
+                                <th>Title</th>
+                                <th>Author Name</th>
+                                <th>Order Date</th>
+                                <th>Re-Order</th>
+                                <th>Return</th>
+                            </tr>
+                            </thead>
+                            <tfoot>
+                            <tr>
+                                <th>Order No.</th>
+                                <th>Price</th>
+                                <th>ISBN</th>
+                                <th>Title</th>
+                                <th>Author Name</th>
+                                <th>Order Date</th>
+                                <th>Re-Order</th>
+                                <th>Return</th>
+                            </tr>
+                            </tfoot>
+                            <tbody>
+                            <tr>
+                                <td>1</td>
+                                <td>$8.99</td>
+                                <td>9785123645213</td>
+                                <td>Harry Potter and the Sourcerer's Stone</td>
+                                <td>J.K. Rowling</td>
+                                <td>04/02/2020</td>
+                                <td class="centered-btn">
+                                    <p data-placement="top" data-toggle="tooltip" title="Edit">
+                                        <button
+                                                class="btn blue-gradient btn-md" data-title="Edit" data-toggle="modal"
+                                                data-target="#edit"><i class="fas fa-sync-alt fa-lg"></i></button>
+                                    </p>
+                                </td>
+                                <td class="centered-btn">
+                                    <p data-placement="top" data-toggle="tooltip" title="Delete">
+                                        <button class="btn btn-danger btn-md" data-title="Delete" data-toggle="modal"
+                                                data-target="#delete"><i class="fas fa-thumbs-down fa-lg"></i></button>
+                                    </p>
+                                </td>
+                            </tr>
 
-                <!-- Content -->
-                <div class="card-body white">
-                    <h4 class="text-uppercase font-weight-bold my-4">Details</h4>
-                    <p class="complement">NOTE: This button will redirect your page</p>
-                    <div class="row mt-4">
-                        <div class="col">
-                            <a href="/billingaddress/" type="submit" class="btn blue-gradient btn-block">Manage Billing
-                                Addresses</a>
-                        </div>
+                            <tr>
+                                <td>1</td>
+                                <td>$12.99</td>
+                                <td>97851265447265</td>
+                                <td>The Hulk</td>
+                                <td>Marvel Comics</td>
+                                <td>04/02/2020</td>
+                                <td class="centered-btn">
+                                    <p data-placement="top" data-toggle="tooltip" title="Edit">
+                                        <button
+                                                class="btn blue-gradient btn-md" data-title="Edit" data-toggle="modal"
+                                                data-target="#edit"><i class="fas fa-sync-alt fa-lg"></i></button>
+                                    </p>
+                                </td>
+                                <td class="centered-btn">
+                                    <p data-placement="top" data-toggle="tooltip" title="Delete">
+                                        <button class="btn btn-danger btn-md" data-title="Delete" data-toggle="modal"
+                                                data-target="#delete"><i class="fas fa-thumbs-down fa-lg"></i></button>
+                                    </p>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td>1</td>
+                                <td>$15.99</td>
+                                <td>9786523145264</td>
+                                <td>Spiderman</td>
+                                <td>Marvel Comics</td>
+                                <td>04/02/2020</td>
+                                <td class="centered-btn">
+                                    <p data-placement="top" data-toggle="tooltip" title="Edit">
+                                        <button
+                                                class="btn blue-gradient btn-md" data-title="Edit" data-toggle="modal"
+                                                data-target="#edit"><i class="fas fa-sync-alt fa-lg"></i></button>
+                                    </p>
+                                </td>
+                                <td class="centered-btn">
+                                    <p data-placement="top" data-toggle="tooltip" title="Delete">
+                                        <button class="btn btn-danger btn-md" data-title="Delete" data-toggle="modal"
+                                                data-target="#delete"><i class="fas fa-thumbs-down fa-lg"></i></button>
+                                    </p>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td>2</td>
+                                <td>$4.99</td>
+                                <td>9784568798962</td>
+                                <td>The BFG</td>
+                                <td>Roald Dahl</td>
+                                <td>04/24/2020</td>
+                                <td class="centered-btn">
+                                    <p data-placement="top" data-toggle="tooltip" title="Edit">
+                                        <button
+                                                class="btn blue-gradient btn-md" data-title="Edit" data-toggle="modal"
+                                                data-target="#edit"><i class="fas fa-sync-alt fa-lg"></i></button>
+                                    </p>
+                                </td>
+                                <td class="centered-btn">
+                                    <p data-placement="top" data-toggle="tooltip" title="Delete">
+                                        <button class="btn btn-danger btn-md" data-title="Delete" data-toggle="modal"
+                                                data-target="#delete"><i class="fas fa-thumbs-down fa-lg"></i></button>
+                                    </p>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td>2</td>
+                                <td>$8.99</td>
+                                <td>97851235543226</td>
+                                <td>Gordon Ramsay - Cookbook</td>
+                                <td>Gordon Ramsay</td>
+                                <td>04/24/2020</td>
+                                <td class="centered-btn">
+                                    <p data-placement="top" data-toggle="tooltip" title="Edit">
+                                        <button
+                                                class="btn blue-gradient btn-md" data-title="Edit" data-toggle="modal"
+                                                data-target="#edit"><i class="fas fa-sync-alt fa-lg"></i></button>
+                                    </p>
+                                </td>
+                                <td class="centered-btn">
+                                    <p data-placement="top" data-toggle="tooltip" title="Delete">
+                                        <button class="btn btn-danger btn-md" data-title="Delete" data-toggle="modal"
+                                                data-target="#delete"><i class="fas fa-thumbs-down fa-lg"></i></button>
+                                    </p>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td>2</td>
+                                <td>$8.99</td>
+                                <td>9785123644859</td>
+                                <td>To Kill a Mockingbird</td>
+                                <td>Harper Lee</td>
+                                <td>04/24/2020</td>
+                                <td class="centered-btn">
+                                    <p data-placement="top" data-toggle="tooltip" title="Edit">
+                                        <button
+                                                class="btn blue-gradient btn-md" data-title="Edit" data-toggle="modal"
+                                                data-target="#edit"><i class="fas fa-sync-alt fa-lg"></i></button>
+                                    </p>
+                                </td>
+                                <td class="centered-btn">
+                                    <p data-placement="top" data-toggle="tooltip" title="Delete">
+                                        <button class="btn btn-danger btn-md" data-title="Delete" data-toggle="modal"
+                                                data-target="#delete"><i class="fas fa-thumbs-down fa-lg"></i></button>
+                                    </p>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td>3</td>
+                                <td>$9.99</td>
+                                <td>97851236544785</td>
+                                <td>Diary of a Wimpy Kid</td>
+                                <td>Jeffrey Kinney</td>
+                                <td>05/15/2020</td>
+                                <td class="centered-btn">
+                                    <p data-placement="top" data-toggle="tooltip" title="Edit">
+                                        <button
+                                                class="btn blue-gradient btn-md" data-title="Edit" data-toggle="modal"
+                                                data-target="#edit"><i class="fas fa-sync-alt fa-lg"></i></button>
+                                    </p>
+                                </td>
+                                <td class="centered-btn">
+                                    <p data-placement="top" data-toggle="tooltip" title="Delete">
+                                        <button class="btn btn-danger btn-md" data-title="Delete" data-toggle="modal"
+                                                data-target="#delete"><i class="fas fa-thumbs-down fa-lg"></i></button>
+                                    </p>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td>4</td>
+                                <td>$12.50</td>
+                                <td>9785124563257</td>
+                                <td>Kobe Bryant - Mamba Mentality</td>
+                                <td>Kobe Bryant</td>
+                                <td>06/17/2020</td>
+                                <td class="centered-btn">
+                                    <p data-placement="top" data-toggle="tooltip" title="Edit">
+                                        <button
+                                                class="btn blue-gradient btn-md" data-title="Edit" data-toggle="modal"
+                                                data-target="#edit"><i class="fas fa-sync-alt fa-lg"></i></button>
+                                    </p>
+                                </td>
+                                <td class="centered-btn">
+                                    <p data-placement="top" data-toggle="tooltip" title="Delete">
+                                        <button class="btn btn-danger btn-md" data-title="Delete" data-toggle="modal"
+                                                data-target="#delete"><i class="fas fa-thumbs-down fa-lg"></i></button>
+                                    </p>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td>4</td>
+                                <td>$13.52</td>
+                                <td>9785212563245</td>
+                                <td>Percy Jackson and the Lignting Thief</td>
+                                <td>Rick Riordan</td>
+                                <td>06/17/2020</td>
+                                <td class="centered-btn">
+                                    <p data-placement="top" data-toggle="tooltip" title="Edit">
+                                        <button
+                                                class="btn blue-gradient btn-md" data-title="Edit" data-toggle="modal"
+                                                data-target="#edit"><i class="fas fa-sync-alt fa-lg"></i></button>
+                                    </p>
+                                </td>
+                                <td class="centered-btn">
+                                    <p data-placement="top" data-toggle="tooltip" title="Delete">
+                                        <button class="btn btn-danger btn-md" data-title="Delete" data-toggle="modal"
+                                                data-target="#delete"><i class="fas fa-thumbs-down fa-lg"></i></button>
+                                    </p>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
-        </div>
+
+
+            <!--
+
+
+            SHIPPING ADDRESS TEMPLATE
+
+
+            -->
+            <div class="d-none" id="manageShippingAddressTemplate">
+                <div class="card gradient-card mb-5">
+                    <div class="card-image"
+                         style="background-image: url(https://mdbootstrap.com/img/Photos/Horizontal/Work/4-col/img%20%2814%29.jpg)">
+                        <!-- Content -->
+                        <div class="text-white mask card-contextual-info">
+                            <div class="row">
+                                <div class="col align-self-center">
+                                    <div class="first-content p-3">
+                                        <h3 class="card-title">Shipping Address 1</h3>
+                                    </div>
+                                </div>
+                                <div class="col align-self-center">
+                                    <div class="second-content pr-3" style="float: right;">
+                                        <i class="far fa-address-card fa-3x"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Content -->
+                    <div class="card-body white">
+                        <form>
+                            <div class="form-row">
+                                <div class="form-group col-md-6">
+                                    <i class="fas fa-signature"></i>
+                                    <label for="address1FirstName">First Name</label>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" id="address1FirstName"
+                                               placeholder="First Name"
+                                               required>
+                                        <div class="input-group-append">
+                                            <button class="btn btn-outline-warning m-0 px-3 py-2 z-depth-0 waves-effect"
+                                                    type="button" id="editAddress1FirstName">Edit
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <i class="fas fa-signature"></i>
+                                    <label for="address1LastName">Last Name</label>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" id="address1LastName"
+                                               placeholder="Last Name"
+                                               required>
+                                        <div class="input-group-append">
+                                            <button class="btn btn-outline-warning m-0 px-3 py-2 z-depth-0 waves-effect"
+                                                    type="button" id="editAddress1LastName">Edit
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col">
+                                    <i class="fas fa-map-marker"></i>
+                                    <label for="address1StreetAddress">Street Address</label>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" id="address1StreetAddress"
+                                               placeholder="Street Address" required>
+                                        <div class="input-group-append">
+                                            <button class="btn btn-outline-warning m-0 px-3 py-2 z-depth-0 waves-effect"
+                                                    type="button" id="editAddress1StreetAddress">Edit
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col">
+                                    <i class="fas fa-map-marker"></i>
+                                    <label for="address1ApartmentOrSuite">Apartment or Suite</label>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" id="address1ApartmentOrSuite"
+                                               placeholder="Apartment or Suite">
+                                        <div class="input-group-append">
+                                            <button class="btn btn-outline-warning m-0 px-3 py-2 z-depth-0 waves-effect"
+                                                    type="button" id="editAddress1ApartmentOrSuite">Edit
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col">
+                                    <i class="fas fa-city"></i>
+                                    <label for="address1City">City</label>
+                                    <div class="input-group">
+                                        <select id="address1City" class="form-control">
+                                            <option selected>Atlanta</option>
+                                            <option>Los Angeles</option>
+                                        </select>
+                                        <div class="input-group-append">
+                                            <button class="btn btn-outline-warning m-0 px-3 py-2 z-depth-0 waves-effect"
+                                                    type="button" id="editAddress1City">Edit
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group col">
+                                    <i class="fas fa-city"></i>
+                                    <label for="address1State">State</label>
+                                    <div class="input-group">
+                                        <select id="address1State" class="form-control">
+                                            <option selected>Georgia</option>
+                                            <option>California</option>
+                                        </select>
+                                        <div class="input-group-append">
+                                            <button class="btn btn-outline-warning m-0 px-3 py-2 z-depth-0 waves-effect"
+                                                    type="button" id="editAddress1State">Edit
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group col">
+                                    <i class="fas fa-globe-americas"></i>
+                                    <label for="address1Country">Country</label>
+                                    <div class="input-group">
+                                        <select id="address1Country" class="form-control">
+                                            <option selected>United States</option>
+                                        </select>
+                                        <div class="input-group-append">
+                                            <button class="btn btn-outline-warning m-0 px-3 py-2 z-depth-0 waves-effect"
+                                                    type="button" id="editAddress1Country">Edit
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-row mt-5">
+                                <div class="col-9">
+                                    <button type="button" id="updateShippingAddress"
+                                            class="btn blue-gradient btn-block">Save and Update
+                                    </button>
+                                </div>
+                                <div class="col-3">
+                                    <button type="button" id="removeShippingAddress"
+                                            class="btn btn-outline-danger btn-block">Remove Address
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="card gradient-card">
+                    <div class="card-image"
+                         style="background-image: url(https://mdbootstrap.com/img/Photos/Horizontal/Work/4-col/img%20%2814%29.jpg)">
+                        <!-- Content -->
+                        <div class="text-white mask card-contextual-info">
+                            <div class="row">
+                                <div class="col align-self-center">
+                                    <div class="first-content p-3">
+                                        <h3 class="card-title">Add Shipping Address</h3>
+                                    </div>
+                                </div>
+                                <div class="col align-self-center">
+                                    <div class="second-content pr-3" style="float: right;">
+                                        <i class="fas fa-plus fa-3x"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Content -->
+                    <div class="card-body white">
+                        <form>
+                            <div class="form-row">
+                                <div class="form-group col-md-6">
+                                    <i class="fas fa-signature"></i>
+                                    <label for="addAddressFirstName">First Name</label>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" id="addAddressFirstName"
+                                               placeholder="First Name"
+                                               required>
+                                    </div>
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <i class="fas fa-signature"></i>
+                                    <label for="addAddressLastName">Last Name</label>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" id="addAddressLastName"
+                                               placeholder="Last Name"
+                                               required>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col">
+                                    <i class="fas fa-map-marker"></i>
+                                    <label for="addAddressStreetAddress">Street Address</label>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" id="addAddressStreetAddress"
+                                               placeholder="Street Address" required>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col">
+                                    <i class="fas fa-map-marker"></i>
+                                    <label for="addAddressApartmentOrSuite">Apartment or Suite</label>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" id="addAddressApartmentOrSuite"
+                                               placeholder="Apartment or Suite">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col">
+                                    <i class="fas fa-city"></i>
+                                    <label for="addAddressCity">City</label>
+                                    <div class="input-group">
+                                        <select id="addAddressCity" class="form-control">
+                                            <option selected>Atlanta</option>
+                                            <option>Los Angeles</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group col">
+                                    <i class="fas fa-city"></i>
+                                    <label for="addAddressState">State</label>
+                                    <div class="input-group">
+                                        <select id="addAddressState" class="form-control">
+                                            <option selected>Georgia</option>
+                                            <option>California</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group col">
+                                    <i class="fas fa-globe-americas"></i>
+                                    <label for="addAddressCountry">Country</label>
+                                    <div class="input-group">
+                                        <select id="addAddressCountry" class="form-control">
+                                            <option selected>United States</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <button type="submit" id="createNewShippingAddress"
+                                    class="btn blue-gradient btn-block mt-5">Create New
+                                Address
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+
+            <!--
+
+
+            BILLING ADDRESS TEMPLATE
+
+
+            -->
+            <div class="d-none" id="manageBillingAddressTemplate">
+                <div class="card gradient-card mb-5">
+                    <div class="card-image"
+                         style="background-image: url(https://mdbootstrap.com/img/Photos/Horizontal/Work/4-col/img%20%2814%29.jpg)">
+                        <!-- Content -->
+                        <div class="text-white mask card-contextual-info">
+                            <div class="row">
+                                <div class="col align-self-center">
+                                    <div class="first-content p-3">
+                                        <h3 class="card-title">Billing Address 1</h3>
+                                    </div>
+                                </div>
+                                <div class="col align-self-center">
+                                    <div class="second-content pr-3" style="float: right;">
+                                        <i class="far fa-address-card fa-3x"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Content -->
+                    <div class="card-body white">
+                        <form>
+                            <div class="form-row">
+                                <div class="form-group col-md-6">
+                                    <i class="fas fa-signature"></i>
+                                    <label for="billingAddress1FirstName">First Name</label>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" id="billingAddress1FirstName"
+                                               placeholder="First Name"
+                                               required>
+                                        <div class="input-group-append">
+                                            <button class="btn btn-outline-warning m-0 px-3 py-2 z-depth-0 waves-effect"
+                                                    type="button" id="editbillingAddress1FirstName">Edit
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <i class="fas fa-signature"></i>
+                                    <label for="billingAddress1LastName">Last Name</label>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" id="billingAddress1LastName"
+                                               placeholder="Last Name"
+                                               required>
+                                        <div class="input-group-append">
+                                            <button class="btn btn-outline-warning m-0 px-3 py-2 z-depth-0 waves-effect"
+                                                    type="button" id="editBillingAddress1LastName">Edit
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col">
+                                    <i class="fas fa-map-marker"></i>
+                                    <label for="billingAddress1StreetAddress">Street Address</label>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" id="billingAddress1StreetAddress"
+                                               placeholder="Street Address" required>
+                                        <div class="input-group-append">
+                                            <button class="btn btn-outline-warning m-0 px-3 py-2 z-depth-0 waves-effect"
+                                                    type="button" id="editBillingAddress1StreetAddress">Edit
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col">
+                                    <i class="fas fa-map-marker"></i>
+                                    <label for="billingAddress1ApartmentOrSuite">Apartment or Suite</label>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" id="billingAddress1ApartmentOrSuite"
+                                               placeholder="Apartment or Suite">
+                                        <div class="input-group-append">
+                                            <button class="btn btn-outline-warning m-0 px-3 py-2 z-depth-0 waves-effect"
+                                                    type="button" id="editAddress1ApartmentOrSuite">Edit
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col">
+                                    <i class="fas fa-city"></i>
+                                    <label for="billingAddress1City">City</label>
+                                    <div class="input-group">
+                                        <select id="billingAddress1City" class="form-control">
+                                            <option selected>Atlanta</option>
+                                            <option>Los Angeles</option>
+                                        </select>
+                                        <div class="input-group-append">
+                                            <button class="btn btn-outline-warning m-0 px-3 py-2 z-depth-0 waves-effect"
+                                                    type="button" id="editBillingAddress1City">Edit
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group col">
+                                    <i class="fas fa-city"></i>
+                                    <label for="billingAddress1State">State</label>
+                                    <div class="input-group">
+                                        <select id="billingAddress1State" class="form-control">
+                                            <option selected>Georgia</option>
+                                            <option>California</option>
+                                        </select>
+                                        <div class="input-group-append">
+                                            <button class="btn btn-outline-warning m-0 px-3 py-2 z-depth-0 waves-effect"
+                                                    type="button" id="editBillingAddress1State">Edit
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group col">
+                                    <i class="fas fa-globe-americas"></i>
+                                    <label for="billingAddress1Country">Country</label>
+                                    <div class="input-group">
+                                        <select id="billingAddress1Country" class="form-control">
+                                            <option selected>United States</option>
+                                        </select>
+                                        <div class="input-group-append">
+                                            <button class="btn btn-outline-warning m-0 px-3 py-2 z-depth-0 waves-effect"
+                                                    type="button" id="editBillingAddress1Country">Edit
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-row mt-5">
+                                <div class="col-9">
+                                    <button type="button" id="saveBillingAddress"
+                                            class="btn blue-gradient btn-block">Save and Update
+                                    </button>
+                                </div>
+                                <div class="col-3">
+                                    <button type="button" id="removeBillingAddress"
+                                            class="btn btn-outline-danger btn-block">Remove Address
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="card gradient-card">
+                    <div class="card-image"
+                         style="background-image: url(https://mdbootstrap.com/img/Photos/Horizontal/Work/4-col/img%20%2814%29.jpg)">
+                        <!-- Content -->
+                        <div class="text-white mask card-contextual-info">
+                            <div class="row">
+                                <div class="col align-self-center">
+                                    <div class="first-content p-3">
+                                        <h3 class="card-title">Add Billing Address</h3>
+                                    </div>
+                                </div>
+                                <div class="col align-self-center">
+                                    <div class="second-content pr-3" style="float: right;">
+                                        <i class="fas fa-plus fa-3x"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Content -->
+                    <div class="card-body white">
+                        <form>
+                            <div class="form-row">
+                                <div class="form-group col-md-6">
+                                    <i class="fas fa-signature"></i>
+                                    <label for="billingAddAddressFirstName">First Name</label>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" id="billingAddAddressFirstName"
+                                               placeholder="First Name"
+                                               required>
+                                    </div>
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <i class="fas fa-signature"></i>
+                                    <label for="billingAddAddressLastName">Last Name</label>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" id="billingAddAddressLastName"
+                                               placeholder="Last Name"
+                                               required>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col">
+                                    <i class="fas fa-map-marker"></i>
+                                    <label for="billingAddAddressStreetAddress">Street Address</label>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" id="billingAddAddressStreetAddress"
+                                               placeholder="Street Address" required>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col">
+                                    <i class="fas fa-map-marker"></i>
+                                    <label for="billingAddAddressApartmentOrSuite">Apartment or Suite</label>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" id="billingAddAddressApartmentOrSuite"
+                                               placeholder="Apartment or Suite">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col">
+                                    <i class="fas fa-city"></i>
+                                    <label for="billingAddAddressCity">City</label>
+                                    <div class="input-group">
+                                        <select id="billingAddAddressCity" class="form-control">
+                                            <option selected>Atlanta</option>
+                                            <option>Los Angeles</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group col">
+                                    <i class="fas fa-city"></i>
+                                    <label for="billingAddAddressState">State</label>
+                                    <div class="input-group">
+                                        <select id="billingAddAddressState" class="form-control">
+                                            <option selected>Georgia</option>
+                                            <option>California</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group col">
+                                    <i class="fas fa-globe-americas"></i>
+                                    <label for="billingAddAddressCountry">Country</label>
+                                    <div class="input-group">
+                                        <select id="billingAddAddressCountry" class="form-control">
+                                            <option selected>United States</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <button type="submit" id="createNewBillingAddress" class="btn blue-gradient btn-block mt-5">
+                                Create
+                                New
+                                Address
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+
+            <!--
+
+
+            PAYMENT INFO TEMPLATE
+
+
+            -->
+
+            <div class="d-none" id="managePaymentInformationTemplate">
+                <div class="card gradient-card mb-5">
+                    <div class="card-image"
+                         style="background-image: url(https://mdbootstrap.com/img/Photos/Horizontal/Work/4-col/img%20%2814%29.jpg)">
+                        <!-- Content -->
+                        <div class="text-white mask card-contextual-info">
+                            <div class="row">
+                                <div class="col align-self-center">
+                                    <div class="first-content p-3">
+                                        <h3 class="card-title">Payment Method 1</h3>
+                                    </div>
+                                </div>
+                                <div class="col align-self-center">
+                                    <div class="second-content pr-3" style="float: right;">
+                                        <i class="fas fa-dollar-sign fa-3x"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Content -->
+                    <div class="card-body white">
+                        <form>
+                            <div class="form-row">
+                                <div class="form-group col-md-6">
+                                    <i class="fas fa-signature"></i>
+                                    <label for="pm1FirstName">Card Holder First Name</label>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" id="pm1FirstName"
+                                               placeholder="First Name" required>
+                                        <div class="input-group-append">
+                                            <button class="btn btn-outline-warning m-0 px-3 py-2 z-depth-0 waves-effect"
+                                                    type="button" id="editPm1FirstName">Edit
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <i class="fas fa-signature"></i>
+                                    <label for="pm1LastName">Card Holder Last Name</label>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" id="pm1LastName"
+                                               placeholder="Last Name" required>
+                                        <div class="input-group-append">
+                                            <button class="btn btn-outline-warning m-0 px-3 py-2 z-depth-0 waves-effect"
+                                                    type="button" id="editPm1LastName">Edit
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col">
+                                    <i class="far fa-credit-card"></i>
+                                    <label for="pm1CCN">Credit Card Number</label>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" id="pmCCN"
+                                               placeholder="Credit Card Number" required>
+                                        <div class="input-group-append">
+                                            <button class="btn btn-outline-warning m-0 px-3 py-2 z-depth-0 waves-effect"
+                                                    type="button" id="editPmCCN">Edit
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group col">
+                                    <i class="far fa-clock"></i>
+                                    <label for="pm1Expiry">Expiriration Date</label>
+                                    <div class="input-group">
+                                        <input type="month" class="form-control" id="pm1Expiry"
+                                               value="2020-05">
+                                        <div class="input-group-append">
+                                            <button class="btn btn-outline-warning m-0 px-3 py-2 z-depth-0 waves-effect"
+                                                    type="button" id="editPm1Expiry">Edit
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-row mt-5">
+                                <div class="col-9">
+                                    <button type="button" id="savePaymentInformation"
+                                            class="btn blue-gradient btn-block">Save and Update
+                                    </button>
+                                </div>
+                                <div class="col-3">
+                                    <button type="button" id="removePaymentInformation"
+                                            class="btn btn-outline-danger btn-block">Remove Payment Method
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="card gradient-card">
+                    <div class="card-image"
+                         style="background-image: url(https://mdbootstrap.com/img/Photos/Horizontal/Work/4-col/img%20%2814%29.jpg)">
+                        <!-- Content -->
+                        <div class="text-white mask card-contextual-info">
+                            <div class="row">
+                                <div class="col align-self-center">
+                                    <div class="first-content p-3">
+                                        <h3 class="card-title">Add Payment Method</h3>
+                                    </div>
+                                </div>
+                                <div class="col align-self-center">
+                                    <div class="second-content pr-3" style="float: right;">
+                                        <i class="fas fa-plus fa-3x"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Content -->
+                    <div class="card-body white">
+                        <form>
+                            <div class="form-row">
+                                <div class="form-group col-md-6">
+                                    <i class="fas fa-signature"></i>
+                                    <label for="addFirstName">Card Holder First Name</label>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" id="addFirstName"
+                                               placeholder="First Name" required>
+                                    </div>
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <i class="fas fa-signature"></i>
+                                    <label for="addLastName">Card Holder Last Name</label>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" id="addLastName"
+                                               placeholder="Last Name" required>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col">
+                                    <i class="far fa-credit-card"></i>
+                                    <label for="addCCN">Credit Card Number</label>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" id="pmCCN"
+                                               placeholder="Credit Card Number" required>
+                                    </div>
+                                </div>
+                                <div class="form-group col">
+                                    <i class="far fa-clock"></i>
+                                    <label for="addExpiry">Expiriration Date</label>
+                                    <div class="input-group">
+                                        <input type="month" class="form-control" id="addExpiry"
+                                               value="2020-05">
+                                    </div>
+                                </div>
+                            </div>
+                            <button type="submit" id="addNewPaymentMethod" class="btn blue-gradient btn-block mt-5">Add
+                                New Payment
+                                Method
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+
+        </main> <!-- col.// -->
     </div>
 </div>
+
 <footer class="py-5 bg-dark">
     <div class="container text-white">
         <p class="mb-2 text-center">Copyright &copy; Nile 2020</p>
@@ -290,7 +1266,12 @@
     <!-- /.container -->
 </footer>
 
-
+<script src="../../../static/user/js/profile.js"></script>
+<script>
+    $(function () {
+        $('#orderHistory').DataTable({});
+    })
+</script>
 </body>
 
 </html>
