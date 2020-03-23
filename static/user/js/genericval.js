@@ -8,11 +8,11 @@ export function emailConstraint(id) {
     let val = document.getElementById(id).value;
     return val.match(/^(([^<>()\[\].,;:\s@"]+(\.[^<>()\[\].,;:\s@"]+)*)|(".+"))@(([^<>()[\].,;:\s@"]+\.)+[^<>()[\].,;:\s@"]{2,})$/i);
 }
-export function validateConstraint(id) {
+export function passwordConstraint(id) {
     let val = document.getElementById(id).value;
     return val.match((/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$/));
 }
-export function confirmConstraint(id_pass, id_pass_conf) {
+export function passwordConfConstraint(id_pass, id_pass_conf) {
     let pConf = document.getElementById(id_pass).value;
     let pConfVal = document.getElementById(id_pass_conf).value;
     return pConf === pConfVal;

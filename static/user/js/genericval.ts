@@ -10,12 +10,12 @@ export function emailConstraint(id: string): RegExpMatchArray {
     return val.match(/^(([^<>()\[\].,;:\s@"]+(\.[^<>()\[\].,;:\s@"]+)*)|(".+"))@(([^<>()[\].,;:\s@"]+\.)+[^<>()[\].,;:\s@"]{2,})$/i)
 }
 
-export function validateConstraint(id: string): RegExpMatchArray {
+export function passwordConstraint(id: string): RegExpMatchArray {
     let val: string = (<HTMLInputElement>document.getElementById(id)).value;
     return val.match((/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$/))
 }
 
-export function confirmConstraint(id_pass: string, id_pass_conf: string): boolean {
+export function passwordConfConstraint(id_pass: string, id_pass_conf: string): boolean {
     let pConf: string = (<HTMLInputElement>document.getElementById(id_pass)).value;
     let pConfVal: string = (<HTMLInputElement>document.getElementById(id_pass_conf)).value;
     return pConf === pConfVal;
