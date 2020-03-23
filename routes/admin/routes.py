@@ -9,7 +9,7 @@ admin_bp = Blueprint('admin_bp', __name__,
 def login_required(f):
     @wraps(f)
     def wrapped_func(*args, **kws):
-        if 'logged_in' in session:
+        if 'logged_in' in session and session['logged_in']:
             return f(*args, **kws)
         else:
             flash('You need to login to access this area!')
@@ -19,7 +19,7 @@ def login_required(f):
 
 @admin_bp.route('/logout/', methods=['GET'])
 def logout():
-    if session['logged_in']:
+    if 'logged_in' in session and session['logged_in']:
         session['logged_in'] = False
         session['admin'] = False
         flash('Logged out successfully.')
@@ -53,12 +53,6 @@ def add_books():
         query = """
         INSERT INTO book (ISBN, bindingID, genreID, title, price, numPages, image,
         edition, publisher, publicationDate, stock, authorFirstName, authorLastName, summary)
-<<<<<<< HEAD
-        VALUES ((SELECT bindingID FROM binding WHERE binding = '{binding_type}'),(SELECT genreID FROM genre WHERE genre = '{genre}'),'{book_title}','{price}','{isbn}','{num_pages}','{cover_image}','{edition}','{publisher}','{date_published}','{recv_stock}','{author_firstname}','{author_lastname}','{book_summary}')
-        """
-        print(query)
-        cursor.execute(query)
-=======
         VALUES (
         %s,
         (SELECT bindingID FROM binding WHERE binding = %s),
@@ -68,7 +62,6 @@ def add_books():
         """
         cursor.execute(query, (isbn, binding_type, genre, book_title, price, num_pages, cover_image, edition,
                                publisher, date_published, recv_stock, author_firstname, author_lastname, book_summary))
->>>>>>> dfb9c4272acdfc23bc9674f9416ae94928f6d63b
         conn.commit()
 
     return render_template('./add_books.html')

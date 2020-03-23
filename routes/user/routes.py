@@ -34,6 +34,14 @@ def login_required(f):
 
 @user_bp.route('/')
 def landing_page():
+    # STEP 1: Make call to database to return all books, need ISBN for query in /product/?isbn=<isbn>
+    cursor = conn.cursor()
+    query = 'SELECT * FROM books'
+
+
+    # STEP 2: Pass list of books to browse.html
+
+    # STEP 3: In browse.html, iterate through list of books to populate page
     return render_template('browse.html')
 
 
@@ -191,6 +199,13 @@ def register_confirmation():
 def shopping_cart():
     return render_template('shoppingcart.html')
 
+@user_bp.route('/product/')
+def product():
+    # STEP 1: User clicks on a book from browse.html
+
+    # STEP 2: Link sends 
+    return render_template('/product.html')
+
 
 # @login_required func decorator needs to be implemented for all user routes
 """User Routes"""
@@ -228,6 +243,4 @@ def profile():
 def forgot():
     return render_template('./forgot.html')
 
-@user_bp.route('/product/')
-def product():
-    return render_template('/product.html')
+
