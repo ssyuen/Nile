@@ -50,13 +50,25 @@ def add_books():
 
         cursor = conn.cursor()
 
-        query = f"""
-        INSERT INTO book (bindingID, genreID, title, price, ISBN, numPages, image,
+        query = """
+        INSERT INTO book (ISBN, bindingID, genreID, title, price, numPages, image,
         edition, publisher, publicationDate, stock, authorFirstName, authorLastName, summary)
+<<<<<<< HEAD
         VALUES ((SELECT bindingID FROM binding WHERE binding = '{binding_type}'),(SELECT genreID FROM genre WHERE genre = '{genre}'),'{book_title}','{price}','{isbn}','{num_pages}','{cover_image}','{edition}','{publisher}','{date_published}','{recv_stock}','{author_firstname}','{author_lastname}','{book_summary}')
         """
         print(query)
         cursor.execute(query)
+=======
+        VALUES (
+        %s,
+        (SELECT bindingID FROM binding WHERE binding = %s),
+        (SELECT genreID FROM genre WHERE genre = %s),
+        %s, %s, %s, %s, %s, %s, 
+        %s, %s, %s, %s, %s)
+        """
+        cursor.execute(query, (isbn, binding_type, genre, book_title, price, num_pages, cover_image, edition,
+                               publisher, date_published, recv_stock, author_firstname, author_lastname, book_summary))
+>>>>>>> dfb9c4272acdfc23bc9674f9416ae94928f6d63b
         conn.commit()
 
     return render_template('./add_books.html')
