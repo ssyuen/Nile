@@ -6,6 +6,16 @@ admin_bp = Blueprint('admin_bp', __name__,
                      template_folder='templates', static_folder='static')
 
 
+def admin_required(f):
+    @wraps(f)
+    def wrapped_func(*args, **kws):
+        if 'admin' in session and session['admin']:
+            return f(*args, **kws)
+        else:
+            flash('You need to be an admin to access that area!')
+            return redirect('/')
+    return wrapped_func
+
 def login_required(f):
     @wraps(f)
     def wrapped_func(*args, **kws):
@@ -16,10 +26,9 @@ def login_required(f):
             return redirect('/login/')
     return wrapped_func
 
-
 @admin_bp.route('/logout/', methods=['GET'])
 def logout():
-    if 'logged_in' in session and session['logged_in']:
+    if 'logged_in' in session and session['logged_in']  and 'admin' in session and session['admin']:
         session['logged_in'] = False
         session['admin'] = False
         flash('Logged out successfully.')
@@ -29,7 +38,7 @@ def logout():
 
 
 @admin_bp.route('/add_books/', methods=['GET', 'POST'])
-@login_required
+@admin_required
 def add_books():
     if request.method == 'POST':
         book_title = request.form.get('bookTitle')
@@ -68,30 +77,30 @@ def add_books():
 
 
 @admin_bp.route('/add_promo/')
-@login_required
+@admin_required
 def add_promo():
     return render_template('./add_promo.html')
 
 
 @admin_bp.route('/admin/')
-@login_required
+@admin_required
 def admin():
     return render_template('./admin.html')
 
 
 @admin_bp.route('/manage_books/')
-@login_required
+@admin_required
 def manage_books():
     return render_template('./manage_books.html')
 
 
 @admin_bp.route('/manage_promo/')
-@login_required
+@admin_required
 def manage_promo():
     return render_template('./manage_promo.html')
 
 
 @admin_bp.route('/manage_users/')
-@login_required
+@admin_required
 def manage_users():
     return render_template('./manage_users.html')

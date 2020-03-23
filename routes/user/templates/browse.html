@@ -19,16 +19,16 @@
     <!-- Navigation -->
     {% include 'nav.html' %}
 </div>
-<!-- {% with valid_login = get_flashed_messages() %}
+{% with valid_login = get_flashed_messages() %}
     {% if valid_login %}
 
-        <p class="flashes h5 text-center" style="color: green;">
+        <p class="flashes h5 text-center" style="color: red;">
             {% for msg in valid_login %}
                 {{ msg }}
             {% endfor %}
         </p>
     {% endif %}
-{% endwith %} -->
+{% endwith %}
 <div class="container">
     <div class="row">
         <div class="col mb-4">
