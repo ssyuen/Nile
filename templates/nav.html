@@ -31,12 +31,13 @@
             </li>
         </ul>
         <ul class="navbar-nav navbar-center search-group">
-            <form class="form-inline complement">
+            <form class="form-inline complement" action ="{{ url_for('books_bp.query_books') }}">
                 <div class="container-fluid search-group-parent">
                     <div class="input-group">
                         <input id="mainSearchSys" class="form-control" type="text" placeholder="Search"
                                aria-label="Search"
-                               style="width: 500px;">
+                               style="width: 500px;"
+                               name="search_query">
                         <div class="input-group-append">
                             <button id="mainSearchSysBtn"
                                     class="btn blue-gradient btn-rounded m-0 px-4 py-2 z-depth-0 waves-effect mr-3"
@@ -80,7 +81,6 @@
                          aria-labelledby="navbarDropdownMenuLink-333">
                         {% if not session['admin'] %}
                             <a class="dropdown-item" href="/profile/">My Profile</a>
-                            <a class="dropdown-item" href="/orderhist/">Order History</a>
                         {% else %}
                             <a class="dropdown-item" href="/admin/">My Admin Profile</a>
                         {% endif %}
