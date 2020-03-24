@@ -36,6 +36,7 @@ def cart_session(f):
     @wraps(f)
     def wrapped_func(*args, **kws):
         if 'shopping_cart' in session:
+            print(True)
             return f(*args, **kws)
         else:
             session['shopping_cart'] = list()
@@ -44,7 +45,7 @@ def cart_session(f):
 
 @user_bp.route('/')
 @cart_session
-def landing_page():
+def landing_page(search_results=None):
     print(session['shopping_cart'])
     # STEP 1: Make call to database to return all books, need ISBN for query in /product/?isbn=<isbn>
     cursor = conn.cursor()
