@@ -175,7 +175,7 @@
     // $.post('/add_to_cart/',$('addToCartBtn').ser)
     function addToCart(){
         $.ajax({
-            url:'/add_to_cart/',
+            url:'/product/',
             type:'POST',
             data:{'bookName':document.getElementById('bookTitle').textContent}
         });

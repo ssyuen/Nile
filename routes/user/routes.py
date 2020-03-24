@@ -38,7 +38,7 @@ def cart_session(f):
         if 'shopping_cart' in session:
             return f(*args, **kws)
         else:
-            session['shopping_cart'] = []
+            session['shopping_cart'] = list()
             return f(*args, **kws)
     return wrapped_func
 
@@ -68,7 +68,7 @@ def login(ctx=None):
         # OF AND PASSWORD AND USE BCRYPT.CHECKPW(PASSWORD,QUERIED PASSWORD)
         if '@nile.com' in email:
 
-            query = 'SELECT email ,pass, firstName from admin WHERE email = "' + \
+            query = 'SELECT email ,pass, firstName, lastName from admin WHERE email = "' + \
                     email + '"'
             cursor.execute(query)
 
@@ -80,7 +80,7 @@ def login(ctx=None):
                     session['logged_in'] = True
                     session['email'] = email
                     session['admin'] = True
-                    
+                    session['lastName'] = results[3]
                     session['firstName'] = results[2]
                     # flash('Welcome, ' + session['firstName'] + '!')
                     ctx = request.args.get('next')
@@ -92,7 +92,7 @@ def login(ctx=None):
                 flash('Your login details were not found. Please try again.')
                 return redirect('/login/')
         else:
-            query = 'SELECT email ,pass, firstName from user WHERE email = "' + \
+            query = 'SELECT email ,pass, firstName, lastName from user WHERE email = "' + \
                     email + '"'
             cursor.execute(query)
             try:
@@ -104,6 +104,7 @@ def login(ctx=None):
                     session['logged_in'] = True
                     session['email'] = email
                     session['admin'] = False
+                    session['lastName'] = results[3]
                     session['firstName'] = results[2]
                     # flash('Welcome, ' + session['firstName'] + '!')
                     ctx = request.args.get('ctx')
@@ -223,21 +224,32 @@ def register_confirmation():
 def shopping_cart():
     return render_template('shoppingcart.html')
 
-@user_bp.route('/product/')
+@user_bp.route('/product/',methods=['GET','POST'])
 @cart_session
 def product():
     # STEP 1: User clicks on a book from browse.html
 
     # STEP 2: Link sends 
-    return render_template('/product.html')
+    if request.method == 'GET':
+        return render_template('/product.html')
+    else:
+        book_name = request.form.get('bookName')
+        print(f'book name is {book_name}')
+        print(f'type is {type(book_name)}')
+
+        old_cart = session['shopping_cart']
+        print(f'old cart is {old_cart}')
+        old_cart.append(book_name)
+        session['shopping_cart'] = old_cart
+        print(f'new cart is {session["shopping_cart"]}')
+        # session['shopping_cart'].append(book_name)
+        # print(session['shopping_cart'])
+        return jsonify(session['shopping_cart'])
 
 @user_bp.route('/add_to_cart/',methods=['POST'])
 @cart_session
 def add_to_cart():
-    book_name = request.form.get('bookName')
-    session['shopping_cart'].append(book_name)
-    print(session['shopping_cart'])
-    return jsonify(session['shopping_cart'])
+    return ''
 
 
 # @login_required func decorator needs to be implemented for all user routes
