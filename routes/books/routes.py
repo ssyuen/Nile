@@ -21,6 +21,7 @@ def query_books(search_query=None):
                 cursor = conn.cursor()
                 query = f'''SELECT ISBN, (SELECT genre from genre WHERE genre.genreID=book.genreID) AS genre, title, price, CONCAT(authorFirstName, ' ', authorLastName) AS author_name FROM book'''
                 cursor.execute(query)
+                conn.close()
                 results = cursor.fetchall()
 
                 payload = []
