@@ -253,6 +253,7 @@ def add_to_cart():
     return ''
 
 
+
 # @login_required func decorator needs to be implemented for all user routes
 """User Routes"""
 @user_bp.route('/billingaddress/')
