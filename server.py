@@ -25,9 +25,11 @@ conn = mysql.connect()
 
 from routes.user import routes as user_routes
 from routes.admin import routes as admin_routes
+from routes.books import routes as book_routes
 
 app.register_blueprint(admin_routes.admin_bp)
 app.register_blueprint(user_routes.user_bp)
+app.register_blueprint(book_routes.books_bp)
 
 @app.route('/about/')
 def about():
