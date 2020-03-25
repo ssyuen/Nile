@@ -52,21 +52,20 @@ def landing_page(search_results=None):
 @cart_session
 def login(ctx=None):
     if request.method == 'POST':
-        email = request.form.get('email')
-        username = request.form.get('username')
+        userLoginIdentifier = request.form.get('userLoginIdentifier')
         password = request.form.get('password')
         conn = mysql.connect()
         cursor = conn.cursor()
         # ONCE DB SCHEMA IS SETUP, GET RID
         # OF AND PASSWORD AND USE BCRYPT.CHECKPW(PASSWORD,QUERIED PASSWORD)
-        if '@nile.com' in email:
-            if email is None:
-                admin_payload = email
+        if '@nile.com' in userLoginIdentifier:
+            if userLoginIdentifier is None:
+                admin_payload = userLoginIdentifier
                 query = 'SELECT email ,pass, firstName, lastName, username from admin WHERE username = %s'
                 cursor.execute(query, (admin_payload))
                 conn.close()
             else:
-                admin_payload = email
+                admin_payload = userLoginIdentifier
                 query = 'SELECT email ,pass, firstName, lastName, username from admin WHERE email = %s'
                 cursor.execute(query, (admin_payload))
                 conn.close()
@@ -77,7 +76,7 @@ def login(ctx=None):
                 db_pass = db_pass[2:-1].encode('utf-8')
                 if bcrypt.checkpw(password.encode(), db_pass):
                     session['logged_in'] = True
-                    session['email'] = email
+                    session['email'] = results[0]
                     session['admin'] = True
                     session['username'] = results[4]
                     session['lastName'] = results[3]
@@ -91,15 +90,20 @@ def login(ctx=None):
             except IndexError:
                 flash('Your login details were not found. Please try again.')
                 return redirect('/login/')
+        elif 'root' in userLoginIdentifier:
+            pass
         else:
             user_payload = ''
-            if email is None:
-                user_payload = username
+            if userLoginIdentifier is None:
+                user_payload = userLoginIdentifier
+                query = 'SELECT email, pass, firstName, lastName, username from user WHERE email= %s'
+                cursor.execute(query, user_payload)
+                conn.close()
             else:
-                user_payload = email
-            query = 'SELECT email, pass, firstName, lastName, username from user WHERE email= %s'
-            cursor.execute(query, user_payload)
-            conn.close()
+                user_payload = userLoginIdentifier
+                query = 'SELECT email, pass, firstName, lastName, username from user WHERE email= %s'
+                cursor.execute(query, user_payload)
+                conn.close()
             try:
                 results = cursor.fetchall()[0]
                 db_pass = results[1]
@@ -107,7 +111,7 @@ def login(ctx=None):
 
                 if bcrypt.checkpw(password.encode('utf-8'), db_pass):
                     session['logged_in'] = True
-                    session['email'] = email
+                    session['email'] = results[0]
                     session['admin'] = False
                     session['username'] = results[4]
                     session['lastName'] = results[3]
@@ -189,10 +193,7 @@ def register():
                                state, country, str(1))
             query = 'INSERT INTO `address`(street1, street2, city, zip, state, country, addressTypeID_address_FK) VALUES(%s, %s, %s, %s, %s, %s, %s)'
             cursor.execute(query, address_payload)
-            db_address = 'SELECT addressID FROM address ORDER BY addressID DESC LIMIT 1'
-            cursor.execute(db_address)
-            results = cursor.fetchall()[0]
-            address_id = results[0]
+            conn.commit()
             query = 'INSERT INTO user (email, username, statusID,pass, firstname, lastname) VALUES (%s, %s, %s, %s, %s, %s)'
             cursor.execute(query, user_payload)
             conn.commit()
