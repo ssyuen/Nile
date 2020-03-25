@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, request, jsonify, redirect, flash, session
 from functools import wraps
-from server import conn
+from server import mysql
 
 admin_bp = Blueprint('admin_bp', __name__,
                      template_folder='templates', static_folder='static')
@@ -26,17 +26,17 @@ def login_required(f):
             return redirect('/login/')
     return wrapped_func
 
-@admin_bp.route('/logout/', methods=['GET'])
-def logout():
-    if 'logged_in' in session and session['logged_in']:
-        if 'admin' in session:
-            session['admin'] = False
-        session['logged_in'] = False
-        session['admin'] = False
-        flash('Logged out successfully.')
-        return redirect('/')
-    flash('Error logging out.')
-    return redirect('/')
+# @admin_bp.route('/logout/', methods=['GET'])
+# def logout():
+#     if 'logged_in' in session and session['logged_in']:
+#         if 'admin' in session:
+#             session['admin'] = False
+#         session['logged_in'] = False
+#         session['admin'] = False
+#         flash('Logged out successfully.')
+#         return redirect('/')
+#     flash('Error logging out.')
+#     return redirect('/')
 
 
 @admin_bp.route('/add_books/', methods=['GET', 'POST'])
@@ -59,6 +59,7 @@ def add_books():
         cover_image = request.form.get('coverImage')
         book_summary = request.form.get('bookSummary')
 
+        conn = mysql.connect()
         cursor = conn.cursor()
 
         query = """
@@ -74,6 +75,7 @@ def add_books():
         cursor.execute(query, (isbn, binding_type, genre, book_title, price, num_pages, cover_image, edition,
                                publisher, date_published, recv_stock, author_firstname, author_lastname, book_summary))
         conn.commit()
+        conn.close()
 
     return render_template('./add_books.html')
 
