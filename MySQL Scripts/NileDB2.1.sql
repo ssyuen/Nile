@@ -28,7 +28,7 @@ CREATE TABLE IF NOT EXISTS `niledb`.`address_type`
     PRIMARY KEY (`id`)
 )
     ENGINE = InnoDB
-    AUTO_INCREMENT = 4
+    AUTO_INCREMENT = 6
     DEFAULT CHARACTER SET = utf8;
 
 
@@ -86,6 +86,7 @@ CREATE TABLE IF NOT EXISTS `niledb`.`binding`
     PRIMARY KEY (`id`)
 )
     ENGINE = InnoDB
+    AUTO_INCREMENT = 8
     DEFAULT CHARACTER SET = utf8;
 
 
@@ -99,6 +100,7 @@ CREATE TABLE IF NOT EXISTS `niledb`.`genre`
     PRIMARY KEY (`id`)
 )
     ENGINE = InnoDB
+    AUTO_INCREMENT = 14
     DEFAULT CHARACTER SET = utf8;
 
 
@@ -142,7 +144,7 @@ CREATE TABLE IF NOT EXISTS `niledb`.`book_orderdetail`
 (
     `id`          INT         NOT NULL AUTO_INCREMENT,
     `ISBN_bod_FK` VARCHAR(20) NOT NULL,
-    `quantity`    INT         NOT NULL,
+    `quantity`    INT         NOT NULL DEFAULT '1',
     PRIMARY KEY (`id`),
     INDEX `ISBN_bod_FK` (`ISBN_bod_FK` ASC) VISIBLE,
     CONSTRAINT `ISBN_bod_FK`
@@ -164,7 +166,7 @@ CREATE TABLE IF NOT EXISTS `niledb`.`status`
     INDEX `Key` (`status` ASC) VISIBLE
 )
     ENGINE = InnoDB
-    AUTO_INCREMENT = 4
+    AUTO_INCREMENT = 7
     DEFAULT CHARACTER SET = utf8mb4;
 
 
@@ -337,62 +339,3 @@ CREATE TABLE IF NOT EXISTS `niledb`.`user_address`
 SET SQL_MODE = @OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS = @OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS = @OLD_UNIQUE_CHECKS;
-
--- Insert Address Type
-INSERT INTO address_type(`type`)
-VALUES ('SHIPPING');
-INSERT INTO address_type(`type`)
-VALUES ('BILLING');
-
--- Insert Status
-INSERT INTO `status` (`status`)
-VALUES ('UNREGISTERED');
-INSERT INTO `status` (`status`)
-VALUES ('REGISTERED');
-INSERT INTO `status` (`status`)
-VALUES ('SUSPENDED');
-
--- Insert binding
-INSERT INTO `binding`(`binding`)
-VALUES ('Textbook');
-INSERT INTO `binding`(`binding`)
-VALUES ('Novel');
-INSERT INTO `binding`(`binding`)
-VALUES ('E-book (Electronic)');
-INSERT INTO `binding`(`binding`)
-VALUES ('Audio CD');
-INSERT INTO `binding`(`binding`)
-VALUES ('Audiobook');
-INSERT INTO `binding`(`binding`)
-VALUES ('Paperback');
-INSERT INTO `binding`(`binding`)
-VALUES ('Hardback');
-
--- Insert genre
-INSERT INTO `genre`(`genre`)
-VALUES ('Horror');
-INSERT INTO `genre`(`genre`)
-VALUES ('Adventure');
-INSERT INTO `genre`(`genre`)
-VALUES ('Fantasy');
-INSERT INTO `genre`(`genre`)
-VALUES ('Romance');
-INSERT INTO `genre`(`genre`)
-VALUES ('Sci-Fi');
-INSERT INTO `genre`(`genre`)
-VALUES ('Dystopian');
-INSERT INTO `genre`(`genre`)
-VALUES ('Humor');
-INSERT INTO `genre`(`genre`)
-VALUES ('Non-fiction');
-INSERT INTO `genre`(`genre`)
-VALUES ('Biography');
-INSERT INTO `genre`(`genre`)
-VALUES ('Cartoon');
-INSERT INTO `genre`(`genre`)
-VALUES ('Graphic Novels');
-INSERT INTO `genre`(`genre`)
-VALUES ('Children');
-INSERT INTO `genre`(`genre`)
-VALUES ('Anthology');
-
