@@ -93,9 +93,10 @@ def login(ctx=None):
                 flash('Your login details were not found. Please try again.')
                 return redirect('/login/')
         else:
-            query = 'SELECT email ,pass, firstName, lastName from user WHERE email = "' + \
-                    email + '"'
-            cursor.execute(query)
+            # query = 'SELECT email ,pass, firstName, lastName from user WHERE email = "' + \
+            #         email + '"'
+            query = 'SELECT email, pass, firstName, lastName from user WHERE email= %s'
+            cursor.execute(query,(email))
             try:
                 results = cursor.fetchall()[0]
                 db_pass = results[1]
