@@ -29,8 +29,9 @@ def login_required(f):
         else:
             flash('You need to login to access this area!')
             # return redirect('/login/')
-            return redirect(url_for('user_bp.login',ctx=f.__name__))
+            return redirect(url_for('user_bp.login', ctx=f.__name__))
     return wrapped_func
+
 
 def cart_session(f):
     @wraps(f)
@@ -43,6 +44,7 @@ def cart_session(f):
             return f(*args, **kws)
     return wrapped_func
 
+
 @user_bp.route('/')
 @cart_session
 def landing_page(search_results=None):
@@ -50,7 +52,6 @@ def landing_page(search_results=None):
     # STEP 1: Make call to database to return all books, need ISBN for query in /product/?isbn=<isbn>
     cursor = conn.cursor()
     query = 'SELECT * FROM books'
-
 
     # STEP 2: Pass list of books to browse.html
 
@@ -69,7 +70,7 @@ def login(ctx=None):
         # OF AND PASSWORD AND USE BCRYPT.CHECKPW(PASSWORD,QUERIED PASSWORD)
         if '@nile.com' in email:
 
-            query = 'SELECT email ,pass, firstName, lastName from admin WHERE email = "' + \
+            query = 'SELECT email ,pass, firstName, lastName, username from admin WHERE email = "' + \
                     email + '"'
             cursor.execute(query)
 
@@ -81,6 +82,7 @@ def login(ctx=None):
                     session['logged_in'] = True
                     session['email'] = email
                     session['admin'] = True
+                    session['username'] = results[4]
                     session['lastName'] = results[3]
                     session['firstName'] = results[2]
                     # flash('Welcome, ' + session['firstName'] + '!')
@@ -95,22 +97,22 @@ def login(ctx=None):
         else:
             # query = 'SELECT email ,pass, firstName, lastName from user WHERE email = "' + \
             #         email + '"'
-            query = 'SELECT email, pass, firstName, lastName from user WHERE email= %s'
-            cursor.execute(query,(email))
+            query = 'SELECT email, pass, firstName, lastName, username from user WHERE email= %s'
+            cursor.execute(query, (email))
             try:
                 results = cursor.fetchall()[0]
                 db_pass = results[1]
                 db_pass = db_pass[2:-1].encode('utf-8')
 
-                if bcrypt.checkpw(password.encode('utf-8'),db_pass):
+                if bcrypt.checkpw(password.encode('utf-8'), db_pass):
                     session['logged_in'] = True
                     session['email'] = email
                     session['admin'] = False
+                    session['username'] = results[4]
                     session['lastName'] = results[3]
                     session['firstName'] = results[2]
                     # flash('Welcome, ' + session['firstName'] + '!')
                     ctx = request.args.get('ctx')
-                    print(ctx, 'PRINTING')
                     if ctx is not None:
                         return redirect(url_for('user_bp.' + ctx))
                     else:
@@ -128,8 +130,6 @@ def login(ctx=None):
                 flash('Your login details were not found. Please try again.')
                 return redirect('/login/')
 
-
-        
     else:
         return render_template('login.html')
 
@@ -156,6 +156,7 @@ def register():
         firstName = request.form.get('inputFirstname')
         lastName = request.form.get('inputLastname')
         email = request.form.get('inputEmail')
+        username = request.form.get('inputUsername')
         password = request.form.get('inputPassword')
         password = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
         # optional
@@ -169,44 +170,41 @@ def register():
 
         cursor = conn.cursor()
 
-        query = 'INSERT INTO orders (orderID) VALUES(0)'
-        cursor.execute(query)
-        db_order = 'SELECT orderID FROM orders ORDER BY orderID DESC LIMIT 1'
-        cursor.execute(db_order)
-        results = cursor.fetchall()[0]
-        order_id = results[0]  
+        # query = 'INSERT INTO orders (orderID) VALUES(0)'
+        # cursor.execute(query)
+        # db_order = 'SELECT orderID FROM orders ORDER BY orderID DESC LIMIT 1'
+        # cursor.execute(db_order)
+        # results = cursor.fetchall()[0]
+        # order_id = results[0]
 
-        query = 'INSERT INTO shoppingCart (orderID) VALUES("' + str(order_id) + '")'
-        cursor.execute(query)
-        db_cart = 'SELECT cartID FROM shoppingCart ORDER BY cartID DESC LIMIT 1'
-        cursor.execute(db_cart)
-        results = cursor.fetchall()[0]
-        cart_id = results[0]        
+        # query = 'INSERT INTO shoppingCart (orderID) VALUES("' + str(order_id) + '")'
+        # cursor.execute(query)
+        # db_cart = 'SELECT cartID FROM shoppingCart ORDER BY cartID DESC LIMIT 1'
+        # cursor.execute(db_cart)
+        # results = cursor.fetchall()[0]
+        # cart_id = results[0]
 
         # FRONT-END NEEDS TO PROHIBIT ADDRESS FROM BEING PARTIALLY FILLED OUT
         if address or apt or city or state or country is None:
-            query = 'INSERT INTO user (email,statusID,cartID,pass, firstname, lastname) VALUES ("' + email + \
-                '", "' + str(1) + '","' + str(cart_id) + '", "' + str(password) + '", "' + firstName + '", "' + lastName + '")'
+            user_payload = (email, username, str(
+                1), password, firstName, lastName)
+            query = 'INSERT INTO user (email, username,statusID_user_FK,pass, firstname, lastname) VALUES (%s, %s, %s, %s, %s, %s)'
             try:
-                cursor.execute(query)
+                cursor.execute(query, user_payload)
                 conn.commit()
             except(pymysql.err.IntegrityError):
-                flash('An account with this email already exists.')
+                flash('An account with this email/username already exists.')
                 return redirect(url_for('user_bp.register'))
-            
 
         else:  # insert with address
-            query = 'INSERT INTO `address`(`street`, `city`, `state`, `zip`) VALUES("' + \
-                        address + '","' + city + '","' + state + '","' + zipcode + '")'
+            query = 'INSERT INTO `address`(`street`, `city`, `state`, `zip`,`country`,addressTypeID_address_FK) VALUES(%s, %s, %s, %s, %s, %s, %s)'
             cursor.execute(query)
             db_address = 'SELECT addressID FROM address ORDER BY addressID DESC LIMIT 1'
             cursor.execute(db_address)
             results = cursor.fetchall()[0]
             address_id = results[0]
-            query = 'INSERT INTO user (email, addressID, statusID,cartID,pass, firstname, lastname) VALUES ("' + email + '", "' + \
-                str(address_id) + '", "' + str(1) + '", "' + str(cart_id) + '", "' + \
-                    str(password) + '", "'  + firstName + '", "' + lastName + '")'
-            cursor.execute(query)
+            query = 'INSERT INTO user (email, username, statusID,pass, firstname, lastname) VALUES (%s, %s, %s, %s, %s, %s)'
+            cursor.execute(query, user_payload)
             conn.commit()
 
         return render_template('reg_conf.html')
@@ -226,12 +224,13 @@ def register_confirmation():
 def shopping_cart():
     return render_template('shoppingcart.html')
 
-@user_bp.route('/product/',methods=['GET','POST'])
+
+@user_bp.route('/product/', methods=['GET', 'POST'])
 @cart_session
 def product():
     # STEP 1: User clicks on a book from browse.html
 
-    # STEP 2: Link sends 
+    # STEP 2: Link sends
     if request.method == 'GET':
         return render_template('/product.html')
     else:
@@ -248,11 +247,11 @@ def product():
         # print(session['shopping_cart'])
         return jsonify(session['shopping_cart'])
 
-@user_bp.route('/add_to_cart/',methods=['POST'])
+
+@user_bp.route('/add_to_cart/', methods=['POST'])
 @cart_session
 def add_to_cart():
     return ''
-
 
 
 # @login_required func decorator needs to be implemented for all user routes
@@ -296,5 +295,3 @@ def profile():
 @cart_session
 def forgot():
     return render_template('./forgot.html')
-
-
