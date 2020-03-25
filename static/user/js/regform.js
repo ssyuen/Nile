@@ -79,8 +79,9 @@ document.getElementById("addressToggler").addEventListener("click", function () 
     }
 });
 function scr(selector, off = 0) {
-    let el = $(selector);
-    $(window).scrollTop(el.offset().top - off);
+    $([document.documentElement, document.body]).animate({
+        scrollTop: $(selector).offset().top - off
+    }, 150);
 }
 Array('input', 'focusin').forEach((evt) => {
     F_NAME.addEventListener(evt, () => {
