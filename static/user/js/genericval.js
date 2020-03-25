@@ -68,6 +68,13 @@ export const INVALID_PASS_CONF_MSS = `
         </small>
     </div>
 `;
+export const INVALID_U_NAME_MSS = `
+    <div class="error-message" id="invalidUName">
+        <small class="text-danger">
+          Username must be at least 3 characters.
+        </small>
+    </div>
+`;
 export const INVALID_EMAIL_MSS = `
     <div class="error-message" id="invalidEmail">
         <small class="text-danger">
