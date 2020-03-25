@@ -56,19 +56,13 @@ def login(ctx=None):
         password = request.form.get('password')
         conn = mysql.connect()
         cursor = conn.cursor()
-        # ONCE DB SCHEMA IS SETUP, GET RID
-        # OF AND PASSWORD AND USE BCRYPT.CHECKPW(PASSWORD,QUERIED PASSWORD)
+
         if '@nile.com' in userLoginIdentifier:
-            if userLoginIdentifier is None:
-                admin_payload = userLoginIdentifier
-                query = 'SELECT email ,pass, firstName, lastName, username from admin WHERE username = %s'
-                cursor.execute(query, (admin_payload))
-                conn.close()
-            else:
-                admin_payload = userLoginIdentifier
-                query = 'SELECT email ,pass, firstName, lastName, username from admin WHERE email = %s'
-                cursor.execute(query, (admin_payload))
-                conn.close()
+            
+            admin_payload = userLoginIdentifier
+            query = 'SELECT email ,pass, firstName, lastName from admin WHERE email = %s'
+            cursor.execute(query, (admin_payload))
+            conn.close()
             
             try:
                 results = cursor.fetchall()[0]
@@ -78,7 +72,6 @@ def login(ctx=None):
                     session['logged_in'] = True
                     session['email'] = results[0]
                     session['admin'] = True
-                    session['username'] = results[4]
                     session['lastName'] = results[3]
                     session['firstName'] = results[2]
                     # flash('Welcome, ' + session['firstName'] + '!')
@@ -90,20 +83,12 @@ def login(ctx=None):
             except IndexError:
                 flash('Your login details were not found. Please try again.')
                 return redirect('/login/')
-        elif 'root' in userLoginIdentifier:
-            pass
         else:
-            user_payload = ''
-            if userLoginIdentifier is None:
-                user_payload = userLoginIdentifier
-                query = 'SELECT email, pass, firstName, lastName, username from user WHERE email= %s'
-                cursor.execute(query, user_payload)
-                conn.close()
-            else:
-                user_payload = userLoginIdentifier
-                query = 'SELECT email, pass, firstName, lastName, username from user WHERE email= %s'
-                cursor.execute(query, user_payload)
-                conn.close()
+
+            user_payload = userLoginIdentifier
+            query = 'SELECT email, pass, firstName, lastName from user WHERE email= %s'
+            cursor.execute(query, user_payload)
+            conn.close()
             try:
                 results = cursor.fetchall()[0]
                 db_pass = results[1]
@@ -113,7 +98,6 @@ def login(ctx=None):
                     session['logged_in'] = True
                     session['email'] = results[0]
                     session['admin'] = False
-                    session['username'] = results[4]
                     session['lastName'] = results[3]
                     session['firstName'] = results[2]
                     ctx = request.args.get('ctx')
@@ -179,13 +163,13 @@ def register():
         if address or apt or city or state or country is None:
             user_payload = (email, username, str(
                 1), password, firstName, lastName)
-            query = 'INSERT INTO user (email, username,statusID_user_FK,pass, firstname, lastname) VALUES (%s, %s, %s, %s, %s, %s)'
+            query = 'INSERT INTO user (email,statusID_user_FK,pass, firstname, lastname) VALUES (%s, %s, %s, %s, %s)'
             try:
                 cursor.execute(query, user_payload)
                 conn.commit()
                 conn.close()
             except(pymysql.err.IntegrityError):
-                flash('An account with this email/username already exists.')
+                flash('An account with this email already exists.')
                 return redirect(url_for('user_bp.register'))
 
         else:  # insert with address
@@ -194,7 +178,7 @@ def register():
             query = 'INSERT INTO `address`(street1, street2, city, zip, state, country, addressTypeID_address_FK) VALUES(%s, %s, %s, %s, %s, %s, %s)'
             cursor.execute(query, address_payload)
             conn.commit()
-            query = 'INSERT INTO user (email, username, statusID,pass, firstname, lastname) VALUES (%s, %s, %s, %s, %s, %s)'
+            query = 'INSERT INTO user (email, statusID,pass, firstname, lastname) VALUES (%s, %s, %s, %s, %s)'
             cursor.execute(query, user_payload)
             conn.commit()
             conn.close()
