@@ -54,7 +54,7 @@ FORM.addEventListener('submit', (e) => {
                 ct.after(errorHTML);
             $([document.documentElement, document.body]).animate({
                 scrollTop: ct.offset().top
-            }, 200);
+            }, 500);
             e.preventDefault();
             break;
         }
@@ -79,7 +79,7 @@ document.getElementById("addressToggler").addEventListener("click", function () 
 function scr(selector, off = 0) {
     $([document.documentElement, document.body]).animate({
         scrollTop: $(selector).offset().top - off
-    }, 200);
+    }, 500);
 }
 Array('input', 'focusin').forEach((evt) => {
     F_NAME.addEventListener(evt, () => {
