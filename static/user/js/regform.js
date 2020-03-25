@@ -17,13 +17,11 @@ import {
     INVALID_ZIP_MSS,
     passwordConstraint,
     validator,
-    zipCodeConstraint,
-    INVALID_U_NAME_MSS
+    zipCodeConstraint
 } from "./genericval.js";
 const FORM = document.getElementById("regForm");
 const F_NAME = document.getElementById("inputFirstname");
 const L_NAME = document.getElementById("inputLastname");
-const U_NAME = document.getElementById("inputUsername");
 const EMAIL = document.getElementById("inputEmail");
 const PASS = document.getElementById("inputPassword");
 const PASS_CONF = document.getElementById("inputConfirmPassword");
@@ -91,10 +89,6 @@ Array('input', 'focusin').forEach((evt) => {
     L_NAME.addEventListener(evt, () => {
         let val = document.getElementById(L_NAME.id).value;
         VALIDITY[L_NAME.id] = validator(L_NAME, INVALID_L_NAME_MSS, '#invalidLName', val.length >= 2);
-    });
-    U_NAME.addEventListener(evt, () => {
-        let val = document.getElementById(U_NAME.id).value;
-        VALIDITY[U_NAME.id] = validator(U_NAME, INVALID_U_NAME_MSS, '#invalidUName', val.length >= 3);
     });
     EMAIL.addEventListener(evt, () => {
         VALIDITY[EMAIL.id] = validator(EMAIL, INVALID_EMAIL_MSS, '#invalidEmail', emailConstraint(EMAIL.id));
