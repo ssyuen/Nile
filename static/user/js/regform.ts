@@ -14,13 +14,12 @@ import {
     INVALID_PASS_MSS,
     INVALID_PASS_CONF_MSS, INVALID_STREET_MSS, INVALID_ZIP_MSS,
     passwordConstraint,
-    validator, zipCodeConstraint, INVALID_U_NAME_MSS
+    validator, zipCodeConstraint
 } from "./genericval.js";
 
 const FORM: HTMLElement = document.getElementById("regForm");
 const F_NAME: HTMLElement = document.getElementById("inputFirstname");
 const L_NAME: HTMLElement = document.getElementById("inputLastname");
-const U_NAME: HTMLElement = document.getElementById("inputUsername");
 const EMAIL: HTMLElement = document.getElementById("inputEmail");
 const PASS: HTMLElement = document.getElementById("inputPassword");
 const PASS_CONF: HTMLElement = document.getElementById("inputConfirmPassword");
@@ -104,11 +103,6 @@ Array<string>('input', 'focusin').forEach((evt: string) => {
     L_NAME.addEventListener(evt, () => {
         let val = (<HTMLInputElement>document.getElementById(L_NAME.id)).value;
         VALIDITY[L_NAME.id] = validator(L_NAME, INVALID_L_NAME_MSS, '#invalidLName', val.length >= 2);
-    });
-
-    U_NAME.addEventListener(evt, () => {
-        let val = (<HTMLInputElement>document.getElementById(U_NAME.id)).value;
-        VALIDITY[U_NAME.id] = validator(U_NAME, INVALID_U_NAME_MSS, '#invalidUName', val.length >= 3);
     });
 
     EMAIL.addEventListener(evt, () => {
