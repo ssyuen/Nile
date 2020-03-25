@@ -2,20 +2,7 @@ from flask import Blueprint, render_template, request, jsonify, redirect, flash,
 from functools import wraps
 from flaskext.mysql import pymysql
 import bcrypt
-# from models.abs_models import abs_models
-# from models.users import User
-from server import conn
-# import conn
-
-# from scripts.apps.books import books
-# from scripts.apps.checkout import checkout
-# from scripts.apps.login_registration import login
-# from scripts.apps.login_registration import reg
-# from scripts.apps.promos import promos
-# from scripts.apps.users import users
-# from scripts.apps.users.user_profile import billing
-# from scripts.apps.users.user_profile import payment
-# from scripts.apps.users.user_profile import profile
+from server import mysql
 
 user_bp = Blueprint('user_bp', __name__,
                     template_folder='templates', static_folder='static')
@@ -50,12 +37,14 @@ def cart_session(f):
 def landing_page(search_results=None):
     print(session['shopping_cart'])
     # STEP 1: Make call to database to return all books, need ISBN for query in /product/?isbn=<isbn>
+    conn = mysql.connect()
     cursor = conn.cursor()
     query = 'SELECT * FROM books'
 
     # STEP 2: Pass list of books to browse.html
 
     # STEP 3: In browse.html, iterate through list of books to populate page
+    conn.close()
     return render_template('browse.html')
 
 
@@ -65,15 +54,15 @@ def login(ctx=None):
     if request.method == 'POST':
         email = request.form.get('email')
         password = request.form.get('password')
+        conn = mysql.connect()
         cursor = conn.cursor()
         # ONCE DB SCHEMA IS SETUP, GET RID
         # OF AND PASSWORD AND USE BCRYPT.CHECKPW(PASSWORD,QUERIED PASSWORD)
         if '@nile.com' in email:
-
-            query = 'SELECT email ,pass, firstName, lastName, username from admin WHERE email = "' + \
-                    email + '"'
-            cursor.execute(query)
-
+            admin_payload = (email)
+            query = 'SELECT email ,pass, firstName, lastName, username from admin WHERE email = %s'
+            cursor.execute(query, admin_payload)
+            conn.close()
             try:
                 results = cursor.fetchall()[0]
                 db_pass = results[1]
@@ -95,10 +84,10 @@ def login(ctx=None):
                 flash('Your login details were not found. Please try again.')
                 return redirect('/login/')
         else:
-            # query = 'SELECT email ,pass, firstName, lastName from user WHERE email = "' + \
-            #         email + '"'
+            user_payload = (email)
             query = 'SELECT email, pass, firstName, lastName, username from user WHERE email= %s'
-            cursor.execute(query, (email))
+            cursor.execute(query, user_payload)
+            conn.close()
             try:
                 results = cursor.fetchall()[0]
                 db_pass = results[1]
@@ -111,13 +100,11 @@ def login(ctx=None):
                     session['username'] = results[4]
                     session['lastName'] = results[3]
                     session['firstName'] = results[2]
-                    # flash('Welcome, ' + session['firstName'] + '!')
                     ctx = request.args.get('ctx')
                     if ctx is not None:
                         return redirect(url_for('user_bp.' + ctx))
                     else:
                         return redirect('/')
-                    # return redirect('/')
                 else:
                     flash('Your login details were incorrect. Please try again.')
                     return redirect('/login/')
@@ -137,13 +124,15 @@ def login(ctx=None):
 @user_bp.route('/logout/', methods=['GET'])
 @cart_session
 def logout():
-    if session['logged_in']:
-        session['admin'] = False
+    if 'logged_in' in session and session['logged_in']:
+        if 'admin' in session:
+            session['admin'] = False
         session['logged_in'] = False
-        # flash('Logged out successfully.')
+        session['admin'] = False
+        flash('Logged out successfully.')
         return redirect('/')
-    else:
-        return redirect('/')
+    flash('Error logging out.')
+    return redirect('/')
 
 
 @user_bp.route('/register/', methods=['POST', 'GET'])
@@ -168,23 +157,9 @@ def register():
         state = request.form.get('addAddressState')
         country = request.form.get('addAddressCountry')
 
+        conn = mysql.connect()
         cursor = conn.cursor()
 
-        # query = 'INSERT INTO orders (orderID) VALUES(0)'
-        # cursor.execute(query)
-        # db_order = 'SELECT orderID FROM orders ORDER BY orderID DESC LIMIT 1'
-        # cursor.execute(db_order)
-        # results = cursor.fetchall()[0]
-        # order_id = results[0]
-
-        # query = 'INSERT INTO shoppingCart (orderID) VALUES("' + str(order_id) + '")'
-        # cursor.execute(query)
-        # db_cart = 'SELECT cartID FROM shoppingCart ORDER BY cartID DESC LIMIT 1'
-        # cursor.execute(db_cart)
-        # results = cursor.fetchall()[0]
-        # cart_id = results[0]
-
-        # FRONT-END NEEDS TO PROHIBIT ADDRESS FROM BEING PARTIALLY FILLED OUT
         if address or apt or city or state or country is None:
             user_payload = (email, username, str(
                 1), password, firstName, lastName)
@@ -192,13 +167,16 @@ def register():
             try:
                 cursor.execute(query, user_payload)
                 conn.commit()
+                conn.close()
             except(pymysql.err.IntegrityError):
                 flash('An account with this email/username already exists.')
                 return redirect(url_for('user_bp.register'))
 
         else:  # insert with address
-            query = 'INSERT INTO `address`(`street`, `city`, `state`, `zip`,`country`,addressTypeID_address_FK) VALUES(%s, %s, %s, %s, %s, %s, %s)'
-            cursor.execute(query)
+            address_payload = (address, apt, city, zipcode,
+                               state, country, str(1))
+            query = 'INSERT INTO `address`(street1, street2, city, zip, state, country, addressTypeID_address_FK) VALUES(%s, %s, %s, %s, %s, %s, %s)'
+            cursor.execute(query, address_payload)
             db_address = 'SELECT addressID FROM address ORDER BY addressID DESC LIMIT 1'
             cursor.execute(db_address)
             results = cursor.fetchall()[0]
@@ -206,6 +184,7 @@ def register():
             query = 'INSERT INTO user (email, username, statusID,pass, firstname, lastname) VALUES (%s, %s, %s, %s, %s, %s)'
             cursor.execute(query, user_payload)
             conn.commit()
+            conn.close()
 
         return render_template('reg_conf.html')
 

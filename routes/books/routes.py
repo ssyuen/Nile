@@ -11,8 +11,6 @@ def query_books(search_query=None):
     if request.args is None:
         return redirect(url_for('user_bp.landing_page'))
     else:
-        # werkzeug.exceptions.BadRequestKeyError
-        # print('here')
         if len(request.args) == 1:
             try:
                 
