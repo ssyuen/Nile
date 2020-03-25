@@ -40,9 +40,9 @@ CREATE TABLE IF NOT EXISTS `niledb`.`address`
     `id`                       INT                                                              NOT NULL AUTO_INCREMENT,
     `street1`                  VARCHAR(45) CHARACTER SET 'utf8mb4' COLLATE 'utf8mb4_0900_ai_ci' NULL DEFAULT NULL,
     `street2`                  VARCHAR(45)                                                      NULL DEFAULT NULL,
-    `city`                     VARCHAR(45) CHARACTER SET 'utf8mb4'                              NULL DEFAULT NULL,
+    `city`                     VARCHAR(45) CHARACTER SET 'utf8mb4' COLLATE 'utf8mb4_0900_ai_ci' NULL DEFAULT NULL,
     `zip`                      VARCHAR(45) CHARACTER SET 'utf8mb4' COLLATE 'utf8mb4_0900_ai_ci' NULL DEFAULT NULL,
-    `state`                    VARCHAR(45) CHARACTER SET 'utf8mb4'                              NULL DEFAULT NULL,
+    `state`                    VARCHAR(45) CHARACTER SET 'utf8mb4' COLLATE 'utf8mb4_0900_ai_ci' NULL DEFAULT NULL,
     `country`                  VARCHAR(50)                                                      NULL DEFAULT NULL,
     `addressTypeID_address_FK` INT                                                              NOT NULL,
     PRIMARY KEY (`id`),
@@ -54,7 +54,8 @@ CREATE TABLE IF NOT EXISTS `niledb`.`address`
 )
     ENGINE = InnoDB
     AUTO_INCREMENT = 1
-    DEFAULT CHARACTER SET = utf8mb4;
+    DEFAULT CHARACTER SET = utf8mb4
+    COLLATE = utf8mb4_0900_ai_ci;
 
 
 -- -----------------------------------------------------
@@ -63,19 +64,18 @@ CREATE TABLE IF NOT EXISTS `niledb`.`address`
 CREATE TABLE IF NOT EXISTS `niledb`.`admin`
 (
     `id`        INT                                                               NOT NULL AUTO_INCREMENT,
-    `username`  VARCHAR(45)                                                       NOT NULL,
     `email`     VARCHAR(255) CHARACTER SET 'utf8mb4' COLLATE 'utf8mb4_0900_ai_ci' NOT NULL,
-    `firstName` VARCHAR(45) CHARACTER SET 'utf8mb4'                               NOT NULL,
-    `lastName`  VARCHAR(45) CHARACTER SET 'utf8mb4'                               NOT NULL,
-    `pass`      VARCHAR(100) CHARACTER SET 'utf8mb4'                              NOT NULL,
+    `firstName` VARCHAR(45) CHARACTER SET 'utf8mb4' COLLATE 'utf8mb4_0900_ai_ci'  NOT NULL,
+    `lastName`  VARCHAR(45) CHARACTER SET 'utf8mb4' COLLATE 'utf8mb4_0900_ai_ci'  NOT NULL,
+    `pass`      VARCHAR(100) CHARACTER SET 'utf8mb4' COLLATE 'utf8mb4_0900_ai_ci' NOT NULL,
     PRIMARY KEY (`id`),
     UNIQUE INDEX `email_UNIQUE` (`email` ASC) VISIBLE,
-    UNIQUE INDEX `username_UNIQUE` (`username` ASC) VISIBLE,
     INDEX `Key` (`firstName` ASC, `lastName` ASC, `pass` ASC) VISIBLE
 )
     ENGINE = InnoDB
     AUTO_INCREMENT = 1
-    DEFAULT CHARACTER SET = utf8mb4;
+    DEFAULT CHARACTER SET = utf8mb4
+    COLLATE = utf8mb4_0900_ai_ci;
 
 
 -- -----------------------------------------------------
@@ -163,14 +163,15 @@ CREATE TABLE IF NOT EXISTS `niledb`.`book_orderdetail`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `niledb`.`status`
 (
-    `id`     INT                                 NOT NULL AUTO_INCREMENT,
-    `status` VARCHAR(45) CHARACTER SET 'utf8mb4' NOT NULL,
+    `id`     INT                                                              NOT NULL AUTO_INCREMENT,
+    `status` VARCHAR(45) CHARACTER SET 'utf8mb4' COLLATE 'utf8mb4_0900_ai_ci' NOT NULL,
     PRIMARY KEY (`id`),
     INDEX `Key` (`status` ASC) VISIBLE
 )
     ENGINE = InnoDB
     AUTO_INCREMENT = 1
-    DEFAULT CHARACTER SET = utf8mb4;
+    DEFAULT CHARACTER SET = utf8mb4
+    COLLATE = utf8mb4_0900_ai_ci;
 
 
 -- -----------------------------------------------------
@@ -179,14 +180,12 @@ CREATE TABLE IF NOT EXISTS `niledb`.`status`
 CREATE TABLE IF NOT EXISTS `niledb`.`user`
 (
     `id`               INT                                                               NOT NULL AUTO_INCREMENT,
-    `username`         VARCHAR(45)                                                       NOT NULL,
     `email`            VARCHAR(255) CHARACTER SET 'utf8mb4' COLLATE 'utf8mb4_0900_ai_ci' NOT NULL,
     `statusID_user_FK` INT                                                               NOT NULL,
-    `pass`             VARCHAR(100) CHARACTER SET 'utf8mb4'                              NOT NULL,
-    `firstname`        VARCHAR(45) CHARACTER SET 'utf8mb4'                               NOT NULL,
-    `lastname`         VARCHAR(45) CHARACTER SET 'utf8mb4'                               NOT NULL,
+    `pass`             VARCHAR(100) CHARACTER SET 'utf8mb4' COLLATE 'utf8mb4_0900_ai_ci' NOT NULL,
+    `firstname`        VARCHAR(45) CHARACTER SET 'utf8mb4' COLLATE 'utf8mb4_0900_ai_ci'  NOT NULL,
+    `lastname`         VARCHAR(45) CHARACTER SET 'utf8mb4' COLLATE 'utf8mb4_0900_ai_ci'  NOT NULL,
     PRIMARY KEY (`id`),
-    UNIQUE INDEX `username_UNIQUE` (`username` ASC) VISIBLE,
     UNIQUE INDEX `email_UNIQUE` (`email` ASC) VISIBLE,
     INDEX `Key` (`pass` ASC, `firstname` ASC, `lastname` ASC) VISIBLE,
     INDEX `statusID_user_FK_idx` (`statusID_user_FK` ASC) VISIBLE,
@@ -196,7 +195,8 @@ CREATE TABLE IF NOT EXISTS `niledb`.`user`
 )
     ENGINE = InnoDB
     AUTO_INCREMENT = 1
-    DEFAULT CHARACTER SET = utf8mb4;
+    DEFAULT CHARACTER SET = utf8mb4
+    COLLATE = utf8mb4_0900_ai_ci;
 
 
 -- -----------------------------------------------------
@@ -224,7 +224,8 @@ CREATE TABLE IF NOT EXISTS `niledb`.`payment_method`
 )
     ENGINE = InnoDB
     AUTO_INCREMENT = 1
-    DEFAULT CHARACTER SET = utf8mb4;
+    DEFAULT CHARACTER SET = utf8mb4
+    COLLATE = utf8mb4_0900_ai_ci;
 
 
 -- -----------------------------------------------------
@@ -232,17 +233,18 @@ CREATE TABLE IF NOT EXISTS `niledb`.`payment_method`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `niledb`.`promotion`
 (
-    `id`        INT                                 NOT NULL AUTO_INCREMENT,
-    `code`      VARCHAR(45) CHARACTER SET 'utf8mb4' NULL DEFAULT NULL,
-    `discount`  DOUBLE                              NULL DEFAULT NULL,
-    `startDate` DATE                                NULL DEFAULT NULL,
-    `endDate`   DATE                                NULL DEFAULT NULL,
+    `id`        INT                                                              NOT NULL AUTO_INCREMENT,
+    `code`      VARCHAR(45) CHARACTER SET 'utf8mb4' COLLATE 'utf8mb4_0900_ai_ci' NULL DEFAULT NULL,
+    `discount`  DOUBLE                                                           NULL DEFAULT NULL,
+    `startDate` DATE                                                             NULL DEFAULT NULL,
+    `endDate`   DATE                                                             NULL DEFAULT NULL,
     PRIMARY KEY (`id`),
     INDEX `Key` (`code` ASC, `discount` ASC, `startDate` ASC, `endDate` ASC) VISIBLE
 )
     ENGINE = InnoDB
     AUTO_INCREMENT = 1
-    DEFAULT CHARACTER SET = utf8mb4;
+    DEFAULT CHARACTER SET = utf8mb4
+    COLLATE = utf8mb4_0900_ai_ci;
 
 
 -- -----------------------------------------------------
@@ -342,7 +344,6 @@ CREATE TABLE IF NOT EXISTS `niledb`.`user_address`
     ENGINE = InnoDB
     DEFAULT CHARACTER SET = utf8;
 
-
 SET SQL_MODE = @OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS = @OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS = @OLD_UNIQUE_CHECKS;
@@ -404,4 +405,3 @@ INSERT INTO `genre`(`genre`)
 VALUES ('Children');
 INSERT INTO `genre`(`genre`)
 VALUES ('Anthology');
-
