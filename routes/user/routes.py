@@ -53,16 +53,24 @@ def landing_page(search_results=None):
 def login(ctx=None):
     if request.method == 'POST':
         email = request.form.get('email')
+        username = request.form.get('username')
         password = request.form.get('password')
         conn = mysql.connect()
         cursor = conn.cursor()
         # ONCE DB SCHEMA IS SETUP, GET RID
         # OF AND PASSWORD AND USE BCRYPT.CHECKPW(PASSWORD,QUERIED PASSWORD)
         if '@nile.com' in email:
-            admin_payload = (email)
-            query = 'SELECT email ,pass, firstName, lastName, username from admin WHERE email = %s'
-            cursor.execute(query, admin_payload)
-            conn.close()
+            if email is None:
+                admin_payload = email
+                query = 'SELECT email ,pass, firstName, lastName, username from admin WHERE username = %s'
+                cursor.execute(query, (admin_payload))
+                conn.close()
+            else:
+                admin_payload = email
+                query = 'SELECT email ,pass, firstName, lastName, username from admin WHERE email = %s'
+                cursor.execute(query, (admin_payload))
+                conn.close()
+            
             try:
                 results = cursor.fetchall()[0]
                 db_pass = results[1]
@@ -84,7 +92,11 @@ def login(ctx=None):
                 flash('Your login details were not found. Please try again.')
                 return redirect('/login/')
         else:
-            user_payload = (email)
+            user_payload = ''
+            if email is None:
+                user_payload = username
+            else:
+                user_payload = email
             query = 'SELECT email, pass, firstName, lastName, username from user WHERE email= %s'
             cursor.execute(query, user_payload)
             conn.close()
