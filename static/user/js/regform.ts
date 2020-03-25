@@ -88,8 +88,9 @@ document.getElementById("addressToggler").addEventListener("click", function () 
 
 
 function scr(selector: string, off: number = 0) {
-    let el = $(selector);
-    $(window).scrollTop(el.offset().top - off);
+    $([document.documentElement, document.body]).animate({
+        scrollTop: $(selector).offset().top - off
+    }, 200);
 }
 
 
