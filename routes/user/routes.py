@@ -52,18 +52,18 @@ def landing_page(search_results=None):
 @cart_session
 def login(ctx=None):
     if request.method == 'POST':
-        userLoginIdentifier = request.form.get('userLoginIdentifier')
-        password = request.form.get('password')
+        userEmail = request.form.get('userEmail')
+        password = request.form.get('userPassword')
         conn = mysql.connect()
         cursor = conn.cursor()
 
-        if '@nile.com' in userLoginIdentifier:
-            
-            admin_payload = userLoginIdentifier
+        if '@nile.com' in userEmail:
+
+            admin_payload = userEmail
             query = 'SELECT email ,pass, firstName, lastName from admin WHERE email = %s'
             cursor.execute(query, (admin_payload))
             conn.close()
-            
+
             try:
                 results = cursor.fetchall()[0]
                 db_pass = results[1]
@@ -85,7 +85,7 @@ def login(ctx=None):
                 return redirect('/login/')
         else:
 
-            user_payload = userLoginIdentifier
+            user_payload = userEmail
             query = 'SELECT email, pass, firstName, lastName from user WHERE email= %s'
             cursor.execute(query, user_payload)
             conn.close()
@@ -145,7 +145,6 @@ def register():
         firstName = request.form.get('inputFirstname')
         lastName = request.form.get('inputLastname')
         email = request.form.get('inputEmail')
-        username = request.form.get('inputUsername')
         password = request.form.get('inputPassword')
         password = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
         # optional
@@ -160,9 +159,10 @@ def register():
         conn = mysql.connect()
         cursor = conn.cursor()
 
-        if address or apt or city or state or country is None:
-            user_payload = (email, username, str(
-                1), password, firstName, lastName)
+        user_payload = (email, str(1),
+                        password, firstName, lastName)
+        if address and apt and city and state and country is None:
+
             query = 'INSERT INTO user (email,statusID_user_FK,pass, firstname, lastname) VALUES (%s, %s, %s, %s, %s)'
             try:
                 cursor.execute(query, user_payload)
@@ -175,12 +175,27 @@ def register():
         else:  # insert with address
             address_payload = (address, apt, city, zipcode,
                                state, country, str(1))
+            print(address_payload)
             query = 'INSERT INTO `address`(street1, street2, city, zip, state, country, addressTypeID_address_FK) VALUES(%s, %s, %s, %s, %s, %s, %s)'
             cursor.execute(query, address_payload)
             conn.commit()
-            query = 'INSERT INTO user (email, statusID,pass, firstname, lastname) VALUES (%s, %s, %s, %s, %s)'
+
+            query = 'INSERT INTO user (email, statusID_user_FK,pass, firstname, lastname) VALUES (%s, %s, %s, %s, %s)'
             cursor.execute(query, user_payload)
             conn.commit()
+
+            user_id_query = 'SELECT id FROM user ORDER BY id DESC LIMIT 1'
+            cursor.execute(user_id_query)
+            user_id = cursor.fetchall()[0][0]
+
+            address_id_query = 'SELECT id FROM address ORDER BY id DESC LIMIT 1'
+            cursor.execute(address_id_query)
+            address_id = cursor.fetchall()[0][0]
+
+            query = 'INSERT INTO user_address (userID_ua_FK, addressID_ua_FK) VALUES (%s, %s)'
+            cursor.execute(query, (user_id, address_id))
+            conn.commit()
+
             conn.close()
 
         return render_template('reg_conf.html')
