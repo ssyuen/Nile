@@ -160,10 +160,10 @@ def register():
 
         conn = mysql.connect()
         cursor = conn.cursor()
-
+        print(address)
         user_payload = (email, str(1),
                         password, firstName, lastName)
-        if address and apt and city and state and country is None:
+        if address is '' or address is None:
 
             query = 'INSERT INTO user (email,statusID_user_FK,pass, firstname, lastname) VALUES (%s, %s, %s, %s, %s)'
             try:
