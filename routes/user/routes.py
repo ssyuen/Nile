@@ -24,7 +24,7 @@ def cart_session(f):
     @wraps(f)
     def wrapped_func(*args, **kws):
         if 'shopping_cart' in session:
-            print(True)
+            # print(True)
             return f(*args, **kws)
         else:
             session['shopping_cart'] = list()
@@ -35,7 +35,7 @@ def cart_session(f):
 @user_bp.route('/')
 @cart_session
 def landing_page(search_results=None):
-    print(session['shopping_cart'])
+    # print(session['shopping_cart'])
     # STEP 1: Make call to database to return all books, need ISBN for query in /product/?isbn=<isbn>
     conn = mysql.connect()
     cursor = conn.cursor()
@@ -91,7 +91,7 @@ def login(ctx=None):
             conn.close()
             try:
                 results = cursor.fetchall()[0]
-                print(results)
+                # print(results)
                 db_pass = results[1].encode('utf-8')
                 # db_pass = db_pass[2:-1].encode('utf-8')
 
@@ -176,7 +176,7 @@ def register():
         else:  # insert with address
             address_payload = (address, apt, city, zipcode,
                                state, country, str(1))
-            print(address_payload)
+            # print(address_payload)
             query = 'INSERT INTO `address`(street1, street2, city, zip, state, country, addressTypeID_address_FK) VALUES(%s, %s, %s, %s, %s, %s, %s)'
             cursor.execute(query, address_payload)
             conn.commit()
@@ -230,7 +230,6 @@ def product():
         old_cart = session['shopping_cart']
         old_cart.append(book_name)
         session['shopping_cart'] = old_cart
-
         return jsonify(session['shopping_cart'])
 
 
@@ -270,11 +269,36 @@ def payment_info():
     return render_template('./paymentinfo.html')
 
 
-@user_bp.route('/profile/')
+@user_bp.route('/profile/',methods=['GET'])
 @login_required
 @cart_session
 def profile():
     return render_template('./profile.html')
+
+@user_bp.route('/password_change/',methods=['POST'])
+@login_required
+@cart_session
+def password_change():
+    if request.method == 'POST':
+        new_password = request.form.get('newPassword')
+        confirm_new_password = request.form.get('confirmNewPassword')
+        
+        print(new_password)
+        print(confirm_new_password)
+        print(type(new_password))
+        if new_password != confirm_new_password:
+            return jsonify({'Response':400})
+        else:
+            new_password = bcrypt.hashpw(new_password.encode('utf-8'),bcrypt.gensalt())
+            conn = mysql.connect()
+            cursor = conn.cursor()
+            print(session['email'])
+            query = 'UPDATE user SET pass=%s WHERE email=%s'
+            cursor.execute(query,(new_password,session['email']))
+            conn.commit()
+            conn.close()
+            return jsonify({'Response':200})
+
 
 
 @user_bp.route('/forgot/')
