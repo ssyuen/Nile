@@ -61,7 +61,7 @@
 
                 {% if not session['admin'] %}
                     <div class="mt-3">
-                        <button id="addToCartBtn" class="btn blue-gradient btn-block w-250" onclick="addToCart(document.getElementById('addToCartBtn'))">
+                        <button id="addToCartBtn" class="btn blue-gradient btn-block w-250">
                             <span>Add To Cart</span>
                             <i class="fa fa-shopping-cart"></i>
                         </button>
@@ -95,7 +95,7 @@
                         J.K. Rowling
                     </p>
 
-                    <span class="complement-light info-heading">ISBN-13:</span>
+                    <span class="complement-light info-heading" id="bookISBN" nile-isbn="9781338299144">ISBN-13:</span>
                     <p class="card-text">
                         9781338299144
                     </p>
@@ -161,6 +161,14 @@
         $(btn).removeClass("blue-gradient");
         $(btn).addClass("btn-outline-success");
         $(btn).children("span").html("Added to Cart");
+
+        $.ajax({
+            url: '/product/',
+            type: 'POST',
+            data: {'bookISBN': $("#bookISBN").attr("nile-isbn")}
+        });
+        console.log('posted');
+
     }
 
     function removeFromCart(btn) {
@@ -170,19 +178,6 @@
     }
 </script>
 
-<script>
-    // $("addToCartBtn").
-    // $.post('/add_to_cart/',$('addToCartBtn').ser)
-    function addToCart(){
-        $.ajax({
-            url:'/product/',
-            type:'POST',
-            data:{'bookName':document.getElementById('bookTitle').textContent}
-        });
-        console.log('posted');
-    }
-    
-</script>
 
 </body>
 </html>
