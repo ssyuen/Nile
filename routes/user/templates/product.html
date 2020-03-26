@@ -175,6 +175,12 @@
         $(btn).removeClass("btn-outline-success");
         $(btn).addClass("blue-gradient");
         $(btn).children("span").html("Add to Cart");
+
+        $.ajax({
+            url: '/product/',
+            type: 'POST',
+            data: {'bookISBN': $("#bookISBN").attr("nile-isbn")}
+        });
     }
 </script>
 

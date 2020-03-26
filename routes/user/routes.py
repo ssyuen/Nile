@@ -228,9 +228,13 @@ def product():
     if request.method == 'GET':
         return render_template('/product.html')
     else:
+        print(session, file=sys.stderr)
         book_isbn = request.form.get('bookISBN')
         old_cart = session['shopping_cart']
-        old_cart.append(book_isbn)
+        if book_isbn in session['shopping_cart']:
+            old_cart.remove(book_isbn)
+        else:
+            old_cart.append(book_isbn)
         session['shopping_cart'] = old_cart
         print(session, file=sys.stderr)
         return jsonify(session['shopping_cart'])
