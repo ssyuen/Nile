@@ -2,6 +2,7 @@ from flask import Blueprint, render_template, request, jsonify, redirect, flash,
 from functools import wraps
 from flaskext.mysql import pymysql
 import bcrypt
+import sys
 from server import mysql
 
 user_bp = Blueprint('user_bp', __name__,
@@ -220,16 +221,18 @@ def shopping_cart():
 @user_bp.route('/product/', methods=['GET', 'POST'])
 @cart_session
 def product():
+    print('In Product')
     # STEP 1: User clicks on a book from browse.html
 
     # STEP 2: Link sends
     if request.method == 'GET':
         return render_template('/product.html')
     else:
-        book_name = request.form.get('bookName')
+        book_isbn = request.form.get('bookISBN')
         old_cart = session['shopping_cart']
-        old_cart.append(book_name)
+        old_cart.append(book_isbn)
         session['shopping_cart'] = old_cart
+        print(session, file=sys.stderr)
         return jsonify(session['shopping_cart'])
 
 
