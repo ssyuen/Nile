@@ -56,9 +56,32 @@ FORM.addEventListener('submit', (e) => {
                 scrollTop: ct.offset().top
             }, 500);
             e.preventDefault();
-            break;
+            return;
         }
     }
+    $("registerBtn").prop("disabled", true);
+    let toggleStat = $(FORM).children("#addressToggler").attr("aria-expanded");
+    //They don't want to put an address
+    let data;
+    if (toggleStat === undefined || toggleStat === 'false') {
+        data = $.param({
+            "inputFirstname": F_NAME.value,
+            "inputLastname": L_NAME.value,
+            "inputEmail": EMAIL.value,
+            "inputPassword": PASS.value,
+            "inputConfirmPassword": PASS_CONF.value
+        });
+    } else { //They do
+        data = $(FORM).serialize();
+    }
+    $.ajax({
+        type: "POST",
+        url: "/register/",
+        data: data,
+        success: function (data) {
+            console.log("Sent Entry");
+        }
+    });
 });
 let tog = false;
 document.getElementById("addressToggler").addEventListener("click", function () {

@@ -18,11 +18,11 @@ import {
 } from "./genericval.js";
 
 const FORM: HTMLElement = document.getElementById("regForm");
-const F_NAME: HTMLElement = document.getElementById("inputFirstname");
-const L_NAME: HTMLElement = document.getElementById("inputLastname");
-const EMAIL: HTMLElement = document.getElementById("inputEmail");
-const PASS: HTMLElement = document.getElementById("inputPassword");
-const PASS_CONF: HTMLElement = document.getElementById("inputConfirmPassword");
+const F_NAME: HTMLInputElement = document.getElementById("inputFirstname") as HTMLInputElement;
+const L_NAME: HTMLInputElement = document.getElementById("inputLastname") as HTMLInputElement;
+const EMAIL: HTMLInputElement = document.getElementById("inputEmail") as HTMLInputElement;
+const PASS: HTMLInputElement = document.getElementById("inputPassword") as HTMLInputElement;
+const PASS_CONF: HTMLInputElement = document.getElementById("inputConfirmPassword") as HTMLInputElement;
 
 /*
     Optional Address Fields
@@ -62,9 +62,33 @@ FORM.addEventListener('submit', (e: Event) => {
             }, 500);
 
             e.preventDefault();
-            break;
+            return;
         }
     }
+    $("registerBtn").prop("disabled", true);
+    let toggleStat = $(FORM).children("#addressToggler").attr("aria-expanded");
+
+    //They don't want to put an address
+    let data;
+    if (toggleStat === undefined || toggleStat === 'false') {
+        data = $.param({
+            "inputFirstname": F_NAME.value,
+            "inputLastname": L_NAME.value,
+            "inputEmail": EMAIL.value,
+            "inputPassword": PASS.value,
+            "inputConfirmPassword": PASS_CONF.value
+        });
+    } else { //They do
+        data = $(FORM).serialize();
+    }
+    $.ajax({
+        type: "POST",
+        url: "/register/",
+        data: data, // serializes the form's elements.
+        success: function (data) {
+            console.log("Sent Entry");
+        }
+    });
 });
 
 let tog = false;
