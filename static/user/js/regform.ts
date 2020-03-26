@@ -59,7 +59,7 @@ FORM.addEventListener('submit', (e: Event) => {
 
             $([document.documentElement, document.body]).animate({
                 scrollTop: ct.offset().top
-            }, 200);
+            }, 500);
 
             e.preventDefault();
             break;
@@ -89,7 +89,7 @@ document.getElementById("addressToggler").addEventListener("click", function () 
 function scr(selector: string, off: number = 0) {
     $([document.documentElement, document.body]).animate({
         scrollTop: $(selector).offset().top - off
-    }, 200);
+    }, 500);
 }
 
 
