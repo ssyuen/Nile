@@ -64,7 +64,7 @@ $(FORM).on("submit", function (e) {
 
     if (!$("#paymentToggler").is(":checked")) {
         $('#paymentInfo input').val('');
-        $('#addressInfo select').empty();
+        $('#paymentInfo select').empty();
     }
 });
 
@@ -84,7 +84,9 @@ $("#addressToggler").on("click", function () {
 
 $("#paymentToggler").on("click", function () {
     $('.payment-opt input').each((i: number, e: HTMLElement) => {
-        e.toggleAttribute("required");
+        if (e.id !== "billingApartmentOrSuite") {
+            e.toggleAttribute("required");
+        }
     });
     if ($('#paymentToggler').is(':checked')) {
         scr('#paymentToggler');
@@ -138,7 +140,7 @@ Array<string>('input', 'focusin').forEach((evt: string) => {
     //Same situation as above
     [ZIP, BILLING_ZIP].forEach(function (elem) {
         elem.addEventListener(evt, function () {
-            vc.setValidity(elem, elem, PURPOSE.Zip, PURPOSE.Firstname.constraint(elem.value))
+            vc.setValidity(elem, elem, PURPOSE.Zip, PURPOSE.Zip.constraint(elem.value))
         });
     });
 
