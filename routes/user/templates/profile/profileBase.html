@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% block head %}
+        {% include 'style.html' %}
+        <title>My Profile - {% block title %}{% endblock %}</title>
+
+        <style>
+            .input-group .btn-outline-warning {
+                border-top-right-radius: 5px;
+                border-bottom-right-radius: 5px;
+            }
+
+            #mainContent input,
+            select {
+                height: 50px !important;
+                border-radius: 0 !important;
+            }
+
+            @media (max-width: 991px) {
+                #accountListings {
+                    margin-bottom: 20px;
+                }
+            }
+
+            #accountListings > ul > a {
+                height: 65px;
+            }
+        </style>
+    {% endblock %}
+</head>
+<body class="our-color">
+<div class="pb-5">
+    {% include 'nav.html' %}
+</div>
+<div class="container">
+    <div class="row" id="cust-info">
+        <div class="col mb-5">
+            <div class="text-left" id="welcome">
+                <p class="primary-lg" id="account-holder">Welcome Back, <span
+                        id="name">{{ session['firstName'] }}.</span></p>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container footer-sep">
+    <div class="row">
+        <nav class="col-lg-3" id="accountListings">
+            <ul class="list-group complement-light">
+                <a class="list-group-item waves-effect" id="accountOverview" href="/overview/">
+                    Account Overview
+                </a>
+                <a class="list-group-item waves-effect" id="changeMyName" href="/change_name/">
+                    Change My Name
+                </a>
+                <a class="list-group-item waves-effect" id="changeMyPass" href="/change_pass/">
+                    Change My Password
+                </a>
+                <a class="list-group-item waves-effect" id="orderHist" href="/order_history/">
+                    Order History
+                </a>
+                <a class="list-group-item waves-effect" id="manageAddress" href="/shipping_address">
+                    Manage Shipping Address
+                </a>
+                <a class="list-group-item waves-effect" id="manageBilling" href="#">
+                    <s>Manage Billing Address</s>
+                </a>
+                <a class="list-group-item waves-effect" id="managePaymentInfo" href="/payment_methods/">
+                    Manage your Payment Information
+                </a>
+                <a class="list-group-item waves-effect" id="returnRefund" href="/returns/">
+                    Return and Refunds
+                </a>
+            </ul>
+        </nav> <!-- col.// -->
+        <main class="col-lg-9 main-content" id="mainContent">
+            {% block content %}
+            {% endblock %}
+        </main> <!-- col.// -->
+    </div>
+</div>
+<footer class="py-5 bg-dark">
+    <div class="container text-white">
+        <p class="mb-2 text-center">Copyright &copy; Nile 2020</p>
+        <div class="text-center">
+            <a class="waves-effect waves-light mr-3">
+                <i class="fab fa-twitter"></i>
+            </a>
+            <a class="waves-effect waves-light mr-3">
+                <i class="fab fa-instagram"></i>
+            </a>
+            <a class="waves-effect waves-light">
+                <i class="fab fa-facebook"></i>
+            </a>
+        </div>
+    </div>
+    <!-- /.container -->
+</footer>
+<script>
+    $(function () {
+        let x = window.location.href;
+        if (x.includes("/overview/")) {
+            $("#accountOverview").addClass("active");
+        } else if (x.includes("/change_name/")) {
+            $("#changeMyName").addClass("active");
+        } else if (x.includes("/change_pass/")) {
+            $("#changeMyPass").addClass("active");
+        } else if (x.includes("/order_history/")) {
+            $("#orderHist").addClass("active");
+        } else if (x.includes("/shipping_address/")) {
+            $("#manageAddress").addClass("active");
+        } else if (x.includes("/payment_methods/")) {
+            $("#managePaymentInfo").addClass("active");
+        } else if (x.includes("/returns/")) {
+            $("#returnRefund").addClass("active");
+        }
+    });
+</script>
+</body>
+</html>

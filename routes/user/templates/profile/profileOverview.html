@@ -1,0 +1,109 @@
+{% extends "profile/profileBase.html" %}
+{% block title %}Account Overview{% endblock %}
+
+{% block head %}
+    {{ super() }}
+    <style>
+
+    </style>
+{% endblock %}
+
+{% block content %}
+
+    <article class="card mb-3">
+
+        <div class="card-image"
+             style="background-image: url(https://mdbootstrap.com/img/Photos/Horizontal/Work/4-col/img%20%2814%29.jpg);">
+            <!--Content-->
+            <div class="text-white d-flex h-100 mask card-contextual-info">
+                <div class="container-fluid give">
+                    <div class="row py-3 pr-3">
+                        <div class="col-10">
+                            <div class="first-content">
+                                <h3 class="card-title">My Information</h3>
+                                <p class="lead mb-0">Account & Order Overviews</p>
+                            </div>
+                        </div>
+                        <div class="col-2 align-self-center">
+                            <div class="second-content" style="float: right;">
+                                <i class="fas fa-user-circle fa-3x"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card-body">
+            <figure class="icontext">
+                <div class="text">
+                    Name:
+                    <strong>{{ session['firstName'] }} {{ session['lastName'] }}</strong> <br>
+                    Email:
+                    <strong>{{ session['email'] }}</strong> <br>
+                    <a href="#" onclick="$('#changeMyName').click(); return false;">Edit</a>
+                </div>
+            </figure>
+            <hr>
+            <i class="fa fa-map-marker text-muted"></i> My Shipping Address:
+            <div class="text" id="myShippingAddress">
+                Tashkent city, Street name, Building 123, House 321
+            </div>
+            <p><a href="#" onclick="$('#manageAddress').click(); return false;">Edit</a></p>
+
+            <article class="card-group">
+                <div class="card mr-3 bg-light" id="ordersCard">
+                    <div class="p-3">
+                        <h5 class="card-title primary-md">2</h5>
+                        <span>Orders</span>
+                    </div>
+                </div>
+                <div class="card bg-light" id="deliveredCard">
+                    <div class="p-3">
+                        <h5 class="card-title primary-md">1</h5>
+                        <span>Delivered items</span>
+                    </div>
+                </div>
+            </article>
+        </div> <!-- card-body .// -->
+    </article> <!-- card.// -->
+    <article class="card mb-3">
+        <div class="card-body">
+            <h5 class="card-title mb-4">Active Orders</h5>
+            <div class="row">
+                <div class="col-md-6">
+                    <figure class="itemside  mb-3">
+                        <figcaption class="info">
+                            <time class="text-muted"><i class="fa fa-calendar-alt"></i> 12.09.2019
+                            </time>
+                            <p>Order Number: 82710234782934</p>
+                            <span class="text-warning">Pending</span>
+                        </figcaption>
+                    </figure>
+                </div> <!-- col.// -->
+                <div class="col-md-6">
+                    <figure class="itemside  mb-3">
+                        <figcaption class="info">
+                            <time class="text-muted"><i class="fa fa-calendar-alt"></i> 12.09.2019
+                            </time>
+                            <p>Order Number: 82710231874934</p>
+                            <span class="text-success">Departured</span>
+                        </figcaption>
+                    </figure>
+                </div> <!-- col.// -->
+                <div class="col-md-6">
+                    <figure class="itemside mb-3">
+                        <figcaption class="info">
+                            <time class="text-muted"><i class="fa fa-calendar-alt"></i> 12.09.2019
+                            </time>
+                            <p>Order Number: 82316425782934</p>
+                            <span class="text-success">Shipped</span>
+                        </figcaption>
+                    </figure>
+                </div> <!-- col.// -->
+            </div> <!-- row.// -->
+            <button onclick="$('#orderHist').click(); return false;" class="btn btn-outline-primary waves-effect ml-0">
+                See all orders
+            </button>
+        </div> <!-- card-body .// -->
+    </article> <!-- card.// -->
+{% endblock %}
