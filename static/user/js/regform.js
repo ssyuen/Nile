@@ -75,13 +75,11 @@ $("#paymentToggler").on("click", function () {
         scr('#acctCard', 45);
     }
 });
-
 function scr(selector, off = 0) {
     $([document.documentElement, document.body]).animate({
         scrollTop: $(selector).offset().top - off
     }, 500);
 }
-
 Array('input', 'focusin').forEach((evt) => {
     console.log("entered");
     [CARD_F_NAME, F_NAME].forEach(function (elem) {
