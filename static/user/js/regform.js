@@ -6,9 +6,10 @@
     REVISIONS:          N/A
  */
 import {CreditCard, InputValidationComplex, PURPOSE} from "./inputvalidation.js";
+
 const FORM = document.getElementById("regForm");
-const F_NAME = document.getElementById("inputFirstname");
-const L_NAME = document.getElementById("inputLastname");
+const F_NAME = document.getElementById("inputFirstName");
+const L_NAME = document.getElementById("inputLastName");
 const EMAIL = document.getElementById("inputEmail");
 const PASS = document.getElementById("inputPassword");
 const PASS_CONF = document.getElementById("inputConfirmPassword");
@@ -21,8 +22,8 @@ const ZIP = document.getElementById("addZipcode");
 /*
  * Optional Billing Address Fields
  */
-const CARD_F_NAME = document.getElementById("cardHolderFirstname");
-const CARD_L_NAME = document.getElementById("cardHolderLastname");
+const CARD_F_NAME = document.getElementById("cardHolderFirstName");
+const CARD_L_NAME = document.getElementById("cardHolderLastName");
 const CCN = document.getElementById("ccn");
 const CVV = document.getElementById("cvv");
 const BILLING_ST = document.getElementById("billingStreetAddress");

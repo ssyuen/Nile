@@ -12,8 +12,8 @@ import {
 } from "./inputvalidation.js";
 
 const FORM: HTMLElement = document.getElementById("regForm");
-const F_NAME: HTMLInputElement = document.getElementById("inputFirstname") as HTMLInputElement;
-const L_NAME: HTMLInputElement = document.getElementById("inputLastname") as HTMLInputElement;
+const F_NAME: HTMLInputElement = document.getElementById("inputFirstName") as HTMLInputElement;
+const L_NAME: HTMLInputElement = document.getElementById("inputLastName") as HTMLInputElement;
 const EMAIL: HTMLInputElement = document.getElementById("inputEmail") as HTMLInputElement;
 const PASS: HTMLInputElement = document.getElementById("inputPassword") as HTMLInputElement;
 const PASS_CONF: HTMLInputElement = document.getElementById("inputConfirmPassword") as HTMLInputElement;
@@ -28,8 +28,8 @@ const ZIP: HTMLInputElement = document.getElementById("addZipcode") as HTMLInput
 /*
  * Optional Billing Address Fields
  */
-const CARD_F_NAME: HTMLInputElement = document.getElementById("cardHolderFirstname") as HTMLInputElement;
-const CARD_L_NAME: HTMLInputElement = document.getElementById("cardHolderLastname") as HTMLInputElement;
+const CARD_F_NAME: HTMLInputElement = document.getElementById("cardHolderFirstName") as HTMLInputElement;
+const CARD_L_NAME: HTMLInputElement = document.getElementById("cardHolderLastName") as HTMLInputElement;
 const CCN: HTMLInputElement = document.getElementById("ccn") as HTMLInputElement;
 const CVV: HTMLInputElement = document.getElementById("cvv") as HTMLInputElement;
 
