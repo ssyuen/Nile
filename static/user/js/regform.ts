@@ -7,15 +7,9 @@
  */
 
 import {
-    passwordConfConstraint,
-    emailConstraint,
-    INVALID_EMAIL_MSS, INVALID_F_NAME_MSS,
-    INVALID_L_NAME_MSS,
-    INVALID_PASS_MSS,
-    INVALID_PASS_CONF_MSS, INVALID_STREET_MSS, INVALID_ZIP_MSS,
-    passwordConstraint,
-    validator, zipCodeConstraint
-} from "./genericval.js";
+    CreditCard,
+    InputValidationComplex, PURPOSE
+} from "./inputvalidation.js";
 
 const FORM: HTMLElement = document.getElementById("regForm");
 const F_NAME: HTMLInputElement = document.getElementById("inputFirstname") as HTMLInputElement;
@@ -28,15 +22,24 @@ const PASS_CONF: HTMLInputElement = document.getElementById("inputConfirmPasswor
     Optional Address Fields
     There's no need for city, state, country, and apt/suite because they aren't error prone
 */
-const STREET_ADDR: HTMLElement = document.getElementById("addAddressStreetAddress");
-const ZIP: HTMLElement = document.getElementById("addZipcode");
+const STREET_ADDR: HTMLInputElement = document.getElementById("addAddressStreetAddress") as HTMLInputElement;
+const ZIP: HTMLInputElement = document.getElementById("addZipcode") as HTMLInputElement;
 
 /*
-    Keeps track of each input element along with its validity.
-    On submit, every value of an input with the 'required' attribute
-    must be true.
+ * Optional Billing Address Fields
  */
-const VALIDITY = new Map<string, boolean>();
+const CARD_F_NAME: HTMLInputElement = document.getElementById("cardHolderFirstname") as HTMLInputElement;
+const CARD_L_NAME: HTMLInputElement = document.getElementById("cardHolderLastname") as HTMLInputElement;
+const CCN: HTMLInputElement = document.getElementById("ccn") as HTMLInputElement;
+const CVV: HTMLInputElement = document.getElementById("cvv") as HTMLInputElement;
+
+const BILLING_ST: HTMLInputElement = document.getElementById("billingStreetAddress") as HTMLInputElement;
+const BILLING_ZIP: HTMLInputElement = document.getElementById("billingZipcode") as HTMLInputElement;
+
+
+let vc = new InputValidationComplex();
+let cc = new CreditCard();
+
 
 /*
     Possible errors:
@@ -44,68 +47,53 @@ const VALIDITY = new Map<string, boolean>();
     If the required validation false and address selection is false --> FAIL
     If the required validation true and address selection is true && address validation false --> FAIL
  */
-FORM.addEventListener('submit', (e: Event) => {
-    let errorHTML: string = `<p class="text-center text-danger" id="somethingWrong">One or more of the fields were incomplete or invalid</p>`;
+$(FORM).on("submit", function (e) {
 
-    for (let key in VALIDITY) {
-        let value: boolean = VALIDITY[key];
-        let req: boolean = document.getElementById(key).hasAttribute('required');
-
-        if (req && !value) {
-            let ct: JQuery<HTMLElement> = $('.card-title');
-
-            if ($('#somethingWrong').length === 0)
-                ct.after(errorHTML);
-
-            $([document.documentElement, document.body]).animate({
-                scrollTop: ct.offset().top
-            }, 500);
-
-            e.preventDefault();
-            return;
-        }
-    }
-    $("registerBtn").prop("disabled", true);
+    $(this).prop("disabled", true);
     let toggleStat = $(FORM).children("#addressToggler").attr("aria-expanded");
 
-    //They don't want to put an address
-    let data;
-    if (toggleStat === undefined || toggleStat === 'false') {
-        data = $.param({
-            "inputFirstname": F_NAME.value,
-            "inputLastname": L_NAME.value,
-            "inputEmail": EMAIL.value,
-            "inputPassword": PASS.value,
-            "inputConfirmPassword": PASS_CONF.value
-        });
-    } else { //They do
-        data = $(FORM).serialize();
+    if (!vc.validateAll('.card-title')) {
+        e.preventDefault();
+        return;
     }
-    $.ajax({
-        type: "POST",
-        url: "/register/",
-        data: data, // serializes the form's elements.
-        success: function (data) {
-            console.log("Sent Entry");
-        }
-    });
+
+    if (!$("#addressToggler").is(":checked")) {
+        $('#addressInfo input').val('');
+        $('#addressInfo select').empty();
+    }
+
+    if (!$("#paymentToggler").is(":checked")) {
+        $('#paymentInfo input').val('');
+        $('#addressInfo select').empty();
+    }
+
+    console.log($("#addAddressCity").val());
+    e.preventDefault();
+
 });
 
-let tog = false;
-
-document.getElementById("addressToggler").addEventListener("click", function () {
+$("#addressToggler").on("click", function () {
     $('.addr-opt input, select').each((i: number, e: HTMLElement) => {
         if (e.id !== 'addAddressApartmentOrSuite') {
             e.toggleAttribute("required");
         }
     });
-    tog = !tog;
-    if (tog) {
+    if ($('#addressToggler').is(':checked')) {
         scr('#addressToggler');
-        $("#toggleCaption").text("Great! We're recording your address now");
     } else {
         scr('#acctCard', 45);
-        $("#toggleCaption").text("This is optional. You can always add it later");
+    }
+});
+
+
+$("#paymentToggler").on("click", function () {
+    $('.payment-opt input').each((i: number, e: HTMLElement) => {
+        e.toggleAttribute("required");
+    });
+    if ($('#paymentToggler').is(':checked')) {
+        scr('#paymentToggler');
+    } else {
+        scr('#acctCard', 45);
     }
 });
 
@@ -116,38 +104,71 @@ function scr(selector: string, off: number = 0) {
     }, 500);
 }
 
-
 Array<string>('input', 'focusin').forEach((evt: string) => {
+    console.log("entered");
 
-    F_NAME.addEventListener(evt, () => {
-        let val = (<HTMLInputElement>document.getElementById(F_NAME.id)).value;
-        VALIDITY[F_NAME.id] = validator(F_NAME, INVALID_F_NAME_MSS, '#invalidFName', val.length >= 1);
+    [CARD_F_NAME, F_NAME].forEach(function (elem: HTMLInputElement) {
+        elem.addEventListener(evt, function () {
+            vc.setValidity(elem, elem, PURPOSE.Firstname, PURPOSE.Firstname.constraint(elem.value));
+        });
     });
 
-    L_NAME.addEventListener(evt, () => {
-        let val = (<HTMLInputElement>document.getElementById(L_NAME.id)).value;
-        VALIDITY[L_NAME.id] = validator(L_NAME, INVALID_L_NAME_MSS, '#invalidLName', val.length >= 2);
+    [CARD_L_NAME, L_NAME].forEach(function (elem: HTMLInputElement) {
+        elem.addEventListener(evt, function () {
+            vc.setValidity(elem, elem, PURPOSE.Lastname, PURPOSE.Lastname.constraint(elem.value));
+        });
     });
 
-    EMAIL.addEventListener(evt, () => {
-        VALIDITY[EMAIL.id] = validator(EMAIL, INVALID_EMAIL_MSS, '#invalidEmail', emailConstraint(EMAIL.id));
+    EMAIL.addEventListener(evt, function () {
+        vc.setValidity(this, this, PURPOSE.Email, PURPOSE.Email.constraint(this.value));
     });
 
-    PASS.addEventListener(evt, () => {
-        VALIDITY[PASS.id] = validator(PASS, INVALID_PASS_MSS, '#invalidPass', passwordConstraint(PASS.id));
-        VALIDITY[PASS_CONF.id] = validator(PASS_CONF, INVALID_PASS_CONF_MSS, '#invalidPassConf', passwordConfConstraint(PASS.id, PASS_CONF.id));
+    PASS.addEventListener(evt, function () {
+        vc.setValidity(this, this, PURPOSE.Password, PURPOSE.Password.constraint(PASS.value));
+        vc.setValidity(PASS_CONF, PASS_CONF, PURPOSE.PasswordConfirmation, PURPOSE.PasswordConfirmation.constraint(this.value, PASS_CONF.value))
     });
 
-    PASS_CONF.addEventListener(evt, () => {
-        VALIDITY[PASS_CONF.id] = validator(PASS_CONF, INVALID_PASS_CONF_MSS, '#invalidPassConf', passwordConfConstraint(PASS.id, PASS_CONF.id));
+    PASS_CONF.addEventListener(evt, function () {
+        vc.setValidity(this, this, PURPOSE.PasswordConfirmation, PURPOSE.PasswordConfirmation.constraint(PASS.value, this.value))
     });
 
-    STREET_ADDR.addEventListener(evt, () => {
-        let constr = (<HTMLInputElement>document.getElementById(STREET_ADDR.id)).value.length !== 0;
-        VALIDITY[STREET_ADDR.id] = validator(STREET_ADDR, INVALID_STREET_MSS, '#invalidStreet', constr);
+    //Obviously, shipping address and billing address have the same constraints
+    [STREET_ADDR, BILLING_ST].forEach(function (elem) {
+        elem.addEventListener(evt, function () {
+            vc.setValidity(elem, elem, PURPOSE.StreetAddress, PURPOSE.StreetAddress.constraint(elem.value))
+        });
     });
 
-    ZIP.addEventListener(evt, () => {
-        VALIDITY[ZIP.id] = validator(ZIP, INVALID_ZIP_MSS, '#invalidZip', zipCodeConstraint(ZIP.id));
+    //Same situation as above
+    [ZIP, BILLING_ZIP].forEach(function (elem) {
+        elem.addEventListener(evt, function () {
+            vc.setValidity(elem, elem, PURPOSE.Zip, PURPOSE.Firstname.constraint(elem.value))
+        });
     });
+
+    CCN.addEventListener(evt, function () {
+        cc.setCCN(this.value);
+        let check = PURPOSE.CCN.constraint(cc);
+        vc.setValidity(this, this, PURPOSE.CCN, check);
+
+        if (check) {
+            if (cc.getProvider() === "Visa") {
+                CreditCard.toggleCardIcon(this, "fa-cc-visa");
+            } else if (cc.getProvider() === "Mastercard") {
+                CreditCard.toggleCardIcon(this, "fa-cc-mastercard");
+            } else if (cc.getProvider() === "Amex") {
+                CreditCard.toggleCardIcon(this, "fa-cc-amex");
+            } else if (cc.getProvider() === "Discover") {
+                CreditCard.toggleCardIcon(this, "fa-cc-discover");
+            }
+        } else {
+            CreditCard.toggleCardIcon(this);
+        }
+    });
+
+    CVV.addEventListener(evt, function () {
+        cc.setCVV(this.value);
+        vc.setValidity(this, this, PURPOSE.CVV, PURPOSE.CVV.constraint(cc));
+    })
 });
+
