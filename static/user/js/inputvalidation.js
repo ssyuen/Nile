@@ -26,6 +26,9 @@ export class InputValidationComplex {
         return (/^(([^<>()\[\].,;:\s@"]+(\.[^<>()\[\].,;:\s@"]+)*)|(".+"))@(([^<>()[\].,;:\s@"]+\.)+[^<>()[\].,;:\s@"]{2,})$/i).test(value);
     }
 
+    /*
+        Error HTML injection templates
+     */
     static passwordConstraint(value) {
         return ((/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$/)).test(value);
     }
@@ -41,19 +44,15 @@ export class InputValidationComplex {
     static zipCodeConstraint(value) {
         return (/^\d{5}$|^\d{5}-\d{4}$/).test(value);
     }
-
     static creditCardConstraint(cc) {
         return cc.checkCard();
     }
-
     static cvvConstraint(cc) {
         return cc.checkCVV();
     }
-
     setValidity(elem, loc, purpose, constr) {
         this.curr_validity[elem.id] = this.validator(elem, loc, purpose['template'], constr);
     }
-
     validateAll(selectorPlace) {
         let errorHTML = `<p class="text-center text-danger" id="somethingWrong">
                 One or more of the fields were incomplete or invalid
@@ -73,7 +72,6 @@ export class InputValidationComplex {
         }
         return true;
     }
-
     /*
         Generalized validation function
      */
@@ -105,10 +103,6 @@ export class InputValidationComplex {
         }
     }
 }
-
-/*
-    Error HTML injection templates
- */
 InputValidationComplex.INVALID_PASS_MSS = [`
     <div class="error-message" id="invalidPass">
         <small class="text-danger">
@@ -210,7 +204,6 @@ export const PURPOSE = {
         constraint: InputValidationComplex.cvvConstraint
     }
 };
-
 export class CreditCard {
     constructor(no = '', cvv = '') {
         this.network = {
@@ -223,7 +216,6 @@ export class CreditCard {
         this.cvv = cvv.replace(/\D/g, '');
         this.provider = null;
     }
-
     static toggleCardIcon(ccnInput, cardClass = "") {
         let ref = $('.billing-card');
         let s = `<i class="billing-card fab fa-2x ${cardClass}" style="position: absolute; right: 50px; bottom: 6.5px;"></i>`;
@@ -233,19 +225,15 @@ export class CreditCard {
             $(ccnInput).after(s);
         }
     }
-
     setCCN(ccn) {
         this.ccn = ccn;
     }
-
     setCVV(cvv) {
         this.cvv = cvv;
     }
-
     getProvider() {
         return this.provider;
     }
-
     checkCard() {
         if (!this.ccn) {
             return false;
@@ -256,11 +244,9 @@ export class CreditCard {
         //If the card is in our network
         return this.checkNetwork();
     }
-
     checkCVV() {
         return (/^[0-9]{3,4}$/).test(this.cvv);
     }
-
     /*
         This is Luhn's algorithm. I turned the pseudocode
         to JS from Wikipedia
@@ -280,7 +266,6 @@ export class CreditCard {
         }
         return (sum % 10) == 0;
     }
-
     checkNetwork() {
         let ref = this;
         Object.keys(this.network).forEach(function (key) {
