@@ -50,8 +50,6 @@ $(FORM).on("submit", function (e) {
         $('#paymentInfo input').val('');
         $('#addressInfo select').empty();
     }
-    console.log($("#addAddressCity").val());
-    e.preventDefault();
 });
 $("#addressToggler").on("click", function () {
     $('.addr-opt input, select').each((i, e) => {
