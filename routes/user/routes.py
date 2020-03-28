@@ -160,12 +160,19 @@ def register():
 
         conn = mysql.connect()
         cursor = conn.cursor()
-        print(address)
         user_payload = (email, str(1),
                         password, firstName, lastName)
+
         if address is '' or address is None:
 
             query = 'INSERT INTO user (email,statusID_user_FK,pass, firstname, lastname) VALUES (%s, %s, %s, %s, %s)'
+            # REG_FLAG = execute_insert_query(conn=mysql.connect(),query=query,payload=user_payload)
+            # if REG_FLAG:
+
+            #     flash('An account with this email already exists.')
+            #     return redirect(url_for('user_bp.register'))
+            # else:
+            #     return render_template('reg_conf.html')
             try:
                 cursor.execute(query, user_payload)
                 conn.commit()
@@ -179,28 +186,62 @@ def register():
                                state, country, str(1))
             # print(address_payload)
             query = 'INSERT INTO `address`(street1, street2, city, zip, state, country, addressTypeID_address_FK) VALUES(%s, %s, %s, %s, %s, %s, %s)'
-            cursor.execute(query, address_payload)
-            conn.commit()
-
+            # REG_FLAG = execute_insert_query(conn=mysql.connect(),query=query,payload=address_payload)
+            # if REG_FLAG:
+            #     flash('An account with this email already exists.')
+            #     return redirect(url_for('user_bp.register'))
+            try:
+                cursor.execute(query, address_payload)
+                conn.commit()
+            except(pymysql.err.IntegrityError):
+                conn.close()
+                flash('An account with this email already exists.')
+                return redirect(url_for('user_bp.register'))
+            # else:
             query = 'INSERT INTO user (email, statusID_user_FK,pass, firstname, lastname) VALUES (%s, %s, %s, %s, %s)'
+            # execute_insert_query(conn=mysql.connect(),query=query,payload=address_payload)
             cursor.execute(query, user_payload)
             conn.commit()
 
             user_id_query = 'SELECT id FROM user ORDER BY id DESC LIMIT 1'
+            # user_id = execute_select_query(user_id_query)[0]
             cursor.execute(user_id_query)
             user_id = cursor.fetchall()[0][0]
 
             address_id_query = 'SELECT id FROM address ORDER BY id DESC LIMIT 1'
+            # address_id = execute_select_query(address_id_query)[0]
             cursor.execute(address_id_query)
             address_id = cursor.fetchall()[0][0]
 
             query = 'INSERT INTO user_address (userID_ua_FK, addressID_ua_FK) VALUES (%s, %s)'
+            # execute_insert_query(conn=mysql.connect(),query=query,payload=(user_id, address_id))
             cursor.execute(query, (user_id, address_id))
             conn.commit()
 
             conn.close()
+            return render_template('reg_conf.html')
 
         return render_template('reg_conf.html')
+
+
+def execute_insert_query(conn: mysql.connect(), query: str, payload: tuple) -> bool:
+    cursor = conn.cursor()
+    try:
+        cursor.execute(query, payload)
+        conn.commit()
+        conn.close()
+        return False
+    except pymysql.err.IntegrityError:
+        return True
+        # flash('An account with this email already exists.')
+        # return redirect(url_for('user_bp.register'))
+
+
+def execute_select_query(conn: mysql.connect(), query: str):
+    cursor = conn.cursor()
+    cursor.execute(query)
+    # conn.close()
+    return cursor.fetchall()[0]
 
 
 @user_bp.route('/register_confirmation/', methods=['POST', 'GET'])
@@ -276,36 +317,37 @@ def payment_info():
     return render_template('./paymentinfo.html')
 
 
-@user_bp.route('/profile/',methods=['GET'])
+@user_bp.route('/profile/', methods=['GET'])
 @login_required
 @cart_session
 def profile():
     return render_template('./profile.html')
 
-@user_bp.route('/password_change/',methods=['POST'])
+
+@user_bp.route('/password_change/', methods=['POST'])
 @login_required
 @cart_session
 def password_change():
     if request.method == 'POST':
         new_password = request.form.get('newPassword')
         confirm_new_password = request.form.get('confirmNewPassword')
-        
+
         print(new_password)
         print(confirm_new_password)
         print(type(new_password))
         if new_password != confirm_new_password:
-            return jsonify({'Response':400})
+            return jsonify({'Response': 400})
         else:
-            new_password = bcrypt.hashpw(new_password.encode('utf-8'),bcrypt.gensalt())
+            new_password = bcrypt.hashpw(
+                new_password.encode('utf-8'), bcrypt.gensalt())
             conn = mysql.connect()
             cursor = conn.cursor()
             print(session['email'])
             query = 'UPDATE user SET pass=%s WHERE email=%s'
-            cursor.execute(query,(new_password,session['email']))
+            cursor.execute(query, (new_password, session['email']))
             conn.commit()
             conn.close()
-            return jsonify({'Response':200})
-
+            return jsonify({'Response': 200})
 
 
 @user_bp.route('/forgot/')

@@ -74,14 +74,14 @@ FORM.addEventListener('submit', (e) => {
     } else { //They do
         data = $(FORM).serialize();
     }
-    $.ajax({
-        type: "POST",
-        url: "/register/",
-        data: data,
-        success: function (data) {
-            console.log("Sent Entry");
-        }
-    });
+    // $.ajax({
+    //     type: "POST",
+    //     url: "/register/",
+    //     data: data,
+    //     success: function (data) {
+    //         console.log("Sent Entry");
+    //     }
+    // });
 });
 let tog = false;
 document.getElementById("addressToggler").addEventListener("click", function () {

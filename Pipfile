@@ -11,5 +11,8 @@ flask = "*"
 flask-mysql = "*"
 bcrypt = "*"
 
+[scripts]
+server = "./start.sh"
+
 [requires]
 python_version = "3.7"

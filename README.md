@@ -25,6 +25,9 @@ This is important to make sure you will not have to delete and re-clone the repo
 
 ## Execution
 
+- Assuming you are not in the virtual environment, go to the root directory of the project and run `pipenv run server`. This just runs the script without you having to start a virtual environment.
+
+
 - DO NOT TEST ANYTHING ON THE ACTUAL WEBSITE AS SAM HAS NOT ADDED APPROPRIATE ENV VARS.
 - To start the server, make sure you have done `pipenv shell` in the top-level directory of nile, and run `./start.sh`
 - If `DB_USER` and `DB_PASS` are not found in the local machine environment variables, the shell script will prompt you
