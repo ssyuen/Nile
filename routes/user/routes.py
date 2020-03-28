@@ -262,13 +262,6 @@ def checkout():
     return render_template('./checkout.html')
 
 
-@user_bp.route('/orderhist/')
-@login_required
-@cart_session
-def order_history():
-    return render_template('./orderhist.html')
-
-
 @user_bp.route('/paymentinfo/')
 @login_required
 @cart_session
@@ -276,13 +269,63 @@ def payment_info():
     return render_template('./paymentinfo.html')
 
 
-@user_bp.route('/profile/',methods=['GET'])
+@user_bp.route('/base_profile/', methods=['GET'])
 @login_required
 @cart_session
-def profile():
-    return render_template('./profile.html')
+def base_profile():
+    return render_template('profile/profileBase.html')
 
-@user_bp.route('/password_change/',methods=['POST'])
+
+@user_bp.route('/overview/', methods=['GET'])
+@login_required
+@cart_session
+def overview():
+    return render_template('profile/profileOverview.html')
+
+
+@user_bp.route('/change_name/', methods=['GET'])
+@login_required
+@cart_session
+def change_name():
+    return render_template('profile/profileChangeName.html')
+
+
+@user_bp.route('/change_pass/', methods=['GET'])
+@login_required
+@cart_session
+def change_pass():
+    return render_template('profile/profileChangePassword.html')
+
+
+@user_bp.route('/order_history/', methods=['GET'])
+@login_required
+@cart_session
+def order_history():
+    return render_template('profile/profileOrderHistory.html')
+
+
+@user_bp.route('/shipping_address/', methods=['GET'])
+@login_required
+@cart_session
+def shipping_address():
+    return render_template('profile/profileShippingAddress.html')
+
+
+@user_bp.route('/payment_methods/', methods=['GET'])
+@login_required
+@cart_session
+def payment_methods():
+    return render_template('profile/profilePaymentMethods.html')
+
+
+@user_bp.route('/returns/', methods=['GET'])
+@login_required
+@cart_session
+def returns():
+    return render_template('profile/profileReturns.html')
+
+
+@user_bp.route('/password_change/', methods=['POST'])
 @login_required
 @cart_session
 def password_change():
