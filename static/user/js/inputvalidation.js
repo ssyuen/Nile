@@ -209,7 +209,6 @@ export class CreditCard {
         this.cvv = CreditCard.normalize(cvv);
         this.provider = null;
     }
-
     static toggleCardIcon(ccnInput, cardClass = "") {
         let ref = $('.billing-card');
         let s = `<i class="billing-card fab fa-2x ${cardClass}" style="position: absolute; right: 50px; bottom: 6.5px;"></i>`;
@@ -219,25 +218,20 @@ export class CreditCard {
             $(ccnInput).after(s);
         }
     }
-
     static normalize(ccn) {
         ccn = ccn.replace(/\D/g, '');
         ccn = ccn.replace(/\s/g, '');
         return ccn;
     }
-
     setCCN(ccn) {
         this.ccn = CreditCard.normalize(ccn);
     }
-
     getProvider() {
         return this.provider;
     }
-
     setCVV(cvv) {
         this.cvv = CreditCard.normalize(cvv);
     }
-
     checkCard() {
         if (!this.ccn) {
             return false;
