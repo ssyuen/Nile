@@ -6,9 +6,10 @@
     REVISIONS:          N/A
  */
 import {CreditCard, InputValidationComplex, PURPOSE} from "./inputvalidation.js";
+
 const FORM = document.getElementById("regForm");
-const F_NAME = document.getElementById("inputFirstname");
-const L_NAME = document.getElementById("inputLastname");
+const F_NAME = document.getElementById("inputFirstName");
+const L_NAME = document.getElementById("inputLastName");
 const EMAIL = document.getElementById("inputEmail");
 const PASS = document.getElementById("inputPassword");
 const PASS_CONF = document.getElementById("inputConfirmPassword");
@@ -21,8 +22,8 @@ const ZIP = document.getElementById("addZipcode");
 /*
  * Optional Billing Address Fields
  */
-const CARD_F_NAME = document.getElementById("cardHolderFirstname");
-const CARD_L_NAME = document.getElementById("cardHolderLastname");
+const CARD_F_NAME = document.getElementById("cardHolderFirstName");
+const CARD_L_NAME = document.getElementById("cardHolderLastName");
 const CCN = document.getElementById("ccn");
 const CVV = document.getElementById("cvv");
 const BILLING_ST = document.getElementById("billingStreetAddress");
@@ -48,7 +49,7 @@ $(FORM).on("submit", function (e) {
     }
     if (!$("#paymentToggler").is(":checked")) {
         $('#paymentInfo input').val('');
-        $('#addressInfo select').empty();
+        $('#paymentInfo select').empty();
     }
 });
 $("#addressToggler").on("click", function () {
@@ -65,7 +66,9 @@ $("#addressToggler").on("click", function () {
 });
 $("#paymentToggler").on("click", function () {
     $('.payment-opt input').each((i, e) => {
-        e.toggleAttribute("required");
+        if (e.id !== "billingApartmentOrSuite") {
+            e.toggleAttribute("required");
+        }
     });
     if ($('#paymentToggler').is(':checked')) {
         scr('#paymentToggler');
@@ -109,7 +112,7 @@ Array('input', 'focusin').forEach((evt) => {
     //Same situation as above
     [ZIP, BILLING_ZIP].forEach(function (elem) {
         elem.addEventListener(evt, function () {
-            vc.setValidity(elem, elem, PURPOSE.Zip, PURPOSE.Firstname.constraint(elem.value));
+            vc.setValidity(elem, elem, PURPOSE.Zip, PURPOSE.Zip.constraint(elem.value));
         });
     });
     CCN.addEventListener(evt, function () {

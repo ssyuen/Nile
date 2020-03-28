@@ -250,8 +250,8 @@ export class CreditCard {
     };
 
     constructor(no: string = '', cvv: string = '') {
-        this.ccn = no.replace(/\D/g, '');
-        this.cvv = cvv.replace(/\D/g, '');
+        this.ccn = CreditCard.normalize(no);
+        this.cvv = CreditCard.normalize(cvv);
         this.provider = null;
     }
 
@@ -266,16 +266,22 @@ export class CreditCard {
         }
     }
 
-    setCCN(ccn: string): any {
-        this.ccn = ccn;
+    public static normalize(ccn: string): string {
+        ccn = ccn.replace(/\D/g, '');
+        ccn = ccn.replace(/\s/g, '');
+        return ccn;
     }
 
-    setCVV(cvv: string): any {
-        this.cvv = cvv;
+    setCCN(ccn: string): any {
+        this.ccn = CreditCard.normalize(ccn);
     }
 
     getProvider(): string {
         return this.provider;
+    }
+
+    setCVV(cvv: string): any {
+        this.cvv = CreditCard.normalize(cvv);
     }
 
     checkCard(): boolean {

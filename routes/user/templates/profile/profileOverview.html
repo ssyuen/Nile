@@ -37,19 +37,19 @@
             <figure class="icontext">
                 <div class="text">
                     Name:
-                    <strong>{{ session['firstName'] }} {{ session['lastName'] }}</strong> <br>
+                    <strong>{{ session['firstName'] }} {{ session['lastName'] }}</strong>
+                    <a class="ml-3" href="/change_name/">EDIT</a>
+                    <br>
                     Email:
                     <strong>{{ session['email'] }}</strong> <br>
-                    <a href="#" onclick="$('#changeMyName').click(); return false;">Edit</a>
                 </div>
             </figure>
             <hr>
             <i class="fa fa-map-marker text-muted"></i> My Shipping Address:
-            <div class="text" id="myShippingAddress">
+            <div class="text mb-4" id="myShippingAddress">
                 Tashkent city, Street name, Building 123, House 321
+                <a class="ml-3" href="/shipping_address/">EDIT</a>
             </div>
-            <p><a href="#" onclick="$('#manageAddress').click(); return false;">Edit</a></p>
-
             <article class="card-group">
                 <div class="card mr-3 bg-light" id="ordersCard">
                     <div class="p-3">

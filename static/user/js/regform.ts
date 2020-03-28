@@ -12,8 +12,8 @@ import {
 } from "./inputvalidation.js";
 
 const FORM: HTMLElement = document.getElementById("regForm");
-const F_NAME: HTMLInputElement = document.getElementById("inputFirstname") as HTMLInputElement;
-const L_NAME: HTMLInputElement = document.getElementById("inputLastname") as HTMLInputElement;
+const F_NAME: HTMLInputElement = document.getElementById("inputFirstName") as HTMLInputElement;
+const L_NAME: HTMLInputElement = document.getElementById("inputLastName") as HTMLInputElement;
 const EMAIL: HTMLInputElement = document.getElementById("inputEmail") as HTMLInputElement;
 const PASS: HTMLInputElement = document.getElementById("inputPassword") as HTMLInputElement;
 const PASS_CONF: HTMLInputElement = document.getElementById("inputConfirmPassword") as HTMLInputElement;
@@ -28,8 +28,8 @@ const ZIP: HTMLInputElement = document.getElementById("addZipcode") as HTMLInput
 /*
  * Optional Billing Address Fields
  */
-const CARD_F_NAME: HTMLInputElement = document.getElementById("cardHolderFirstname") as HTMLInputElement;
-const CARD_L_NAME: HTMLInputElement = document.getElementById("cardHolderLastname") as HTMLInputElement;
+const CARD_F_NAME: HTMLInputElement = document.getElementById("cardHolderFirstName") as HTMLInputElement;
+const CARD_L_NAME: HTMLInputElement = document.getElementById("cardHolderLastName") as HTMLInputElement;
 const CCN: HTMLInputElement = document.getElementById("ccn") as HTMLInputElement;
 const CVV: HTMLInputElement = document.getElementById("cvv") as HTMLInputElement;
 
@@ -64,7 +64,7 @@ $(FORM).on("submit", function (e) {
 
     if (!$("#paymentToggler").is(":checked")) {
         $('#paymentInfo input').val('');
-        $('#addressInfo select').empty();
+        $('#paymentInfo select').empty();
     }
 });
 
@@ -84,7 +84,9 @@ $("#addressToggler").on("click", function () {
 
 $("#paymentToggler").on("click", function () {
     $('.payment-opt input').each((i: number, e: HTMLElement) => {
-        e.toggleAttribute("required");
+        if (e.id !== "billingApartmentOrSuite") {
+            e.toggleAttribute("required");
+        }
     });
     if ($('#paymentToggler').is(':checked')) {
         scr('#paymentToggler');
@@ -138,7 +140,7 @@ Array<string>('input', 'focusin').forEach((evt: string) => {
     //Same situation as above
     [ZIP, BILLING_ZIP].forEach(function (elem) {
         elem.addEventListener(evt, function () {
-            vc.setValidity(elem, elem, PURPOSE.Zip, PURPOSE.Firstname.constraint(elem.value))
+            vc.setValidity(elem, elem, PURPOSE.Zip, PURPOSE.Zip.constraint(elem.value))
         });
     });
 

@@ -13,34 +13,27 @@ export class InputValidationComplex {
         */
         this.curr_validity = new Map();
     }
-
     static firstNameConstraint(value) {
         return value.length >= 1;
     }
-
     static lastNameConstraint(value) {
         return value.length >= 2;
     }
-
     static emailConstraint(value) {
         return (/^(([^<>()\[\].,;:\s@"]+(\.[^<>()\[\].,;:\s@"]+)*)|(".+"))@(([^<>()[\].,;:\s@"]+\.)+[^<>()[\].,;:\s@"]{2,})$/i).test(value);
     }
-
     /*
         Error HTML injection templates
      */
     static passwordConstraint(value) {
         return ((/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$/)).test(value);
     }
-
     static passwordConfConstraint(value_pass, value_pass_conf) {
         return value_pass === value_pass_conf;
     }
-
     static streetAddressConstraint(value) {
         return value.length !== 0;
     }
-
     static zipCodeConstraint(value) {
         return (/^\d{5}$|^\d{5}-\d{4}$/).test(value);
     }
@@ -212,8 +205,8 @@ export class CreditCard {
             Amex: /^3[47][0-9]{13}$/,
             Discover: /^65[4-9][0-9]{13}|64[4-9][0-9]{13}|6011[0-9]{12}|(622(?:12[6-9]|1[3-9][0-9]|[2-8][0-9][0-9]|9[01][0-9]|92[0-5])[0-9]{10})$/,
         };
-        this.ccn = no.replace(/\D/g, '');
-        this.cvv = cvv.replace(/\D/g, '');
+        this.ccn = CreditCard.normalize(no);
+        this.cvv = CreditCard.normalize(cvv);
         this.provider = null;
     }
     static toggleCardIcon(ccnInput, cardClass = "") {
@@ -225,14 +218,19 @@ export class CreditCard {
             $(ccnInput).after(s);
         }
     }
-    setCCN(ccn) {
-        this.ccn = ccn;
+    static normalize(ccn) {
+        ccn = ccn.replace(/\D/g, '');
+        ccn = ccn.replace(/\s/g, '');
+        return ccn;
     }
-    setCVV(cvv) {
-        this.cvv = cvv;
+    setCCN(ccn) {
+        this.ccn = CreditCard.normalize(ccn);
     }
     getProvider() {
         return this.provider;
+    }
+    setCVV(cvv) {
+        this.cvv = CreditCard.normalize(cvv);
     }
     checkCard() {
         if (!this.ccn) {
