@@ -145,12 +145,19 @@ def register():
     else:
         # NEED TO CHECK REQUEST FORM SIZE TO SEE IF OPTIONAL COMPONENNTS HAVE BEEN ADDED
         firstName = request.form.get('inputFirstname')
+        firstLetter = firstName[0].upper()
+        firstName = firstLetter + firstName[1:].lower()
+
         lastName = request.form.get('inputLastname')
+        firstLetter = lastName[0].upper()
+        lastName = firstLetter + lastName[1:].lower()
+
         email = request.form.get('inputEmail')
         password = request.form.get('inputPassword')
         password = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
-        # optional
-
+        
+        
+        # shipping address optional
         address = request.form.get('addAddressStreetAddress')
         apt = request.form.get('addAddressApartmentOrSuite')
         zipcode = request.form.get('addZipcode')
@@ -158,9 +165,32 @@ def register():
         state = request.form.get('addAddressState')
         country = request.form.get('addAddressCountry')
 
+        shipping_payload = (address, apt, city, zipcode,
+                               state, country, str(1))
+
+        # payment info optional + associated billing info
+        card_first_name = request.form.get('cardHolderFirstName')
+        card_last_name = request.form.get('cardHolderLastName')
+        try:
+            ccn = bcrypt.hashpw(request.form.get('ccn').encode('utf-8'),bcrypt.gensalt())
+        except:
+            ccn = ''
+        ccexp = request.form.get('ccexp')
+
+        billing_address = request.form.get('billingStreetAddress')
+        billing_apt_suite = request.form.get('billingApartmentOrSuite')
+        billing_zip = request.form.get('billingZipcode')
+        billing_city = request.form.get('billingCity')
+        billing_state = request.form.get('billingState')
+        billing_country = request.form.get('billing_country')
+
+        # 2 on the end specifies that this is a billing address
+        billing_payload = (billing_address,billing_apt_suite,billing_city,billing_zip,billing_state,billing_country,str(2))
+        
+
+
         conn = mysql.connect()
         cursor = conn.cursor()
-        print(address)
         user_payload = (email, str(1),
                         password, firstName, lastName)
         if address is '' or address is None:
@@ -174,29 +204,48 @@ def register():
                 flash('An account with this email already exists.')
                 return redirect(url_for('user_bp.register'))
 
-        else:  # insert with address
-            address_payload = (address, apt, city, zipcode,
-                               state, country, str(1))
-            # print(address_payload)
-            query = 'INSERT INTO `address`(street1, street2, city, zip, state, country, addressTypeID_address_FK) VALUES(%s, %s, %s, %s, %s, %s, %s)'
-            cursor.execute(query, address_payload)
-            conn.commit()
+        else:  # insert with shipping and billing address
 
+            # INSERTING SHIPPING ADDRESS
+            query = 'INSERT INTO `address`(street1, street2, city, zip, state, country, addressTypeID_address_FK) VALUES(%s, %s, %s, %s, %s, %s, %s)'
+            cursor.execute(query, shipping_payload)
+            conn.commit()
+            # EXTRACTING SHIPPING ADDRESS
+            shipping_id_query = 'SELECT id FROM address ORDER BY id DESC LIMIT 1'
+            cursor.execute(shipping_id_query)
+            shipping_id = cursor.fetchall()[0][0]
+
+
+            # INSERTING BILLING ADDRESS
+            query = 'INSERT INTO address (street1,street2,city,zip,state,country,addressTypeID_address_FK) VALUES (%s, %s, %s, %s, %s, %s, %s)'
+            cursor.execute(query,billing_payload) 
+            conn.commit()
+            # EXTRACTING BILLING ADDRESS ID
+            billing_id_query = 'SELECT id FROM address ORDER BY id DESC LIMIT 1'
+            cursor.execute(billing_id_query)
+            billing_id = cursor.fetchall()[0][0]
+            
+
+            # INSERTING USER
             query = 'INSERT INTO user (email, statusID_user_FK,pass, firstname, lastname) VALUES (%s, %s, %s, %s, %s)'
             cursor.execute(query, user_payload)
             conn.commit()
-
+            # EXTRACTING USER ID 
             user_id_query = 'SELECT id FROM user ORDER BY id DESC LIMIT 1'
             cursor.execute(user_id_query)
             user_id = cursor.fetchall()[0][0]
 
-            address_id_query = 'SELECT id FROM address ORDER BY id DESC LIMIT 1'
-            cursor.execute(address_id_query)
-            address_id = cursor.fetchall()[0][0]
 
+            # INSERTING USER ID AND SHIPPING ADDRESS ID INTO user_address association table
             query = 'INSERT INTO user_address (userID_ua_FK, addressID_ua_FK) VALUES (%s, %s)'
-            cursor.execute(query, (user_id, address_id))
+            cursor.execute(query, (user_id, shipping_id))
             conn.commit()
+
+            
+            # payment_payload depends on user and billing FKs
+            payment_payload = (ccn,ccexp,user_id,billing_id)
+            query = 'INSERT INTO payment_method (cardNumber, expirationDate, userID_payment_FK, billingAddress_addr_FK) VALUES (%s, %s, %s, %s)'
+            cursor.execute(query,payment_payload)
 
             conn.close()
 
