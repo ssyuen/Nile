@@ -36,12 +36,12 @@ let cc = new CreditCard();
     If the required validation true and address selection is true && address validation false --> FAIL
  */
 $(FORM).on("submit", function (e) {
-    $(this).prop("disabled", true);
     let toggleStat = $(FORM).children("#addressToggler").attr("aria-expanded");
     if (!vc.validateAll('.card-title')) {
         e.preventDefault();
         return false;
     }
+    $("#registerBtn").prop("disabled", true);
     if (!$("#addressToggler").is(":checked")) {
         $('#addressInfo input').val('');
         $('#addressInfo select').empty();

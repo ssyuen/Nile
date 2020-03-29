@@ -49,7 +49,6 @@ let cc = new CreditCard();
  */
 $(FORM).on("submit", function (e) {
 
-    $(this).prop("disabled", true);
     let toggleStat = $(FORM).children("#addressToggler").attr("aria-expanded");
 
     if (!vc.validateAll('.card-title')) {
@@ -57,6 +56,7 @@ $(FORM).on("submit", function (e) {
         return false;
     }
 
+    $("#registerBtn").prop("disabled", true);
     if (!$("#addressToggler").is(":checked")) {
         $('#addressInfo input').val('');
         $('#addressInfo select').empty();
