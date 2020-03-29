@@ -144,35 +144,39 @@ def register():
         return render_template('reg.html')
     else:
         # NEED TO CHECK REQUEST FORM SIZE TO SEE IF OPTIONAL COMPONENNTS HAVE BEEN ADDED
-        firstName = request.form.get('inputFirstname')
+        firstName = request.form.get('inputFirstName')
         firstLetter = firstName[0].upper()
         firstName = firstLetter + firstName[1:].lower()
 
-        lastName = request.form.get('inputLastname')
+        lastName = request.form.get('inputLastName')
         firstLetter = lastName[0].upper()
         lastName = firstLetter + lastName[1:].lower()
 
         email = request.form.get('inputEmail')
         password = request.form.get('inputPassword')
         password = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
-        
-        
-        # shipping address optional
-        address = request.form.get('addAddressStreetAddress')
-        apt = request.form.get('addAddressApartmentOrSuite')
-        zipcode = request.form.get('addZipcode')
-        city = request.form.get('addAddressCity')
-        state = request.form.get('addAddressState')
-        country = request.form.get('addAddressCountry')
+        # USER PAYLOAD
+        user_payload = (email, str(1),
+                        password, firstName, lastName)
 
-        shipping_payload = (address, apt, city, zipcode,
-                               state, country, str(1))
+        # shipping address optional
+        shipping_address = request.form.get('addAddressStreetAddress')
+        shipping_apt = request.form.get('addAddressApartmentOrSuite')
+        shipping_zipcode = request.form.get('addZipcode')
+        shipping_city = request.form.get('addAddressCity')
+        shipping_state = request.form.get('addAddressState')
+        shipping_country = request.form.get('addAddressCountry')
+        # 1 on the end specifies that this is a shipping address
+        shipping_payload = (shipping_address, shipping_apt, shipping_city, shipping_zipcode,
+                            shipping_state, shipping_country, str(1))
+        print(f'shipping payload = {shipping_payload}')
 
         # payment info optional + associated billing info
         card_first_name = request.form.get('cardHolderFirstName')
         card_last_name = request.form.get('cardHolderLastName')
         try:
-            ccn = bcrypt.hashpw(request.form.get('ccn').encode('utf-8'),bcrypt.gensalt())
+            ccn = bcrypt.hashpw(request.form.get(
+                'ccn').encode('utf-8'), bcrypt.gensalt())
         except:
             ccn = ''
         ccexp = request.form.get('ccexp')
@@ -183,18 +187,26 @@ def register():
         billing_city = request.form.get('billingCity')
         billing_state = request.form.get('billingState')
         billing_country = request.form.get('billing_country')
-
         # 2 on the end specifies that this is a billing address
-        billing_payload = (billing_address,billing_apt_suite,billing_city,billing_zip,billing_state,billing_country,str(2))
-        
+        billing_payload = (billing_address, billing_apt_suite, billing_city,
+                           billing_zip, billing_state, billing_country, str(2))
+        print(f'billing_payload = {billing_payload}')
 
-
+        # INITIALIZE CONNECTION TO DB
         conn = mysql.connect()
         cursor = conn.cursor()
-        user_payload = (email, str(1),
-                        password, firstName, lastName)
-        if address is '' or address is None:
 
+        '''
+        REGISTRATION CONDITIONS:
+        #1: NO SHIPPING OR PAYMENT METHOD
+        #2: SHIPPING ADDRESS PROVIDED
+        #3: PAYMENT METHOD PROVIDED
+        #4: BOTH SHIPPING AND PAYMENT PROVIDED
+        '''
+
+        # INSERTING WITH NO SHIPPING OR PAYMENT METHOD
+        if None in shipping_payload or '' in shipping_payload:
+            print(shipping_payload)
             query = 'INSERT INTO user (email,statusID_user_FK,pass, firstname, lastname) VALUES (%s, %s, %s, %s, %s)'
             try:
                 cursor.execute(query, user_payload)
@@ -203,49 +215,93 @@ def register():
             except(pymysql.err.IntegrityError):
                 flash('An account with this email already exists.')
                 return redirect(url_for('user_bp.register'))
-
+        
         else:  # insert with shipping and billing address
+            # INSERTING SHIPPING ADDRESS AND PAYMENT INFO
+            if None not in shipping_payload and None not in billing_payload:
+                query = 'INSERT INTO `address`(street1, street2, city, zip, state, country, addressTypeID_address_FK) VALUES(%s, %s, %s, %s, %s, %s, %s)'
+                cursor.execute(query, shipping_payload)
+                conn.commit()
+                # EXTRACTING SHIPPING ADDRESS
+                shipping_id_query = 'SELECT id FROM address ORDER BY id DESC LIMIT 1'
+                cursor.execute(shipping_id_query)
+                shipping_id = cursor.fetchall()[0][0]
 
-            # INSERTING SHIPPING ADDRESS
-            query = 'INSERT INTO `address`(street1, street2, city, zip, state, country, addressTypeID_address_FK) VALUES(%s, %s, %s, %s, %s, %s, %s)'
-            cursor.execute(query, shipping_payload)
-            conn.commit()
-            # EXTRACTING SHIPPING ADDRESS
-            shipping_id_query = 'SELECT id FROM address ORDER BY id DESC LIMIT 1'
-            cursor.execute(shipping_id_query)
-            shipping_id = cursor.fetchall()[0][0]
+                # INSERTING BILLING ADDRESS
+                query = 'INSERT INTO address (street1,street2,city,zip,state,country,addressTypeID_address_FK) VALUES (%s, %s, %s, %s, %s, %s, %s)'
+                cursor.execute(query, billing_payload)
+                conn.commit()
+                # EXTRACTING BILLING ADDRESS ID
+                billing_id_query = 'SELECT id FROM address ORDER BY id DESC LIMIT 1'
+                cursor.execute(billing_id_query)
+                billing_id = cursor.fetchall()[0][0]
 
+                # INSERTING USER
+                query = 'INSERT INTO user (email, statusID_user_FK,pass, firstname, lastname) VALUES (%s, %s, %s, %s, %s)'
+                cursor.execute(query, user_payload)
+                conn.commit()
+                # EXTRACTING USER ID
+                user_id_query = 'SELECT id FROM user ORDER BY id DESC LIMIT 1'
+                cursor.execute(user_id_query)
+                user_id = cursor.fetchall()[0][0]
 
-            # INSERTING BILLING ADDRESS
-            query = 'INSERT INTO address (street1,street2,city,zip,state,country,addressTypeID_address_FK) VALUES (%s, %s, %s, %s, %s, %s, %s)'
-            cursor.execute(query,billing_payload) 
-            conn.commit()
-            # EXTRACTING BILLING ADDRESS ID
-            billing_id_query = 'SELECT id FROM address ORDER BY id DESC LIMIT 1'
-            cursor.execute(billing_id_query)
-            billing_id = cursor.fetchall()[0][0]
-            
+                # INSERTING USER ID AND SHIPPING ADDRESS ID INTO user_address association table
+                query = 'INSERT INTO user_address (userID_ua_FK, addressID_ua_FK) VALUES (%s, %s)'
+                cursor.execute(query, (user_id, shipping_id))
+                conn.commit()
 
-            # INSERTING USER
-            query = 'INSERT INTO user (email, statusID_user_FK,pass, firstname, lastname) VALUES (%s, %s, %s, %s, %s)'
-            cursor.execute(query, user_payload)
-            conn.commit()
-            # EXTRACTING USER ID 
-            user_id_query = 'SELECT id FROM user ORDER BY id DESC LIMIT 1'
-            cursor.execute(user_id_query)
-            user_id = cursor.fetchall()[0][0]
+                # payment_payload depends on user and billing FKs
+                payment_payload = (ccn, ccexp, user_id, billing_id)
+                query = 'INSERT INTO payment_method (cardNumber, expirationDate, userID_payment_FK, billingAddress_addr_FK) VALUES (%s, %s, %s, %s)'
+                cursor.execute(query, payment_payload)
 
+            # INSERTING BILLING ADDRESS (PAYMENT INFO ONLY)
+            elif None not in billing_payload and None in shipping_payload:
+                query = 'INSERT INTO address (street1,street2,city,zip,state,country,addressTypeID_address_FK) VALUES (%s, %s, %s, %s, %s, %s, %s)'
+                cursor.execute(query, billing_payload)
+                conn.commit()
+                # EXTRACTING BILLING ADDRESS ID
+                billing_id_query = 'SELECT id FROM address ORDER BY id DESC LIMIT 1'
+                cursor.execute(billing_id_query)
+                billing_id = cursor.fetchall()[0][0]
 
-            # INSERTING USER ID AND SHIPPING ADDRESS ID INTO user_address association table
-            query = 'INSERT INTO user_address (userID_ua_FK, addressID_ua_FK) VALUES (%s, %s)'
-            cursor.execute(query, (user_id, shipping_id))
-            conn.commit()
+                # INSERTING USER
+                query = 'INSERT INTO user (email, statusID_user_FK,pass, firstname, lastname) VALUES (%s, %s, %s, %s, %s)'
+                cursor.execute(query, user_payload)
+                conn.commit()
+                # EXTRACTING USER ID
+                user_id_query = 'SELECT id FROM user ORDER BY id DESC LIMIT 1'
+                cursor.execute(user_id_query)
+                user_id = cursor.fetchall()[0][0]
 
-            
-            # payment_payload depends on user and billing FKs
-            payment_payload = (ccn,ccexp,user_id,billing_id)
-            query = 'INSERT INTO payment_method (cardNumber, expirationDate, userID_payment_FK, billingAddress_addr_FK) VALUES (%s, %s, %s, %s)'
-            cursor.execute(query,payment_payload)
+                # payment_payload depends on user and billing FKs
+                payment_payload = (ccn, ccexp, user_id, billing_id)
+                query = 'INSERT INTO payment_method (cardNumber, expirationDate, userID_payment_FK, billingAddress_addr_FK) VALUES (%s, %s, %s, %s)'
+                cursor.execute(query, payment_payload)
+
+            # INSERTING SHIPPING ADDRESS (SHIPPING ADDRESS ONLY)
+            elif None in billing_payload and None not in shipping_payload:
+                query = 'INSERT INTO `address`(street1, street2, city, zip, state, country, addressTypeID_address_FK) VALUES(%s, %s, %s, %s, %s, %s, %s)'
+                cursor.execute(query, shipping_payload)
+                conn.commit()
+                # EXTRACTING SHIPPING ADDRESS
+                shipping_id_query = 'SELECT id FROM address ORDER BY id DESC LIMIT 1'
+                cursor.execute(shipping_id_query)
+                shipping_id = cursor.fetchall()[0][0]
+
+                # INSERTING USER
+                query = 'INSERT INTO user (email, statusID_user_FK,pass, firstname, lastname) VALUES (%s, %s, %s, %s, %s)'
+                cursor.execute(query, user_payload)
+                conn.commit()
+                # EXTRACTING USER ID
+                user_id_query = 'SELECT id FROM user ORDER BY id DESC LIMIT 1'
+                cursor.execute(user_id_query)
+                user_id = cursor.fetchall()[0][0]
+
+                # INSERTING USER ID AND SHIPPING ADDRESS ID INTO user_address association table
+                query = 'INSERT INTO user_address (userID_ua_FK, addressID_ua_FK) VALUES (%s, %s)'
+                cursor.execute(query, (user_id, shipping_id))
+                conn.commit()
 
             conn.close()
 
@@ -381,23 +437,23 @@ def password_change():
     if request.method == 'POST':
         new_password = request.form.get('newPassword')
         confirm_new_password = request.form.get('confirmNewPassword')
-        
+
         print(new_password)
         print(confirm_new_password)
         print(type(new_password))
         if new_password != confirm_new_password:
-            return jsonify({'Response':400})
+            return jsonify({'Response': 400})
         else:
-            new_password = bcrypt.hashpw(new_password.encode('utf-8'),bcrypt.gensalt())
+            new_password = bcrypt.hashpw(
+                new_password.encode('utf-8'), bcrypt.gensalt())
             conn = mysql.connect()
             cursor = conn.cursor()
             print(session['email'])
             query = 'UPDATE user SET pass=%s WHERE email=%s'
-            cursor.execute(query,(new_password,session['email']))
+            cursor.execute(query, (new_password, session['email']))
             conn.commit()
             conn.close()
-            return jsonify({'Response':200})
-
+            return jsonify({'Response': 200})
 
 
 @user_bp.route('/forgot/')
