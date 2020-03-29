@@ -99,7 +99,6 @@
                 <h4 class="card-title text-center primary-md pb-4">Registration</h4>
                 {% with invalid_reg = get_flashed_messages() %}
                     {% if invalid_reg %}
-
                         <p class="flashes h5 text-center" style="color: red;">
                             {% for msg in invalid_reg %}
                                 {{ msg }}
