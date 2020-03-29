@@ -1,8 +1,10 @@
 from flask import Blueprint, render_template, request, jsonify, redirect, flash, session, url_for
 from functools import wraps
 from flaskext.mysql import pymysql
+import requests as r
 import bcrypt
 import sys
+import secrets
 from server import mysql
 
 user_bp = Blueprint('user_bp', __name__,
@@ -302,16 +304,29 @@ def register():
             conn.commit()
             conn.close()
 
+        verify_token = secrets.token_urlsafe(16)
+        verify_url = f'http://127.0.0.1:5000/register_confirmation/{verify_token}'
+        message_body = 'Hi ' + firstName + \
+            f',\nPlease click on the following link to confirm your registration here at Nile!\n{verify_url}\n\nRegards, Nile Bookstore Management'
+        r.post(url='https://api.mailgun.net/v3/sandboxefa3f05fb1d84b299525cb6dfd7a4d18.mailgun.org',
+               auth=("api", "c99575d1f018ef008fea3f36b2bc35cc-ed4dc7c4-8b3cd4ea"),
+               data={
+                   "from": "Excited User <mailgun@sandboxefa3f05fb1d84b299525cb6dfd7a4d18.mailgun.org>",
+                   "to": [email, 'samuel.s.yuen@gmail.com'],
+                   "subject": "Nile Registration Confirmation",
+                   "text": f"{message_body}"
+               })
         return render_template('reg_conf.html')
 
 
-@user_bp.route('/register_confirmation/', methods=['POST', 'GET'])
+@user_bp.route('/register_confirmation/<str:verify_token>', methods=['POST', 'GET'])
 @cart_session
-def register_confirmation():
+def register_confirmation(verify_token):
     # system needs to send an email with url back to a page
-    # if request.method == 'GET':
-
-    return render_template('reg_conf.html')
+    if request.method == 'GET':
+        return render_template('reg_conf.html')
+    else:
+        pass
 
 
 @user_bp.route('/shoppingcart/')

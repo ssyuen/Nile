@@ -10,6 +10,7 @@ autopep8 = "*"
 flask = "*"
 flask-mysql = "*"
 bcrypt = "*"
+requests = "*"
 
 [scripts]
 server = "./start.sh"
