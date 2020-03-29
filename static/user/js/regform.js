@@ -6,7 +6,6 @@
     REVISIONS:          N/A
  */
 import {CreditCard, InputValidationComplex, PURPOSE} from "./inputvalidation.js";
-
 const FORM = document.getElementById("regForm");
 const F_NAME = document.getElementById("inputFirstName");
 const L_NAME = document.getElementById("inputLastName");
@@ -53,7 +52,7 @@ $(FORM).on("submit", function (e) {
     }
 });
 $("#addressToggler").on("click", function () {
-    $('.addr-opt input, select').each((i, e) => {
+    $('.addr-opt input, .addr-opt select').each((i, e) => {
         if (e.id !== 'addAddressApartmentOrSuite') {
             e.toggleAttribute("required");
         }
@@ -65,7 +64,7 @@ $("#addressToggler").on("click", function () {
     }
 });
 $("#paymentToggler").on("click", function () {
-    $('.payment-opt input').each((i, e) => {
+    $('.payment-opt input, .payment-opt select').each((i, e) => {
         if (e.id !== "billingApartmentOrSuite") {
             e.toggleAttribute("required");
         }

@@ -69,7 +69,7 @@ $(FORM).on("submit", function (e) {
 });
 
 $("#addressToggler").on("click", function () {
-    $('.addr-opt input, select').each((i: number, e: HTMLElement) => {
+    $('.addr-opt input, .addr-opt select').each((i: number, e: HTMLElement) => {
         if (e.id !== 'addAddressApartmentOrSuite') {
             e.toggleAttribute("required");
         }
@@ -83,7 +83,7 @@ $("#addressToggler").on("click", function () {
 
 
 $("#paymentToggler").on("click", function () {
-    $('.payment-opt input').each((i: number, e: HTMLElement) => {
+    $('.payment-opt input, .payment-opt select').each((i: number, e: HTMLElement) => {
         if (e.id !== "billingApartmentOrSuite") {
             e.toggleAttribute("required");
         }
