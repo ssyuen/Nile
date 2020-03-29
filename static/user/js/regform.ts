@@ -54,7 +54,7 @@ $(FORM).on("submit", function (e) {
 
     if (!vc.validateAll('.card-title')) {
         e.preventDefault();
-        return;
+        return false;
     }
 
     if (!$("#addressToggler").is(":checked")) {
@@ -66,6 +66,11 @@ $(FORM).on("submit", function (e) {
         $('#paymentInfo input').val('');
         $('#paymentInfo select').empty();
     }
+
+    let input = $("<input>")
+        .attr("type", "hidden")
+        .attr("name", "CCNProvider").val(cc.getProvider());
+    $(this).append(input);
 });
 
 $("#addressToggler").on("click", function () {

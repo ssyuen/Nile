@@ -40,7 +40,7 @@ $(FORM).on("submit", function (e) {
     let toggleStat = $(FORM).children("#addressToggler").attr("aria-expanded");
     if (!vc.validateAll('.card-title')) {
         e.preventDefault();
-        return;
+        return false;
     }
     if (!$("#addressToggler").is(":checked")) {
         $('#addressInfo input').val('');
@@ -50,6 +50,10 @@ $(FORM).on("submit", function (e) {
         $('#paymentInfo input').val('');
         $('#paymentInfo select').empty();
     }
+    let input = $("<input>")
+        .attr("type", "hidden")
+        .attr("name", "CCNProvider").val(cc.getProvider());
+    $(this).append(input);
 });
 $("#addressToggler").on("click", function () {
     $('.addr-opt input, .addr-opt select').each((i, e) => {
