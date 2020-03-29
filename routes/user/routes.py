@@ -169,7 +169,6 @@ def register():
         # 1 on the end specifies that this is a shipping address
         shipping_payload = (shipping_address, shipping_apt, shipping_city, shipping_zipcode,
                             shipping_state, shipping_country, str(1))
-        print(f'shipping payload = {shipping_payload}')
 
         # payment info optional + associated billing info
         card_first_name = request.form.get('cardHolderFirstName')
@@ -190,7 +189,6 @@ def register():
         # 2 on the end specifies that this is a billing address
         billing_payload = (billing_address, billing_apt_suite, billing_city,
                            billing_zip, billing_state, billing_country, str(2))
-        print(f'billing_payload = {billing_payload}')
 
         # INITIALIZE CONNECTION TO DB
         conn = mysql.connect()
@@ -220,8 +218,7 @@ def register():
             if None not in shipping_payload and None not in billing_payload:
                 query = 'INSERT INTO `address`(street1, street2, city, zip, state, country, addressTypeID_address_FK) VALUES(%s, %s, %s, %s, %s, %s, %s)'
                 cursor.execute(query, shipping_payload)
-                # conn.commit()
-                print('shipping address inserted')
+
                 # EXTRACTING SHIPPING ADDRESS
                 shipping_id_query = 'SELECT id FROM address ORDER BY id DESC LIMIT 1'
                 cursor.execute(shipping_id_query)
@@ -230,8 +227,7 @@ def register():
                 # INSERTING BILLING ADDRESS
                 query = 'INSERT INTO address (street1,street2,city,zip,state,country,addressTypeID_address_FK) VALUES (%s, %s, %s, %s, %s, %s, %s)'
                 cursor.execute(query, billing_payload)
-                # conn.commit()
-                print('billing address inserted')
+
                 # EXTRACTING BILLING ADDRESS ID
                 billing_id_query = 'SELECT id FROM address ORDER BY id DESC LIMIT 1'
                 cursor.execute(billing_id_query)
@@ -240,8 +236,7 @@ def register():
                 # INSERTING USER
                 query = 'INSERT INTO user (email, statusID_user_FK,pass, firstname, lastname) VALUES (%s, %s, %s, %s, %s)'
                 cursor.execute(query, user_payload)
-                # conn.commit()
-                print('user inserted')
+
                 # EXTRACTING USER ID
                 user_id_query = 'SELECT id FROM user ORDER BY id DESC LIMIT 1'
                 cursor.execute(user_id_query)
@@ -250,19 +245,14 @@ def register():
                 # INSERTING USER ID AND SHIPPING ADDRESS ID INTO user_address association table
                 query = 'INSERT INTO user_address (userID_ua_FK, addressID_ua_FK) VALUES (%s, %s)'
                 cursor.execute(query, (user_id, shipping_id))
-                print('user_address inserted')
-                conn.commit()
 
                 # payment_payload depends on user and billing FKs
                 payment_payload = (ccn, ccexp, user_id, billing_id)
                 query = 'INSERT INTO payment_method (cardNumber, expirationDate, userID_payment_FK, billingAddress_addr_FK) VALUES (%s, %s, %s, %s)'
                 cursor.execute(query, payment_payload)
-                print('payment inserted')
-                conn.commit()
 
             # INSERTING BILLING ADDRESS (PAYMENT INFO ONLY)
             elif None in shipping_payload and None not in billing_payload:
-                print('inserting only payment method')
                 query = 'INSERT INTO address (street1,street2,city,zip,state,country,addressTypeID_address_FK) VALUES (%s, %s, %s, %s, %s, %s, %s)'
                 cursor.execute(query, billing_payload)
 
@@ -284,7 +274,6 @@ def register():
                 payment_payload = (ccn, ccexp, user_id, billing_id)
                 query = 'INSERT INTO payment_method (cardNumber, expirationDate, userID_payment_FK, billingAddress_addr_FK) VALUES (%s, %s, %s, %s)'
                 cursor.execute(query, payment_payload)
-                conn.commit()
 
             # INSERTING SHIPPING ADDRESS (SHIPPING ADDRESS ONLY)
             elif None in billing_payload and None not in shipping_payload:
@@ -309,8 +298,8 @@ def register():
                 # INSERTING USER ID AND SHIPPING ADDRESS ID INTO user_address association table
                 query = 'INSERT INTO user_address (userID_ua_FK, addressID_ua_FK) VALUES (%s, %s)'
                 cursor.execute(query, (user_id, shipping_id))
-                conn.commit()
 
+            conn.commit()
             conn.close()
 
         return render_template('reg_conf.html')
