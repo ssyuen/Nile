@@ -302,7 +302,16 @@ def register():
             conn.commit()
             conn.close()
 
-        return render_template('reg_conf.html')
+        return render_template('confirmation/reg_conf.html')
+
+
+@user_bp.route('/base_confirmation/', methods=['POST', 'GET'])
+@cart_session
+def base_confirmation():
+    # system needs to send an email with url back to a page
+    # if request.method == 'GET':
+
+    return render_template('confirmation/baseConfirm.html')
 
 
 @user_bp.route('/register_confirmation/', methods=['POST', 'GET'])
@@ -311,7 +320,16 @@ def register_confirmation():
     # system needs to send an email with url back to a page
     # if request.method == 'GET':
 
-    return render_template('reg_conf.html')
+    return render_template('confirmation/reg_conf.html')
+
+
+@user_bp.route('/email_confirmation/', methods=['POST', 'GET'])
+@cart_session
+def email_confirmation():
+    # system needs to send an email with url back to a page
+    # if request.method == 'GET':
+
+    return render_template('confirmation/email_conf.html')
 
 
 @user_bp.route('/shoppingcart/')
