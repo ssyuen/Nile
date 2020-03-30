@@ -73,91 +73,77 @@ export class InputValidationComplex {
             if ($(invalidMessageType[1]).length) {
                 $(invalidMessageType[1]).remove();
             }
-            if ($(inputType).hasClass('is-invalid')) {
-                $(inputType).removeClass('is-invalid');
+            if ($(inputType).hasClass('invalid')) {
+                $(inputType).removeClass('invalid');
             }
             //Prevents duplicate class additions
-            if (!$(inputType).hasClass('is-valid')) {
-                $(inputType).addClass("is-valid");
+            if (!$(inputType).hasClass('valid')) {
+                $(inputType).addClass("valid");
             }
+            $(inputType).prop("aria-invalid", "false");
             return true;
         } else {
             if (!$(invalidMessageType[1]).length) {
                 // @ts-ignore
                 $(invalidMessageLocation).after(invalidMessageType[0]);
             }
-            if ($(inputType).hasClass('is-valid')) {
-                $(inputType).removeClass('is-valid');
+            if ($(inputType).hasClass('valid')) {
+                $(inputType).removeClass('valid');
             }
-            if (!$(inputType).hasClass('is-invalid')) {
-                $(inputType).addClass("is-invalid");
+            if (!$(inputType).hasClass('invalid')) {
+                $(inputType).addClass("invalid");
             }
+            $(inputType).prop("aria-invalid", "true");
             return false;
         }
     }
 }
 InputValidationComplex.INVALID_PASS_MSS = [`
-    <div class="error-message" id="invalidPass">
-        <small class="text-danger">
+        <small class="text-danger error-messsage" id="invalidPass">
           Password must be more than 8 or more characters long, contain at least 1 uppercase character, 1 lowercase character, and 1 number.
         </small>
-    </div>
 `, "#invalidPass"];
 InputValidationComplex.INVALID_PASS_CONF_MSS = [`
-    <div class="error-message" id="invalidPassConf">
-        <small class="text-danger">
+    <div >
+        <small class="text-danger error-message" id="invalidPassConf">
           Passwords do not match.
         </small>
     </div>
 `, "#invalidPassConf"];
 InputValidationComplex.INVALID_EMAIL_MSS = [`
-    <div class="error-message" id="invalidEmail">
-        <small class="text-danger">
+        <small class="text-danger error-message" id="invalidEmail">
           Email is not valid.
         </small>
-    </div>
 `, "#invalidEmail"];
 InputValidationComplex.INVALID_F_NAME_MSS = [`
-    <div class="error-message" id="invalidFName">
-        <small class="text-danger">
+        <small class="text-danger error-message" id="invalidFName">
           Firstname must be more than 1 character.
-        </small>
-    </div>
+        </small>    
 `, "#invalidFName"];
 InputValidationComplex.INVALID_L_NAME_MSS = [`
-    <div class="error-message" id="invalidLName">
-        <small class="text-danger">
+        <small class="text-danger error-message" id="invalidLName">
           Lastname must be more than 2 characters.
         </small>
-    </div>
 `, "#invalidLName"];
 InputValidationComplex.INVALID_STREET_MSS = [`
-    <div class="error-message" id="invalidStreet">
-        <small class="text-danger">
+        <small class="text-danger error-message" id="invalidStreet">
           Street Address cannot be empty.
         </small>
-    </div>
 `, "#invalidStreet"];
 InputValidationComplex.INVALID_ZIP_MSS = [`
-    <div class="error-message" id="invalidZip">
-        <small class="text-danger">
+        <small class="text-danger error-message" id="invalidZip">
           ZIP code is not valid.
         </small>
-    </div>
 `, "#invalidZip"];
 InputValidationComplex.INVALID_CCN_MSS = [`
-    <div class="error-message" id="invalidCCN">
-        <small class="text-danger">
+        <small class="text-danger error-message" id="invalidCCN">
           Credit Card is not valid.
         </small>
-    </div>
 `, "#invalidCCN"];
 InputValidationComplex.INVALID_CVV_MSS = [`
-    <div class="error-message" id="invalidCVV">
-        <small class="text-danger">
+        <small class="text-danger error-message" id="invalidCVV"">
           CVV is not valid.
         </small>
-    </div>
 `, "#invalidCVV"];
 export const PURPOSE = {
     Firstname: {
@@ -211,7 +197,7 @@ export class CreditCard {
     }
     static toggleCardIcon(ccnInput, cardClass = "") {
         let ref = $('.billing-card');
-        let s = `<i class="billing-card fab fa-2x ${cardClass}" style="position: absolute; right: 50px; bottom: 6.5px;"></i>`;
+        let s = `<i class="billing-card fab fa-2x ${cardClass}" style="position: absolute; right: 10px; bottom: 6.5px;"></i>`;
         if (!cardClass.length) {
             $(ref).remove();
         } else {
