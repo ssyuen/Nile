@@ -69,9 +69,10 @@ def login(ctx=None):
 
             try:
                 results = cursor.fetchall()[0]
-                db_pass = results[1].encode('utf-8')
-                # db_pass = db_pass[2:-1].encode('utf-8')
-                if bcrypt.checkpw(password.encode(), db_pass):
+                db_pass = results[1]#.encode('utf-8')
+                db_pass = db_pass[2:-1].encode('utf-8')
+                print(db_pass)
+                if bcrypt.checkpw(password.encode('utf-8'), db_pass):
                     session['logged_in'] = True
                     session['email'] = results[0]
                     session['admin'] = True
@@ -304,22 +305,22 @@ def register():
             conn.commit()
             conn.close()
 
-        verify_token = secrets.token_urlsafe(16)
-        verify_url = f'http://127.0.0.1:5000/register_confirmation/{verify_token}'
-        message_body = 'Hi ' + firstName + \
-            f',\nPlease click on the following link to confirm your registration here at Nile!\n{verify_url}\n\nRegards, Nile Bookstore Management'
-        r.post(url='https://api.mailgun.net/v3/sandboxefa3f05fb1d84b299525cb6dfd7a4d18.mailgun.org',
-               auth=("api", "c99575d1f018ef008fea3f36b2bc35cc-ed4dc7c4-8b3cd4ea"),
-               data={
-                   "from": "Excited User <mailgun@sandboxefa3f05fb1d84b299525cb6dfd7a4d18.mailgun.org>",
-                   "to": [email, 'samuel.s.yuen@gmail.com'],
-                   "subject": "Nile Registration Confirmation",
-                   "text": f"{message_body}"
-               })
+        # verify_token = secrets.token_urlsafe(16)
+        # verify_url = f'http://127.0.0.1:5000/register_confirmation/{verify_token}'
+        # message_body = 'Hi ' + firstName + \
+        #     f',\nPlease click on the following link to confirm your registration here at Nile!\n{verify_url}\n\nRegards, Nile Bookstore Management'
+        # r.post(url='https://api.mailgun.net/v3/sandboxefa3f05fb1d84b299525cb6dfd7a4d18.mailgun.org',
+        #        auth=("api", "c99575d1f018ef008fea3f36b2bc35cc-ed4dc7c4-8b3cd4ea"),
+        #        data={
+        #            "from": "Excited User <mailgun@sandboxefa3f05fb1d84b299525cb6dfd7a4d18.mailgun.org>",
+        #            "to": [email, 'samuel.s.yuen@gmail.com'],
+        #            "subject": "Nile Registration Confirmation",
+        #            "text": f"{message_body}"
+        #        })
         return render_template('reg_conf.html')
 
 
-@user_bp.route('/register_confirmation/<str:verify_token>', methods=['POST', 'GET'])
+@user_bp.route('/register_confirmation/<verify_token>', methods=['POST', 'GET'])
 @cart_session
 def register_confirmation(verify_token):
     # system needs to send an email with url back to a page
