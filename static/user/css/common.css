@@ -7,7 +7,6 @@
     font-size: large;
 }
 
-
 .primary-md {
     font-family: 'Oswald', sans-serif;
     font-size: 2em;
@@ -43,6 +42,7 @@
     margin-bottom: 300px !important;
 }
 
+
 html {
     position: relative;
     min-height: 100%;
@@ -72,4 +72,13 @@ footer {
     padding: .25em;
     width: 80px;
     height: 80px;
+}
+
+.main-content-container .form-group input, .main-content-container .form-group select {
+    height: 45px !important;
+    border-radius: 3px !important;
+}
+
+.rounded {
+    border-radius: 10px !important;
 }
