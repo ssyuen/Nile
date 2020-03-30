@@ -32,14 +32,14 @@ FORM.addEventListener("submit", function (e) {
 Array<string>('input', 'focusin').forEach((evt: string) => {
 
     F_NAME.addEventListener(evt, function () {
-        if ($(F_NAME).is("[readonly]")) return;
+        if ($(F_NAME).is("[readonly]")) return false;
 
         let loc = "#inputFirstnameGroup";
         vc.setValidity(this, loc, PURPOSE.Firstname, PURPOSE.Firstname.constraint(this.value));
     });
 
     L_NAME.addEventListener(evt, function () {
-        if ($(L_NAME).is("[readonly]")) return;
+        if ($(L_NAME).is("[readonly]")) return false;
         let loc = "#inputLastnameGroup";
         vc.setValidity(this, loc, PURPOSE.Lastname, PURPOSE.Lastname.constraint(this.value));
     });
