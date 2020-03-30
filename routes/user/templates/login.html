@@ -40,8 +40,8 @@
         }
 
         .form-group input {
-            height: 50px;
-            border-radius: 0px;
+            height: 45px !important;
+            border-radius: 3px !important;
         }
     </style>
 </head>
@@ -78,16 +78,16 @@
                     {% endif %}
                 {% endwith %}
                 <form method="POST" action="">
-                    <div class="form-group">
-                        <label for="userEmail"></label>
+                    <div class="form-group md-form md-outline">
+                        <label for="userEmail">Enter Email</label>
                         <input type="email" class="form-control" id="userEmail" aria-describedby="emailHelp"
-                               placeholder="Enter Email" name="userEmail">
+                               name="userEmail">
                         <small id="emailHelp" class="form-text text-muted"><i>We'll never share your email with anyone
                             else.</i></small>
                     </div>
-                    <div class="form-group">
-                        <label for="userPassword"></label>
-                        <input type="password" class="form-control" id="userPassword" placeholder="Enter Password"
+                    <div class="form-group md-form md-outline">
+                        <label for="userPassword">Enter Password</label>
+                        <input type="password" class="form-control" id="userPassword"
                                name="userPassword">
                     </div>
                     <button type="submit" class="btn blue-gradient btn-lg btn-block">Sign in</button>
