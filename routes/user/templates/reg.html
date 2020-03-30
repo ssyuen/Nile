@@ -36,7 +36,7 @@
         }
 
         #acctContainer {
-            width: 1000px;
+            width: 800px;
             max-width: 75%;
             margin-top: 5em;
             margin-bottom: 5em;
@@ -68,15 +68,13 @@
             margin-bottom: 20px
         }
 
+        .col-sm-6 {
+            padding-bottom: 0 !important;
+        }
+
         #acctContainer input, #acctContainer select {
             height: 45px !important;
             border-radius: 0 !important;
-        }
-
-        #loading {
-            position: absolute;
-            left: 50%;
-            top: 50%;
         }
     </style>
 </head>
@@ -111,40 +109,54 @@
                     {% endif %}
                 {% endwith %}
                 <form id="regForm" class="registration-form" method="POST">
-                    <div class="form-group">
-                        <div class="form-row">
-                            <div class="col-lg-6 col-md-12 mb-2">
-                                <label for="inputFirstName">First Name</label>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group md-form md-outline ">
                                 <input type="text" id="inputFirstName" class="form-control"
-                                       placeholder="First Name" name="inputFirstName" required>
+                                       name="inputFirstName" required>
+                                <label for="inputFirstName">First Name</label>
                             </div>
-                            <div class="col-lg-6 col-md-12">
-                                <label for="inputLastName">Last Name</label>
-                                <input type="text" id="inputLastName" class="form-control" placeholder="Last Name"
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group md-form md-outline">
+                                <input type="text" id="inputLastName" class="form-control"
                                        name="inputLastName" required>
+                                <label for="inputLastName">Last Name</label>
                             </div>
                         </div>
                     </div>
 
-                    <div class="form-group">
-                        <label for="inputEmail">Email address</label>
-                        <input type="email" id="inputEmail" class="form-control" placeholder="Email address"
-                               name="inputEmail" required>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="form-group md-form md-outline">
+                                <input type="email" id="inputEmail" class="form-control"
+                                       name="inputEmail" required>
+                                <label for="inputEmail">Email address</label>
+                            </div>
+                        </div>
                     </div>
 
-                    <div class="form-group">
-                        <label for="inputPassword">Password</label>
-                        <input type="password" id="inputPassword" class="form-control" placeholder="Password"
-                               name="inputPassword" required>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="form-group md-form md-outline">
+                                <input type="password" id="inputPassword" class="form-control"
+                                       name="inputPassword" required>
+                                <label for="inputPassword">Password</label>
+                            </div>
+                        </div>
                     </div>
 
-                    <div class="form-group">
-                        <label for="inputConfirmPassword">Confirm Password</label>
-                        <input type="password" id="inputConfirmPassword" class="form-control"
-                               placeholder="Confirm Password" name="inputConfirmPassword" required>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="form-group md-form md-outline">
+                                <input type="password" id="inputConfirmPassword" class="form-control"
+                                       name="inputConfirmPassword" required>
+                                <label for="inputConfirmPassword">Confirm Password</label>
+                            </div>
+                        </div>
                     </div>
 
-
+                    <!--NOT FORM RELATED ITEMS-->
                     <p class="hori-line">
                         <span class="text-muted font-weight-light font-italic">Optional Fields</span>
                     </p>
@@ -158,54 +170,56 @@
                         </div>
                     </div>
 
-                    <div class="checkbox-holder mb-4">
+                    <div class="checkbox-holder">
                         <div class="custom-control custom-checkbox d-inline">
                             <input type="checkbox" class="custom-control-input" data-toggle="collapse"
                                    data-target="#paymentInfo" id="paymentToggler">
                             <label class="custom-control-label" for="paymentToggler">Add Payment Method</label>
                         </div>
                     </div>
+                    <!--END -- NOT FORM RELATED ITEMS-->
 
-
-                    <div class="form-group mt-2 addr-opt">
+                    <div class="mt-2 addr-opt">
                         <div id="addressInfo" class="collapse">
-                            <div class="form-row">
-                                <div class="form-group col">
-                                    <i class="fas fa-map-marker"></i>
-                                    <label for="addAddressStreetAddress">Street Address</label>
-                                    <input type="text" class="form-control" id="addAddressStreetAddress"
-                                           placeholder="Street Address" name="addAddressStreetAddress">
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="form-group md-form md-outline">
+                                        <input type="text" class="form-control" id="addAddressStreetAddress"
+                                               name="addAddressStreetAddress">
+                                        <label for="addAddressStreetAddress">Street Address</label>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="form-row">
-                                <div class="form-group col">
-                                    <i class="fas fa-map-marker"></i>
-                                    <label for="addAddressApartmentOrSuite">Apartment or Suite</label>
-                                    <input type="text" class="form-control is-valid" id="addAddressApartmentOrSuite"
-                                           placeholder="Apartment or Suite (optional)"
-                                           name="addAddressApartmentOrSuite">
+                            <div class="row">
+                                <div class="col">
+                                    <div class="form-group md-form md-outline">
+                                        <input type="text" class="form-control is-valid" id="addAddressApartmentOrSuite"
+                                               name="addAddressApartmentOrSuite">
+                                        <label for="addAddressApartmentOrSuite">Apartment or Suite</label>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="form-row">
-                                <div class="form-group col">
-                                    <i class="fas fa-map-marker"></i>
-                                    <label for="addZipcode">Zipcode</label>
-                                    <input type="text" class="form-control" id="addZipcode"
-                                           placeholder="Zipcode" name="addZipcode">
+                            <div class="row">
+                                <div class="col">
+                                    <div class="form-group md-form md-outline">
+                                        <input type="text" class="form-control" id="addZipcode"
+                                               name="addZipcode">
+                                        <label for="addZipcode">ZIP or Postal code</label>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="form-row">
-                                <div class="form-group col">
-                                    <i class="fas fa-city"></i>
-                                    <label for="addAddressCity">City</label>
-                                    <select id="addAddressCity" class="form-control" name="addAddressCity">
-                                        <option value="">---</option>
-                                        <option value="Atlanta">Atlanta</option>
-                                        <option value="Los Angeles">Los Angeles</option>
-                                    </select>
+                            <div class="row">
+                                <div class="col">
+                                    <div class="form-group">
+                                        <label for="addAddressCity">City</label>
+                                        <select id="addAddressCity" class="form-control" name="addAddressCity">
+                                            <option value="">---</option>
+                                            <option value="Atlanta">Atlanta</option>
+                                            <option value="Los Angeles">Los Angeles</option>
+                                        </select>
+                                    </div>
                                 </div>
                                 <div class="form-group col">
-                                    <i class="fas fa-city"></i>
                                     <label for="addAddressState">State</label>
                                     <select id="addAddressState" class="form-control" name="addAddressState">
                                         <option value="">---</option>
@@ -214,7 +228,6 @@
                                     </select>
                                 </div>
                                 <div class="form-group col">
-                                    <i class="fas fa-globe-americas"></i>
                                     <label for="addAddressCountry">Country</label>
                                     <select id="addAddressCountry" class="form-control" name="addAddressCountry">
                                         <option value="">---</option>
@@ -226,50 +239,54 @@
                     </div>
 
 
-                    <div class="form-group mt-2 payment-opt">
+                    <div class="form-group mt-3 payment-opt">
                         <div id="paymentInfo" class="collapse">
                             <small>
                                 <p class="text-muted font-italic">Credit card information</p>
                             </small>
                             <div class="card-specific">
-                                <div class="form-row">
-                                    <div class="form-group col-lg-6 col-md-12">
-                                        <i class="fas fa-signature"></i>
-                                        <label for="cardHolderFirstName">Card Holder - First Name</label>
-                                        <input type="text" class="form-control" id="cardHolderFirstName"
-                                               placeholder="Card First Name" name="cardHolderFirstName">
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <div class="form-group md-form md-outline">
+                                            <input type="text" class="form-control" id="cardHolderFirstName"
+                                                   name="cardHolderFirstName">
+                                            <label for="cardHolderFirstName">First Name on Card</label>
+                                        </div>
                                     </div>
-                                    <div class="form-group col-lg-6 col-md-12">
-                                        <i class="fas fa-signature"></i>
-                                        <label for="cardHolderLastName">Card Holder - Last Name</label>
-                                        <input type="text" class="form-control" id="cardHolderLastName"
-                                               placeholder="Card Last Name"
-                                               name="cardHolderLastName">
+                                    <div class="col-sm-6">
+                                        <div class="form-group md-form md-outline">
+                                            <input type="text" class="form-control" id="cardHolderLastName"
+                                                   name="cardHolderLastName">
+                                            <label for="cardHolderLastName">Last Name on Card</label>
+                                        </div>
                                     </div>
                                 </div>
 
                                 <div class="form-row">
-                                    <div class="form-group col-lg-10">
-                                        <i class="fas fa-credit-card"></i>
-                                        <label for="ccn">Credit Card Number</label>
-                                        <div id="billingInputContainer" style="position: relative">
-                                            <input type="text" class="form-control" id="ccn"
-                                                   placeholder="Credit Card Number" name="ccn">
+                                    <div class="col-sm-10">
+                                        <div class="form-group md-form md-outline">
+                                            <div id="billingInputContainer">
+                                                <label for="ccn">Credit Card Number</label>
+                                                <input type="text" class="form-control" id="ccn" name="ccn"
+                                                       style="positon: relative">
+                                            </div>
+
                                         </div>
                                     </div>
-                                    <div class="form-group col-lg-2">
-                                        <i class="fas fa-lock"></i>
-                                        <label for="cvv">CVV</label>
-                                        <input type="number" class="form-control" id="cvv"
-                                               placeholder="CVV" name="cvv">
+                                    <div class="col-sm-2">
+                                        <div class="form-group md-form md-outline">
+                                            <input type="text" class="form-control" id="cvv" name="cvv">
+                                            <label for="cvv">CVV</label>
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="form-row">
-                                    <div class="form-group col">
-                                        <i class="fas fa-calendar-alt"></i>
-                                        <label for="ccexp">Credit Card Expiration Date</label>
-                                        <input type="month" class="form-control" id="ccexp"
-                                               placeholder="Credit Card Number" name="ccexp">
+                                <div class="row">
+                                    <div class="col">
+                                        <div class="form-group ">
+                                            <label for="ccexp">Credit Card Expiration Date</label>
+                                            <input type="month" class="form-control datepicker" id="ccexp"
+                                                   name="ccexp">
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -278,43 +295,46 @@
                                 <p class="text-muted font-italic">Billing Address</p>
                             </small>
                             <div class="billing-address">
-                                <div class="form-row">
-                                    <div class="form-group col">
-                                        <i class="fas fa-map-marker"></i>
-                                        <label for="billingStreetAddress">Street Address</label>
-                                        <input type="text" class="form-control" id="billingStreetAddress"
-                                               placeholder="Street Address" name="billingStreetAddress">
+                                <div class="row">
+                                    <div class="col">
+                                        <div class="form-group md-form md-outline">
+                                            <label for="billingStreetAddress">Street Address</label>
+                                            <input type="text" class="form-control" id="billingStreetAddress"
+                                                   name="billingStreetAddress">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col">
+                                        <div class="form-group md-form md-outline">
+                                            <label for="billingApartmentOrSuite">Apartment or Suite</label>
+                                            <input type="text" class="form-control is-valid"
+                                                   id="billingApartmentOrSuite"
+                                                   name="billingApartmentOrSuite">
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="form-row">
-                                    <div class="form-group col">
-                                        <i class="fas fa-map-marker"></i>
-                                        <label for="billingApartmentOrSuite">Apartment or Suite</label>
-                                        <input type="text" class="form-control is-valid" id="billingApartmentOrSuite"
-                                               placeholder="Apartment or Suite (optional)"
-                                               name="billingApartmentOrSuite">
+                                    <div class="col">
+                                        <div class="form-group md-form md-outline">
+                                            <label for="billingZipcode">ZIP or Postal code</label>
+                                            <input type="text" class="form-control" id="billingZipcode"
+                                                   name="billingZipcode">
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="form-row">
-                                    <div class="form-group col">
-                                        <i class="fas fa-map-marker"></i>
-                                        <label for="billingZipcode">Zipcode</label>
-                                        <input type="text" class="form-control" id="billingZipcode"
-                                               placeholder="Zipcode" name="billingZipcode">
-                                    </div>
-                                </div>
-                                <div class="form-row">
-                                    <div class="form-group col">
-                                        <i class="fas fa-city"></i>
-                                        <label for="billingCity">City</label>
-                                        <select id="billingCity" class="form-control" name="billingCity">
-                                            <option value="">---</option>
-                                            <option value="Atlanta">Atlanta</option>
-                                            <option value="Los Angeles">Los Angeles</option>
-                                        </select>
+                                    <div class="col">
+                                        <div class="form-group">
+                                            <label for="billingCity">City</label>
+                                            <select id="billingCity" class="form-control" name="billingCity">
+                                                <option value="">---</option>
+                                                <option value="Atlanta">Atlanta</option>
+                                                <option value="Los Angeles">Los Angeles</option>
+                                            </select>
+                                        </div>
                                     </div>
                                     <div class="form-group col">
-                                        <i class="fas fa-city"></i>
                                         <label for="billingState">State</label>
                                         <select id="billingState" class="form-control" name="billingState">
                                             <option value="">---</option>
@@ -323,7 +343,6 @@
                                         </select>
                                     </div>
                                     <div class="form-group col">
-                                        <i class="fas fa-globe-americas"></i>
                                         <label for="billingCountry">Country</label>
                                         <select id="billingCountry" class="form-control" name="billingCountry">
                                             <option value="">---</option>
@@ -335,7 +354,8 @@
 
                         </div>
                     </div>
-                    <button class="btn btn-lg blue-gradient btn-block" id="registerBtn" type="submit">Register</button>
+                    <button class="btn btn-lg blue-gradient btn-block" id="registerBtn" type="submit">Register
+                    </button>
                 </form>
             </div>
         </div>
