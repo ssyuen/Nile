@@ -1,22 +1,10 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends "base.html" %}
+{% block base_title %}Login{% endblock %}
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-
-    {% include 'style.html' %}
-
-    <title>Login</title>
+{% block base_head %}
+    {{ super() }}
     <style>
         @media (max-width: 768px) {
-            #sep {
-                display: table !important;
-                width: 100% !important;
-                padding-bottom: 20px;
-            }
-
             #acctContainer {
                 display: table-cell;
                 width: auto !important;
@@ -28,39 +16,22 @@
             }
         }
 
-        .rounded {
-            border-radius: 15px !important;
-        }
-
         #acctContainer {
             width: 500px;
             max-width: 75%;
             margin-top: 100px;
             min-height: 100%;
         }
-
-        .form-group input {
-            height: 45px !important;
-            border-radius: 3px !important;
-        }
     </style>
-</head>
+{% endblock %}
 
-<body class="our-color complement-light">
-<div class="pb-5">
-
-    {% include 'nav.html' %}
-</div>
-<div class="container">
-    <div class="row">
-        <div class="col">
-            <div class="text-center" id="content-header">
-                <p class="primary-lg" id="account-holder">Ready to Shop?</p>
-            </div>
-        </div>
+{% block mainTitle %}
+    <div class="text-center" id="content-header">
+        <p class="primary-lg" id="account-holder">Ready to Shop?</p>
     </div>
-</div>
-<div id="sep" class="footer-sep">
+{% endblock %}
+
+{% block main %}
     <div class="container" id="acctContainer">
         <div class="rounded shadow-lg card p-5" id="acctCard">
             <div class="card-body">
@@ -112,41 +83,36 @@
             </div>
         </div>
     </div>
-</div>
-<button class="btn blue-gradient waves-light my-button" title="Register"><i
-        class="fas fa-angle-down fa-2x"></i></button>
-<script>
-    $(".my-button").click(function () {
-        $(function () {
-            var target = $('#acctContainer');
-            if (target.length) {
-                $('html,body').animate({
-                    scrollTop: target.offset().top - 120
-                }, 500);
-                return false;
+    <button class="btn blue-gradient waves-light my-button" title="Register"><i
+            class="fas fa-angle-down fa-2x"></i></button>
+    <script>
+        $(".my-button").click(function () {
+            $(function () {
+                var target = $('#acctContainer');
+                if (target.length) {
+                    $('html,body').animate({
+                        scrollTop: target.offset().top - 120
+                    }, 500);
+                    return false;
+                }
+            });
+            $('#userEmail').focus();
+        });
+
+        $("#userEmail").on("input", function (e) {
+            if ($(this).val().length) {
+                $(this).addClass("valid");
+            } else {
+                $(this).removeClass("valid");
             }
         });
-        $('#userEmail').focus();
-    });
-</script>
-<footer class="py-5 bg-dark">
-    <div class="container text-white">
-        <p class="mb-2 text-center">Copyright &copy; Nile 2020</p>
-        <div class="text-center">
-            <a class="waves-effect waves-light mr-3">
-                <i class="fab fa-twitter"></i>
-            </a>
-            <a class="waves-effect waves-light mr-3">
-                <i class="fab fa-instagram"></i>
-            </a>
-            <a class="waves-effect waves-light">
-                <i class="fab fa-facebook"></i>
-            </a>
-        </div>
-    </div>
-    <!-- /.container -->
-</footer>
 
-</body>
-
-</html>
+        $("#userPassword").on("input", function (e) {
+            if ($(this).val().length) {
+                $(this).addClass("valid");
+            } else {
+                $(this).removeClass("valid");
+            }
+        });
+    </script>
+{% endblock %}

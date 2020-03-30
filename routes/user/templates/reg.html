@@ -1,126 +1,63 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends "base.html" %}
+{% block base_title %}Registration{% endblock %}
 
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="4050 Software Engineering Project">
-    <meta name="author" content="Manu Puduvalli | Vrund Parikh | Glen George | Lok Kwong | Samuel Yuen">
+{% block base_head %}
 
-    <title>Registration</title>
+    {{ super() }}
 
-    {% include 'style.html' %}
+    <link rel="stylesheet" type="text/css" href="../../../static/user/css/reg.css">
 
     <style>
-
-        @media (max-width: 768px) {
-            #sep {
-                display: table !important;
-                width: 100% !important;
-            }
-
-            #acctContainer {
-                display: table-cell;
-                width: auto !important;
-            }
-
-            #acctContainer > #acctCard {
-                width: auto !important;
-                padding: 12px !important;
-            }
-        }
-
-        .rounded {
-            border-radius: 15px !important;
-        }
-
-        #acctContainer {
-            width: 800px;
-            max-width: 75%;
-            margin-top: 5em;
-            margin-bottom: 5em;
-            min-height: 100%;
-        }
-
-        input[type="checkbox"] {
-            height: 20px;
-            border-radius: 0 !important;
-        }
-
-        .hori-line {
-            width: 100%;
-            text-align: center;
-            border-bottom: 1px solid grey;
-            line-height: 0.1em;
-            margin: 30px 0 30px 0;
-        }
-
-        .hori-line span {
-            background: #fff;
-            padding: 0 10px;
-        }
-
-        .card-specific, .billing-address {
-            border: solid 1px lightgray;
-            border-radius: 10px;
-            padding: 20px;
-            margin-bottom: 20px
+        .main-title {
+            text-align: center !important;
         }
 
         .col-sm-6 {
             padding-bottom: 0 !important;
         }
 
-        #acctContainer input, #acctContainer select {
-            height: 45px !important;
-            border-radius: 3px !important;
+        .md-form .form-control {
+            margin-bottom: 0;
         }
     </style>
-</head>
+{% endblock %}
 
-<body class="our-color complement-light">
-<div class="pb-5">
-    {% include 'nav.html' %}
-</div>
-
-<div class="container">
-    <div class="row">
-        <div class="col">
-            <div class="text-center" id="content-header">
-                <p class="primary-lg" id="account-holder">Be Awesome. Become a Member!</p>
-            </div>
-        </div>
+{% block mainTitle %}
+    <div class="text-center" id="content-header">
+        <p class="primary-lg" id="account-holder">Be Awesome. Become a Member!</p>
     </div>
-</div>
+{% endblock %}
+<!-- Page Content -->
+{% block main %}
 
-<div id="sep" class="footer-sep">
     <div class="container" id="acctContainer">
         <div class="rounded shadow-lg card p-5" id="acctCard">
             <div class="card-body">
                 <h4 class="card-title text-center primary-md pb-4">Registration</h4>
                 {% with invalid_reg = get_flashed_messages() %}
                     {% if invalid_reg %}
-                        <p class="flashes h5 text-center" style="color: red;">
+                        <p class="flashes complement h5 text-center" style="color: red;">
                             {% for msg in invalid_reg %}
                                 {{ msg }}
                             {% endfor %}
                         </p>
                     {% endif %}
                 {% endwith %}
-                <form id="regForm" class="registration-form" method="POST">
+                <form id="regForm" class="registration-form" method="POST" novalidate>
                     <div class="form-row">
                         <div class="col-sm-6">
-                            <div class="form-group md-form md-outline ">
+                            <div class="form-group md-form md-outline">
                                 <input type="text" id="inputFirstName" class="form-control"
-                                       name="inputFirstName" required>
+                                       name="inputFirstName" data-error="First Name must me more than one character"
+                                       required>
                                 <label for="inputFirstName">First Name</label>
                             </div>
                         </div>
                         <div class="col-sm-6">
                             <div class="form-group md-form md-outline">
                                 <input type="text" id="inputLastName" class="form-control"
-                                       name="inputLastName" required>
+                                       name="inputLastName" data-error="Last Name must me more than two characters"
+                                       required>
                                 <label for="inputLastName">Last Name</label>
                             </div>
                         </div>
@@ -130,7 +67,7 @@
                         <div class="col-sm-12">
                             <div class="form-group md-form md-outline">
                                 <input type="email" id="inputEmail" class="form-control"
-                                       name="inputEmail" required>
+                                       name="inputEmail" data-error="Email is invalid" required>
                                 <label for="inputEmail">Email address</label>
                             </div>
                         </div>
@@ -140,7 +77,9 @@
                         <div class="col-sm-12">
                             <div class="form-group md-form md-outline">
                                 <input type="password" id="inputPassword" class="form-control"
-                                       name="inputPassword" required>
+                                       name="inputPassword"
+                                       data-error="Password must be more than 8 or more characters long, contain at least 1 uppercase character, 1 lowercase character, and 1 number."
+                                       required>
                                 <label for="inputPassword">Password</label>
                             </div>
                         </div>
@@ -150,7 +89,7 @@
                         <div class="col-sm-12">
                             <div class="form-group md-form md-outline">
                                 <input type="password" id="inputConfirmPassword" class="form-control"
-                                       name="inputConfirmPassword" required>
+                                       name="inputConfirmPassword" data-error="Password's do not match" required>
                                 <label for="inputConfirmPassword">Confirm Password</label>
                             </div>
                         </div>
@@ -170,7 +109,7 @@
                         </div>
                     </div>
 
-                    <div class="checkbox-holder">
+                    <div class="checkbox-holder mb-3">
                         <div class="custom-control custom-checkbox d-inline">
                             <input type="checkbox" class="custom-control-input" data-toggle="collapse"
                                    data-target="#paymentInfo" id="paymentToggler">
@@ -179,13 +118,14 @@
                     </div>
                     <!--END -- NOT FORM RELATED ITEMS-->
 
-                    <div class="mt-2 addr-opt">
+                    <div class="addr-opt">
                         <div id="addressInfo" class="collapse">
                             <div class="form-row">
                                 <div class="col-sm-12">
                                     <div class="form-group md-form md-outline">
                                         <input type="text" class="form-control" id="addAddressStreetAddress"
-                                               name="addAddressStreetAddress">
+                                               name="addAddressStreetAddress"
+                                               data-error="Street Address cannot be empty">
                                         <label for="addAddressStreetAddress">Street Address</label>
                                     </div>
                                 </div>
@@ -193,9 +133,10 @@
                             <div class="form-row">
                                 <div class="col">
                                     <div class="form-group md-form md-outline">
-                                        <input type="text" class="form-control is-valid" id="addAddressApartmentOrSuite"
-                                               name="addAddressApartmentOrSuite">
-                                        <label for="addAddressApartmentOrSuite">Apartment or Suite</label>
+                                        <input type="text" class="form-control valid" id="addAddressApartmentOrSuite"
+                                               name="addAddressApartmentOrSuite" aria-invalid="false"
+                                               data-success="This field is optional">
+                                        <label for="addAddressApartmentOrSuite">Apartment or Suite (Optional)</label>
                                     </div>
                                 </div>
                             </div>
@@ -203,7 +144,7 @@
                                 <div class="col">
                                     <div class="form-group md-form md-outline">
                                         <input type="text" class="form-control" id="addZipcode"
-                                               name="addZipcode">
+                                               name="addZipcode" data-error="ZIP or Postal code is not valid">
                                         <label for="addZipcode">ZIP or Postal code</label>
                                     </div>
                                 </div>
@@ -239,7 +180,7 @@
                     </div>
 
 
-                    <div class="form-group mt-3 payment-opt">
+                    <div class="form-group payment-opt">
                         <div id="paymentInfo" class="collapse">
                             <small>
                                 <p class="text-muted font-italic">Credit card information</p>
@@ -249,14 +190,16 @@
                                     <div class="col-sm-6">
                                         <div class="form-group md-form md-outline">
                                             <input type="text" class="form-control" id="cardHolderFirstName"
-                                                   name="cardHolderFirstName">
+                                                   name="cardHolderFirstName"
+                                                   data-error="First Name must me more than one character">
                                             <label for="cardHolderFirstName">First Name on Card</label>
                                         </div>
                                     </div>
                                     <div class="col-sm-6">
                                         <div class="form-group md-form md-outline">
                                             <input type="text" class="form-control" id="cardHolderLastName"
-                                                   name="cardHolderLastName">
+                                                   name="cardHolderLastName"
+                                                   data-error="Last Name must me more than two characters">
                                             <label for="cardHolderLastName">Last Name on Card</label>
                                         </div>
                                     </div>
@@ -268,21 +211,22 @@
                                             <div id="billingInputContainer">
                                                 <label for="ccn">Credit Card Number</label>
                                                 <input type="text" class="form-control" id="ccn" name="ccn"
-                                                       style="positon: relative">
+                                                       style="positon: relative" data-error="Credit Card is not valid.">
                                             </div>
 
                                         </div>
                                     </div>
                                     <div class="col-sm-2">
                                         <div class="form-group md-form md-outline">
-                                            <input type="text" class="form-control" id="cvv" name="cvv">
+                                            <input type="text" class="form-control" id="cvv" name="cvv"
+                                                   data-error="CVV is not valid.">
                                             <label for="cvv">CVV</label>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="form-row">
                                     <div class="col">
-                                        <div class="form-group ">
+                                        <div class="form-group">
                                             <label for="ccexp">Credit Card Expiration Date</label>
                                             <input type="month" class="form-control datepicker" id="ccexp"
                                                    name="ccexp">
@@ -300,17 +244,18 @@
                                         <div class="form-group md-form md-outline">
                                             <label for="billingStreetAddress">Street Address</label>
                                             <input type="text" class="form-control" id="billingStreetAddress"
-                                                   name="billingStreetAddress">
+                                                   name="billingStreetAddress"
+                                                   data-error="Street Address cannot be empty">
                                         </div>
                                     </div>
                                 </div>
                                 <div class="form-row">
                                     <div class="col">
                                         <div class="form-group md-form md-outline">
-                                            <label for="billingApartmentOrSuite">Apartment or Suite</label>
-                                            <input type="text" class="form-control is-valid"
-                                                   id="billingApartmentOrSuite"
-                                                   name="billingApartmentOrSuite">
+                                            <label for="billingApartmentOrSuite">Apartment or Suite (Optional)</label>
+                                            <input type="text" class="form-control valid"
+                                                   id="billingApartmentOrSuite" aria-invalid="false"
+                                                   name="billingApartmentOrSuite" data-success="This field is optional">
                                         </div>
                                     </div>
                                 </div>
@@ -319,7 +264,7 @@
                                         <div class="form-group md-form md-outline">
                                             <label for="billingZipcode">ZIP or Postal code</label>
                                             <input type="text" class="form-control" id="billingZipcode"
-                                                   name="billingZipcode">
+                                                   name="billingZipcode" data-error="ZIP or Postal code is not valid">
                                         </div>
                                     </div>
                                 </div>
@@ -353,49 +298,29 @@
                             </div>
                         </div>
                     </div>
-                    <button class="btn btn-lg blue-gradient btn-block" id="registerBtn" type="submit">Register
+                    <button class="btn btn-lg blue-gradient btn-block mt-4" id="registerBtn" type="submit">Register
                     </button>
                 </form>
             </div>
         </div>
     </div>
-</div>
-<footer class="py-5 bg-dark">
-    <div class="container text-white">
-        <p class="mb-2 text-center">Copyright &copy; Nile 2020</p>
-        <div class="text-center">
-            <a class="waves-effect waves-light mr-3">
-                <i class="fab fa-twitter"></i>
-            </a>
-            <a class="waves-effect waves-light mr-3">
-                <i class="fab fa-instagram"></i>
-            </a>
-            <a class="waves-effect waves-light">
-                <i class="fab fa-facebook"></i>
-            </a>
-        </div>
-    </div>
-    <!-- /.container -->
-</footer>
 
-<button class="btn blue-gradient waves-light my-button" title="Register"><i
-        class="fas fa-angle-down fa-2x"></i></button>
-<script>
-    $(".my-button").click(function () {
-        $(function () {
-            let target = $('#acctContainer');
-            if (target.length) {
-                $('html, body').animate({
-                    scrollTop: target.offset().top - 45
-                }, 200);
-                return false;
-            }
+    <button class="btn blue-gradient waves-light my-button" title="Register"><i
+            class="fas fa-angle-down fa-2x"></i></button>
+    <script>
+        $(".my-button").click(function () {
+            $(function () {
+                let target = $('#acctContainer');
+                if (target.length) {
+                    $('html, body').animate({
+                        scrollTop: target.offset().top - 45
+                    }, 200);
+                    return false;
+                }
+            });
+            $("#inputFirstName").focus();
         });
-        $("#inputFirstName").focus();
-    });
-</script>
-<script defer src="../../../static/user/js/regform.js" type="module"></script>
+    </script>
+    <script defer src="../../../static/user/js/regform.js" type="module"></script>
 
-
-</body>
-</html>
+{% endblock %}

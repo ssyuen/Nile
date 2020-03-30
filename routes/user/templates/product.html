@@ -1,16 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends "base.html" %}
+{% block base_title %}Book Title Here{% endblock %}
 
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="4050 Software Engineering Project">
-    <meta name="author" content="Manu Puduvalli | Vrund Parikh | Glen George | Lok Kwong | Samuel Yuen">
-
-    <title>Nile - Book Title Here</title>
-
-    {% include 'style.html' %}
-
+{% block base_head %}
+    {{ super() }}
     <style>
         @media (max-width: 991px) {
             .book-info {
@@ -22,34 +14,27 @@
             font-weight: bold;
         }
     </style>
-</head>
-<body class="our-color">
-<div class="pb-5">
-    {% include 'nav.html' %}
-</div>
+{% endblock %}
 
-<div class="container">
-    <div class="row">
-        <div class="col mb-4">
-            <div class="text-left" id="content-header">
-                <p class="primary-lg" id="bookTitle">Harry Potter and the Sourcerer's Stone</p>
-                <p class="complement-light" id="type">
-                    <span>Author:&nbsp&nbsp</span>J.K. Rowling
-                </p>
-            </div>
-        </div>
+{% block mainTitle %}
+    <div class="text-left" id="content-header">
+        <p class="primary-lg" id="bookTitle">Harry Potter and the Sourcerer's Stone</p>
+        <p class="complement-light" id="type">
+            <span>Author:&nbsp&nbsp</span>J.K. Rowling
+        </p>
     </div>
-</div>
-<div class="container footer-sep">
-    <div class="row">
-        <div class="col-lg-3">
+{% endblock %}
+{% block main %}
 
-            <aside>
-                <img class="responsive w-100" src="../static/images/Books/HP_Sourcerer.jpg" alt="">
+    <div class="container footer-sep">
+        <div class="row">
+            <div class="col-lg-3">
+                <aside>
+                    <img class="responsive w-100" src="../static/images/Books/HP_Sourcerer.jpg" alt="">
 
-                <li class="list-group-item mt-3 w-100 rounded">
+                    <li class="list-group-item mt-3 w-100 rounded">
 
-                    <div class="price-wrap primary-md" id="totalPriceWrapContainer">
+                        <div class="price-wrap primary-md" id="totalPriceWrapContainer">
 
                         <span class="primary-sm justify-content-center">Price (USD):</span>
 
@@ -130,24 +115,6 @@
     </div>
 </div>
 
-
-<footer class="py-5 bg-dark">
-    <div class="container text-white">
-        <p class="mb-2 text-center">Copyright &copy; Nile 2020</p>
-        <div class="text-center">
-            <a class="waves-effect waves-light mr-3">
-                <i class="fab fa-twitter"></i>
-            </a>
-            <a class="waves-effect waves-light mr-3">
-                <i class="fab fa-instagram"></i>
-            </a>
-            <a class="waves-effect waves-light">
-                <i class="fab fa-facebook"></i>
-            </a>
-        </div>
-    </div>
-</footer>
-
 <script>
     $("#addToCartBtn").click(function () {
         if ($(this).hasClass("blue-gradient")) {
@@ -183,7 +150,4 @@
         });
     }
 </script>
-
-
-</body>
-</html>
+{% endblock %}

@@ -4,12 +4,13 @@
 {% block head %}
     {{ super() }}
     <style>
-
+        .md-form .form-control {
+            margin-bottom: 0;
+        }
     </style>
 {% endblock %}
 
 {% block content %}
-
     <div class="card-image"
          style="background-image: url(https://mdbootstrap.com/img/Photos/Horizontal/Work/4-col/img%20%2814%29.jpg)">
         <!-- Content -->
@@ -36,40 +37,36 @@
     <!-- Content -->
     <div class="card-body white change-my-name">
         <h4 class="text-uppercase font-weight-bold my-4" id="nameDetails">Details</h4>
-
         <form id="changeNameForm" class="profile-form" method="POST">
-            <div class="form-group">
-                <div class="form-row mb-3">
-                    <div class="col">
-                        <i class="fas fa-user prefix"></i>
-                        <label for="inputFirstname">First Name</label>
-                        <div class="input-group" id="inputFirstnameGroup">
-                            <input id="inputFirstname" type="text" class="form-control" placeholder="First Name"
-                                   aria-label="First Name" readonly value="Manu">
-                            <div class="input-group-append">
-                                <button class="btn btn-outline-warning m-0 px-3 py-2 z-depth-0 waves-effect"
-                                        type="button"
-                                        id="editFirstnameBtn">Edit
-                                </button>
-                            </div>
+            <div class="form-row mb-5">
+                <div class="col">
+                    <i class="fas fa-user prefix"></i>
+                    <label for="inputFirstname">First Name</label>
+                    <div class="input-group form-group mb-0" id="inputFirstnameGroup">
+                        <input id="inputFirstname" type="text" class="form-control"
+                               placeholder="First Name" readonly
+                               aria-label="First Name" value="Manu">
+                        <div class="input-group-append">
+                            <button class="btn btn-outline-warning m-0 px-3 py-2 z-depth-0 waves-effect"
+                                    type="button"
+                                    id="editFirstnameBtn">Edit
+                            </button>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="form-group">
-                <div class="form-row">
-                    <div class="col">
-                        <i class="fas fa-user prefix"></i>
-                        <label for="inputLastname">Last Name</label>
-                        <div class="input-group" id="inputLastnameGroup">
-                            <input id="inputLastname" type="text" class="form-control" placeholder="Last Name"
-                                   aria-label="Last Name" readonly value="Puduvalli">
-                            <div class="input-group-append">
-                                <button class="btn btn-outline-warning m-0 px-3 py-2 z-depth-0 waves-effect"
-                                        type="button"
-                                        id="editLastnameBtn">Edit
-                                </button>
-                            </div>
+            <div class="form-row">
+                <div class="col">
+                    <i class="fas fa-user prefix"></i>
+                    <label for="inputLastname">Last Name</label>
+                    <div class="input-group form-group mb-0" id="inputLastnameGroup">
+                        <input id="inputLastname" type="text" class="form-control" placeholder="Last Name"
+                               aria-label="Last Name" value="Puduvalli" readonly>
+                        <div class="input-group-append">
+                            <button class="btn btn-outline-warning m-0 px-3 py-2 z-depth-0 waves-effect"
+                                    type="button" disabled
+                                    id="editLastnameBtn">Edit
+                            </button>
                         </div>
                     </div>
                 </div>

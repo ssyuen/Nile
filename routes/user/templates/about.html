@@ -1,16 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends "base.html" %}
+{% block base_title %}About{% endblock %}
 
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="4050 Software Engineering Project">
-    <meta name="author" content="Manu Puduvalli | Vrund Parikh | Glen George | Lok Kwong | Samuel Yuen">
-
-    <title>Nile - Bookstore - Browse Books</title>
-
-    {% include 'style.html' %}
-
+{% block base_head %}
+    {{ super() }}
     <style>
         .hrst {
             margin-top: 50px;
@@ -18,63 +10,23 @@
             border-top: 1px solid #8c8b8b;
         }
     </style>
-</head>
+{% endblock %}
 
-<body class="our-color">
-<div class="pb-5">
-    <!-- Navigation -->
-    {% include 'nav.html' %}
-</div>
-{% with valid_login = get_flashed_messages() %}
-    {% if valid_login %}
-
-        <p class="flashes h5 text-center" style="color: green;">
-            {% for msg in valid_login %}
-                {{ msg }}
-            {% endfor %}
-        </p>
-    {% endif %}
-{% endwith %}
-<div class="container">
-    <div class="row">
-        <div class="col mb-4">
-            <div class="text-left" id="content-header">
-                <p class="primary-lg" id="account-holder">Welcome to The Nile.</p>
-            </div>
-        </div>
+{% block mainTitle %}
+    <div class="text-left" id="content-header">
+        <p class="primary-lg" id="account-holder">Welcome to The Nile.</p>
     </div>
-</div>
+{% endblock %}
 <!-- Page Content -->
-<div class="container footer-sep" id="mainContent">
-    <p class="text-left complement-light">
-        Nile is an online Bookstore Platform. We have have books that all ages can enjoy!
-        Come explore the variety of categories which include fictional adventures, informational columns,
-        and children's stories that your little one can enjoy. Dive into our platform and see all that
-        you can discover!
-    </p>
-    <hr class="hrst">
-    <div id="image-profile">
-
+{% block main %}
+    <!-- Page Content -->
+    <div class="container footer-sep" id="mainContent">
+        <p class="text-left complement-light">
+            Nile is an online Bookstore Platform. We have have books that all ages can enjoy!
+            Come explore the variety of categories which include fictional adventures, informational columns,
+            and children's stories that your little one can enjoy. Dive into our platform and see all that
+            you can discover!
+        </p>
+        <hr class="hrst">
     </div>
-</div>
-<!-- Footer -->
-<footer class="py-5 bg-dark">
-    <div class="container text-white">
-        <p class="mb-2 text-center">Copyright &copy; Nile 2020</p>
-        <div class="text-center">
-            <a class="waves-effect waves-light mr-3">
-                <i class="fab fa-twitter"></i>
-            </a>
-            <a class="waves-effect waves-light mr-3">
-                <i class="fab fa-instagram"></i>
-            </a>
-            <a class="waves-effect waves-light">
-                <i class="fab fa-facebook"></i>
-            </a>
-        </div>
-    </div>
-    <!-- /.container -->
-</footer>
-</body>
-
-</html>
+{% endblock %}

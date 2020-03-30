@@ -1,72 +1,25 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends "base.html" %}
+{% block base_title %}My Cart{% endblock %}
 
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="4050 Software Engineering Project">
-    <meta name="author" content="Manu Puduvalli | Vrund Parikh | Glen George | Lok Kwong | Samuel Yuen">
-
-    <title>Shopping Cart</title>
-
-    {% include 'style.html' %}
-
+{% block base_head %}
+    {{ super() }}
     <style>
-        .table-shopping-cart.table td,
-        .table-shopping-cart.table th {
-            padding-left: 1.25rem;
-            padding-right: 1.25rem;
-        }
-
-        .table-borderless th,
-        .table-borderless td,
-        .table-borderless thead th,
-        .table-borderless tbody + tbody {
-            border: 0;
-        }
-
-        .table th,
-        .table td {
-            padding: 0.75rem;
-            vertical-align: top;
-            border-top: 1px solid #dee2e6;
-        }
-
-        .table {
-            width: 100%;
-            margin-bottom: 1rem;
-            color: #343a40;
-            background-color: transparent;
-        }
-
-        table {
-            border-collapse: collapse;
-        }
-
         @media (max-width: 768px) {
             #cartPricingWrapper {
                 padding-top: 20px;
             }
         }
     </style>
-</head>
+    <link rel="stylesheet" type="text/css" href="../../../static/user/css/cart.css">
+{% endblock %}
 
-<body class="our-color">
-<div class="pb-5">
-    {% include 'nav.html' %}
-</div>
-
-<div class="container">
-    <div class="row">
-        <div class="col mb-4">
-            <div class="text-left" id="content-header">
-                <p class="primary-lg" id="account-holder">My Shopping Cart.</p>
-            </div>
-        </div>
+{% block mainTitle %}
+    <div class="text-left" id="content-header">
+        <p class="primary-lg" id="account-holder">My Shopping Cart.</p>
     </div>
-</div>
+{% endblock %}
 
-<div class="footer-sep mb-5">
+{% block main %}
     <div class="container">
         <div class="row">
             <main class="col-md-9">
@@ -244,26 +197,6 @@
         </div>
 
     </div> <!-- container .//  -->
-</div>
-<footer class="py-5 bg-dark">
-    <div class="container text-white">
-        <p class="mb-2 text-center">Copyright &copy; Nile 2020</p>
-        <div class="text-center">
-            <a class="waves-effect waves-light mr-3">
-                <i class="fab fa-twitter"></i>
-            </a>
-            <a class="waves-effect waves-light mr-3">
-                <i class="fab fa-instagram"></i>
-            </a>
-            <a class="waves-effect waves-light">
-                <i class="fab fa-facebook"></i>
-            </a>
-        </div>
-    </div>
-</footer>
 
-<script src="../../../static/user/js/shoppingcart.js" type="module"></script>
-
-</body>
-
-</html>
+    <script src="../../../static/user/js/shoppingcart.js" type="module"></script>
+{% endblock %}

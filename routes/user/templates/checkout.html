@@ -1,14 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends "base.html" %}
+{% block base_title %}Checkout{% endblock %}
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Checkout</title>
-
-    {% include 'style.html' %}
-
+{% block base_head %}
+    {{ super() }}
     <style>
         .checkoutSideBarCardPrice {
             padding-left: 1em;
@@ -20,25 +14,15 @@
         }
 
     </style>
+{% endblock %}
 
-</head>
-
-<body class="our-color">
-{% include 'nav.html' %}
-
-<div class="container">
-    <div class="row mt-xl-5" id="cust-info">
-        <div class="col mb-5">
-            <div class="text-left" id="welcome">
-                <p class="primary-lg" id="account-holder">Checkout.</p>
-            </div>
-        </div>
+{% block mainTitle %}
+    <div class="text-left" id="welcome">
+        <p class="primary-lg" id="account-holder">Checkout.</p>
     </div>
-</div>
-
-
-<!--Main layout-->
-<main class="footer-sep">
+{% endblock %}
+<!-- Page Content -->
+{% block main %}
     <div class="container wow fadeIn">
         <div class="row">
             <div class="col-md-8 mb-4">
@@ -329,24 +313,4 @@
         </div>
         <!--Grid row-->
     </div>
-</main>
-<!--Main layout-->
-
-<!--/.Footer-->
-<footer class="py-5 bg-dark">
-    <div class="container text-white">
-        <p class="mb-2 text-center">Copyright &copy; Nile 2020</p>
-        <div class="text-center">
-            <a class="waves-effect waves-light mr-3">
-                <i class="fab fa-twitter"></i>
-            </a>
-            <a class="waves-effect waves-light mr-3">
-                <i class="fab fa-instagram"></i>
-            </a>
-            <a class="waves-effect waves-light">
-                <i class="fab fa-facebook"></i>
-            </a>
-        </div>
-    </div>
-</footer>
-</body>
+{% endblock %}
