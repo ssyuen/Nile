@@ -47,7 +47,7 @@ export class InputValidationComplex {
 `, "#invalidZip"];
     static INVALID_CCN_MSS: [string, string] = [`
         <small class="text-danger error-message" id="invalidCCN">
-          Credit Card is not valid.
+          We support AMEX, Discover, Visa, and Mastercard
         </small>
 `, "#invalidCCN"];
     static INVALID_CVV_MSS: [string, string] = [`
@@ -95,7 +95,7 @@ export class InputValidationComplex {
     }
 
     public static creditCardConstraint(cc: CreditCard): boolean {
-        return cc.checkCard();
+        return cc.checkNetwork()
     }
 
     public static cvvConstraint(cc: CreditCard): boolean {
@@ -104,6 +104,12 @@ export class InputValidationComplex {
 
     public setValidity(elem: HTMLInputElement, loc: HTMLElement | string, purpose: IPurpose, constr: boolean) {
         this.curr_validity[elem.id] = this.validator(elem, loc, purpose['template'], constr);
+    }
+
+    public static scrollTopOfSelector(selectorPlace: string): any {
+        $([document.documentElement, document.body]).animate({
+            scrollTop: $(selectorPlace).offset().top
+        }, 500);
     }
 
     public validateAll(selectorPlace: string): boolean {
@@ -117,15 +123,10 @@ export class InputValidationComplex {
             let req: boolean = document.getElementById(key).hasAttribute('required');
 
             if (req && !value) {
-                let ct: JQuery<HTMLElement> = $(selectorPlace);
-
-                if ($('#somethingWrong').length === 0)
-                    ct.after(errorHTML);
-
-                $([document.documentElement, document.body]).animate({
-                    scrollTop: ct.offset().top
-                }, 500);
-
+                if ($('#somethingWrong').length === 0) {
+                    $(selectorPlace).after(errorHTML);
+                }
+                InputValidationComplex.scrollTopOfSelector(selectorPlace);
                 return false;
             }
         }
@@ -226,7 +227,7 @@ export class CreditCard {
 
     private ccn: string;
     private cvv: string;
-    private provider: string;
+    private _provider: string;
 
     private network = {
         Visa: /^4[0-9]{12}(?:[0-9]{3})?$/,
@@ -238,17 +239,19 @@ export class CreditCard {
     constructor(no: string = '', cvv: string = '') {
         this.ccn = CreditCard.normalize(no);
         this.cvv = CreditCard.normalize(cvv);
-        this.provider = null;
+        this._provider = null;
     }
 
     public static toggleCardIcon(ccnInput: HTMLInputElement, cardClass = "") {
-        let ref = $('.billing-card');
-        let s = `<i class="billing-card fab fa-2x ${cardClass}" style="position: absolute; right: 10px; bottom: 6.5px;"></i>`;
+        if (!$(".billing-card").length) {
+            let ref = $('.billing-card');
+            let s = `<i class="billing-card fab fa-2x ${cardClass}" style="position: absolute; right: 10px; bottom: 6.5px;"></i>`;
 
-        if (!cardClass.length) {
-            $(ref).remove();
-        } else {
-            $(ccnInput).after(s);
+            if (!cardClass.length) {
+                $(ref).remove();
+            } else {
+                $(ccnInput).after(s);
+            }
         }
     }
 
@@ -263,7 +266,7 @@ export class CreditCard {
     }
 
     getProvider(): string {
-        return this.provider;
+        return this._provider;
     }
 
     setCVV(cvv: string): any {
@@ -271,7 +274,6 @@ export class CreditCard {
     }
 
     checkCard(): boolean {
-
         if (!this.ccn) {
             return false;
         }
@@ -279,9 +281,6 @@ export class CreditCard {
         if (!this.checkLuhn()) {
             return false;
         }
-
-        //If the card is in our network
-        return this.checkNetwork();
     }
 
     checkCVV(): boolean {
@@ -307,14 +306,14 @@ export class CreditCard {
         return (sum % 10) == 0;
     }
 
-    private checkNetwork(): boolean {
+    public checkNetwork(): boolean {
         let ref = this;
         Object.keys(this.network).forEach(function (key) {
             let regex = ref.network[key];
             if (regex.test(ref.ccn)) {
-                ref.provider = key;
+                ref._provider = key;
             }
         });
-        return this.provider !== null;
+        return this._provider !== null;
     }
 }

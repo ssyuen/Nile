@@ -321,6 +321,14 @@
             $("#inputFirstName").focus();
         });
     </script>
+    <script>
+        $(function () {
+            let now = new Date();
+            let min = new Date(now.getFullYear(), now.getMonth() + 1, 1);
+            let minMonth = ("0" + (min.getMonth() + 1)).slice(-2);
+            $("#ccexp").attr("min", `${now.getFullYear()}-${minMonth}`)
+        })
+    </script>
     <script defer src="../../../static/user/js/regform.js" type="module"></script>
 
 {% endblock %}

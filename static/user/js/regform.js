@@ -41,12 +41,25 @@ $(FORM).on("submit", function (e) {
         e.preventDefault();
         return false;
     }
+    let addressCheck = $("#addressToggler").is(":checked");
+    let paymentCheck = $("#paymentToggler").is(":checked");
+    if (paymentCheck) {
+        if (!cc.checkCard()) {
+            $('.card-title').after(`<p class="text-center text-danger" id="somethingWrong">
+                The Credit Card number you provided is invalid
+                </p>`);
+            $(CCN).addClass("invalid").removeClass("valid");
+            InputValidationComplex.scrollTopOfSelector('.card-title');
+            e.preventDefault();
+            return false;
+        }
+    }
     $("#registerBtn").prop("disabled", true);
-    if (!$("#addressToggler").is(":checked")) {
+    if (!addressCheck) {
         $('#addressInfo input').val('');
         $('#addressInfo select').empty();
     }
-    if (!$("#paymentToggler").is(":checked")) {
+    if (!paymentCheck) {
         $('#paymentInfo input').val('');
         $('#paymentInfo select').empty();
     }

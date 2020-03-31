@@ -37,15 +37,25 @@ export class InputValidationComplex {
     static zipCodeConstraint(value) {
         return (/^\d{5}$|^\d{5}-\d{4}$/).test(value);
     }
+
     static creditCardConstraint(cc) {
-        return cc.checkCard();
+        return cc.checkNetwork();
     }
+
     static cvvConstraint(cc) {
         return cc.checkCVV();
     }
+
     setValidity(elem, loc, purpose, constr) {
         this.curr_validity[elem.id] = this.validator(elem, loc, purpose['template'], constr);
     }
+
+    static scrollTopOfSelector(selectorPlace) {
+        $([document.documentElement, document.body]).animate({
+            scrollTop: $(selectorPlace).offset().top
+        }, 500);
+    }
+
     validateAll(selectorPlace) {
         let errorHTML = `<p class="text-center text-danger" id="somethingWrong">
                 One or more of the fields were incomplete or invalid
@@ -54,17 +64,16 @@ export class InputValidationComplex {
             let value = this.curr_validity[key];
             let req = document.getElementById(key).hasAttribute('required');
             if (req && !value) {
-                let ct = $(selectorPlace);
-                if ($('#somethingWrong').length === 0)
-                    ct.after(errorHTML);
-                $([document.documentElement, document.body]).animate({
-                    scrollTop: ct.offset().top
-                }, 500);
+                if ($('#somethingWrong').length === 0) {
+                    $(selectorPlace).after(errorHTML);
+                }
+                InputValidationComplex.scrollTopOfSelector(selectorPlace);
                 return false;
             }
         }
         return true;
     }
+
     /*
         Generalized validation function
      */
@@ -137,7 +146,7 @@ InputValidationComplex.INVALID_ZIP_MSS = [`
 `, "#invalidZip"];
 InputValidationComplex.INVALID_CCN_MSS = [`
         <small class="text-danger error-message" id="invalidCCN">
-          Credit Card is not valid.
+          We support AMEX, Discover, Visa, and Mastercard
         </small>
 `, "#invalidCCN"];
 InputValidationComplex.INVALID_CVV_MSS = [`
@@ -193,15 +202,17 @@ export class CreditCard {
         };
         this.ccn = CreditCard.normalize(no);
         this.cvv = CreditCard.normalize(cvv);
-        this.provider = null;
+        this._provider = null;
     }
     static toggleCardIcon(ccnInput, cardClass = "") {
-        let ref = $('.billing-card');
-        let s = `<i class="billing-card fab fa-2x ${cardClass}" style="position: absolute; right: 10px; bottom: 6.5px;"></i>`;
-        if (!cardClass.length) {
-            $(ref).remove();
-        } else {
-            $(ccnInput).after(s);
+        if (!$(".billing-card").length) {
+            let ref = $('.billing-card');
+            let s = `<i class="billing-card fab fa-2x ${cardClass}" style="position: absolute; right: 10px; bottom: 6.5px;"></i>`;
+            if (!cardClass.length) {
+                $(ref).remove();
+            } else {
+                $(ccnInput).after(s);
+            }
         }
     }
     static normalize(ccn) {
@@ -213,7 +224,7 @@ export class CreditCard {
         this.ccn = CreditCard.normalize(ccn);
     }
     getProvider() {
-        return this.provider;
+        return this._provider;
     }
     setCVV(cvv) {
         this.cvv = CreditCard.normalize(cvv);
@@ -225,8 +236,6 @@ export class CreditCard {
         if (!this.checkLuhn()) {
             return false;
         }
-        //If the card is in our network
-        return this.checkNetwork();
     }
     checkCVV() {
         return (/^[0-9]{3,4}$/).test(this.cvv);
@@ -255,9 +264,9 @@ export class CreditCard {
         Object.keys(this.network).forEach(function (key) {
             let regex = ref.network[key];
             if (regex.test(ref.ccn)) {
-                ref.provider = key;
+                ref._provider = key;
             }
         });
-        return this.provider !== null;
+        return this._provider !== null;
     }
 }
