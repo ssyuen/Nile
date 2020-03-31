@@ -17,13 +17,13 @@ FORM.addEventListener("submit", function (e) {
 Array('input', 'focusin').forEach((evt) => {
     F_NAME.addEventListener(evt, function () {
         if ($(F_NAME).is("[readonly]"))
-            return;
+            return false;
         let loc = "#inputFirstnameGroup";
         vc.setValidity(this, loc, PURPOSE.Firstname, PURPOSE.Firstname.constraint(this.value));
     });
     L_NAME.addEventListener(evt, function () {
         if ($(L_NAME).is("[readonly]"))
-            return;
+            return false;
         let loc = "#inputLastnameGroup";
         vc.setValidity(this, loc, PURPOSE.Lastname, PURPOSE.Lastname.constraint(this.value));
     });

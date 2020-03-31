@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% block base_head %}
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta name="description" content="4050 Software Engineering Project">
+        <meta name="author" content="Manu Puduvalli | Samuel Yuen | Glen George | Lok Kwong | Vrund Parikh">
+        <title>{% block base_title %}{% endblock %} - Nile</title>
+
+        {% include 'common_links.html' %}
+    {% endblock %}
+</head>
+<body class="our-color">
+<div class="pb-5">
+    <!-- Navigation -->
+    {% include 'nav.html' %}
+</div>
+
+{% set titleable = true %}
+
+{% if titleable %}
+    <div class="container">
+        <div class="row">
+            <div class="col mb-4">
+                {% block mainTitle %}
+                {% endblock %}
+            </div>
+        </div>
+    </div>
+{% endif %}
+
+<!-- Page Content -->
+<div class="footer-sep main-content-container" id="mainContent">
+    {% block main %} {# Don't erase the minus sign near the percent. It cleans up HTML #}
+    {% endblock %}
+</div>
+
+<footer class="py-5 bg-dark footer-separator">
+    <div class="container text-white">
+        <p class="mb-2 text-center">Copyright &copy; Nile 2020</p>
+        <div class="text-center">
+            <a class="waves-effect waves-light mr-3">
+                <i class="fab fa-twitter"></i>
+            </a>
+            <a class="waves-effect waves-light mr-3">
+                <i class="fab fa-instagram"></i>
+            </a>
+            <a class="waves-effect waves-light">
+                <i class="fab fa-facebook"></i>
+            </a>
+        </div>
+    </div>
+</footer>
+
+</body>
+</html>

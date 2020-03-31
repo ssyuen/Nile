@@ -385,28 +385,11 @@ def product():
 def add_to_cart():
     return ''
 
-
-# @login_required func decorator needs to be implemented for all user routes
-"""User Routes"""
-@user_bp.route('/billingaddress/')
-@login_required
-@cart_session
-def billing_address():
-    return render_template('./billingaddress.html')
-
-
 @user_bp.route('/checkout/')
 @login_required
 @cart_session
 def checkout():
     return render_template('./checkout.html')
-
-
-@user_bp.route('/paymentinfo/')
-@login_required
-@cart_session
-def payment_info():
-    return render_template('./paymentinfo.html')
 
 
 @user_bp.route('/base_profile/', methods=['GET'])

@@ -1,0 +1,49 @@
+@media (max-width: 768px) {
+    #sep {
+        display: table !important;
+        width: 100% !important;
+    }
+
+    #acctContainer {
+        display: table-cell;
+        width: auto !important;
+    }
+
+    #acctContainer > #acctCard {
+        width: auto !important;
+        padding: 12px !important;
+    }
+}
+
+#acctContainer {
+    width: 800px;
+    max-width: 75%;
+    margin-top: 5em;
+    margin-bottom: 5em;
+    min-height: 100%;
+}
+
+input[type="checkbox"] {
+    height: 20px;
+    border-radius: 0 !important;
+}
+
+.hori-line {
+    width: 100%;
+    text-align: center;
+    border-bottom: 1px solid grey;
+    line-height: 0.1em;
+    margin: 30px 0 30px 0;
+}
+
+.hori-line span {
+    background: #fff;
+    padding: 0 10px;
+}
+
+.card-specific, .billing-address {
+    border: solid 1px lightgray;
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 20px
+}
