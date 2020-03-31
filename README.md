@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="static/images/Misc/Nile Dark Text.png">
+  <img src="static/images/Misc/Nile Dark Text Rectangular.png">
 </p>
 
 # Site
