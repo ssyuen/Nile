@@ -19,20 +19,22 @@
 
 {% set titleable = true %}
 
-{% if titleable %}
-    <div class="container">
-        <div class="row">
-            <div class="col mb-4">
-                {% block mainTitle %}
-                {% endblock %}
+{% block show_title %}
+    {% if titleable %}
+        <div class="container">
+            <div class="row">
+                <div class="col mb-4">
+                    {% block mainTitle %}
+                    {% endblock %}
+                </div>
             </div>
         </div>
-    </div>
-{% endif %}
+    {% endif %}
+{% endblock show_title %}
 
 <!-- Page Content -->
 <div class="footer-sep main-content-container" id="mainContent">
-    {% block main %} {# Don't erase the minus sign near the percent. It cleans up HTML #}
+    {% block main %}
     {% endblock %}
 </div>
 
