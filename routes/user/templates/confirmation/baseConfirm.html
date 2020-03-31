@@ -1,13 +1,11 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends "base.html" %}
+{% block base_title %}
+    {% block title %}{% endblock %} Confirmation
+{% endblock %}
 
-<head>
+{% block base_head %}
+    {{ super() }}
     {% block head %}
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <meta http-equiv="X-UA-Compatible" content="ie=edge">
-        <title>{% block title %}{% endblock %} Confirmation</title>
-        {% include 'common_links.html' %}
         <style>
             @media (max-width: 768px) {
                 #acctContainer {
@@ -30,15 +28,12 @@
                 min-height: 100%;
             }
         </style>
-    {% endblock %}
-</head>
+    {% endblock head %}
+{% endblock base_head %}
 
-<body class="our-color">
-<div class="pb-5">
-    <!-- Navigation -->
-    {% include 'nav.html' %}
-</div>
-<div class="footer-sep">
+{% set titleable = false %}
+
+{% block main %}
     <div class="container" id="acctContainer">
         <div class="card">
             <div class="card-body">
@@ -56,22 +51,4 @@
             </div>
         </div>
     </div>
-</div>
-<footer class="py-5 bg-dark">
-    <div class="container text-white">
-        <p class="mb-2 text-center">Copyright &copy; Nile 2020</p>
-        <div class="text-center">
-            <a class="waves-effect waves-light mr-3">
-                <i class="fab fa-twitter"></i>
-            </a>
-            <a class="waves-effect waves-light mr-3">
-                <i class="fab fa-instagram"></i>
-            </a>
-            <a class="waves-effect waves-light">
-                <i class="fab fa-facebook"></i>
-            </a>
-        </div>
-    </div>
-    <!-- /.container -->
-</footer>
-</body>
+{% endblock %}
