@@ -2,7 +2,6 @@
   <img src="static/images/Misc/Nile Dark Text Rectangular.png">
 </p>
 
-# Site
 https://www.nilebookstore.com
 
 - **LET SAM KNOW IF YOU NEED HIM TO PULL CHANGES TO MASTER ON HOSTING SERVER**
