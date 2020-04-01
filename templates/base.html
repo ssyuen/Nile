@@ -38,20 +38,120 @@
     {% endblock %}
 </div>
 
-<footer class="py-5 bg-dark footer-separator">
-    <div class="container text-white">
-        <p class="mb-2 text-center">Copyright &copy; Nile 2020</p>
-        <div class="text-center">
-            <a class="waves-effect waves-light mr-3">
-                <i class="fab fa-twitter"></i>
-            </a>
-            <a class="waves-effect waves-light mr-3">
-                <i class="fab fa-instagram"></i>
-            </a>
-            <a class="waves-effect waves-light">
-                <i class="fab fa-facebook"></i>
-            </a>
+<footer class="page-footer font-small bg-dark pt-4">
+    <div class="container text-md-left">
+        <div class="row">
+            <div class="col-md-6 mx-auto">
+                <h5 class="font-weight-bold text-uppercase text-center mt-3 mb-4">The Nile Bookstore</h5>
+                <p>Thanks for visiting our site. <strong>Disclaimer! This site is not real.</strong> It was made
+                    to fulfil our term project requirement for CSCI 4050 - Software Engineering class at The University
+                    of Georgia. Our talented team include: <strong>Manu Puduvalli, Sam Yuen, Vrund Parikh, Lok Kwong,
+                        and
+                        Glen George</strong></p>
+                <p>Our application stack includes:</p>
+                <ul>
+                    <li>Bootstrap Framework</li>
+                    <li>MDBootstrap Framework</li>
+                    <li>Vanilla JavaScript/JQuery</li>
+                    <li>MySQL</li>
+                    <li>Flask + Python</li>
+                    <li>TypeScript</li>
+                </ul>
+            </div>
+            <hr class="clearfix w-100 d-md-none">
+            <div class="col-md-6 text-center mx-auto">
+                <h5 class="font-weight-bold text-uppercase mt-3 mb-4">Relevant Links</h5>
+                <ul class="list-unstyled">
+                    <li class="mb-4">
+                        <strong><a href="https://github.com/ssyuen/nile" target="_blank">Nile Source
+                            Repository</a></strong>
+                    </li>
+
+                    <li class="mb-4">
+                        <a href="https://github.com/ssyuen/" target="_blank">Github: Samuel Yuen</a>
+                    </li>
+
+                    <li class="mb-4">
+                        <a href="https://github.com/manu-p-1/" target="_blank">Github: Manu Puduvalli</a>
+                    </li>
+
+                    <li class="mb-4">
+                        <a href="https://github.com/Lok-Kwong" target="_blank">Github: Lok Kwong</a>
+                    </li>
+
+                    <li class="mb-4">
+                        <a href="https://github.com/glengeorge98" target="_blank">Github: Glen George</a>
+                    </li>
+
+                    <li class="mb-4">
+                        <a href="https://github.com/vrund99" target="_blank">Github: Vrund Parikh</a>
+                    </li>
+                </ul>
+            </div>
+            <hr class="clearfix w-100 d-md-none">
         </div>
+    </div>
+    <hr>
+    <ul class="list-unstyled list-inline text-center py-2">
+        <li class="list-inline-item">
+            <h5 class="mb-1 complement">Register for free</h5>
+        </li>
+        <li class="list-inline-item">
+            <a href="/register/" class="href">
+                <button class="btn aqua-gradient btn-rounded btn-sm primary waves-effect waves-light sign-btn"
+                        id="signUpBtn">Sign Up
+                </button>
+            </a>
+        </li>
+        <li class="list-inline-item">
+            <form class="form-inline complement" action="{{ url_for('books_bp.query_books') }}">
+                <div class="container-fluid search-group-parent">
+                    <div class="input-group">
+                        <input id="mainSearchSys" class="form-control" type="text" placeholder="Search"
+                               aria-label="Search"
+                               style="width: 500px;"
+                               name="search_query">
+                        <div class="input-group-append">
+                            <button id="mainSearchSysBtn"
+                                    class="btn blue-gradient btn-rounded m-0 px-4 py-2 z-depth-0 waves-effect mr-3"
+                                    type="submit"><i class="fas fa-search" aria-hidden="true"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </li>
+    </ul>
+    <hr>
+    <ul class="list-unstyled list-inline text-center">
+        <li class="list-inline-item">
+            <a class="btn-floating btn-fb mx-1">
+                <i class="fab fa-facebook-f"> </i>
+            </a>
+        </li>
+        <li class="list-inline-item">
+            <a class="btn-floating btn-tw mx-1">
+                <i class="fab fa-twitter"> </i>
+            </a>
+        </li>
+        <li class="list-inline-item">
+            <a class="btn-floating btn-gplus mx-1">
+                <i class="fab fa-google-plus-g"> </i>
+            </a>
+        </li>
+        <li class="list-inline-item">
+            <a class="btn-floating btn-li mx-1">
+                <i class="fab fa-linkedin-in"> </i>
+            </a>
+        </li>
+        <li class="list-inline-item">
+            <a class="btn-floating btn-dribbble mx-1">
+                <i class="fab fa-dribbble"> </i>
+            </a>
+        </li>
+    </ul>
+
+    <div class="footer-copyright text-center py-3">© 2020 Copyright:
+        <a href="https://www.nilebookstore.com/">nilebookstore.com</a>
     </div>
 </footer>
 
