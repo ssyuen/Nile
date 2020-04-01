@@ -77,6 +77,9 @@ def login(ctx=None):
                     session['admin'] = True
                     session['lastName'] = results[3]
                     session['firstName'] = results[2]
+
+                    session.permanent = True
+
                     # flash('Welcome, ' + session['firstName'] + '!')
                     ctx = request.args.get('next')
                     return redirect(ctx or url_for('user_bp.landing_page'))
@@ -107,6 +110,9 @@ def login(ctx=None):
                     session['admin'] = False
                     session['lastName'] = results[3]
                     session['firstName'] = results[2]
+
+                    session.permanent = True
+
                     ctx = request.args.get('ctx')
                     if ctx is not None:
                         return redirect(url_for('user_bp.' + ctx))
@@ -118,6 +124,9 @@ def login(ctx=None):
                 session['logged_in'] = True
                 session['email'] = userEmail
                 session['firstName'] = results[2]
+
+                session.permanent = True
+
                 flash('Welcome, ' + session['firstName'] + '!')
                 return redirect('/')
             except IndexError:

@@ -2,6 +2,7 @@ from flask import Flask, render_template
 from flaskext.mysql import MySQL
 import secrets
 import os
+from datetime import timedelta
 
 app = Flask(__name__)
 
@@ -11,6 +12,7 @@ app.config['MYSQL_DATABASE_PASSWORD'] = os.environ['DB_PASS']  # change to ur lo
 
 app.config['MYSQL_DATABASE_DB'] = 'niledb'  # change to whatever the db will be named
 app.config['MYSQL_DATABASE_HOST'] = 'localhost'
+app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(minutes=5)
 
 #secret_key generation
 app.secret_key = secrets.token_urlsafe(256)
