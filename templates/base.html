@@ -9,6 +9,14 @@
         <title>{% block base_title %}{% endblock %} - Nile</title>
 
         {% include 'common_links.html' %}
+        <style>
+            @media (max-width: 992px) {
+                .footer-explanation {
+                    border: none !important;
+                    padding-right: 15px !important;
+                }
+            }
+        </style>
     {% endblock %}
 </head>
 <body class="our-color">
@@ -41,54 +49,71 @@
 <footer class="page-footer font-small bg-dark pt-4">
     <div class="container text-md-left">
         <div class="row">
-            <div class="col-md-6 mx-auto">
-                <h5 class="font-weight-bold text-uppercase text-center mt-3 mb-4">The Nile Bookstore</h5>
-                <p>Thanks for visiting our site. <strong>Disclaimer! This site is not real.</strong> It was made
-                    to fulfil our term-project requirement for CSCI 4050 - Software Engineering class at The University
-                    of Georgia. Our talented team include:<br>
-                <div class="text-center"><strong>Manu Puduvalli, Sam Yuen, Vrund Parikh, Lok Kwong,
-                    and
-                    Glen George</strong></div>
-                </p>
-                <p>Our application stack includes:</p>
-                <ul>
-                    <li>Bootstrap Framework</li>
-                    <li>MDBootstrap Framework</li>
-                    <li>Vanilla JavaScript/JQuery</li>
-                    <li>MySQL</li>
-                    <li>Flask + Python</li>
-                    <li>TypeScript</li>
-                </ul>
+            <div class="col-md-6 mx-auto pr-0">
+                <div class="text-center">
+                    <h5 class="font-weight-bold text-uppercase mt-3 ">The Nile Bookstore</h5>
+                    <hr class="deep-purple accent-2 mt-0 d-inline-block text-left mx-auto mb-5" style="width: 100px;">
+                </div>
+                <div class="footer-explanation" style="border-right: 1px solid lightgray; padding-right: 55px; ">
+                    <p>Thanks for visiting our site. <strong>Disclaimer! This site is not real.</strong> It was made
+                        to fulfil our term-project requirement for CSCI 4050 - Software Engineering class at The
+                        University
+                        of Georgia. Our talented team include:<br></p>
+                    <div class="text-center"><strong>Manu Puduvalli, Sam Yuen, Vrund Parikh, Lok Kwong,
+                        and
+                        Glen George</strong>
+                    </div>
+                    <br>
+                    <p>Our application stack includes:</p>
+                    <ul>
+                        <li>Bootstrap Framework</li>
+                        <li>MDBootstrap Framework</li>
+                        <li>Vanilla JavaScript/JQuery</li>
+                        <li>MySQL</li>
+                        <li>Flask + Python</li>
+                        <li>TypeScript</li>
+                    </ul>
+                </div>
             </div>
             <hr class="clearfix w-100 d-md-none">
             <div class="col-md-6 text-center mx-auto">
-                <h5 class="font-weight-bold text-uppercase mt-3 mb-4">Relevant Links</h5>
-                <ul class="list-unstyled text">
-                    <li class="mb-4">
-                        <strong><a href="https://github.com/ssyuen/nile" target="_blank">Nile Source
-                            Repository</a></strong>
-                    </li>
+                <div class="text-center">
+                    <h5 class="font-weight-bold text-uppercase mt-3 ">Relevant Links</h5>
+                    <hr class="deep-purple accent-2 mt-0 d-inline-block text-left mx-auto mb-5" style="width: 100px;">
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <ul class="list-unstyled text-center rel-links">
+                            <li class="mb-4">
+                                <strong><a href="https://github.com/ssyuen/nile" target="_blank">Nile Source
+                                    Repository</a></strong>
+                            </li>
 
-                    <li class="mb-4">
-                        <a href="https://github.com/ssyuen/" target="_blank">Github: Samuel Yuen</a>
-                    </li>
+                            <li class="mb-4">
+                                <a href="https://github.com/ssyuen/" target="_blank">Github: Samuel Yuen</a>
+                            </li>
 
-                    <li class="mb-4">
-                        <a href="https://github.com/manu-p-1/" target="_blank">Github: Manu Puduvalli</a>
-                    </li>
+                            <li class="mb-4">
+                                <a href="https://github.com/manu-p-1/" target="_blank">Github: Manu Puduvalli</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="col-md-6">
+                        <ul class="list-unstyled text-center rel-links">
+                            <li class="mb-4">
+                                <a href="https://github.com/Lok-Kwong" target="_blank">Github: Lok Kwong</a>
+                            </li>
 
-                    <li class="mb-4">
-                        <a href="https://github.com/Lok-Kwong" target="_blank">Github: Lok Kwong</a>
-                    </li>
+                            <li class="mb-4">
+                                <a href="https://github.com/glengeorge98" target="_blank">Github: Glen George</a>
+                            </li>
 
-                    <li class="mb-4">
-                        <a href="https://github.com/glengeorge98" target="_blank">Github: Glen George</a>
-                    </li>
-
-                    <li class="mb-4">
-                        <a href="https://github.com/vrund99" target="_blank">Github: Vrund Parikh</a>
-                    </li>
-                </ul>
+                            <li class="mb-4">
+                                <a href="https://github.com/vrund99" target="_blank">Github: Vrund Parikh</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
             </div>
             <hr class="clearfix w-100 d-md-none">
         </div>
