@@ -1,16 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends "base.html" %}
+{% block base_title %}Manage Books Form{% endblock %}
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Manage Books</title>
-    {% include 'common_links.html' %}
-
-    <link rel="stylesheet" type="text/css" href="../../../static/user/css/common.css">
-    <link rel="stylesheet" type="text/css" href="../../../static/user/css/nav.css">
-    <!--End MDN-->
+{% block base_head %}
+    {{ super() }}
     <style>
         .container .btn-rounded {
             border-radius: 15px !important;
@@ -21,25 +13,16 @@
             border-bottom-right-radius: 10px;
         }
     </style>
-    <script>
-        $(document).ready(function(){
-            $(".form-row input, select, textarea").attr('readonly', true);
-        })
-    </script>
-</head>
+{% endblock %}
 
-<body class="our-color">
-    {% include 'nav.html' %}
-    <div class="container">
-        <div class="row mt-xl-5" id="cust-info">
-            <div class="col mb-5">
-                <div class="text-left" id="welcome">
-                    <p class="primary-lg" id="account-holder">Edit Book Information</span></p>
-                </div>
-            </div>
-        </div>
+
+{% block mainTitle %}
+    <div class="text-left" id="welcome">
+        <p class="primary-lg" id="account-holder">Manage Books</p>
     </div>
-    <div class="container footer-sep">
+{% endblock %}
+{% block main %}
+    <div class="container">
         <!--Grid row-->
         <div class="row">
             <div class="col">
@@ -57,7 +40,7 @@
                 <!-- Card -->
                 <div class="card gradient-card h-100">
                     <div class="card-image"
-                        style="background-image: url(https://mdbootstrap.com/img/Photos/Horizontal/Work/4-col/img%20%2814%29.jpg)">
+                         style="background-image: url(https://mdbootstrap.com/img/Photos/Horizontal/Work/4-col/img%20%2814%29.jpg)">
                         <!-- Content -->
                         <div class="text-white mask card-contextual-info">
                             <div class="row">
@@ -79,50 +62,50 @@
                         <form>
                             <div class="form-row">
                                 <div class="form-group col-md-6">
-                                    <i class="fas fa-book"></i>
                                     <label for="bookTitle">Book Title</label>
                                     <div class="input-group">
                                         <input type="text" class="form-control" id="bookTitle" placeholder="Book Title">
                                         <div class="input-group-append">
                                             <button class="btn btn-outline-warning m-0 px-3 py-2 z-depth-0 waves-effect"
-                                                type="button" id="editBookTitleBtn">Edit</button>
+                                                    type="button" id="editBookTitleBtn">Edit
+                                            </button>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="form-group col-md-6">
-                                    <i class="fas fa-barcode"></i>
                                     <label for="isbn">ISBN</label>
                                     <div class="input-group">
                                         <input type="text" class="form-control" id="isbn" placeholder="ISBN-10">
                                         <div class="input-group-append">
                                             <button class="btn btn-outline-warning m-0 px-3 py-2 z-depth-0 waves-effect"
-                                                type="button" id="editIsbnBtn">Edit</button>
+                                                    type="button" id="editIsbnBtn">Edit
+                                            </button>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                             <div class="form-row">
                                 <div class="form-group col-md-6">
-                                    <i class="fas fa-signature"></i>
                                     <label for="authorFirstName">Author First Name</label>
                                     <div class="input-group">
                                         <input type="text" class="form-control" id="authorFirstName"
-                                            placeholder="Author First Name">
+                                               placeholder="Author First Name">
                                         <div class="input-group-append">
                                             <button class="btn btn-outline-warning m-0 px-3 py-2 z-depth-0 waves-effect"
-                                                type="button" id="editAuthorFirstNameBtn">Edit</button>
+                                                    type="button" id="editAuthorFirstNameBtn">Edit
+                                            </button>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="form-group col-md-6">
-                                    <i class="fas fa-signature"></i>
                                     <label for="authorLastName">Author Last Name</label>
                                     <div class="input-group">
                                         <input type="text" class="form-control" id="authorLastName"
-                                            placeholder="Author Last Name">
+                                               placeholder="Author Last Name">
                                         <div class="input-group-append">
                                             <button class="btn btn-outline-warning m-0 px-3 py-2 z-depth-0 waves-effect"
-                                                type="button" id="editAuthorLastNameBtn">Edit</button>
+                                                    type="button" id="editAuthorLastNameBtn">Edit
+                                            </button>
                                         </div>
                                     </div>
 
@@ -130,7 +113,6 @@
                             </div>
                             <div class="form-row">
                                 <div class="form-group col">
-                                    <i class="far fa-laugh-squint"></i>
                                     <label for="genre">Genre</label>
                                     <div class="input-group">
                                         <select id="genre" class="form-control">
@@ -142,38 +124,38 @@
                                         </select>
                                         <div class="input-group-append">
                                             <button class="btn btn-outline-warning m-0 px-3 py-2 z-depth-0 waves-effect"
-                                                type="button" id="editGenreBtn">Edit</button>
+                                                    type="button" id="editGenreBtn">Edit
+                                            </button>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="form-group col">
-                                    <i class="fas fa-list-ol"></i>
                                     <label for="numPages">Number of Pages</label>
                                     <div class="input-group">
                                         <input type="number" class="form-control" id="numPages"
-                                            placeholder="Number of Pages">
+                                               placeholder="Number of Pages">
                                         <div class="input-group-append">
                                             <button class="btn btn-outline-warning m-0 px-3 py-2 z-depth-0 waves-effect"
-                                                type="button" id="editNumPagesBtn">Edit</button>
+                                                    type="button" id="editNumPagesBtn">Edit
+                                            </button>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="form-group col">
-                                    <i class="far fa-clock"></i>
                                     <label for="datePublished">Date Published</label>
                                     <div class="input-group">
                                         <input type="date" class="form-control" id="datePublished"
-                                            placeholder="Date Published">
+                                               placeholder="Date Published">
                                         <div class="input-group-append">
                                             <button class="btn btn-outline-warning m-0 px-3 py-2 z-depth-0 waves-effect"
-                                                type="button" id="editDatePublishedBtn">Edit</button>
+                                                    type="button" id="editDatePublishedBtn">Edit
+                                            </button>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                             <div class="form-row">
                                 <div class="form-group col">
-                                    <i class="fas fa-scroll"></i>
                                     <label for="bindingType">Binding Type</label>
                                     <div class="input-group">
                                         <select id="bindingType" class="form-control">
@@ -182,57 +164,63 @@
                                         </select>
                                         <div class="input-group-append">
                                             <button class="btn btn-outline-warning m-0 px-3 py-2 z-depth-0 waves-effect"
-                                                type="button" id="editBindingTypeBtn">Edit</button>
+                                                    type="button" id="editBindingTypeBtn">Edit
+                                            </button>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="form-group col">
-                                    <i class="fas fa-cubes"></i>
                                     <label for="stock">Stock</label>
                                     <div class="input-group">
                                         <input type="number" class="form-control" id="stock" placeholder="Stock">
                                         <div class="input-group-append">
                                             <button class="btn btn-outline-warning m-0 px-3 py-2 z-depth-0 waves-effect"
-                                                type="button" id="editStockBtn">Edit</button>
+                                                    type="button" id="editStockBtn">Edit
+                                            </button>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                             <div class="form-row">
                                 <div class="form-group col">
-                                    <i class="fas fa-dollar-sign"></i>
                                     <label for="price">Selling Price ($)</label>
                                     <div class="input-group">
-                                        <input type="number" class="form-control" id="price" placeholder="Selling Price in USD ($)">
+                                        <input type="number" class="form-control" id="price"
+                                               placeholder="Selling Price in USD ($)">
                                         <div class="input-group-append">
                                             <button class="btn btn-outline-warning m-0 px-3 py-2 z-depth-0 waves-effect"
-                                                type="button" id="editSellingPriceBtn">Edit</button>
+                                                    type="button" id="editSellingPriceBtn">Edit
+                                            </button>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="form-group col">
-                                    <i class="far fa-file-image"></i>
                                     <label for="coverImage">Cover Image</label>
                                     <div class="custom-file">
-                                        <input type="file" class="custom-file-input" id="coverImage" aria-describedby="coverImage" accept=".png,.jpeg,.gif,.jpg,.heic" style="cursor: pointer;">
+                                        <input type="file" class="custom-file-input" id="coverImage"
+                                               aria-describedby="coverImage" accept=".png,.jpeg,.gif,.jpg,.heic"
+                                               style="cursor: pointer;">
                                         <label class="custom-file-label" for="coverImage">Upload Image</label>
                                     </div>
                                 </div>
                             </div>
                             <div class="form-row">
                                 <div class="form-group col">
-                                    <i class="fas fa-comment-alt"></i>
                                     <label for="bookSummary">Book Summary</label>
                                     <div class="input-group blue-border-focus">
-                                        <textarea class="form-control" id="bookSummary" rows="4" placeholder="Book Summary" maxlength="500" required></textarea>
+                                        <textarea class="form-control" id="bookSummary" rows="4"
+                                                  placeholder="Book Summary" maxlength="500" required></textarea>
                                         <div class="input-group-append">
                                             <button class="btn btn-outline-warning m-0 px-3 py-2 z-depth-0 waves-effect"
-                                                type="button" id="editSellingPriceBtn">Edit</button>
+                                                    type="button" id="editSellingPriceBtn">Edit
+                                            </button>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <button type="submit" id="updateBtn" class="btn blue-gradient btn-block">Save & Update Information</button>
+                            <button type="submit" id="updateBtn" class="btn blue-gradient btn-block">Save & Update
+                                Information
+                            </button>
                         </form>
                     </div>
                 </div>
@@ -243,32 +231,16 @@
         <div class="row">
             <div class="col">
                 <button type="button" id="deleteBtn" class="btn btn-danger btn-rounded btn-block mb-5">Delete
-                    Book</button>
+                    Book
+                </button>
             </div>
         </div>
     </div>
 
-    <footer class="py-5 bg-dark">
-        <div class="container text-white">
-            <p class="mb-2 text-center">Copyright &copy; Nile 2020</p>
-            <div class="text-center">
-                <a class="waves-effect waves-light mr-3">
-                    <i class="fab fa-twitter"></i>
-                </a>
-                <a class="waves-effect waves-light mr-3">
-                    <i class="fab fa-instagram"></i>
-                </a>
-                <a class="waves-effect waves-light">
-                    <i class="fab fa-facebook"></i>
-                </a>
-            </div>
-        </div>
-        <!-- /.container -->
-    </footer>
+    <script>
+        $(document).ready(function () {
+            $(".form-row input, select, textarea").attr('readonly', true);
+        })
+    </script>
 
-
-
-
-</body>
-
-</html>
+{% endblock main %}

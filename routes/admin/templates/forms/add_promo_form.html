@@ -1,0 +1,99 @@
+{% extends "base.html" %}
+{% block base_title %}Create Promotions Form{% endblock %}
+
+{% block base_head %}
+    {{ super() }}
+{% endblock %}
+
+{% block mainTitle %}
+    <div class="text-left" id="welcome">
+        <p class="primary-lg" id="account-holder">Create Promotions</p>
+    </div>
+{% endblock %}
+
+{% block main %}
+    <div class="container">
+        <div class="row">
+            <!--Grid column-->
+            <div class="col mb-4">
+                <!-- Card -->
+                <div class="card gradient-card h-100">
+                    <div class="card-image"
+                         style="background-image: url(https://mdbootstrap.com/img/Photos/Horizontal/Work/4-col/img%20%2814%29.jpg)">
+                        <!-- Content -->
+                        <div class="text-white mask card-contextual-info">
+
+                            <div class="row">
+                                <div class="col align-self-center">
+                                    <div class="first-content p-3">
+                                        <h3 class="card-title">Submit the Form</h3>
+                                    </div>
+                                </div>
+                                <div class="col align-self-center">
+                                    <div class="second-content pr-3" style="float: right;">
+                                        <i class="fas fa-edit fa-3x"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Content -->
+                    <div class="card-body white">
+                        <form>
+                            <div class="form-row">
+                                <div class="form-group col-md-10">
+                                    <label for="promoName">Promo Name</label>
+                                    <input type="text" class="form-control" id="promoName"
+                                           placeholder="Promotion Name" required>
+                                </div>
+                                <div class="form-group col-md-2">
+                                    <label for="promoCode">Promo Code</label>
+                                    <input type="text" class="form-control" id="promoCode"
+                                           placeholder="Promotion Code" required>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col-md-8">
+                                    <label for="promoAmt">Promo Amount Percentage</label>
+                                    <input type="number" class="form-control" id="promoAmt"
+                                           placeholder="Promotion Amount" required>
+                                </div>
+                                <div class="form-group col-md-4">
+                                    <label for="promoExpiry">Promo Expiration Date</label>
+                                    <input type="date" class="form-control" id="promoExpiry" required>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col">
+                                    <label for="exampleFormControlTextarea3">Promotion Notes</label>
+                                    <textarea class="form-control" id="exampleFormControlTextarea3" rows="4"
+                                              placeholder="Notes"></textarea>
+                                </div>
+                            </div>
+                            <button type="submit" id="updateBtn" class="btn blue-gradient btn-block">Create New
+                                Promotion
+                                Entry
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <!--Grid column-->
+        </div>
+        <!--Grid row-->
+    </div>
+    <script>
+        $(function () {
+            /*
+                Here we can set the minimum date for the expiry
+             */
+            let now = new Date();
+            let month = ("0" + (now.getMonth() + 1)).slice(-2);
+            let date = ("0" + now.getDate()).slice(-2);
+            $("#promoExpiry").attr("min", `${now.getFullYear()}-${month}-${date}`);
+
+            /* Lets put a 25 year promotion cap */
+            $("#promoExpiry").attr("max", `${now.getFullYear() + 25}-${month}-${date}`)
+        })
+    </script>
+{% endblock main %}

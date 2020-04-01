@@ -1,0 +1,93 @@
+{% extends "base.html" %}
+{% block base_title %}
+    Admin - {% block title %}{% endblock %}
+{% endblock %}
+
+{% block base_head %}
+    {{ super() }}
+
+    {% block head %}
+        <style>
+            .input-group .btn-outline-warning {
+                border-top-right-radius: 5px;
+                border-bottom-right-radius: 5px;
+            }
+
+            @media (max-width: 991px) {
+                #accountListings {
+                    margin-bottom: 20px;
+                }
+            }
+
+            #accountListings > ul > a {
+                height: 65px;
+            }
+
+            {#body{#}
+            {#    color: whitesmoke !important;#}
+            {#    background-color: #3d3d3d !important;#}
+            {
+            #}#}
+        </style>
+    {% endblock head %}
+{% endblock base_head %}
+
+{% block mainTitle %}
+    <div class="text-left" id="welcome">
+        <p class="primary-lg" id="account-holder">Welcome Back, <span
+                id="name">{{ session['firstName'] }}.</span>
+            <span class="badge blue-gradient shadow ml-2">Admin</span></p>
+    </div>
+{% endblock %}
+
+{% block main %}
+    <div class="container footer-sep">
+        <div class="row">
+            <nav class="col-lg-3" id="accountListings">
+                <ul class="list-group complement-light">
+                    <a class="list-group-item waves-effect" id="accountOverview" href="/adm_overview/">
+                        Admin Account Overview
+                    </a>
+                    <a class="list-group-item waves-effect" id="changeMyName" href="/change_name/">
+                        Change My Name
+                    </a>
+                    <a class="list-group-item waves-effect" id="changeMyPass" href="/change_pass/">
+                        Change My Password
+                    </a>
+                    <a class="list-group-item waves-effect" id="manageBooks" href="/manage_books/">
+                        Manage Books & Inventory
+                    </a>
+                    <a class="list-group-item waves-effect" id="managePromotions" href="/manage_promotions/">
+                        Manage Promotions
+                    </a>
+                    <a class="list-group-item waves-effect" id="manageUsers" href="/manage_users">
+                        Manage Users
+                    </a>
+                </ul>
+            </nav> <!-- col.// -->
+            <main class="col-lg-9 main-content" id="mainContent">
+                {% block content %}
+                {% endblock %}
+            </main> <!-- col.// -->
+        </div>
+    </div>
+
+    <script>
+        $(function () {
+            let x = window.location.href;
+            if (x.includes("/adm_overview/")) {
+                $("#accountOverview").addClass("active");
+            } else if (x.includes("/change_name/")) {
+                $("#changeMyName").addClass("active");
+            } else if (x.includes("/change_pass/")) {
+                $("#changeMyPass").addClass("active");
+            } else if (x.includes("/manage_books/")) {
+                $("#manageBooks").addClass("active");
+            } else if (x.includes("/manage_promotions/")) {
+                $("#managePromotions").addClass("active");
+            } else if (x.includes("/manage_users/")) {
+                $("#manageUsers").addClass("active");
+            }
+        });
+    </script>
+{% endblock main %}
