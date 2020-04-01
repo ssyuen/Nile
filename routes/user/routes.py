@@ -443,13 +443,6 @@ def payment_methods():
     return render_template('profile/profilePaymentMethods.html')
 
 
-@user_bp.route('/returns/', methods=['GET'])
-@login_required
-@cart_session
-def returns():
-    return render_template('profile/profileReturns.html')
-
-
 @user_bp.route('/password_change/', methods=['POST'])
 @login_required
 @cart_session
