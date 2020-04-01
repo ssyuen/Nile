@@ -69,9 +69,8 @@ def login(ctx=None):
 
             try:
                 results = cursor.fetchall()[0]
-                db_pass = results[1]#.encode('utf-8')
+                db_pass = results[1]
                 db_pass = db_pass[2:-1].encode('utf-8')
-                print(db_pass)
                 if bcrypt.checkpw(password.encode('utf-8'), db_pass):
                     session['logged_in'] = True
                     session['email'] = results[0]
