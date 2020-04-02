@@ -1,6 +1,7 @@
 from flask import Blueprint, render_template, request, jsonify, redirect, flash, session
 from functools import wraps
 from server import mysql
+import sys
 
 admin_bp = Blueprint('admin_bp', __name__,
                      template_folder='templates', static_folder='static')
@@ -37,47 +38,6 @@ def login_required(f):
 #         return redirect('/')
 #     flash('Error logging out.')
 #     return redirect('/')
-
-
-@admin_bp.route('/add_books/', methods=['GET', 'POST'])
-@admin_required
-def add_books():
-    if request.method == 'POST':
-        book_title = request.form.get('bookTitle')
-        isbn = request.form.get('isbn')
-        author_firstname = request.form.get('authorFirstName')
-        author_lastname = request.form.get('authorLastName')
-        edition = request.form.get('edition')
-        publisher = request.form.get('publisher')
-        genre = request.form.get('genre')
-        num_pages = request.form.get('numPages')
-        date_published = request.form.get('datePublished')
-        recv_stock = request.form.get('recvStock')
-        binding_type = request.form.get('bindingType')
-        print(binding_type)
-        price = request.form.get('price')
-        cover_image = request.form.get('coverImage')
-        book_summary = request.form.get('bookSummary')
-
-        conn = mysql.connect()
-        cursor = conn.cursor()
-
-        query = """
-        INSERT INTO book (ISBN, bindingID, genreID, title, price, numPages, image,
-        edition, publisher, publicationDate, stock, authorFirstName, authorLastName, summary)
-        VALUES (
-        %s,
-        (SELECT bindingID FROM binding WHERE binding = %s),
-        (SELECT genreID FROM genre WHERE genre = %s),
-        %s, %s, %s, %s, %s, %s, 
-        %s, %s, %s, %s, %s)
-        """
-        cursor.execute(query, (isbn, binding_type, genre, book_title, price, num_pages, cover_image, edition,
-                               publisher, date_published, recv_stock, author_firstname, author_lastname, book_summary))
-        conn.commit()
-        conn.close()
-
-    return render_template('./add_books_form.html')
 
 
 @admin_bp.route('/base_admin/')
@@ -124,6 +84,42 @@ def manage_users():
 @admin_bp.route('/add_books_form/')
 @admin_required
 def add_books_form():
+    if request.method == 'POST':
+        book_title = request.form.get('bookTitle')
+        isbn = request.form.get('isbn')
+        author_firstname = request.form.get('authorFirstName')
+        author_lastname = request.form.get('authorLastName')
+        edition = request.form.get('edition')
+        publisher = request.form.get('publisher')
+        genre = request.form.get('genre')
+        num_pages = request.form.get('numPages')
+        date_published = request.form.get('datePublished')
+        recv_stock = request.form.get('recvStock')
+        binding_type = request.form.get('bindingType')
+        print(binding_type)
+        price = request.form.get('price')
+        cover_image = request.form.get('coverImage')
+        book_summary = request.form.get('bookSummary')
+
+        print(cover_image, file=sys.stderr)
+        # conn = mysql.connect()
+        # cursor = conn.cursor()
+        #
+        # query = """
+        # INSERT INTO book (ISBN, bindingID_book_FK, genreID_book_FK, title, price, numPages, image,
+        # edition, publisher, publicationDate, stock, authorFirstName, authorLastName, summary)
+        # VALUES (
+        # %s,
+        # (SELECT bindingID_book_FK FROM binding WHERE binding = %s),
+        # (SELECT genreID_book_FK FROM genre WHERE genre = %s),
+        # %s, %s, %s, %s, %s, %s,
+        # %s, %s, %s, %s, %s)
+        # """
+        # cursor.execute(query, (isbn, binding_type, genre, book_title, price, num_pages, cover_image, edition,
+        #                        publisher, date_published, recv_stock, author_firstname, author_lastname, book_summary))
+        # conn.commit()
+        # conn.close()
+
     return render_template('./forms/add_books_form.html')
 
 
