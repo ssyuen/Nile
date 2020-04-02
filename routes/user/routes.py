@@ -36,7 +36,7 @@ def cart_session(f):
 @user_bp.route('/')
 @cart_session
 def landing_page(search_results=None):
-    # print(session['shopping_cart'])
+#    print(session['shopping_cart'])
     # STEP 1: Make call to database to return all books, need ISBN for query in /product/?isbn=<isbn>
     conn = mysql.connect()
     cursor = conn.cursor()
@@ -404,7 +404,26 @@ def change_pass():
 @login_required
 @cart_session
 def order_history():
-    return render_template('profile/profileOrderHistory.html')
+    # Connect to niledb
+    conn = mysql.connect()
+    cursor = conn.cursor()
+
+    # Grab the order histor from the user
+    order_history_query = """ SELECT `order`.`id`, `book`.`price`, `book`.`ISBN`, `book`.`title`, `book`.`authorFirstName`, `book`.`authorLastName`, `order`.`dateOrdered`
+            FROM `niledb`.`user`
+            JOIN `niledb`.`order` ON `user`.`id`=`order`.`userID_order_FK`
+            JOIN `niledb`.`order_bod` ON `order`.`id`=`order_bod`.`orderID_obod_FK`
+            JOIN `niledb`.`book_orderdetail` ON `order_bod`.`bodID_obod_FK`=`book_orderdetail`.`id` 
+            JOIN `niledb`.`book` ON `book_orderdetail`.`ISBN_bod_FK`=`book`.`ISBN` 
+            WHERE user.email=%s
+            ORDER BY `order`.`dateOrdered` ASC; """
+    cursor.execute(order_history_query, (session["email"]))
+    data = cursor.fetchall()
+
+    # Close connection
+    conn.close()
+
+    return render_template('profile/profileOrderHistory.html', data=data)
 
 
 @user_bp.route('/shipping_address/', methods=['GET'])
