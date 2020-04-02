@@ -122,13 +122,10 @@
                                            placeholder="Selling Price in USD ($)" required>
                                 </div>
                                 <div class="form-group col">
-                                    <label for="coverImage">Cover Image</label>
-                                    <div class="custom-file">
-                                        <input name="coverImage" type="file" class="custom-file-input" id="coverImage"
-                                               aria-describedby="coverImage" accept=".png,.jpeg,.gif,.jpg,.heic"
-                                               style="cursor: pointer;">
-                                        <label class="custom-file-label" for="coverImage">Upload Image</label>
-                                    </div>
+                                    <label for="coverID">Nile Image ID (Format: NILE_CI_*)</label>
+                                    <input type="text" class="form-control" id="coverID"
+                                           name="coverID" aria-describedby="coverID" pattern="NILE_CI_.*\d"
+                                           style="text-transform:uppercase" placeholder="Enter Nile image ID">
                                 </div>
                             </div>
                             <div class="form-row">
