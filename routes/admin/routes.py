@@ -2,6 +2,7 @@ from flask import Blueprint, render_template, request, jsonify, redirect, flash,
 from functools import wraps
 from server import mysql
 import sys
+import string
 
 admin_bp = Blueprint('admin_bp', __name__,
                      template_folder='templates', static_folder='static')
@@ -81,14 +82,14 @@ def manage_users():
     return render_template('./adminManageUsers.html')
 
 
-@admin_bp.route('/add_books_form/')
+@admin_bp.route('/add_books_form/', methods=['GET', 'POST'])
 @admin_required
 def add_books_form():
     if request.method == 'POST':
-        book_title = request.form.get('bookTitle')
-        isbn = request.form.get('isbn')
-        author_firstname = request.form.get('authorFirstName')
-        author_lastname = request.form.get('authorLastName')
+        book_title = string.capwords(request.form.get('bookTitle'))
+        isbn = request.form.get('isbn').replace("-", "")
+        author_firstname = string.capwords(request.form.get('authorFirstName'))
+        author_lastname = string.capwords(request.form.get('authorLastName'))
         edition = request.form.get('edition')
         publisher = request.form.get('publisher')
         genre = request.form.get('genre')
@@ -98,27 +99,27 @@ def add_books_form():
         binding_type = request.form.get('bindingType')
         print(binding_type)
         price = request.form.get('price')
-        cover_image = request.form.get('coverImage')
+        cover_id = request.form.get('coverID')
         book_summary = request.form.get('bookSummary')
 
-        print(cover_image, file=sys.stderr)
-        # conn = mysql.connect()
-        # cursor = conn.cursor()
-        #
-        # query = """
-        # INSERT INTO book (ISBN, bindingID_book_FK, genreID_book_FK, title, price, numPages, image,
-        # edition, publisher, publicationDate, stock, authorFirstName, authorLastName, summary)
-        # VALUES (
-        # %s,
-        # (SELECT bindingID_book_FK FROM binding WHERE binding = %s),
-        # (SELECT genreID_book_FK FROM genre WHERE genre = %s),
-        # %s, %s, %s, %s, %s, %s,
-        # %s, %s, %s, %s, %s)
-        # """
-        # cursor.execute(query, (isbn, binding_type, genre, book_title, price, num_pages, cover_image, edition,
-        #                        publisher, date_published, recv_stock, author_firstname, author_lastname, book_summary))
-        # conn.commit()
-        # conn.close()
+        print(cover_id, file=sys.stderr)
+        conn = mysql.connect()
+        cursor = conn.cursor()
+
+        query = """
+        INSERT INTO book (ISBN, bindingID_book_FK, genreID_book_FK, title, price, numPages, nile_cover_ID,
+        edition, publisher, publicationDate, stock, authorFirstName, authorLastName, summary)
+        VALUES (
+        %s,
+        (SELECT id FROM binding WHERE binding = %s),
+        (SELECT id FROM genre WHERE genre = %s),
+        %s, %s, %s, %s, %s, %s,
+        %s, %s, %s, %s, %s)
+        """
+        cursor.execute(query, (isbn, binding_type, genre, book_title, price, num_pages, cover_id, edition,
+                               publisher, date_published, recv_stock, author_firstname, author_lastname, book_summary))
+        conn.commit()
+        conn.close()
 
     return render_template('./forms/add_books_form.html')
 
