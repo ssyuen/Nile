@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% block base_title %}
-    My Profile - {% block title %}{% endblock %}
+    Admin - {% block title %}{% endblock %}
 {% endblock %}
 
 {% block base_head %}
@@ -22,6 +22,12 @@
             #accountListings > ul > a {
                 height: 65px;
             }
+
+            {#body{#}
+            {#    color: whitesmoke !important;#}
+            {#    background-color: #3d3d3d !important;#}
+            {
+            #}#}
         </style>
     {% endblock head %}
 {% endblock base_head %}
@@ -29,7 +35,8 @@
 {% block mainTitle %}
     <div class="text-left" id="welcome">
         <p class="primary-lg" id="account-holder">Welcome Back, <span
-                id="name">{{ session['firstName'] }}.</span></p>
+                id="name">{{ session['firstName'] }}.</span>
+            <span class="badge blue-gradient shadow ml-2">Admin</span></p>
     </div>
 {% endblock %}
 
@@ -38,8 +45,8 @@
         <div class="row">
             <nav class="col-lg-3" id="accountListings">
                 <ul class="list-group complement-light">
-                    <a class="list-group-item waves-effect" id="accountOverview" href="/overview/">
-                        Account Overview
+                    <a class="list-group-item waves-effect" id="accountOverview" href="/adm_overview/">
+                        Admin Account Overview
                     </a>
                     <a class="list-group-item waves-effect" id="changeMyName" href="/change_name/">
                         Change My Name
@@ -47,14 +54,14 @@
                     <a class="list-group-item waves-effect" id="changeMyPass" href="/change_pass/">
                         Change My Password
                     </a>
-                    <a class="list-group-item waves-effect" id="orderHist" href="/order_history/">
-                        Order History
+                    <a class="list-group-item waves-effect" id="manageBooks" href="/manage_books/">
+                        Manage Books & Inventory
                     </a>
-                    <a class="list-group-item waves-effect" id="manageAddress" href="/shipping_address">
-                        Manage Shipping Address
+                    <a class="list-group-item waves-effect" id="managePromotions" href="/manage_promotions/">
+                        Manage Promotions
                     </a>
-                    <a class="list-group-item waves-effect" id="managePaymentInfo" href="/payment_methods/">
-                        Manage your Payment Information
+                    <a class="list-group-item waves-effect" id="manageUsers" href="/manage_users">
+                        Manage Users
                     </a>
                 </ul>
             </nav> <!-- col.// -->
@@ -68,20 +75,18 @@
     <script>
         $(function () {
             let x = window.location.href;
-            if (x.includes("/overview/")) {
+            if (x.includes("/adm_overview/")) {
                 $("#accountOverview").addClass("active");
             } else if (x.includes("/change_name/")) {
                 $("#changeMyName").addClass("active");
             } else if (x.includes("/change_pass/")) {
                 $("#changeMyPass").addClass("active");
-            } else if (x.includes("/order_history/")) {
-                $("#orderHist").addClass("active");
-            } else if (x.includes("/shipping_address/")) {
-                $("#manageAddress").addClass("active");
-            } else if (x.includes("/payment_methods/")) {
-                $("#managePaymentInfo").addClass("active");
-            } else if (x.includes("/returns/")) {
-                $("#returnRefund").addClass("active");
+            } else if (x.includes("/manage_books/")) {
+                $("#manageBooks").addClass("active");
+            } else if (x.includes("/manage_promotions/")) {
+                $("#managePromotions").addClass("active");
+            } else if (x.includes("/manage_users/")) {
+                $("#manageUsers").addClass("active");
             }
         });
     </script>

@@ -324,8 +324,7 @@
     <script>
         $(function () {
             let now = new Date();
-            let min = new Date(now.getFullYear(), now.getMonth() + 1, 1);
-            let minMonth = ("0" + (min.getMonth() + 1)).slice(-2);
+            let minMonth = ("0" + (now.getMonth() + 1)).slice(-2);
             $("#ccexp").attr("min", `${now.getFullYear()}-${minMonth}`)
         })
     </script>

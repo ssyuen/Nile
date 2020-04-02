@@ -77,34 +77,75 @@ def add_books():
         conn.commit()
         conn.close()
 
-    return render_template('./add_books.html')
+    return render_template('./add_books_form.html')
 
 
-@admin_bp.route('/add_promo/')
+@admin_bp.route('/base_admin/')
 @admin_required
-def add_promo():
-    return render_template('./add_promo.html')
+def base_admin():
+    return render_template('./adminBase.html')
 
 
-@admin_bp.route('/admin/')
+@admin_bp.route('/adm_overview/')
 @admin_required
-def admin():
-    return render_template('./admin.html')
+def adm_overview():
+    return render_template('./adminOverview.html')
 
+
+@admin_bp.route('/change_name/')
+@admin_required
+def change_name():
+    return render_template('./adminChangeName.html')
+
+
+@admin_bp.route('/change_pass/')
+@admin_required
+def change_pass():
+    return render_template('./adminChangePassword.html')
 
 @admin_bp.route('/manage_books/')
 @admin_required
 def manage_books():
-    return render_template('./manage_books.html')
+    return render_template('./adminManageBooks.html')
 
 
-@admin_bp.route('/manage_promo/')
+@admin_bp.route('/manage_promotions/')
 @admin_required
-def manage_promo():
-    return render_template('./manage_promo.html')
+def manage_promotions():
+    return render_template('./adminManagePromotions.html')
 
 
 @admin_bp.route('/manage_users/')
 @admin_required
 def manage_users():
-    return render_template('./manage_users.html')
+    return render_template('./adminManageUsers.html')
+
+
+@admin_bp.route('/add_books_form/')
+@admin_required
+def add_books_form():
+    return render_template('./forms/add_books_form.html')
+
+
+@admin_bp.route('/manage_books_form/')
+@admin_required
+def manage_books_form():
+    return render_template('./forms/manage_books_form.html')
+
+
+@admin_bp.route('/manage_promo_form/')
+@admin_required
+def manage_promo_form():
+    return render_template('./forms/manage_promo_form.html')
+
+
+@admin_bp.route('/add_promo_form/')
+@admin_required
+def add_promo_form():
+    return render_template('./forms/add_promo_form.html')
+
+
+@admin_bp.route('/manage_users_form/')
+@admin_required
+def manage_users_form():
+    return render_template('./forms/manage_users_form.html')

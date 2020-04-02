@@ -2433,28 +2433,29 @@
                         }
                     }
                 }
-            }, {
-                key: "ChangeDateInputType",
-                value: function() {
-                    var e = t('input[type="date"]');
-                    e.each((function(t, e) {
-                        e.type = "text"
-                    })), e.on("focus", (function(t) {
-                        t.target.type = "date"
-                    })), e.on("blur", (function(e) {
-                        e.target.type = "text", 0 === e.target.value.length && t("label[for=".concat(e.target.id, "]")).removeClass("active")
-                    }))
-                }
-            }, {
-                key: "textAreaAutoResize",
-                value: function() {
-                    var e = t(this);
-                    if (e.val().length) {
-                        var n = t(".hiddendiv"),
-                            r = e.css("font-family"),
-                            i = e.css("font-size");
-                        i && n.css("font-size", i), r && n.css("font-family", r), "off" === e.attr("wrap") && n.css("overflow-wrap", "normal").css("white-space", "pre"), n.text("".concat(e.val(), "\n"));
-                        var o = n.html().replace(/\n/g, "<br>");
+            },
+                {
+                    // key: "ChangeDateInputType",
+                    // value: function() {
+                    //     var e = t('input[type="date"]');
+                    //     e.each((function(t, e) {
+                    //         e.type = "text"
+                    //     })), e.on("focus", (function(t) {
+                    //         t.target.type = "date"
+                    //     })), e.on("blur", (function(e) {
+                    //         e.target.type = "text", 0 === e.target.value.length && t("label[for=".concat(e.target.id, "]")).removeClass("active")
+                    //     }))
+                    // }
+                }, {
+                    key: "textAreaAutoResize",
+                    value: function () {
+                        var e = t(this);
+                        if (e.val().length) {
+                            var n = t(".hiddendiv"),
+                                r = e.css("font-family"),
+                                i = e.css("font-size");
+                            i && n.css("font-size", i), r && n.css("font-family", r), "off" === e.attr("wrap") && n.css("overflow-wrap", "normal").css("white-space", "pre"), n.text("".concat(e.val(), "\n"));
+                            var o = n.html().replace(/\n/g, "<br>");
                         n.html(o), n.css("width", e.is(":visible") ? e.width() : t(window).width() / 2), e.css("height", n.height())
                     }
                 }

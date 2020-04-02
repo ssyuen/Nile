@@ -1,0 +1,56 @@
+{% extends "adminBase.html" %}
+{% block title %}Change Name{% endblock %}
+
+{% block head %}
+    {{ super() }}
+    <style>
+        .md-form .form-control {
+            margin-bottom: 0;
+        }
+
+        .md-form.md-outline {
+            margin-top: 0.5rem !important;
+        }
+
+        .md-form input:read-only {
+            background: lightgray !important;
+            opacity: 0.8 !important;
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+    <div class="card-image"
+         style="background-image: url(https://mdbootstrap.com/img/Photos/Horizontal/Work/4-col/img%20%2814%29.jpg)">
+        <a href="#">
+            <div class="text-white d-flex h-100 mask card-contextual-info">
+                <div class="container-fluid give">
+                    <div class="row py-3 pr-3">
+                        <div class="col-10">
+                            <div class="first-content">
+                                <h3 class="card-title">Manage Users</h3>
+                                <p class="lead">Add new client's (users) or promote or suspend existing ones</p>
+                            </div>
+                        </div>
+                        <div class="col-2 align-self-center">
+                            <div class="second-content" style="float: right;">
+                                <i class="fas fa-book fa-3x"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </a>
+    </div>
+    <div class="card-body white change-my-name">
+        <h4 class="text-uppercase font-weight-bold my-4">Details</h4>
+        <div class="row">
+            <div class="col">
+                <label for="manageUserBtn">Manage Users:</label>
+                <a href="/manage_users_form/" target="_blank">
+                    <button id="manageUserBtn" class="btn blue-gradient btn-block">Manage Users</button>
+                </a>
+            </div>
+        </div>
+    </div>
+{% endblock %}

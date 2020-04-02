@@ -37,25 +37,20 @@ export class InputValidationComplex {
     static zipCodeConstraint(value) {
         return (/^\d{5}$|^\d{5}-\d{4}$/).test(value);
     }
-
     static creditCardConstraint(cc) {
         return cc.checkNetwork();
     }
-
     static cvvConstraint(cc) {
         return cc.checkCVV();
     }
-
     setValidity(elem, loc, purpose, constr) {
         this.curr_validity[elem.id] = this.validator(elem, loc, purpose['template'], constr);
     }
-
     static scrollTopOfSelector(selectorPlace) {
         $([document.documentElement, document.body]).animate({
             scrollTop: $(selectorPlace).offset().top
         }, 500);
     }
-
     validateAll(selectorPlace) {
         let errorHTML = `<p class="text-center text-danger" id="somethingWrong">
                 One or more of the fields were incomplete or invalid
@@ -73,7 +68,6 @@ export class InputValidationComplex {
         }
         return true;
     }
-
     /*
         Generalized validation function
      */

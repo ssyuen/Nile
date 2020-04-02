@@ -30,16 +30,18 @@ Array('input', 'focusin').forEach((evt) => {
 });
 EDIT_F.addEventListener("click", function () {
     F_NAME.removeAttribute("readonly");
+    F_NAME.setAttribute("aria-readonly", "false");
 });
 EDIT_L.addEventListener("click", function () {
     L_NAME.removeAttribute("readonly");
+    L_NAME.setAttribute("aria-readonly", "false");
 });
 //Make sure the User saved their Changes!!
 // @ts-ignore
 $("#accountListings").click(function (e) {
     let exit = true;
     if (oldFirst != F_NAME.value || oldLast != L_NAME.value) {
-        var conf = confirm("You have unsaved changes. Are you sure you want to continue?");
+        let conf = confirm("You have unsaved changes. Are you sure you want to continue?");
         exit = conf;
     }
     if (!exit) {

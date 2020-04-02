@@ -39,9 +39,8 @@
 }
 
 .footer-sep {
-    margin-bottom: 300px !important;
+    margin-bottom: 500px !important;
 }
-
 
 html {
     position: relative;
@@ -50,12 +49,6 @@ html {
 
 body {
     scroll-behavior: smooth;
-}
-
-footer {
-    position: absolute;
-    bottom: 0;
-    width: 100%;
 }
 
 .my-button {

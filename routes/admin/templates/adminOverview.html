@@ -1,0 +1,49 @@
+{% extends "adminBase.html" %}
+{% block title %}Admin Account Overview{% endblock %}
+
+{% block head %}
+    {{ super() }}
+    <style>
+
+    </style>
+{% endblock %}
+
+{% block content %}
+
+    <article class="card mb-3">
+        <div class="card-image"
+             style="background-image: url(https://mdbootstrap.com/img/Photos/Horizontal/Work/4-col/img%20%2814%29.jpg);">
+            <!--Content-->
+            <div class="text-white d-flex h-100 mask card-contextual-info">
+                <div class="container-fluid give">
+                    <div class="row py-3 pr-3">
+                        <div class="col-10">
+                            <div class="first-content">
+                                <h3 class="card-title">My Information</h3>
+                                <p class="lead mb-0">Account Overview</p>
+                            </div>
+                        </div>
+                        <div class="col-2 align-self-center">
+                            <div class="second-content" style="float: right;">
+                                <i class="fas fa-user-circle fa-3x"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card-body">
+            <figure class="icontext">
+                <div class="text">
+                    Name:
+                    <strong>{{ session['firstName'] }} {{ session['lastName'] }}</strong>
+                    <a class="ml-3" href="/change_name/">EDIT</a>
+                    <br>
+                    Email:
+                    <strong>{{ session['email'] }}</strong> <br>
+                </div>
+            </figure>
+            <hr>
+        </div> <!-- card-body .// -->
+    </article> <!-- card.// -->
+{% endblock %}
