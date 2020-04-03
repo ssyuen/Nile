@@ -1,11 +1,12 @@
 from flask import Blueprint, render_template, request, jsonify, redirect, flash, session, url_for
+from flask_mail import Message
 from functools import wraps
 from flaskext.mysql import pymysql
 import requests as r
 import bcrypt
 import sys
 import secrets
-from server import mysql
+from server import mysql, mail
 
 user_bp = Blueprint('user_bp', __name__,
                     template_folder='templates', static_folder='static')
@@ -222,6 +223,11 @@ def register():
             try:
                 cursor.execute(query, user_payload)
                 conn.commit()
+
+                user_id_query = 'SELECT id FROM user ORDER BY id DESC LIMIT 1'
+                cursor.execute(user_id_query)
+                user_id = cursor.fetchall()[0][0]
+
                 conn.close()
             except(pymysql.err.IntegrityError):
                 flash('An account with this email already exists.')
@@ -317,48 +323,35 @@ def register():
             conn.close()
 
         # return render_template('confirmation/reg_conf.html')
-        return redirect(url_for('user_bp.register_confirmation',sending_token=secrets.token_urlsafe(16),email=email,name=firstName))
+        return redirect(url_for('user_bp.register_confirmation', sending_token=secrets.token_urlsafe(256), email=email, user_id=user_id, name=firstName))
 
 
-@user_bp.route('/base_confirmation/', methods=['POST', 'GET'])
+@user_bp.route('/register_confirmation/<sending_token>++<email>+<user_id>+<name>', methods=['GET'])
 @cart_session
-def base_confirmation():
-    # system needs to send an email with url back to a page
-    # if request.method == 'GET':
+def register_confirmation(sending_token, email=None, user_id=None, name=None):
+    try:
+        conn = mysql.connect()
+        cursor = conn.cursor()
 
-    return render_template('confirmation/baseConfirm.html')
-    # verify_token = secrets.token_urlsafe(16)
-    # verify_url = f'http://127.0.0.1:5000/register_confirmation/{verify_token}'
-    # message_body = 'Hi ' + firstName + \
-    #     f',\nPlease click on the following link to confirm your registration here at Nile!\n{verify_url}\n\nRegards, Nile Bookstore Management'
-    # r.post(url='https://api.mailgun.net/v3/sandboxefa3f05fb1d84b299525cb6dfd7a4d18.mailgun.org',
-    #        auth=("api", "c99575d1f018ef008fea3f36b2bc35cc-ed4dc7c4-8b3cd4ea"),
-    #        data={
-    #            "from": "Excited User <mailgun@sandboxefa3f05fb1d84b299525cb6dfd7a4d18.mailgun.org>",
-    #            "to": [email, 'samuel.s.yuen@gmail.com'],
-    #            "subject": "Nile Registration Confirmation",
-    #            "text": f"{message_body}"
-    #        })
-    # return render_template('reg_conf.html')
+        verification_token = secrets.token_urlsafe(16)
 
+        query = 'INSERT INTO user_token (userID_utoken_FK,token) VALUES (%s, %s)'
+        cursor.execute(query, (user_id, verification_token))
 
-@user_bp.route('/register_confirmation/<sending_token>+<email>+<name>', methods=['GET'])
-@cart_session
-def register_confirmation(sending_token,email=None,name=None):
-    verification_token = secrets.token_urlsafe(16)
-    print(name)
-    print(email)
-    verification_url = f'http://127.0.0.1:5000/email_confirmation/{verification_token}'
-    message_body = 'Hi ' + name + \
-        f',\nPlease click on the following link to confirm your registration here at Nile!\n{verification_url}\n\nRegards, Nile Bookstore Management'
-    r.post(url='https://api.mailgun.net/v3/sandboxefa3f05fb1d84b299525cb6dfd7a4d18.mailgun.org',
-           auth=("api", "c99575d1f018ef008fea3f36b2bc35cc-ed4dc7c4-8b3cd4ea"),
-           data={
-               "from": "Excited User <me@samples.mailgun.org>",
-               "to": ['samuel.s.yuen@gmail.com'],
-               "subject": "Nile Registration Confirmation",
-               "text": f"{message_body}"
-           })
+        conn.commit()
+        conn.close()
+
+        verification_url = f'http://127.0.0.1:5000/email_confirmation/{verification_token}'
+
+        message_body = 'Hi ' + name + \
+            f',\n\nPlease click on the following link to confirm your registration here at Nile!\n\n{verification_url}\n\nRegards, Nile Bookstore Management'
+        msg = Message(subject='Nile Registration Confirmation', recipients=[
+            email, 'rootatnilebookstore@gmail.com'], sender='rootatnilebookstore@gmail.com', body=message_body)
+        mail.send(msg)
+
+    except(pymysql.err.IntegrityError):
+        return render_template('confirmation/reg_conf.html')
+
     return render_template('confirmation/reg_conf.html')
 
 
@@ -366,6 +359,20 @@ def register_confirmation(sending_token,email=None,name=None):
 @cart_session
 def email_confirmation(verify_token):
     # system needs to send an email with url back to a page
+    conn = mysql.connect()
+    cursor = conn.cursor()
+
+    verification_token = request.path[20:]
+    print('emailconfirmation', verification_token)
+    user_id_query = 'SELECT userID_utoken_FK FROM user_token WHERE user_token.token = %s'
+    cursor.execute(user_id_query, (verification_token))
+    user_id = cursor.fetchall()[0][0]
+
+    query = 'UPDATE user SET statusID_user_FK = 2 WHERE user.id = %s'
+
+    cursor.execute(query, (user_id))
+    conn.commit()
+    conn.close()
 
     return render_template('confirmation/email_conf.html')
 

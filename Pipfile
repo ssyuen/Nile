@@ -11,6 +11,7 @@ flask = "*"
 flask-mysql = "*"
 bcrypt = "*"
 requests = "*"
+flask-mail = "*"
 
 [scripts]
 server = "./start.sh"
