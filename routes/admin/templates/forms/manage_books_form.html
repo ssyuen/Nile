@@ -195,12 +195,16 @@
                                     </div>
                                 </div>
                                 <div class="form-group col">
-                                    <label for="coverImage">Cover Image</label>
-                                    <div class="custom-file">
-                                        <input type="file" class="custom-file-input" id="coverImage"
-                                               aria-describedby="coverImage" accept=".png,.jpeg,.gif,.jpg,.heic"
-                                               style="cursor: pointer;">
-                                        <label class="custom-file-label" for="coverImage">Upload Image</label>
+                                    <label for="coverID">Enter Nile image ID</label>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" id="coverID"
+                                               name="coverID" aria-describedby="coverID" pattern="NILE_CI_.*\d"
+                                               style="text-transform:uppercase">
+                                        <div class="input-group-append">
+                                            <button class="btn btn-outline-warning m-0 px-3 py-2 z-depth-0 waves-effect"
+                                                    type="button" id="editSellingPriceBtn">Edit
+                                            </button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
