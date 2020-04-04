@@ -40,16 +40,9 @@ def login_required(f):
 #     flash('Error logging out.')
 #     return redirect('/')
 
-
-@admin_bp.route('/base_admin/')
+@admin_bp.route('/overview/')
 @admin_required
-def base_admin():
-    return render_template('./adminBase.html')
-
-
-@admin_bp.route('/adm_overview/')
-@admin_required
-def adm_overview():
+def overview():
     return render_template('./adminOverview.html')
 
 
@@ -82,7 +75,7 @@ def manage_users():
     return render_template('./adminManageUsers.html')
 
 
-@admin_bp.route('/add_books_form/', methods=['GET', 'POST'])
+@admin_bp.route('/manage_books/abooksf/', methods=['GET', 'POST'])
 @admin_required
 def add_books_form():
     if request.method == 'POST':
@@ -124,25 +117,25 @@ def add_books_form():
     return render_template('./forms/add_books_form.html')
 
 
-@admin_bp.route('/manage_books_form/')
+@admin_bp.route('/manage_books/ebooksf/')
 @admin_required
-def manage_books_form():
-    return render_template('./forms/manage_books_form.html')
+def edit_books_form():
+    return render_template('./forms/edit_books_form.html')
 
 
-@admin_bp.route('/manage_promo_form/')
+@admin_bp.route('/manage_promotions/epromof/')
 @admin_required
-def manage_promo_form():
-    return render_template('./forms/manage_promo_form.html')
+def edit_promo_form():
+    return render_template('./forms/edit_promo_form.html')
 
 
-@admin_bp.route('/add_promo_form/')
+@admin_bp.route('/manage_promotions/apromof/')
 @admin_required
 def add_promo_form():
     return render_template('./forms/add_promo_form.html')
 
 
-@admin_bp.route('/manage_users_form/')
+@admin_bp.route('/manage_users/eusrf/')
 @admin_required
-def manage_users_form():
-    return render_template('./forms/manage_users_form.html')
+def edit_users_form():
+    return render_template('./forms/edit_users_form.html')

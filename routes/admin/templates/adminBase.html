@@ -22,12 +22,6 @@
             #accountListings > ul > a {
                 height: 65px;
             }
-
-            {#body{#}
-            {#    color: whitesmoke !important;#}
-            {#    background-color: #3d3d3d !important;#}
-            {
-            #}#}
         </style>
     {% endblock head %}
 {% endblock base_head %}
@@ -45,22 +39,22 @@
         <div class="row">
             <nav class="col-lg-3" id="accountListings">
                 <ul class="list-group complement-light">
-                    <a class="list-group-item waves-effect" id="accountOverview" href="/adm_overview/">
+                    <a class="list-group-item waves-effect" id="accountOverview" href="/admin/overview/">
                         Admin Account Overview
                     </a>
-                    <a class="list-group-item waves-effect" id="changeMyName" href="/change_name/">
+                    <a class="list-group-item waves-effect" id="changeMyName" href="/admin/change_name/">
                         Change My Name
                     </a>
-                    <a class="list-group-item waves-effect" id="changeMyPass" href="/change_pass/">
+                    <a class="list-group-item waves-effect" id="changeMyPass" href="/admin/change_pass/">
                         Change My Password
                     </a>
-                    <a class="list-group-item waves-effect" id="manageBooks" href="/manage_books/">
+                    <a class="list-group-item waves-effect" id="manageBooks" href="/admin/manage_books/">
                         Manage Books & Inventory
                     </a>
-                    <a class="list-group-item waves-effect" id="managePromotions" href="/manage_promotions/">
+                    <a class="list-group-item waves-effect" id="managePromotions" href="/admin/manage_promotions/">
                         Manage Promotions
                     </a>
-                    <a class="list-group-item waves-effect" id="manageUsers" href="/manage_users">
+                    <a class="list-group-item waves-effect" id="manageUsers" href="/admin/manage_users">
                         Manage Users
                     </a>
                 </ul>
@@ -75,17 +69,17 @@
     <script>
         $(function () {
             let x = window.location.href;
-            if (x.includes("/adm_overview/")) {
+            if (x.includes("/admin/overview/")) {
                 $("#accountOverview").addClass("active");
-            } else if (x.includes("/change_name/")) {
+            } else if (x.includes("/admin/change_name/")) {
                 $("#changeMyName").addClass("active");
-            } else if (x.includes("/change_pass/")) {
+            } else if (x.includes("/admin/change_pass/")) {
                 $("#changeMyPass").addClass("active");
-            } else if (x.includes("/manage_books/")) {
+            } else if (x.includes("/admin/manage_books/")) {
                 $("#manageBooks").addClass("active");
-            } else if (x.includes("/manage_promotions/")) {
+            } else if (x.includes("/admin/manage_promotions/")) {
                 $("#managePromotions").addClass("active");
-            } else if (x.includes("/manage_users/")) {
+            } else if (x.includes("/admin/manage_users/")) {
                 $("#manageUsers").addClass("active");
             }
         });

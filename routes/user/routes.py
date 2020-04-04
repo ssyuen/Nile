@@ -8,6 +8,8 @@ import sys
 import secrets
 from server import mysql, mail
 
+from routes.common.routes import cart_session
+
 user_bp = Blueprint('user_bp', __name__,
                     template_folder='templates', static_folder='static')
 
@@ -21,21 +23,11 @@ def login_required(f):
             flash('You need to login to access this area!')
             # return redirect('/login/')
             return redirect(url_for('user_bp.login', ctx=f.__name__))
+
     return wrapped_func
 
 
-def cart_session(f):
-    @wraps(f)
-    def wrapped_func(*args, **kws):
-        if 'shopping_cart' in session:
-            # print(True)
-            return f(*args, **kws)
-        else:
-            session['shopping_cart'] = list()
-            return f(*args, **kws)
-    return wrapped_func
-
-
+<<<<<<< HEAD
 @user_bp.route('/')
 @cart_session
 def landing_page(search_results=None):
@@ -411,6 +403,8 @@ def add_to_cart():
     return ''
 
 
+=======
+>>>>>>> 76343be189738fe26b036a85ae4a44c8bd07cf3e
 @user_bp.route('/checkout/')
 @login_required
 @cart_session
@@ -450,7 +444,25 @@ def change_pass():
 @login_required
 @cart_session
 def order_history():
-    return render_template('profile/profileOrderHistory.html')
+    # Connect to niledb
+    conn = mysql.connect()
+    cursor = conn.cursor()
+
+    # Grab the order histor from the user
+    order_history_query = """ SELECT `order`.`id`, `book`.`price`, `book`.`ISBN`, `book`.`title`, `book`.`authorFirstName`, `book`.`authorLastName`, `order`.`dateOrdered`
+                FROM `niledb`.`user`
+                JOIN `niledb`.`order` ON `user`.`id`=`order`.`userID_order_FK`
+                JOIN `niledb`.`order_bod` ON `order`.`id`=`order_bod`.`orderID_obod_FK`
+                JOIN `niledb`.`book_orderdetail` ON `order_bod`.`bodID_obod_FK`=`book_orderdetail`.`id` 
+                JOIN `niledb`.`book` ON `book_orderdetail`.`ISBN_bod_FK`=`book`.`ISBN` 
+                WHERE user.email=%s
+                ORDER BY `order`.`dateOrdered` ASC; """
+    cursor.execute(order_history_query, (session["email"]))
+    data = cursor.fetchall()
+
+    # Close connection
+    conn.close()
+    return render_template('profile/profileOrderHistory.html', data=data)
 
 
 @user_bp.route('/shipping_address/', methods=['GET'])
@@ -465,35 +477,3 @@ def shipping_address():
 @cart_session
 def payment_methods():
     return render_template('profile/profilePaymentMethods.html')
-
-
-@user_bp.route('/password_change/', methods=['POST'])
-@login_required
-@cart_session
-def password_change():
-    if request.method == 'POST':
-        new_password = request.form.get('newPassword')
-        confirm_new_password = request.form.get('confirmNewPassword')
-
-        print(new_password)
-        print(confirm_new_password)
-        print(type(new_password))
-        if new_password != confirm_new_password:
-            return jsonify({'Response': 400})
-        else:
-            new_password = bcrypt.hashpw(
-                new_password.encode('utf-8'), bcrypt.gensalt())
-            conn = mysql.connect()
-            cursor = conn.cursor()
-            print(session['email'])
-            query = 'UPDATE user SET pass=%s WHERE email=%s'
-            cursor.execute(query, (new_password, session['email']))
-            conn.commit()
-            conn.close()
-            return jsonify({'Response': 200})
-
-
-@user_bp.route('/forgot/')
-@cart_session
-def forgot():
-    return render_template('./forgot.html')
