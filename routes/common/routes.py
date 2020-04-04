@@ -164,7 +164,12 @@ def register():
         firstLetter = lastName[0].upper()
         lastName = firstLetter + lastName[1:].lower()
 
+        # simple check for if someone is trying to use the nile domain
         email = request.form.get('inputEmail')
+        if '@nile.com' in email:
+            flash('The email you have chosen is from a restricted domain. Please choose another email.')
+            return redirect(url_for('common_bp.register'))
+        
         password = request.form.get('inputPassword')
         password = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
         # USER PAYLOAD
