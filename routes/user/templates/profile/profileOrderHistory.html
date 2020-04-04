@@ -53,28 +53,35 @@
                 </tr>
                 </thead>
                 <tbody>
+                <tr>
+                    <td>1</td>
+                    <td>$8.99</td>
+                    <td>9785123645213</td>
+                    <td>Harry Potter and the Sourcerer's Stone</td>
+                    <td>J.K. Rowling</td>
+                    <td>04/02/2020</td>
+                    <td class="centered-btn">
+                        <p data-placement="top" data-toggle="tooltip" title="Edit">
+                            <button
+                                    class="btn blue-gradient btn-md" data-title="Edit" data-toggle="modal"
+                                    data-target="#edit"><i class="fas fa-sync-alt fa-lg"></i></button>
+                        </p>
+                    </td>
+                </tr>
                 {% for item in data %}
-                    <tr>
-                        <td>1</td>
-                        <td>$8.99</td>
-                        <td>9785123645213</td>
-                        <td>Harry Potter and the Sourcerer's Stone</td>
-                        <td>J.K. Rowling</td>
-                        <td>04/02/2020</td>
-                        <td class="centered-btn">
-                            <p data-placement="top" data-toggle="tooltip" title="Edit">
-                                <button
-                                        class="btn blue-gradient btn-md" data-title="Edit" data-toggle="modal"
-                                        data-target="#edit"><i class="fas fa-sync-alt fa-lg"></i></button>
-                            </p>
-                        </td>
-                    </tr>
                     <td class="c1">{{ item[0] }}</td>
                     <td class="c2">{{ item[1] }}</td>
                     <td class="c3">{{ item[2] }}</td>
                     <td class="c4">{{ item[3] }}</td>
                     <td class="c5">{{ item[4] + " " + item[5] }}</td>
                     <td class="c6">{{ item[6] }}</td>
+                    <td class="c7 centered-btn">
+                        <p data-placement="top" data-toggle="tooltip" title="Edit">
+                            <button
+                                    class="btn blue-gradient btn-md" data-title="Edit" data-toggle="modal"
+                                    data-target="#edit"><i class="fas fa-sync-alt fa-lg"></i></button>
+                        </p>
+                    </td>
                 {% endfor %}
                 </tbody>
             </table>

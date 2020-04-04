@@ -83,7 +83,7 @@ def order_history():
 
     # Close connection
     conn.close()
-    return render_template('profile/profileOrderHistory.html')
+    return render_template('profile/profileOrderHistory.html', data=data)
 
 
 @user_bp.route('/shipping_address/', methods=['GET'])
