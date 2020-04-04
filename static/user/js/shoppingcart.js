@@ -23,7 +23,7 @@
  * The ONLY TIME that we update the quantity in the DB is when the user
  * clicks checkout
  */
-import {CountUp} from '../../jsplugin/countUp.min.js';
+import { CountUp } from '../../jsplugin/countUp.min.js';
 const NILE_ISBN_ATTR = "nile-isbn";
 const NILE_BUY_PR_ATTR = "buying-price";
 const DURATION_SEC = 0.5; //ANIMATION DURATION IN SECONDS
@@ -44,7 +44,8 @@ $(() => {
             if (isbn in window.sessionStorage) {
                 $(sel).children(`option[value=${window.sessionStorage[isbn]}]`).attr('selected', 'selected');
                 updateIndividual(sel);
-            } else {
+            }
+            else {
                 window.sessionStorage[isbn] = '1';
             }
         }
@@ -65,10 +66,12 @@ function updateIndividual(sel) {
         let counter = SESSION[isbn];
         if (quantity === 1) {
             counter.update(origPrice);
-        } else {
+        }
+        else {
             counter.update(origPrice * quantity);
         }
-    } else {
+    }
+    else {
         const options = {
             decimalPlaces: 2,
             duration: DURATION_SEC,
@@ -76,7 +79,8 @@ function updateIndividual(sel) {
         };
         if (quantity === 1) {
             SESSION[isbn] = new CountUp(priceElem, origPrice, options);
-        } else {
+        }
+        else {
             SESSION[isbn] = new CountUp(priceElem, origPrice * quantity, options);
         }
         startAnimation(SESSION[isbn]);
@@ -99,7 +103,8 @@ function calcTotal() {
 function startAnimation(ctr, callback) {
     if (!ctr.error) {
         ctr.start(callback);
-    } else {
+    }
+    else {
         console.error(ctr.error);
     }
 }
