@@ -5,7 +5,7 @@
     ASSOCIATED HTML:    reg.html
     REVISIONS:          N/A
  */
-import {CreditCard, InputValidationComplex, PURPOSE} from "./inputvalidation.js";
+import { CreditCard, InputValidationComplex, PURPOSE } from "./inputvalidation.js";
 const FORM = document.getElementById("regForm");
 const F_NAME = document.getElementById("inputFirstName");
 const L_NAME = document.getElementById("inputLastName");
@@ -78,7 +78,8 @@ $("#addressToggler").on("click", function () {
     });
     if ($('#addressToggler').is(':checked')) {
         scr('#addressToggler');
-    } else {
+    }
+    else {
         scr('#acctCard', 45);
     }
 });
@@ -90,7 +91,8 @@ $("#paymentToggler").on("click", function () {
     });
     if ($('#paymentToggler').is(':checked')) {
         scr('#paymentToggler');
-    } else {
+    }
+    else {
         scr('#acctCard', 45);
     }
 });
@@ -139,7 +141,8 @@ Array('input', 'focusin').forEach((evt) => {
         vc.setValidity(this, this, PURPOSE.CCN, check);
         if (check) {
             CreditCard.toggleCardIcon(this, cc);
-        } else {
+        }
+        else {
             CreditCard.toggleCardIcon(this);
         }
     });

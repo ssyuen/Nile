@@ -85,7 +85,8 @@ export class InputValidationComplex {
             }
             $(inputType).prop("aria-invalid", "false");
             return true;
-        } else {
+        }
+        else {
             if (!$(invalidMessageType[1]).length) {
                 // @ts-ignore
                 $(invalidMessageLocation).after(invalidMessageType[0]);
@@ -198,7 +199,6 @@ export class CreditCard {
         this.cvv = CreditCard.normalize(cvv);
         this._provider = null;
     }
-
     static toggleCardIcon(ccnInput, creditCard = null) {
         if (creditCard !== null) {
             var cardProvider = creditCard.getProvider();
@@ -228,7 +228,8 @@ export class CreditCard {
             if (creditCard === null) {
                 $(ref).remove();
                 $(ccnInput).attr("credit-provider", "");
-            } else {
+            }
+            else {
                 $(ref).remove();
                 $(ccnInput).after(s);
                 $(ccnInput).attr("credit-provider", cardProvider);
