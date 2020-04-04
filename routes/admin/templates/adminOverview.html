@@ -1,4 +1,4 @@
-{% extends "adminBase.html" %}
+{% extends "./adminBase.html" %}
 {% block title %}Admin Account Overview{% endblock %}
 
 {% block head %}
@@ -37,7 +37,7 @@
                 <div class="text">
                     Name:
                     <strong>{{ session['firstName'] }} {{ session['lastName'] }}</strong>
-                    <a class="ml-3" href="/change_name/">EDIT</a>
+                    <a class="ml-3" href="/admin/change_name/">EDIT</a>
                     <br>
                     Email:
                     <strong>{{ session['email'] }}</strong> <br>
