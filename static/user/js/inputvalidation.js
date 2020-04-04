@@ -198,14 +198,40 @@ export class CreditCard {
         this.cvv = CreditCard.normalize(cvv);
         this._provider = null;
     }
-    static toggleCardIcon(ccnInput, cardClass = "") {
-        if (!$(".billing-card").length) {
+
+    static toggleCardIcon(ccnInput, creditCard = null) {
+        if (creditCard !== null) {
+            var cardProvider = creditCard.getProvider();
+            var cardClass = undefined;
+            switch (cardProvider) {
+                case "Visa": {
+                    cardClass = "fa-cc-visa";
+                    break;
+                }
+                case "Mastercard": {
+                    cardClass = "fa-cc-mastercard";
+                    break;
+                }
+                case "Amex": {
+                    cardClass = "fa-cc-amex";
+                    break;
+                }
+                case "Discover": {
+                    cardClass = "fa-cc-discover";
+                    break;
+                }
+            }
+        }
+        if ($(ccnInput).attr("credit-provider") !== cardProvider) {
             let ref = $('.billing-card');
             let s = `<i class="billing-card fab fa-2x ${cardClass}" style="position: absolute; right: 10px; bottom: 6.5px;"></i>`;
-            if (!cardClass.length) {
+            if (creditCard === null) {
                 $(ref).remove();
+                $(ccnInput).attr("credit-provider", "");
             } else {
+                $(ref).remove();
                 $(ccnInput).after(s);
+                $(ccnInput).attr("credit-provider", cardProvider);
             }
         }
     }
@@ -227,9 +253,7 @@ export class CreditCard {
         if (!this.ccn) {
             return false;
         }
-        if (!this.checkLuhn()) {
-            return false;
-        }
+        return this.checkLuhn();
     }
     checkCVV() {
         return (/^[0-9]{3,4}$/).test(this.cvv);
@@ -255,6 +279,7 @@ export class CreditCard {
     }
     checkNetwork() {
         let ref = this;
+        this._provider = null;
         Object.keys(this.network).forEach(function (key) {
             let regex = ref.network[key];
             if (regex.test(ref.ccn)) {

@@ -61,17 +61,18 @@ $(FORM).on("submit", function (e) {
 
     if (paymentCheck) {
         if (!cc.checkCard()) {
-            $('.card-title').after(
-                `<p class="text-center text-danger" id="somethingWrong">
+            if (!$("#creditWrong").length) {
+                $('.card-title').after(
+                    `<p class="text-center text-danger" id="creditWrong">
                 The Credit Card number you provided is invalid
                 </p>`);
+            }
             $(CCN).addClass("invalid").removeClass("valid");
             InputValidationComplex.scrollTopOfSelector('.card-title');
             e.preventDefault();
             return false;
         }
     }
-
 
     $("#registerBtn").prop("disabled", true);
     if (!addressCheck) {
@@ -172,15 +173,7 @@ Array<string>('input', 'focusin').forEach((evt: string) => {
         vc.setValidity(this, this, PURPOSE.CCN, check);
 
         if (check) {
-            if (cc.getProvider() === "Visa") {
-                CreditCard.toggleCardIcon(this, "fa-cc-visa");
-            } else if (cc.getProvider() === "Mastercard") {
-                CreditCard.toggleCardIcon(this, "fa-cc-mastercard");
-            } else if (cc.getProvider() === "Amex") {
-                CreditCard.toggleCardIcon(this, "fa-cc-amex");
-            } else if (cc.getProvider() === "Discover") {
-                CreditCard.toggleCardIcon(this, "fa-cc-discover");
-            }
+            CreditCard.toggleCardIcon(this, cc);
         } else {
             CreditCard.toggleCardIcon(this);
         }
