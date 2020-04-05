@@ -5,7 +5,7 @@ import requests as r
 import bcrypt
 import sys
 import secrets
-from server import mysql
+from server import mysql, mail
 
 common_bp = Blueprint('common_bp', __name__,
                       template_folder='templates', static_folder='static')
