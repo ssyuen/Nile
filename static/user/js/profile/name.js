@@ -4,8 +4,7 @@ const F_NAME = document.getElementById("inputFirstname");
 const L_NAME = document.getElementById("inputLastname");
 let oldFirst = F_NAME.value;
 let oldLast = L_NAME.value;
-const EDIT_F = document.getElementById("editFirstnameBtn");
-const EDIT_L = document.getElementById("editLastnameBtn");
+const EDIT = document.getElementById("editBtn");
 const vc = new InputValidationComplex();
 FORM.addEventListener("submit", function (e) {
     if (!vc.validateAll("#nameDetails")) {
@@ -28,11 +27,9 @@ Array('input', 'focusin').forEach((evt) => {
         vc.setValidity(this, loc, PURPOSE.Lastname, PURPOSE.Lastname.constraint(this.value));
     });
 });
-EDIT_F.addEventListener("click", function () {
+EDIT.addEventListener("click", function () {
     F_NAME.removeAttribute("readonly");
     F_NAME.setAttribute("aria-readonly", "false");
-});
-EDIT_L.addEventListener("click", function () {
     L_NAME.removeAttribute("readonly");
     L_NAME.setAttribute("aria-readonly", "false");
 });

@@ -11,110 +11,129 @@
         .md-form.md-outline {
             margin-top: 0.5rem !important;
         }
-
-        .md-form input:disabled {
-            background: lightgray !important;
-            opacity: 0.5 !important;
-        }
     </style>
+    <script>
+        function doSelect(id, state) {
+            $(`#${id} > option`).each(function () {
+                console.log($(this).val());
+                if (this.value === state) { // EDITED THIS LINE
+                    $(this).attr("selected", "selected");
+                }
+            });
+        }
+    </script>
 {% endblock %}
 
 {% block content %}
 
-    <div class="card gradient-card mb-5">
-        <div class="card-image"
-             style="background-image: url(https://mdbootstrap.com/img/Photos/Horizontal/Work/4-col/img%20%2814%29.jpg)">
+    {% for addr_dict in data %}
+        <div class="card gradient-card mb-5">
+            <div class="card-image"
+                 style="background-image: url(https://mdbootstrap.com/img/Photos/Horizontal/Work/4-col/img%20%2814%29.jpg)">
+                <!-- Content -->
+                <div class="text-white mask card-contextual-info">
+                    <div class="row">
+                        <div class="col align-self-center">
+                            <div class="first-content p-3">
+                                <h3 class="card-title">Shipping Address {{ loop.index }}</h3>
+                            </div>
+                        </div>
+                        <div class="col align-self-center">
+                            <div class="second-content pr-3" style="float: right;">
+                                <i class="far fa-address-card fa-3x"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <!-- Content -->
-            <div class="text-white mask card-contextual-info">
-                <div class="row">
-                    <div class="col align-self-center">
-                        <div class="first-content p-3">
-                            <h3 class="card-title">Shipping Address 1</h3>
-                        </div>
-                    </div>
-                    <div class="col align-self-center">
-                        <div class="second-content pr-3" style="float: right;">
-                            <i class="far fa-address-card fa-3x"></i>
-                        </div>
-                    </div>
+            <div class="card-body white">
+                <div class="d-inline-block w-100 ">
+                    <h4 class="text-uppercase font-weight-bold my-4 d-inline-block" id="nameDetails">Manage my
+                        Information</h4>
+                    <button id="editBtnForAddress{{ loop.index }}"
+                            class="btn btn-outline-warning float-md-right align-content-center waves-effect">Edit
+                    </button>
                 </div>
+                <form method="POST">
+                    <div class="form-row">
+                        <div class="col">
+                            <div class="form-group md-form md-outline">
+                                <label for="address{{ loop.index }}StreetAddress">Street Address</label>
+                                <input type="text" class="form-control" id="address{{ loop.index }}StreetAddress"
+                                       readonly required name="address{{ loop.index }}StreetAddress"
+                                       value="{{ addr_dict['street1'] }}">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="col">
+                            <div class="form-group md-form md-outline">
+                                <label for="address{{ loop.index }}ApartmentOrSuite">Apartment or Suite</label>
+                                <input type="text" class="form-control" id="address{{ loop.index }}ApartmentOrSuite"
+                                       readonly
+                                       name="address{{ loop.index }}ApartmentOrSuite"
+                                       value="{{ addr_dict['street2'] }}">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="col">
+                            <div class="form-group md-form md-outline">
+                                <label for="addAddress{{ loop.index }}Zip">ZIP or Postal code</label>
+                                <input type="text" class="form-control" id="addAddress{{ loop.index }}Zip" readonly
+                                       name="addAddress{{ loop.index }}Zip" value="{{ addr_dict['zip'] }}">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-8">
+                            <div class="form-group md-form md-outline">
+                                <label for="address{{ loop.index }}City">City</label>
+                                <input type="text" class="form-control" id="address{{ loop.index }}City" required
+                                       readonly
+                                       name="address{{ loop.index }}City" value="{{ addr_dict['city'] }}">
+                            </div>
+                        </div>
+                        <div class="form-group col-md-2" style="margin-top: 8px">
+                            <label for="address{{ loop.index }}State" class="d-none">State</label>
+                            <select id="address{{ loop.index }}State" class="form-control" required
+                                    name="address{{ loop.index }}State" disabled>
+                                <option value="GA">GA</option>
+                                <option value="CA">CA</option>
+                            </select>
+                            <script>
+                                doSelect(document.getElementById("address{{ loop.index }}State").id, "{{ addr_dict['state'] }}");
+                            </script>
+                        </div>
+                        <div class="form-group col-md-2" style="margin-top: 8px">
+                            <label for="address{{ loop.index }}Country" class="d-none">Country</label>
+                            <select id="address{{ loop.index }}Country" class="form-control" required
+                                    name="address{{ loop.index }}Country" disabled>
+                                <option value="United States">United States</option>
+                            </select>
+                            <script>
+                                doSelect(document.getElementById("address{{ loop.index }}Country").id, "{{ addr_dict['country'] }}")
+                            </script>
+                        </div>
+                    </div>
+                    <div class="form-row mt-3 w-100">
+                        <div class="col-md-9 mb-2">
+                            <button type="submit" id="updateShippingAddress{{ loop.index }}"
+                                    class="btn blue-gradient btn-block">Save and Update
+                            </button>
+                        </div>
+                        <div class="col-md-3 mb-2">
+                            <button type="submit" id="removeShippingAddress{{ loop.index }}"
+                                    class="btn btn-danger btn-block">Remove Address
+                            </button>
+                        </div>
+                    </div>
+                </form>
             </div>
-        </div>
-        <!-- Content -->
-        <div class="card-body white">
-            <div class="d-inline-block w-100 ">
-                <h4 class="text-uppercase font-weight-bold my-4 d-inline-block" id="nameDetails">Manage my
-                    Information</h4>
-                <button class="btn btn-outline-warning float-md-right align-content-center waves-effect">Edit</button>
-            </div>
-            <form method="POST">
-                <div class="form-row">
-                    <div class="col">
-                        <div class="form-group md-form md-outline">
-                            <label for="address1StreetAddress">Street Address</label>
-                            <input type="text" class="form-control" id="address1StreetAddress"
-                                   disabled required name="address1StreetAddress">
-                        </div>
-                    </div>
-                </div>
-                <div class="form-row">
-                    <div class="col">
-                        <div class="form-group md-form md-outline">
-                            <label for="address1ApartmentOrSuite">Apartment or Suite</label>
-                            <input type="text" class="form-control" id="address1ApartmentOrSuite" disabled
-                                   name="address1ApartmentOrSuite">
-                        </div>
-                    </div>
-                </div>
-                <div class="form-row">
-                    <div class="col">
-                        <div class="form-group md-form md-outline">
-                            <label for="zip">ZIP or Postal code</label>
-                            <input type="text" class="form-control" id="zip" disabled
-                                   name="zip">
-                        </div>
-                    </div>
-                </div>
-                <div class="form-row">
-                    <div class="form-group col-md-8">
-                        <div class="form-group md-form md-outline">
-                            <label for="address1City">City</label>
-                            <input type="text" class="form-control" id="address1City" required disabled
-                                   name="address1City">
-                        </div>
-                    </div>
-                    <div class="form-group col-md-2" style="margin-top: 8px">
-                        <label for="address1State" class="d-none">State</label>
-                        <select id="address1State" class="form-control" required name="address1State" disabled>
-                            <option value="" disabled selected>State</option>
-                            <option value="GA">GA</option>
-                            <option value="CA">CA</option>
-                        </select>
 
-                    </div>
-                    <div class="form-group col-md-2" style="margin-top: 8px">
-                        <label for="address1Country" class="d-none">Country</label>
-                        <select id="address1Country" class="form-control" required name="address1Country" disabled>
-                            <option value="" disabled selected>Country</option>
-                            <option value="United States">United States</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="form-row mt-3 w-100">
-                    <div class="col-md-9 mb-2">
-                        <button type="submit" id="updateShippingAddress"
-                                class="btn blue-gradient btn-block">Save and Update
-                        </button>
-                    </div>
-                    <div class="col-md-3 mb-2">
-                        <button type="submit" id="removeShippingAddress"
-                                class="btn btn-danger btn-block">Remove Address
-                        </button>
-                    </div>
-                </div>
-            </form>
         </div>
-    </div>
+    {% endfor %}
     <div class="card gradient-card">
         <div class="card-image"
              style="background-image: url(https://mdbootstrap.com/img/Photos/Horizontal/Work/4-col/img%20%2814%29.jpg)">
@@ -174,23 +193,25 @@
                         </div>
                     </div>
                     <div class="form-group col-md-2" style="margin-top: 8px">
-                        <label for="addAddress1State" class="d-none">State</label><select id="addAddress1State"
-                                                                                          class="form-control" required
-                                                                                          name="addAddress1State">
-                        <option value="" disabled selected>State</option>
-                        <option value="GA">GA</option>
-                        <option value="CA">CA</option>
-                    </select>
+                        <label for="addAddress1State" class="d-none">State</label>
+                        <select id="addAddress1State"
+                                class="form-control" required
+                                name="addAddress1State">
+                            <option value="" disabled selected>State</option>
+                            <option value="GA">GA</option>
+                            <option value="CA">CA</option>
+                        </select>
 
                     </div>
                     <div class="form-group col-md-2" style="margin-top: 8px">
-                        <label for="addAddress1Country" class="d-none">Country</label><select id="addAddress1Country"
-                                                                                              class="form-control"
-                                                                                              required
-                                                                                              name="addAddress1Country">
-                        <option value="" disabled selected>Country</option>
-                        <option value="United States">United States</option>
-                    </select>
+                        <label for="addAddress1Country" class="d-none">Country</label>
+                        <select id="addAddress1Country"
+                                class="form-control"
+                                required
+                                name="addAddress1Country">
+                            <option value="" disabled selected>Country</option>
+                            <option value="United States">United States</option>
+                        </select>
                     </div>
                 </div>
                 <button type="submit" id="updateShippingAddress"
@@ -199,5 +220,4 @@
             </form>
         </div>
     </div>
-
 {% endblock %}
