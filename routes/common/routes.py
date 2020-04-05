@@ -415,27 +415,24 @@ def forgot():
 
         verification_token = secrets.token_urlsafe(16)
 
-
         user_id_query = 'SELECT id FROM user WHERE email = %s'
         cursor.execute(user_id_query, (email))
         user_id = cursor.fetchall()[0][0]
 
         query = 'INSERT INTO user_token (userID_utoken_FK,token) VALUES (%s, %s)'
         cursor.execute(query, (user_id, verification_token))
-
         conn.commit()
         conn.close() 
 
-        # verification_url = url_for
-        verification_url = ''
+        verification_url = url_for('common_bp.reset_pass',verify_token = verification_token)
 
         message_body = 'Hi ' + name + \
             f',\n\nPlease click on the following link to reset your password.\n\n{verification_url}\n\nRegards, Nile Bookstore Management'
         msg = Message(subject='Nile Registration Confirmation', recipients=[
-            email, 'rootatnilebookstore@gmail.com'], sender='rootatnilebookstore@gmail.com', body=message_body)
+            email, 'rootatnilebookstore@gmail.com'], sender='rootatnilebookstore@gmail.com', body=message_body) 
         mail.send(msg)
 
-        return ''
+        pass 
 
 
 @common_bp.route('/reset_pass/<verify_token>',methods=['POST','GET'])
@@ -451,12 +448,12 @@ def reset_pass(verify_token):
 
 
     # CHANGE PASSWORD TO APPROPRIATE FORM VAR
-    password = request.form.get('inputPassword')
-    password = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
+    confirmNewPassword = request.form.get('confirmPassword')
+    confirmNewPassword = bcrypt.hashpw(confirmNewPassword.encode('utf-8'), bcrypt.gensalt())
 
     query = 'UPDATE user SET pass = %s WHERE user.id = %s'
 
-    cursor.execute(query, (password,user_id))
+    cursor.execute(query, (confirmNewPassword,user_id))
     conn.commit()
     conn.close()
 
