@@ -28,6 +28,12 @@ Array<string>('input', 'focusin').forEach((evt: string) => {
     });
 });
 
+$(document).ready(function () {
+    $("#resetBtn").click(function () {
+        $(FORM).submit();
+    });
+});
+
 window.onbeforeunload = function (e: Event) {
     let exit: boolean = true;
     if (PASS_NEW.value.length || PASS_CONF.value.length) {
