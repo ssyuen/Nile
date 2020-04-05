@@ -46,19 +46,20 @@ def landing_page(search_results=None):
         publicationDate,
         numPages,
         (SELECT binding FROM binding WHERE binding.id=book.bindingID_book_FK) AS binding,
-        (SELECT genre from genre WHERE genre.id=book.genreID_book_FK) AS genre
+        (SELECT genre from genre WHERE genre.id=book.genreID_book_FK) AS genre,
+        nile_cover_ID
         FROM book'''
     cursor.execute(query)
 
     # STEP 2: Pass list of books to browse.html
     results = cursor.fetchall()
     header = [desc[0] for desc in cursor.description]
-    payload = [dict(zip(header, result)) for result in results]
-    print(payload)
+    books = [dict(zip(header, result)) for result in results]
+    print(books)
 
     # STEP 3: In browse.html, iterate through list of books to populate page
     conn.close()
-    return render_template('browse.html')
+    return render_template('browse.html',books=books)
 
 
 def login_required(f):
@@ -431,13 +432,12 @@ def shopping_cart():
 
 @common_bp.route('/product/', methods=['GET', 'POST'])
 @cart_session
-def product():
-    print('In Product')
+def product(title, price, author_name, ISBN, publicationDate, numPages, binding,genre,nile_cover_ID):
     # STEP 1: User clicks on a book from browse.html
 
     # STEP 2: Link sends
     if request.method == 'GET':
-        return render_template('product.html')
+        return render_template('product.html',title=title,price=price,author_name=author_name,isbn=ISBN,publicationDate=publicationDate,numPages=numPages,binding=binding,genre=genre,nile_cover_ID=nile_cover_ID)
     else:
         print(session, file=sys.stderr)
         book_isbn = request.form.get('bookISBN')

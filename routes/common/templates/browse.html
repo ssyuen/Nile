@@ -298,7 +298,30 @@
 
                 <div class="row">
                     {#                x#}
-                    <div class="col-lg-3 col-md-6 mb-4">
+                    {% for book in books %}
+
+                        <div class="col-lg-3 col-md-6 mb-4">
+                            <a href="{{ render_template('product.html', title=book['title'],price=book['price'],author_name=book['author_name'],isbn=book['ISBN'],publicationDate=book['publicationDate'],numPages=book['numPages'],binding=book['binding'],genre=book['genre'],nile_cover_ID=book['nile_cover_ID']) }}">
+                                <div class="card h-100 bg-dark text-white modal-card waves-effect" id="hp">
+                                    <img class="card-img-top" src="{{'/static/images/CoverImages/' + book['nile_cover_ID'] + '.jpg' }}"
+                                        alt=""
+                                        width="250">
+                                    <div class="card-body">
+                                        <div class="titleHolder">
+                                            <h6 class="card-title">{{ book['title'] }}</h6>
+                                        </div>
+                                        <div class="flex-fill">
+                                            <p class="book-price">{{ book['price'] }}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+
+                    {% endfor %}
+
+                    <!-- keeping this for reference -->
+                    <!-- <div class="col-lg-3 col-md-6 mb-4">
                         <a href="/product/">
                             <div class="card h-100 bg-dark text-white modal-card waves-effect" id="hp">
                                 <img class="card-img-top" src="/static/images/CoverImages/NILE_CI_0001.jpg"
@@ -314,195 +337,8 @@
                                 </div>
                             </div>
                         </a>
-                    </div>
-                    {#                x#}
-                    <div class="col-lg-3 col-md-6 mb-4">
-                        <a href="/product/">
-                            <div class="card h-100 bg-dark text-white modal-card waves-effect">
-                                <img class="card-img-top" src="/static/images/CoverImages/NILE_CI_0007.jpg"
-                                     alt="Book Image"
-                                     width="250">
-                                <div class="card-body">
-                                    <div class="titleHolder">
-                                        <h6 class="card-title">The BFG</h6>
-                                    </div>
-                                    <div class="flex-fill">
-                                        <p class="book-price">$9.99</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </a>
-                    </div>
-                    <div class="col-lg-3 col-md-6 mb-4">
-                        <a href="/product/">
-                            <div class="card h-100 bg-dark text-white modal-card waves-effect">
-                                <img class="card-img-top" src="/static/images/CoverImages/NILE_CI_0008.jpg"
-                                     alt="Book Image"
-                                     width="250">
-                                <div class="card-body">
-                                    <div class="titleHolder">
-                                        <h6 class="card-title">The Hulk</h6>
-                                    </div>
-                                    <div>
-                                        <p class="book-price">$5.99</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </a>
-                    </div>
-                    <div class="col-lg-3 col-md-6 mb-4">
-                        <a href="/product/">
-                            <div class="card h-100 bg-dark text-white modal-card waves-effect">
-                                <img class="card-img-top" src="/static/images/CoverImages/NILE_CI_0009.jpg"
-                                     alt="Book Image"
-                                     width="250">
-                                <div class="card-body">
-                                    <div class="titleHolder">
-                                        <h6 class="card-title">Percy Jackson and the Lightning Thief</h6>
-                                    </div>
-                                    <div>
-                                        <p class="book-price">$9.99</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </a>
-                    </div>
-                    <div class="col-lg-3 col-md-6 mb-4">
-                        <a href="/product/">
-                            <div class="card h-100 bg-dark text-white modal-card waves-effect">
-                                <img class="card-img-top" src="/static/images/CoverImages/NILE_CI_0010.jpg"
-                                     alt="Book Image"
-                                     width="250">
-                                <div class="card-body">
-                                    <div class="titleHolder">
-                                        <h6 class="card-title">To Kill a Mockingbird</h6>
-                                    </div>
-                                    <div>
-                                        <p class="book-price">$12.99</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </a>
-                    </div>
-                    <div class="col-lg-3 col-md-6 mb-4">
-                        <a href="/product/">
-                            <div class="card h-100 bg-dark text-white modal-card waves-effect">
-                                <img class="card-img-top"
-                                     src="/static/images/CoverImages/NILE_CI_0005.jpg"
-                                     alt="Book Image" width="250">
-                                <div class="card-body">
-                                    <div class="titleHolder">
-                                        <h6 class="card-title">Gordon Ramsay Home Cooking</h6>
-                                    </div>
-                                    <div>
-                                        <p class="book-price">$32.99</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </a>
-                    </div>
-                    <div class="col-lg-3 col-md-6 mb-4">
-                        <a href="/product/">
-                            <div class="card h-100 bg-dark text-white modal-card waves-effect">
-                                <img class="card-img-top" src="/static/images/CoverImages/NILE_CI_0003.jpg"
-                                     alt="Book Image"
-                                     width="250">
-                                <div class="card-body">
-                                    <div class="titleHolder">
-                                        <h6 class="card-title">Narnia</h6>
-                                    </div>
-                                    <div>
-                                        <p class="book-price">$10.99</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </a>
-                    </div>
-                    <div class="col-lg-3 col-md-6 mb-4">
-                        <a href="/product/">
-                            <div class="card h-100 bg-dark text-white modal-card waves-effect">
-                                <img class="card-img-top" src="/static/images/CoverImages/NILE_CI_0006.jpg"
-                                     alt="Book Image"
-                                     width="250">
-                                <div class="card-body">
-                                    <div class="titleHolder">
-                                        <h6 class="card-title">Spider Man</h6>
-                                    </div>
-                                    <div>
-                                        <p class="book-price">$5.99</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </a>
-                    </div>
-                    <div class="col-lg-3 col-md-6 mb-4">
-                        <a href="/product/">
-                            <div class="card h-100 bg-dark text-white modal-card waves-effect">
-                                <img class="card-img-top" src="/static/images/CoverImages/NILE_CI_0004.jpg"
-                                     alt="Book Image"
-                                     width="250">
-                                <div class="card-body">
-                                    <div class="titleHolder">
-                                        <h6 class="card-title">Java For Dummies</h6>
-                                    </div>
-                                    <div>
-                                        <p class="book-price">$15.99</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </a>
-                    </div>
-                    <div class="col-lg-3 col-md-6 mb-4">
-                        <a href="/product/">
-                            <div class="card h-100 bg-dark text-white modal-card waves-effect">
-                                <img class="card-img-top" src="/static/images/CoverImages/NILE_CI_0002.jpg"
-                                     alt="Book Image"
-                                     width="250">
-                                <div class="card-body">
-                                    <div class="titleHolder">
-                                        <h6 class="card-title">Diary of a Wimpy Kid</h6>
-                                    </div>
-                                    <div>
-                                        <p class="book-price">$9.99</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </a>
-                    </div>
-                    <div class="col-lg-3 col-md-6 mb-4">
-                        <a href="/product/">
-                            <div class="card h-100 bg-dark text-white modal-card waves-effect">
-                                <img class="card-img-top" src="/static/images/CoverImages/NILE_CI_0008.jpg"
-                                     alt="Book Image"
-                                     width="250">
-                                <div class="card-body">
-                                    <div class="titleHolder">
-                                        <h6 class="card-title">The Hulk</h6>
-                                    </div>
-                                    <div>
-                                        <p class="book-price">$5.99</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </a>
-                    </div>
-                    <div class="col-lg-3 col-md-6 mb-4">
-                        <a href="/product/">
-                            <div class="card h-100 bg-dark text-white modal-card waves-effect">
-                                <img class="card-img-top"
-                                     src="/static/images/CoverImages/NILE_CI_0011.jpg"
-                                     alt="Book Image" width="250">
-                                <div class="card-body">
-                                    <div class="titleHolder">
-                                        <h6 class="card-title">Kobe Bryant - Mamba Mentality</h6>
-                                    </div>
-                                    <div>
-                                        <p class="book-price">$8.24</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </a>
-                    </div>
+                   
+                    </div> -->
                 </div>
             </div>
         </div>

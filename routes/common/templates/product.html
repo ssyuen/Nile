@@ -18,9 +18,9 @@
 
 {% block mainTitle %}
     <div class="text-left" id="content-header">
-        <p class="primary-lg" id="bookTitle">Harry Potter and the Sourcerer's Stone</p>
+        <p class="primary-lg" id="bookTitle">{{ title }}</p>
         <p class="complement-light" id="type">
-            <span>Author:&nbsp&nbsp</span>J.K. Rowling
+            <span>Author:&nbsp&nbsp</span>{{ author_name }}
         </p>
     </div>
 {% endblock %}
@@ -30,7 +30,7 @@
         <div class="row">
             <div class="col-lg-3">
                 <aside>
-                    <img class="responsive w-100" src="../static/images/Books/HP_Sourcerer.jpg" alt="">
+                    <img class="responsive w-100" src="{{'/static/images/CoverImages/' + nile_cover_ID + '.jpg' }}" alt="">
 
                     <li class="list-group-item mt-3 w-100 bg-dark text-white rounded">
 
@@ -39,7 +39,7 @@
                             <span class="primary-sm justify-content-center">Price (USD):</span>
 
                             <div class="quant-price ml-1 float-right d-inline-flex" id="totalPrice">$
-                                <div id="bookPrice">8.99</div>
+                                <div id="bookPrice">{{ price }}</div>
                             </div>
                         </div>
                     </li>
@@ -67,46 +67,39 @@
                         <!-- Text -->
                         <span class="complement-light info-heading">Summary:</span>
                         <p class="card-text" style="font-size: large">
-                            The BFG is no ordinary bone-crunching giant. He is far too nice and jumbly. It's lucky for
-                            Sophie that he is. Had she been carried off in the middle of the night by the Bloodbottler,
-                            or
-                            any of the other giants—rather than the BFG—she would have soon become breakfast.
-                            When Sophie hears that the giants are flush-bunking off to England to swollomp a few nice
-                            little
-                            chiddlers, she decides she must stop them once and for all. And the BFG is going to help
-                            her!
+                            {{ title }}
                         </p>
 
 
                         <span class="complement-light info-heading">Author:</span>
                         <p class="card-text">
-                            J.K. Rowling
+                            {{ author_name }}
                         </p>
 
                         <span class="complement-light info-heading" id="bookISBN"
                               nile-isbn="9781338299144">ISBN-13:</span>
                         <p class="card-text">
-                            9781338299144
+                            {{ isbn }}
                         </p>
 
                         <span class="complement-light info-heading">Publishing Date:</span>
                         <p class="card-text">
-                            8/16/2007
+                            {{ publicationDate }}
                         </p>
 
                         <span class="complement-light info-heading">Number of Pages:</span>
                         <p class="card-text">
-                            567
+                            {{ numPages }}
                         </p>
 
                         <span class="complement-light info-heading">Binding Type:</span>
                         <p class="card-text">
-                            Paperback
+                            {{ binding }}
                         </p>
 
                         <span class="complement-light info-heading">Genre:</span>
                         <p class="card-text">
-                            Childrens
+                            {{ genre }}
                         </p>
 
                         <span class="complement-light info-heading">Reviews:</span>
