@@ -22,7 +22,7 @@ def login_required(f):
         else:
             flash('You need to login to access this area!')
             # return redirect('/login/')
-            return redirect(url_for('user_bp.login', ctx=f.__name__))
+            return redirect(url_for('common_bp.login', ctx=f.__name__))
 
     return wrapped_func
 
@@ -59,7 +59,28 @@ def change_name():
 @login_required
 @cart_session
 def change_pass():
-    return render_template('profile/profileChangePassword.html')
+    if request.method == 'POST':
+        new_password = request.form.get('newPassword')
+        confirm_new_password = request.form.get('confirmNewPassword')
+
+        print(new_password)
+        print(confirm_new_password)
+        print(type(new_password))
+        if new_password != confirm_new_password:
+            return jsonify({'Response': 400})
+        else:
+            new_password = bcrypt.hashpw(
+                new_password.encode('utf-8'), bcrypt.gensalt())
+            conn = mysql.connect()
+            cursor = conn.cursor()
+            print(session['email'])
+            query = 'UPDATE user SET pass=%s WHERE email=%s'
+            cursor.execute(query, (new_password, session['email']))
+            conn.commit()
+            conn.close()
+            return jsonify({'Response': 200})
+    else:
+        return render_template('profile/profileChangePassword.html')
 
 
 @user_bp.route('/order_history/', methods=['GET'])

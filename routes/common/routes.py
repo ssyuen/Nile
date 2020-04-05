@@ -23,6 +23,18 @@ def cart_session(f):
 
     return wrapped_func
 
+def login_required(f):
+    @wraps(f)
+    def wrapped_func(*args, **kws):
+        if 'logged_in' in session and session['logged_in']:
+            return f(*args, **kws)
+        else:
+            flash('You need to login to access this area!')
+            # return redirect('/login/')
+            return redirect(url_for('common_bp.login', ctx=f.__name__))
+
+    return wrapped_func    
+
 
 @common_bp.route('/about/')
 def about():
@@ -43,20 +55,6 @@ def landing_page(search_results=None):
     # STEP 3: In browse.html, iterate through list of books to populate page
     conn.close()
     return render_template('browse.html')
-
-
-def login_required(f):
-    @wraps(f)
-    def wrapped_func(*args, **kws):
-        if 'logged_in' in session and session['logged_in']:
-            return f(*args, **kws)
-        else:
-            flash('You need to login to access this area!')
-            # return redirect('/login/')
-            return redirect(url_for('common_bp.login', ctx=f.__name__))
-
-    return wrapped_func
-
 
 @common_bp.route('/login/', methods=['POST', 'GET'])
 @cart_session
@@ -116,7 +114,7 @@ def login(ctx=None):
                     session['firstName'] = results[2]
                     ctx = request.args.get('ctx')
                     if ctx is not None:
-                        return redirect(url_for('common_bp.' + ctx))
+                        return redirect(url_for('user_bp.' + ctx))
                     else:
                         return redirect('/')
                 else:
@@ -366,30 +364,30 @@ def email_confirmation():
         pass
 
 
-@common_bp.route('/password_change/', methods=['POST'])
-@login_required
-@cart_session
-def password_change():
-    if request.method == 'POST':
-        new_password = request.form.get('newPassword')
-        confirm_new_password = request.form.get('confirmNewPassword')
+# @common_bp.route('/password_change/', methods=['POST'])
+# @login_required
+# @cart_session
+# def password_change():
+#     if request.method == 'POST':
+#         new_password = request.form.get('newPassword')
+#         confirm_new_password = request.form.get('confirmNewPassword')
 
-        print(new_password)
-        print(confirm_new_password)
-        print(type(new_password))
-        if new_password != confirm_new_password:
-            return jsonify({'Response': 400})
-        else:
-            new_password = bcrypt.hashpw(
-                new_password.encode('utf-8'), bcrypt.gensalt())
-            conn = mysql.connect()
-            cursor = conn.cursor()
-            print(session['email'])
-            query = 'UPDATE user SET pass=%s WHERE email=%s'
-            cursor.execute(query, (new_password, session['email']))
-            conn.commit()
-            conn.close()
-            return jsonify({'Response': 200})
+#         print(new_password)
+#         print(confirm_new_password)
+#         print(type(new_password))
+#         if new_password != confirm_new_password:
+#             return jsonify({'Response': 400})
+#         else:
+#             new_password = bcrypt.hashpw(
+#                 new_password.encode('utf-8'), bcrypt.gensalt())
+#             conn = mysql.connect()
+#             cursor = conn.cursor()
+#             print(session['email'])
+#             query = 'UPDATE user SET pass=%s WHERE email=%s'
+#             cursor.execute(query, (new_password, session['email']))
+#             conn.commit()
+#             conn.close()
+#             return jsonify({'Response': 200})
 
 
 @common_bp.route('/forgot/')
