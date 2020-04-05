@@ -28,10 +28,8 @@ Array<string>('input', 'focusin').forEach((evt: string) => {
     });
 });
 
-$(document).ready(function () {
-    $("#resetBtn").click(function () {
-        $(FORM).submit();
-    });
+$("#resetBtn").click(function () {
+    $(FORM).submit();
 });
 
 window.onbeforeunload = function (e: Event) {
