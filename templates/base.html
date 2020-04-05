@@ -134,21 +134,35 @@
     </div>
     <hr>
     <ul class="list-unstyled list-inline text-center py-2">
-        <li class="list-inline-item">
-            <h5 class="mb-1 complement">Register for free</h5>
-        </li>
-        <li class="list-inline-item">
-            <a href="/register/" class="href">
-                <button class="btn blue-gradient btn-rounded btn-sm primary waves-effect waves-light sign-btn"
-                        id="signUpBtn">Sign Up
-                </button>
-            </a>
-        </li>
+        {% if not session['logged_in'] %}
+            <li class="list-inline-item">
+                <h5 class="mb-1 complement">Register for free</h5>
+            </li>
+            <li class="list-inline-item">
+                <a href="/register/" class="href">
+                    <button class="btn blue-gradient btn-rounded btn-sm primary waves-effect waves-light sign-btn"
+                            id="signUpBtn">Sign Up
+                    </button>
+                </a>
+            </li>
+        {% else %}
+            <li class="list-inline-item">
+                <h5 class="mb-1 complement">View my Profile</h5>
+            </li>
+            <li class="list-inline-item">
+                <a href="/nileuser/overview/" class="href">
+                    <button class="btn blue-gradient btn-rounded btn-sm primary waves-effect waves-light sign-btn"
+                            id="signUpBtn">My Profile
+                    </button>
+                </a>
+            </li>
+        {% endif %}
+
         <li class="list-inline-item">
             <form class="form-inline complement" action="{{ url_for('books_bp.query_books') }}">
                 <div class="container-fluid search-group-parent">
                     <div class="input-group">
-                        <input id="mainSearchSys" class="form-control" type="text" placeholder="Search"
+                        <input id="searchFooter" class="form-control" type="text" placeholder="Search"
                                aria-label="Search"
                                style="width: 500px;"
                                name="search_query">

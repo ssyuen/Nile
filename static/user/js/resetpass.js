@@ -18,6 +18,11 @@ Array('input', 'focusin').forEach((evt) => {
         vc.setValidity(this, this, PURPOSE.PasswordConfirmation, PURPOSE.PasswordConfirmation.constraint(PASS_NEW.value, this.value));
     });
 });
+$(document).ready(function () {
+    $("#resetBtn").click(function () {
+        $(FORM).submit();
+    });
+});
 window.onbeforeunload = function (e) {
     let exit = true;
     if (PASS_NEW.value.length || PASS_CONF.value.length) {
