@@ -24,6 +24,7 @@ def cart_session(f):
 
     return wrapped_func
 
+
 def login_required(f):
     @wraps(f)
     def wrapped_func(*args, **kws):
@@ -34,7 +35,7 @@ def login_required(f):
             # return redirect('/login/')
             return redirect(url_for('common_bp.login', ctx=f.__name__))
 
-    return wrapped_func    
+    return wrapped_func
 
 
 @common_bp.route('/about/')
@@ -73,6 +74,7 @@ def landing_page(search_results=None):
     # STEP 3: In browse.html, iterate through list of books to populate page
     conn.close()
     return render_template('browse.html', books=books)
+
 
 @common_bp.route('/login/', methods=['POST', 'GET'])
 @cart_session
@@ -242,6 +244,10 @@ def register():
             try:
                 cursor.execute(query, user_payload)
                 conn.commit()
+
+                user_id_query = 'SELECT id FROM user ORDER BY id DESC LIMIT 1'
+                cursor.execute(user_id_query)
+                user_id = cursor.fetchall()[0][0]
                 conn.close()
             except(pymysql.err.IntegrityError):
                 flash('An account with this email already exists.')
@@ -356,7 +362,7 @@ def register_confirmation(sending_token, email=None, user_id=None, name=None):
         conn.commit()
         conn.close()
 
-        verification_url = f'http://127.0.0.1:5000/email_confirmation/{verification_token}'
+        verification_url = f'http://127.0.0.1:5000/conf/email_confirmation/{verification_token}'
 
         message_body = 'Hi ' + name + \
             f',\n\nPlease click on the following link to confirm your registration here at Nile!\n\n{verification_url}\n\nRegards, Nile Bookstore Management'
@@ -377,7 +383,7 @@ def email_confirmation(verify_token):
     conn = mysql.connect()
     cursor = conn.cursor()
 
-    verification_token = request.path[20:]
+    verification_token = request.path[25:]
     print('emailconfirmation', verification_token)
     user_id_query = 'SELECT userID_utoken_FK FROM user_token WHERE user_token.token = %s'
     cursor.execute(user_id_query, (verification_token))
@@ -407,17 +413,47 @@ def add_to_cart():
 @common_bp.route('/shoppingcart/')
 @cart_session
 def shopping_cart():
-    return render_template('shoppingcart.html')
+    conn = mysql.connect()
+    cursor = conn.cursor()
+
+    user_id_query = 'SELECT id FROM user WHERE email = %s'
+    cursor.execute(user_id_query, (session['email']))
+    user_id = cursor.fetchall()[0][0]
+
+    # get user's book_orderdetails from shoppingcart
+    query = '''SELECT bod_sc_FK FROM shoppingcart WHERE userID_sc_FK = %s'''
+    cursor.execute(query, (user_id))
+    results = cursor.fetchall()
+
+    book_payload = []
+    # get book info from bod
+    for bod in results:
+        query = '''SELECT 
+        ISBN,
+        title, 
+        price, 
+        CONCAT(authorFirstName, ' ', authorLastName) AS author_name,
+        quantity
+        FROM book,book_orderdetail WHERE ISBN = %s'''
+        cursor.execute(query,(str(bod[0])))
+        results = cursor.fetchall()
+
+        header = [desc[0] for desc in cursor.description]
+        book = [dict(zip(header, result)) for result in results]
+        book_payload.append(book)
+    print(book_payload)
+
+    return render_template('shoppingcart.html',books=book_payload)
 
 
 @common_bp.route('/product/', methods=['GET', 'POST'])
 @cart_session
-def product(title=None, price=None, author_name=None, ISBN=None, summary=None,publicationDate=None, numPages=None, binding=None, genre=None, nile_cover_ID=None):
+def product(title=None, price=None, author_name=None, ISBN=None, summary=None, publicationDate=None, numPages=None, binding=None, genre=None, nile_cover_ID=None):
     # STEP 1: User clicks on a book from browse.html
 
     # STEP 2: Link sends
     if request.method == 'GET':
-        return render_template('product.html', title=title, price=price, author_name=author_name, isbn=ISBN, summary=summary,publicationDate=publicationDate, numPages=numPages, binding=binding, genre=genre, nile_cover_ID=nile_cover_ID)
+        return render_template('product.html', title=title, price=price, author_name=author_name, isbn=ISBN, summary=summary, publicationDate=publicationDate, numPages=numPages, binding=binding, genre=genre, nile_cover_ID=nile_cover_ID)
     else:
         conn = mysql.connect()
         cursor = conn.cursor()
@@ -427,29 +463,28 @@ def product(title=None, price=None, author_name=None, ISBN=None, summary=None,pu
         if book_isbn in session['shopping_cart']:
             old_cart.remove(book_isbn)
 
-
             user_id_query = 'SELECT id FROM user WHERE email = %s'
-            cursor.execute(user_id_query,(session['email']))
+            cursor.execute(user_id_query, (session['email']))
             user_id = cursor.fetchall()[0][0]
 
             # remove from shoppingcart tbl first
             bod_id_query = '''SELECT bod_sc_FK FROM shoppingcart WHERE userID_sc_FK = %s AND bod_sc_FK = (SELECT id FROM book_orderdetail WHERE ISBN_bod_FK = %s) '''
-            cursor.execute(bod_id_query,(user_id,book_isbn))
+            cursor.execute(bod_id_query, (user_id, book_isbn))
             bod_id = cursor.fetchall()[0][0]
-            
+
             query = '''DELETE FROM shoppingcart WHERE userID_sc_FK = %s AND bod_sc_FK = (SELECT id FROM book_orderdetail WHERE ISBN_bod_FK = %s)'''
-            cursor.execute(query,(user_id,book_isbn))
+            cursor.execute(query, (user_id, book_isbn))
             conn.commit()
 
             # remove from book_orderdetail next
             query = '''DELETE FROM book_orderdetail WHERE id = %s'''
-            cursor.execute(query,(bod_id))
+            cursor.execute(query, (bod_id))
             conn.commit()
         else:
             old_cart.append(book_isbn)
 
             query = '''INSERT INTO book_orderdetail (ISBN_bod_FK,quantity) VALUES (%s, %s)'''
-            cursor.execute(query,(book_isbn,str(1)))
+            cursor.execute(query, (book_isbn, str(1)))
             conn.commit()
 
             bod_id_query = '''SELECT id FROM book_orderdetail ORDER BY id DESC LIMIT 1'''
@@ -457,21 +492,14 @@ def product(title=None, price=None, author_name=None, ISBN=None, summary=None,pu
             bod_id = cursor.fetchall()[0][0]
 
             user_id_query = 'SELECT id FROM user WHERE email = %s'
-            cursor.execute(user_id_query,(session['email']))
+            cursor.execute(user_id_query, (session['email']))
             user_id = cursor.fetchall()[0][0]
 
             query = '''INSERT INTO shoppingcart (userID_sc_FK, bod_sc_FK) VALUES (%s, %s)'''
-            cursor.execute(query,(user_id,str(bod_id)))
+            cursor.execute(query, (user_id, str(bod_id)))
             conn.commit()
-
 
         session['shopping_cart'] = old_cart
         return jsonify(session['shopping_cart'])
 
-        
-
-         
-
         query = '''INSERT INTO '''
-
-        
