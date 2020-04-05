@@ -77,7 +77,7 @@
                         </p>
 
                         <span class="complement-light info-heading" id="bookISBN"
-                              nile-isbn="9781338299144">ISBN-13:</span>
+                              nile-isbn="{{ request.args.get('isbn') }}">ISBN-13:</span>
                         <p class="card-text">
                             {{ request.args.get('isbn') }}
                         </p>
@@ -125,6 +125,7 @@
             $(btn).removeClass("blue-gradient");
             $(btn).addClass("btn-outline-success");
             $(btn).children("span").html("Added to Cart");
+            // $('cartTotal')
 
             $.ajax({
                 url: '/product/',

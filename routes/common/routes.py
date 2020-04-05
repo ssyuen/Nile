@@ -68,7 +68,6 @@ def landing_page(search_results=None):
     results = cursor.fetchall()
     header = [desc[0] for desc in cursor.description]
     books = [dict(zip(header, result)) for result in results]
-    print(books)
 
     # STEP 3: In browse.html, iterate through list of books to populate page
     conn.close()
