@@ -43,6 +43,7 @@ def landing_page(search_results=None):
         price,
         CONCAT(authorFirstName, ' ', authorLastName) AS author_name,
         ISBN,
+        summary,
         publicationDate,
         numPages,
         (SELECT binding FROM binding WHERE binding.id=book.bindingID_book_FK) AS binding,
@@ -59,7 +60,7 @@ def landing_page(search_results=None):
 
     # STEP 3: In browse.html, iterate through list of books to populate page
     conn.close()
-    return render_template('browse.html',books=books)
+    return render_template('browse.html', books=books)
 
 
 def login_required(f):
@@ -432,12 +433,12 @@ def shopping_cart():
 
 @common_bp.route('/product/', methods=['GET', 'POST'])
 @cart_session
-def product(title, price, author_name, ISBN, publicationDate, numPages, binding,genre,nile_cover_ID):
+def product(title=None, price=None, author_name=None, ISBN=None, summary=None,publicationDate=None, numPages=None, binding=None, genre=None, nile_cover_ID=None):
     # STEP 1: User clicks on a book from browse.html
 
     # STEP 2: Link sends
     if request.method == 'GET':
-        return render_template('product.html',title=title,price=price,author_name=author_name,isbn=ISBN,publicationDate=publicationDate,numPages=numPages,binding=binding,genre=genre,nile_cover_ID=nile_cover_ID)
+        return render_template('product.html', title=title, price=price, author_name=author_name, isbn=ISBN, summary=summary,publicationDate=publicationDate, numPages=numPages, binding=binding, genre=genre, nile_cover_ID=nile_cover_ID)
     else:
         print(session, file=sys.stderr)
         book_isbn = request.form.get('bookISBN')

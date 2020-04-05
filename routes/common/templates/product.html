@@ -18,9 +18,9 @@
 
 {% block mainTitle %}
     <div class="text-left" id="content-header">
-        <p class="primary-lg" id="bookTitle">{{ title }}</p>
+        <p class="primary-lg" id="bookTitle">{{ request.args.get('title') }}</p>
         <p class="complement-light" id="type">
-            <span>Author:&nbsp&nbsp</span>{{ author_name }}
+            <span>Author:&nbsp&nbsp</span>{{ request.args.get('author_name') }}
         </p>
     </div>
 {% endblock %}
@@ -30,7 +30,7 @@
         <div class="row">
             <div class="col-lg-3">
                 <aside>
-                    <img class="responsive w-100" src="{{'/static/images/CoverImages/' + nile_cover_ID + '.jpg' }}" alt="">
+                    <img class="responsive w-100" src="{{'/static/images/CoverImages/' + request.args.get('nile_cover_ID') + '.jpg' }}" alt="">
 
                     <li class="list-group-item mt-3 w-100 bg-dark text-white rounded">
 
@@ -39,7 +39,7 @@
                             <span class="primary-sm justify-content-center">Price (USD):</span>
 
                             <div class="quant-price ml-1 float-right d-inline-flex" id="totalPrice">$
-                                <div id="bookPrice">{{ price }}</div>
+                                <div id="bookPrice">{{ request.args.get('price') }}</div>
                             </div>
                         </div>
                     </li>
@@ -67,39 +67,39 @@
                         <!-- Text -->
                         <span class="complement-light info-heading">Summary:</span>
                         <p class="card-text" style="font-size: large">
-                            {{ title }}
+                            {{ request.args.get('summary') }}
                         </p>
 
 
                         <span class="complement-light info-heading">Author:</span>
                         <p class="card-text">
-                            {{ author_name }}
+                            {{ request.args.get('author_name') }}
                         </p>
 
                         <span class="complement-light info-heading" id="bookISBN"
                               nile-isbn="9781338299144">ISBN-13:</span>
                         <p class="card-text">
-                            {{ isbn }}
+                            {{ request.args.get('isbn') }}
                         </p>
 
                         <span class="complement-light info-heading">Publishing Date:</span>
                         <p class="card-text">
-                            {{ publicationDate }}
+                            {{ request.args.get('publicationDate') }}
                         </p>
 
                         <span class="complement-light info-heading">Number of Pages:</span>
                         <p class="card-text">
-                            {{ numPages }}
+                            {{ request.args.get('numPages') }}
                         </p>
 
                         <span class="complement-light info-heading">Binding Type:</span>
                         <p class="card-text">
-                            {{ binding }}
+                            {{ request.args.get('binding') }}
                         </p>
 
                         <span class="complement-light info-heading">Genre:</span>
                         <p class="card-text">
-                            {{ genre }}
+                            {{ request.args.get('genre') }}
                         </p>
 
                         <span class="complement-light info-heading">Reviews:</span>

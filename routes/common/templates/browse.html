@@ -299,9 +299,8 @@
                 <div class="row">
                     {#                x#}
                     {% for book in books %}
-
                         <div class="col-lg-3 col-md-6 mb-4">
-                            <a href="{{ render_template('product.html', title=book['title'],price=book['price'],author_name=book['author_name'],isbn=book['ISBN'],publicationDate=book['publicationDate'],numPages=book['numPages'],binding=book['binding'],genre=book['genre'],nile_cover_ID=book['nile_cover_ID']) }}">
+                            <a href="{{ url_for('common_bp.product', title=book['title'],price=book['price'],author_name=book['author_name'],isbn=book['ISBN'],summary=book['summary'],publicationDate=book['publicationDate'],numPages=book['numPages'],binding=book['binding'],genre=book['genre'],nile_cover_ID=book['nile_cover_ID']) }}">
                                 <div class="card h-100 bg-dark text-white modal-card waves-effect" id="hp">
                                     <img class="card-img-top" src="{{'/static/images/CoverImages/' + book['nile_cover_ID'] + '.jpg' }}"
                                         alt=""
@@ -317,28 +316,7 @@
                                 </div>
                             </a>
                         </div>
-
                     {% endfor %}
-
-                    <!-- keeping this for reference -->
-                    <!-- <div class="col-lg-3 col-md-6 mb-4">
-                        <a href="/product/">
-                            <div class="card h-100 bg-dark text-white modal-card waves-effect" id="hp">
-                                <img class="card-img-top" src="/static/images/CoverImages/NILE_CI_0001.jpg"
-                                     alt=""
-                                     width="250">
-                                <div class="card-body">
-                                    <div class="titleHolder">
-                                        <h6 class="card-title">Harry Potter and the Sorcercer's Stone</h6>
-                                    </div>
-                                    <div class="flex-fill">
-                                        <p class="book-price">$5.99</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </a>
-                   
-                    </div> -->
                 </div>
             </div>
         </div>
