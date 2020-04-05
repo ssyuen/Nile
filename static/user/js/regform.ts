@@ -24,6 +24,7 @@ const PASS_CONF: HTMLInputElement = document.getElementById("inputConfirmPasswor
 */
 const STREET_ADDR: HTMLInputElement = document.getElementById("addAddressStreetAddress") as HTMLInputElement;
 const ZIP: HTMLInputElement = document.getElementById("addZipcode") as HTMLInputElement;
+const CITY: HTMLInputElement = document.getElementById("addAddressCity") as HTMLInputElement;
 
 /*
  * Optional Billing Address Fields
@@ -35,6 +36,7 @@ const CVV: HTMLInputElement = document.getElementById("cvv") as HTMLInputElement
 
 const BILLING_ST: HTMLInputElement = document.getElementById("billingStreetAddress") as HTMLInputElement;
 const BILLING_ZIP: HTMLInputElement = document.getElementById("billingZipcode") as HTMLInputElement;
+const BILLING_CITY: HTMLInputElement = document.getElementById("billingCity") as HTMLInputElement;
 
 
 let vc = new InputValidationComplex();
@@ -164,6 +166,12 @@ Array<string>('input', 'focusin').forEach((evt: string) => {
     [ZIP, BILLING_ZIP].forEach(function (elem) {
         elem.addEventListener(evt, function () {
             vc.setValidity(elem, elem, PURPOSE.Zip, PURPOSE.Zip.constraint(elem.value))
+        });
+    });
+
+    [CITY, BILLING_CITY].forEach(function (elem) {
+        elem.addEventListener(evt, function () {
+            vc.setValidity(elem, elem, PURPOSE.City, PURPOSE.City.constraint(elem.value))
         });
     });
 

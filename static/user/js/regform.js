@@ -18,6 +18,7 @@ const PASS_CONF = document.getElementById("inputConfirmPassword");
 */
 const STREET_ADDR = document.getElementById("addAddressStreetAddress");
 const ZIP = document.getElementById("addZipcode");
+const CITY = document.getElementById("addAddressCity");
 /*
  * Optional Billing Address Fields
  */
@@ -27,6 +28,7 @@ const CCN = document.getElementById("ccn");
 const CVV = document.getElementById("cvv");
 const BILLING_ST = document.getElementById("billingStreetAddress");
 const BILLING_ZIP = document.getElementById("billingZipcode");
+const BILLING_CITY = document.getElementById("billingCity");
 let vc = new InputValidationComplex();
 let cc = new CreditCard();
 /*
@@ -135,14 +137,18 @@ Array('input', 'focusin').forEach((evt) => {
             vc.setValidity(elem, elem, PURPOSE.Zip, PURPOSE.Zip.constraint(elem.value));
         });
     });
+    [CITY, BILLING_CITY].forEach(function (elem) {
+        elem.addEventListener(evt, function () {
+            vc.setValidity(elem, elem, PURPOSE.City, PURPOSE.City.constraint(elem.value));
+        });
+    });
     CCN.addEventListener(evt, function () {
         cc.setCCN(this.value);
         let check = PURPOSE.CCN.constraint(cc);
         vc.setValidity(this, this, PURPOSE.CCN, check);
         if (check) {
             CreditCard.toggleCardIcon(this, cc);
-        }
-        else {
+        } else {
             CreditCard.toggleCardIcon(this);
         }
     });

@@ -28,24 +28,35 @@ export class InputValidationComplex {
     static passwordConstraint(value) {
         return ((/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$/)).test(value);
     }
+
     static passwordConfConstraint(value_pass, value_pass_conf) {
         return value_pass === value_pass_conf;
     }
+
     static streetAddressConstraint(value) {
         return value.length !== 0;
     }
+
     static zipCodeConstraint(value) {
         return (/^\d{5}$|^\d{5}-\d{4}$/).test(value);
     }
+
+    static cityConstraint(value) {
+        return InputValidationComplex.firstNameConstraint(value); //Same constraint...that's why
+    }
+
     static creditCardConstraint(cc) {
         return cc.checkNetwork();
     }
+
     static cvvConstraint(cc) {
         return cc.checkCVV();
     }
+
     setValidity(elem, loc, purpose, constr) {
         this.curr_validity[elem.id] = this.validator(elem, loc, purpose['template'], constr);
     }
+
     static scrollTopOfSelector(selectorPlace) {
         $([document.documentElement, document.body]).animate({
             scrollTop: $(selectorPlace).offset().top
@@ -73,8 +84,8 @@ export class InputValidationComplex {
      */
     validator(inputType, invalidMessageLocation, invalidMessageType, constraintType) {
         if (constraintType) {
-            if ($(invalidMessageType[1]).length) {
-                $(invalidMessageType[1]).remove();
+            if ($(inputType).next(invalidMessageType[1]).length) {
+                $(inputType).next(invalidMessageType[1]).remove();
             }
             if ($(inputType).hasClass('invalid')) {
                 $(inputType).removeClass('invalid');
@@ -87,7 +98,7 @@ export class InputValidationComplex {
             return true;
         }
         else {
-            if (!$(invalidMessageType[1]).length) {
+            if (!$(inputType).next(invalidMessageType[1]).length) {
                 // @ts-ignore
                 $(invalidMessageLocation).after(invalidMessageType[0]);
             }
@@ -139,6 +150,11 @@ InputValidationComplex.INVALID_ZIP_MSS = [`
           ZIP code is not valid.
         </small>
 `, "#invalidZip"];
+InputValidationComplex.INVALID_CITY_MSS = [`
+        <small class="text-danger error-message" id="invalidCity"">
+          City must be more than 1 character.
+        </small>
+`, "#invalidCity"];
 InputValidationComplex.INVALID_CCN_MSS = [`
         <small class="text-danger error-message" id="invalidCCN">
           We support AMEX, Discover, Visa, and Mastercard
@@ -177,6 +193,10 @@ export const PURPOSE = {
     Zip: {
         template: InputValidationComplex.INVALID_ZIP_MSS,
         constraint: InputValidationComplex.zipCodeConstraint
+    },
+    City: {
+        template: InputValidationComplex.INVALID_CITY_MSS,
+        constraint: InputValidationComplex.cityConstraint
     },
     CCN: {
         template: InputValidationComplex.INVALID_CCN_MSS,

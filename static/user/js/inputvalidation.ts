@@ -45,6 +45,11 @@ export class InputValidationComplex {
           ZIP code is not valid.
         </small>
 `, "#invalidZip"];
+    static INVALID_CITY_MSS: [string, string] = [`
+        <small class="text-danger error-message" id="invalidCity"">
+          City must be more than 1 character.
+        </small>
+`, "#invalidCity"];
     static INVALID_CCN_MSS: [string, string] = [`
         <small class="text-danger error-message" id="invalidCCN">
           We support AMEX, Discover, Visa, and Mastercard
@@ -55,6 +60,7 @@ export class InputValidationComplex {
           CVV is not valid.
         </small>
 `, "#invalidCVV"];
+
     /*
     Keeps track of each input element along with its validity.
     On submit, every value of an input with the 'required' attribute
@@ -92,6 +98,10 @@ export class InputValidationComplex {
 
     public static zipCodeConstraint(value: string): boolean {
         return (/^\d{5}$|^\d{5}-\d{4}$/).test(value);
+    }
+
+    public static cityConstraint(value: string): boolean {
+        return InputValidationComplex.firstNameConstraint(value); //Same constraint...that's why
     }
 
     public static creditCardConstraint(cc: CreditCard): boolean {
@@ -142,8 +152,8 @@ export class InputValidationComplex {
                       constraintType: (boolean | RegExpMatchArray)): boolean {
 
         if (constraintType) {
-            if ($(invalidMessageType[1]).length) {
-                $(invalidMessageType[1]).remove();
+            if ($(inputType).next(invalidMessageType[1]).length) {
+                $(inputType).next(invalidMessageType[1]).remove();
             }
             if ($(inputType).hasClass('invalid')) {
                 $(inputType).removeClass('invalid');
@@ -155,7 +165,7 @@ export class InputValidationComplex {
             $(inputType).prop("aria-invalid", "false");
             return true;
         } else {
-            if (!$(invalidMessageType[1]).length) {
+            if (!$(inputType).next(invalidMessageType[1]).length) {
                 // @ts-ignore
                 $(invalidMessageLocation).after(invalidMessageType[0]);
             }
@@ -210,6 +220,11 @@ export const PURPOSE = {
     Zip: {
         template: InputValidationComplex.INVALID_ZIP_MSS,
         constraint: InputValidationComplex.zipCodeConstraint
+    },
+
+    City: {
+        template: InputValidationComplex.INVALID_CITY_MSS,
+        constraint: InputValidationComplex.cityConstraint
     },
 
     CCN: {
