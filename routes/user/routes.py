@@ -108,10 +108,67 @@ def order_history():
     return render_template('profile/profileOrderHistory.html', data=data)
 
 
-@user_bp.route('/shipping_address/', methods=['GET'])
+@user_bp.route('/shipping_address/', methods=['GET', 'POST'])
 @login_required
 @cart_session
 def shipping_address():
+    conn = mysql.connect()
+    cursor = conn.cursor()
+
+    if request.method == 'GET':
+        user_addresses = """
+        SELECT UA.userID_ua_FK, A.street1, A.street2, A.city, A.zip, A.state, A.country
+        FROM user_address UA
+                 INNER JOIN address A ON UA.addressID_ua_FK = A.id
+        WHERE userID_ua_FK = (SELECT id FROM user WHERE email = %s)
+        ORDER BY addressID_ua_FK;
+        """
+        cursor.execute(user_addresses, (session['email']))
+        data = cursor.fetchall()  # ((68, '123 Wallaby', '', 'Lilburn', '30609', 'Georgia', 'United States'), (68, '362', ...))
+        # We want [{street1: 123 Wallaby, street2: 23}, {street1: 362 Nowhere, street2: ''}, {street1: 999 Somewhere, street2: 27}]
+        conn.close()
+        sendable = []
+
+        for addr_tup in data:
+            addr_dict = {}
+            addr_dict['street1'] = addr_tup[1]
+            addr_dict['street2'] = addr_tup[2]
+            addr_dict['city'] = addr_tup[3]
+            addr_dict['zip'] = addr_tup[4]
+            addr_dict['state'] = addr_tup[5]
+            addr_dict['country'] = addr_tup[6]
+            sendable.append(addr_dict)
+
+        print(sendable, file=sys.stderr)
+
+        return render_template('profile/profileShippingAddress.html', data=sendable)
+
+    elif request.method == 'POST':
+        street_addr = request.form.get("addAddress1StreetAddress")
+        street_addr2 = request.form.get("addAddress1ApartmentOrSuite")
+        zip = request.form.get("zip")
+        city = request.form.get("addAddress1City")
+        state = request.form.get("addAddress1State")
+        country = request.form.get("addAddress1Country")
+
+        query = """
+        INSERT INTO address (street1, street2, city, zip, state, country, addressTypeID_address_FK) 
+        VALUES (%s, %s, %s, %s, %s, %s, %s);
+        """
+
+        create_ship_payload = (street_addr, street_addr2, city, zip, state, country, 1)
+        cursor.execute(query, create_ship_payload)
+
+        query2 = """
+        INSERT INTO user_address (userID_ua_FK, addressID_ua_FK) 
+        VALUES (
+            (SELECT id FROM user WHERE email = %s),
+            (SELECT id FROM address ORDER BY id DESC LIMIT 1)  
+        ) 
+        """
+        cursor.execute(query2, (session['email']))
+        conn.commit()
+
     return render_template('profile/profileShippingAddress.html')
 
 
