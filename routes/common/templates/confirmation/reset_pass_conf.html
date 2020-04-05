@@ -1,0 +1,45 @@
+{% extends "confirmation/baseConfirm.html" %}
+{% block title %}Reset Password{% endblock %}
+
+{% block head %}
+    {{ super() }}
+    <style>
+        .md-form .form-control {
+            margin-bottom: 0;
+        }
+
+        .md-form.md-outline {
+            margin-top: 0.5rem !important;
+        }
+    </style>
+{% endblock %}
+
+{% block cardTitle %}
+    No worries. Reset your password.
+{% endblock %}
+
+{% block content %}
+    <form id="resetPasswordForm" method="POST" action="">
+        <div class="form-row">
+            <div class="col">
+                <div class="form-group md-form md-outline">
+                    <label for="newPassword">New
+                        Password</label>
+                    <input type="password" id="newPassword" class="form-control validate"
+                           name="newPassword">
+                </div>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="col">
+                <div class="form-group md-form md-outline">
+                    <label for="confirmNewPassword">Confirm
+                        Password</label>
+                    <input type="password" id="confirmNewPassword"
+                           class="form-control" name="confirmNewPassword">
+                </div>
+            </div>
+        </div>
+    </form>
+    <script defer src="/static/user/js/resetpass.js"></script>
+{% endblock %}
