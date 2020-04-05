@@ -383,33 +383,6 @@ def email_confirmation():
     else:
         pass
 
-
-# @common_bp.route('/password_change/', methods=['POST'])
-# @login_required
-# @cart_session
-# def password_change():
-#     if request.method == 'POST':
-#         new_password = request.form.get('newPassword')
-#         confirm_new_password = request.form.get('confirmNewPassword')
-
-#         print(new_password)
-#         print(confirm_new_password)
-#         print(type(new_password))
-#         if new_password != confirm_new_password:
-#             return jsonify({'Response': 400})
-#         else:
-#             new_password = bcrypt.hashpw(
-#                 new_password.encode('utf-8'), bcrypt.gensalt())
-#             conn = mysql.connect()
-#             cursor = conn.cursor()
-#             print(session['email'])
-#             query = 'UPDATE user SET pass=%s WHERE email=%s'
-#             cursor.execute(query, (new_password, session['email']))
-#             conn.commit()
-#             conn.close()
-#             return jsonify({'Response': 200})
-
-
 @common_bp.route('/forgot/')
 @cart_session
 def forgot():
