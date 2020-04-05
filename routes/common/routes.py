@@ -457,7 +457,8 @@ def reset_pass(verify_token):
         # extract password from request
         confirmNewPassword = request.form.get('confirmNewPassword')
         confirmNewPassword = bcrypt.hashpw(confirmNewPassword.encode('utf-8'), bcrypt.gensalt())
-
+        
+        print(confirmNewPassword)
         # update password in user
         query = 'UPDATE user SET pass = %s WHERE id = %s'
         cursor.execute(query, (confirmNewPassword,user_id))
