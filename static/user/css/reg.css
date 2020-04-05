@@ -1,12 +1,6 @@
 @media (max-width: 768px) {
-    #sep {
-        display: table !important;
-        width: 100% !important;
-    }
-
     #acctContainer {
-        display: table-cell;
-        width: auto !important;
+        display: table-cell !important;
     }
 
     #acctContainer > #acctCard {
@@ -16,7 +10,7 @@
 }
 
 #acctContainer {
-    width: 800px;
+    width: 768px;
     max-width: 75%;
     margin-top: 5em;
     margin-bottom: 5em;
