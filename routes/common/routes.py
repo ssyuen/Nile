@@ -383,6 +383,7 @@ def email_confirmation(verify_token):
     conn = mysql.connect()
     cursor = conn.cursor()
 
+    # extract token from url
     verification_token = request.path[25:]
     print('emailconfirmation', verification_token)
     user_id_query = 'SELECT userID_utoken_FK FROM user_token WHERE user_token.token = %s'
@@ -398,10 +399,64 @@ def email_confirmation(verify_token):
     return render_template('confirmation/email_conf.html')
 
 
-@common_bp.route('/forgot/')
+@common_bp.route('/forgot/',methods=['POST','GET'])
 @cart_session
 def forgot():
-    return render_template('./forgot.html')
+    if request.methods == 'GET':
+        return render_template('./forgot.html')
+    else:
+        conn = mysql.connect()
+        cursor = conn.cursor()        
+
+        email = request.form.get('forgotEmailInput')
+        name_query = '''SELECT name FROM user WHERE email = %s'''
+        cursor.execute(name_query,(email))
+        name = cursor.fetchall()[0][0]
+
+        verification_token = secrets.token_urlsafe(16)
+
+
+        user_id_query = 'SELECT id FROM user WHERE email = %s'
+        cursor.execute(user_id_query, (email))
+        user_id = cursor.fetchall()[0][0]
+
+        query = 'INSERT INTO user_token (userID_utoken_FK,token) VALUES (%s, %s)'
+        cursor.execute(query, (user_id, verification_token))
+
+        conn.commit()
+        conn.close() 
+
+        # verification_url = url_for
+        verification_url = ''
+
+        message_body = 'Hi ' + name + \
+            f',\n\nPlease click on the following link to reset your password.\n\n{verification_url}\n\nRegards, Nile Bookstore Management'
+        msg = Message(subject='Nile Registration Confirmation', recipients=[
+            email, 'rootatnilebookstore@gmail.com'], sender='rootatnilebookstore@gmail.com', body=message_body)
+        mail.send(msg)
+
+        return ''
+
+
+@common_bp.route('/reset_pass/<verify_token>',methods=['POST','GET'])
+@cart_session
+def reset_pass(verify_token):
+    conn = mysql.connect()
+    cursor = conn.cursor()
+
+    verification_token = request.path[25:]
+    user_id_query = 'SELECT userID_utoken_FK FROM user_token WHERE user_token.token = %s'
+    cursor.execute(user_id_query, (verification_token))
+    user_id = cursor.fetchall()[0][0]
+
+    query = 'UPDATE user SET pass = %s WHERE user.id = %s'
+
+    cursor.execute(query, (user_id))
+    conn.commit()
+    conn.close()
+
+    pass
+
 
 
 @common_bp.route('/add_to_cart/', methods=['POST'])
