@@ -437,13 +437,59 @@ def product(title=None, price=None, author_name=None, ISBN=None, summary=None,pu
     if request.method == 'GET':
         return render_template('product.html', title=title, price=price, author_name=author_name, isbn=ISBN, summary=summary,publicationDate=publicationDate, numPages=numPages, binding=binding, genre=genre, nile_cover_ID=nile_cover_ID)
     else:
-        print(session, file=sys.stderr)
+        conn = mysql.connect()
+        cursor = conn.cursor()
+
         book_isbn = request.form.get('bookISBN')
         old_cart = session['shopping_cart']
         if book_isbn in session['shopping_cart']:
             old_cart.remove(book_isbn)
+
+
+            user_id_query = 'SELECT id FROM user WHERE email = %s'
+            cursor.execute(user_id_query,(session['email']))
+            user_id = cursor.fetchall()[0][0]
+
+            # remove from shoppingcart tbl first
+            bod_id_query = '''SELECT bod_sc_FK FROM shoppingcart WHERE userID_sc_FK = %s AND bod_sc_FK = (SELECT id FROM book_orderdetail WHERE ISBN_bod_FK = %s) '''
+            cursor.execute(bod_id_query,(user_id,book_isbn))
+            bod_id = cursor.fetchall()[0][0]
+            
+            query = '''DELETE FROM shoppingcart WHERE userID_sc_FK = %s AND bod_sc_FK = (SELECT id FROM book_orderdetail WHERE ISBN_bod_FK = %s)'''
+            cursor.execute(query,(user_id,book_isbn))
+            conn.commit()
+
+            # remove from book_orderdetail next
+            query = '''DELETE FROM book_orderdetail WHERE id = %s'''
+            cursor.execute(query,(bod_id))
+            conn.commit()
         else:
             old_cart.append(book_isbn)
+
+            query = '''INSERT INTO book_orderdetail (ISBN_bod_FK,quantity) VALUES (%s, %s)'''
+            cursor.execute(query,(book_isbn,str(1)))
+            conn.commit()
+
+            bod_id_query = '''SELECT id FROM book_orderdetail ORDER BY id DESC LIMIT 1'''
+            cursor.execute(bod_id_query)
+            bod_id = cursor.fetchall()[0][0]
+
+            user_id_query = 'SELECT id FROM user WHERE email = %s'
+            cursor.execute(user_id_query,(session['email']))
+            user_id = cursor.fetchall()[0][0]
+
+            query = '''INSERT INTO shoppingcart (userID_sc_FK, bod_sc_FK) VALUES (%s, %s)'''
+            cursor.execute(query,(user_id,str(bod_id)))
+            conn.commit()
+
+
         session['shopping_cart'] = old_cart
-        print(session, file=sys.stderr)
         return jsonify(session['shopping_cart'])
+
+        
+
+         
+
+        query = '''INSERT INTO '''
+
+        
