@@ -2435,17 +2435,17 @@
                 }
             },
                 {
-                    // key: "ChangeDateInputType",
-                    // value: function() {
-                    //     var e = t('input[type="date"]');
-                    //     e.each((function(t, e) {
-                    //         e.type = "text"
-                    //     })), e.on("focus", (function(t) {
-                    //         t.target.type = "date"
-                    //     })), e.on("blur", (function(e) {
-                    //         e.target.type = "text", 0 === e.target.value.length && t("label[for=".concat(e.target.id, "]")).removeClass("active")
-                    //     }))
-                    // }
+                    key: "ChangeDateInputType",
+                    value: function () {
+                        // var e = t('input[type="date"]');
+                        // e.each((function(t, e) {
+                        //     e.type = "text"
+                        // })), e.on("focus", (function(t) {
+                        //     t.target.type = "date"
+                        // })), e.on("blur", (function(e) {
+                        //     e.target.type = "text", 0 === e.target.value.length && t("label[for=".concat(e.target.id, "]")).removeClass("active")
+                        // }))
+                    }
                 }, {
                     key: "textAreaAutoResize",
                     value: function () {
