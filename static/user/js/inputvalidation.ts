@@ -14,11 +14,9 @@ export class InputValidationComplex {
         </small>
 `, "#invalidPass"];
     static INVALID_PASS_CONF_MSS: [string, string] = [`
-    <div >
         <small class="text-danger error-message" id="invalidPassConf">
           Passwords do not match.
         </small>
-    </div>
 `, "#invalidPassConf"];
     static INVALID_EMAIL_MSS: [string, string] = [`
         <small class="text-danger error-message" id="invalidEmail">
@@ -147,13 +145,13 @@ export class InputValidationComplex {
         Generalized validation function
      */
     private validator(inputType: HTMLElement,
-                      invalidMessageLocation: string | HTMLElement,
+                      invalidMessageLocation: string | HTMLElement | any,
                       invalidMessageType: [string, string],
                       constraintType: (boolean | RegExpMatchArray)): boolean {
 
         if (constraintType) {
-            if ($(inputType).next(invalidMessageType[1]).length) {
-                $(inputType).next(invalidMessageType[1]).remove();
+            if ($(invalidMessageLocation).next(invalidMessageType[1]).length) {
+                $(invalidMessageLocation).next(invalidMessageType[1]).remove();
             }
             if ($(inputType).hasClass('invalid')) {
                 $(inputType).removeClass('invalid');
@@ -165,8 +163,7 @@ export class InputValidationComplex {
             $(inputType).prop("aria-invalid", "false");
             return true;
         } else {
-            if (!$(inputType).next(invalidMessageType[1]).length) {
-                // @ts-ignore
+            if (!$(invalidMessageLocation).next(invalidMessageType[1]).length) {
                 $(invalidMessageLocation).after(invalidMessageType[0]);
             }
             if ($(inputType).hasClass('valid')) {
