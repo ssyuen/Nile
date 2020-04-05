@@ -123,7 +123,7 @@ def login(ctx=None):
                 # unencoded_pass = results[1]
                 db_pass = results[1].encode('utf-8')
                 # print(f'unencoded = {unencoded_pass}')
-                print(db_pass)
+                # print(db_pass)
                 # db_pass = db_pass[2:-1].encode('utf-8')
 
                 if bcrypt.checkpw(password.encode('utf-8'), db_pass):
@@ -402,14 +402,14 @@ def email_confirmation(verify_token):
 @common_bp.route('/forgot/',methods=['POST','GET'])
 @cart_session
 def forgot():
-    if request.methods == 'GET':
+    if request.method == 'GET':
         return render_template('./forgot.html')
     else:
         conn = mysql.connect()
         cursor = conn.cursor()        
 
         email = request.form.get('forgotEmailInput')
-        name_query = '''SELECT name FROM user WHERE email = %s'''
+        name_query = '''SELECT firstname FROM user WHERE email = %s'''
         cursor.execute(name_query,(email))
         name = cursor.fetchall()[0][0]
 
@@ -424,7 +424,7 @@ def forgot():
         conn.commit()
         conn.close() 
 
-        verification_url = url_for('common_bp.reset_pass',verify_token = verification_token)
+        verification_url = request.url_root[:-1] + url_for('common_bp.reset_pass',verify_token = verification_token)
 
         message_body = 'Hi ' + name + \
             f',\n\nPlease click on the following link to reset your password.\n\n{verification_url}\n\nRegards, Nile Bookstore Management'
@@ -432,34 +432,50 @@ def forgot():
             email, 'rootatnilebookstore@gmail.com'], sender='rootatnilebookstore@gmail.com', body=message_body) 
         mail.send(msg)
 
-        pass 
+        return redirect(url_for('common_bp.forgot_email_conf'))
 
 
 @common_bp.route('/reset_pass/<verify_token>',methods=['POST','GET'])
 @cart_session
 def reset_pass(verify_token):
-    conn = mysql.connect()
-    cursor = conn.cursor()
+    if request.method == 'GET':
+        return render_template('confirmation/reset_pass_conf.html')
+    elif request.method == 'POST':
+        print('post sent')
+        conn = mysql.connect()
+        cursor = conn.cursor()
 
-    verification_token = request.path[25:]
-    user_id_query = 'SELECT userID_utoken_FK FROM user_token WHERE user_token.token = %s'
-    cursor.execute(user_id_query, (verification_token))
-    user_id = cursor.fetchall()[0][0]
+        # extract token from url
+        verification_token = request.path[12:]
+        print(verification_token)
 
+        # extract user id from user_token
+        user_id_query = 'SELECT userID_utoken_FK FROM user_token WHERE user_token.token = %s'
+        cursor.execute(user_id_query, (verification_token))
+        user_id = cursor.fetchall()[0][0]
 
-    # CHANGE PASSWORD TO APPROPRIATE FORM VAR
-    confirmNewPassword = request.form.get('confirmPassword')
-    confirmNewPassword = bcrypt.hashpw(confirmNewPassword.encode('utf-8'), bcrypt.gensalt())
+        # extract password from request
+        confirmNewPassword = request.form.get('confirmNewPassword')
+        confirmNewPassword = bcrypt.hashpw(confirmNewPassword.encode('utf-8'), bcrypt.gensalt())
 
-    query = 'UPDATE user SET pass = %s WHERE user.id = %s'
+        # update password in user
+        query = 'UPDATE user SET pass = %s WHERE id = %s'
+        cursor.execute(query, (confirmNewPassword,user_id))
+        conn.commit()
 
-    cursor.execute(query, (confirmNewPassword,user_id))
-    conn.commit()
-    conn.close()
+        # delete user/token pair from user_token
+        query = 'DELETE FROM user_token WHERE userID_utoken_FK = %s AND token = %s'
+        cursor.execute(query,(user_id,verification_token))
+        conn.commit()
 
-    return ''
+        conn.close()
 
+        return redirect(url_for('common_bp.login'))
 
+@common_bp.route('/forgot_email_conf/')
+@cart_session
+def forgot_email_conf():
+    return render_template('confirmation/forgot_email_conf.html')
 
 @common_bp.route('/add_to_cart/', methods=['POST'])
 @cart_session

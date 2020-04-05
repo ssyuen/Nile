@@ -19,7 +19,7 @@
 {% endblock %}
 
 {% block content %}
-    <form id="resetPasswordForm" method="POST" action="/login/">
+    <form id="resetPasswordForm" method="POST" action="">
         <div class="form-row">
             <div class="col">
                 <div class="form-group md-form md-outline">
@@ -40,6 +40,9 @@
                 </div>
             </div>
         </div>
+
+        <!-- NEED A BUTTON HERE FROM baseConfirm.html -->
+
     </form>
     <script defer src="/static/user/js/resetpass.js"></script>
 {% endblock %}
