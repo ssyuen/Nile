@@ -48,13 +48,31 @@ def landing_page(search_results=None):
     # STEP 1: Make call to database to return all books, need ISBN for query in /product/?isbn=<isbn>
     conn = mysql.connect()
     cursor = conn.cursor()
-    query = 'SELECT * FROM book'
+
+    if search_results is None:
+        query = '''SELECT
+        title,
+        price,
+        CONCAT(authorFirstName, ' ', authorLastName) AS author_name,
+        ISBN,
+        summary,
+        publicationDate,
+        numPages,
+        (SELECT binding FROM binding WHERE binding.id=book.bindingID_book_FK) AS binding,
+        (SELECT genre from genre WHERE genre.id=book.genreID_book_FK) AS genre,
+        nile_cover_ID
+        FROM book'''
+    cursor.execute(query)
 
     # STEP 2: Pass list of books to browse.html
+    results = cursor.fetchall()
+    header = [desc[0] for desc in cursor.description]
+    books = [dict(zip(header, result)) for result in results]
+    print(books)
 
     # STEP 3: In browse.html, iterate through list of books to populate page
     conn.close()
-    return render_template('browse.html')
+    return render_template('browse.html', books=books)
 
 @common_bp.route('/login/', methods=['POST', 'GET'])
 @cart_session
@@ -165,9 +183,10 @@ def register():
         # simple check for if someone is trying to use the nile domain
         email = request.form.get('inputEmail')
         if '@nile.com' in email:
-            flash('The email you have chosen is from a restricted domain. Please choose another email.')
+            flash(
+                'The email you have chosen is from a restricted domain. Please choose another email.')
             return redirect(url_for('common_bp.register'))
-        
+
         password = request.form.get('inputPassword')
         password = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
         # USER PAYLOAD
@@ -262,7 +281,8 @@ def register():
                 cursor.execute(query, (user_id, shipping_id))
 
                 # payment_payload depends on user and billing FKs
-                payment_payload = (ccn, ccn_provider, ccexp, user_id, billing_id)
+                payment_payload = (ccn, ccn_provider, ccexp,
+                                   user_id, billing_id)
                 query = 'INSERT INTO payment_method (cardNumber, cardType, expirationDate, userID_payment_FK, billingAddress_addr_FK) VALUES (%s, %s, %s, %s, %s)'
                 cursor.execute(query, payment_payload)
 
@@ -286,7 +306,8 @@ def register():
                 user_id = cursor.fetchall()[0][0]
 
                 # payment_payload depends on user and billing FKs
-                payment_payload = (ccn, ccn_provider, ccexp, user_id, billing_id)
+                payment_payload = (ccn, ccn_provider, ccexp,
+                                   user_id, billing_id)
                 query = 'INSERT INTO payment_method (cardNumber, cardType, expirationDate, userID_payment_FK, billingAddress_addr_FK) VALUES (%s, %s, %s, %s, %s)'
                 cursor.execute(query, payment_payload)
 
@@ -410,13 +431,12 @@ def shopping_cart():
 
 @common_bp.route('/product/', methods=['GET', 'POST'])
 @cart_session
-def product():
-    print('In Product')
+def product(title=None, price=None, author_name=None, ISBN=None, summary=None,publicationDate=None, numPages=None, binding=None, genre=None, nile_cover_ID=None):
     # STEP 1: User clicks on a book from browse.html
 
     # STEP 2: Link sends
     if request.method == 'GET':
-        return render_template('product.html')
+        return render_template('product.html', title=title, price=price, author_name=author_name, isbn=ISBN, summary=summary,publicationDate=publicationDate, numPages=numPages, binding=binding, genre=genre, nile_cover_ID=nile_cover_ID)
     else:
         print(session, file=sys.stderr)
         book_isbn = request.form.get('bookISBN')
