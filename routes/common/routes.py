@@ -416,34 +416,49 @@ def shopping_cart():
     conn = mysql.connect()
     cursor = conn.cursor()
 
-    user_id_query = 'SELECT id FROM user WHERE email = %s'
-    cursor.execute(user_id_query, (session['email']))
-    user_id = cursor.fetchall()[0][0]
+    # TWO PATHS:
+    # NON-LOGGED IN USER ADDS TO SHOPPING CART
+    # LOGGED IN USER ADDS TO SHOPPING CART
 
-    # get user's book_orderdetails from shoppingcart
-    query = '''SELECT bod_sc_FK FROM shoppingcart WHERE userID_sc_FK = %s'''
-    cursor.execute(query, (user_id))
-    results = cursor.fetchall()
-
-    book_payload = []
-    # get book info from bod
-    for bod in results:
+    for isbn in session['shopping_cart']:
         query = '''SELECT 
         ISBN,
         title, 
         price, 
         CONCAT(authorFirstName, ' ', authorLastName) AS author_name,
         quantity
-        FROM book,book_orderdetail WHERE ISBN = %s'''
-        cursor.execute(query,(str(bod[0])))
-        results = cursor.fetchall()
+        FROM book WHERE ISBN = %s'''
 
-        header = [desc[0] for desc in cursor.description]
-        book = [dict(zip(header, result)) for result in results]
-        book_payload.append(book)
-    print(book_payload)
+    
 
-    return render_template('shoppingcart.html',books=book_payload)
+    # user_id_query = 'SELECT id FROM user WHERE email = %s'
+    # cursor.execute(user_id_query, (session['email']))
+    # user_id = cursor.fetchall()[0][0]
+
+    # # get user's book_orderdetails from shoppingcart
+    # query = '''SELECT bod_sc_FK FROM shoppingcart WHERE userID_sc_FK = %s'''
+    # cursor.execute(query, (user_id))
+    # results = cursor.fetchall()
+
+    # book_payload = []
+    # # get book info from bod
+    # for bod in results:
+        # query = '''SELECT 
+        # ISBN,
+        # title, 
+        # price, 
+        # CONCAT(authorFirstName, ' ', authorLastName) AS author_name,
+        # quantity
+        # FROM book,book_orderdetail WHERE ISBN = %s'''
+    #     cursor.execute(query,(str(bod[0])))
+    #     results = cursor.fetchall()
+
+    #     header = [desc[0] for desc in cursor.description]
+    #     book = [dict(zip(header, result)) for result in results]
+    #     book_payload.append(book)
+    # print(book_payload)
+
+    return render_template('shoppingcart.html',books=session['shopping_cart'])
 
 
 @common_bp.route('/product/', methods=['GET', 'POST'])
@@ -463,41 +478,43 @@ def product(title=None, price=None, author_name=None, ISBN=None, summary=None, p
         if book_isbn in session['shopping_cart']:
             old_cart.remove(book_isbn)
 
-            user_id_query = 'SELECT id FROM user WHERE email = %s'
-            cursor.execute(user_id_query, (session['email']))
-            user_id = cursor.fetchall()[0][0]
+            if 'logged_in' in session and session['logged_in']:
+                user_id_query = 'SELECT id FROM user WHERE email = %s'
+                cursor.execute(user_id_query, (session['email']))
+                user_id = cursor.fetchall()[0][0]
 
-            # remove from shoppingcart tbl first
-            bod_id_query = '''SELECT bod_sc_FK FROM shoppingcart WHERE userID_sc_FK = %s AND bod_sc_FK = (SELECT id FROM book_orderdetail WHERE ISBN_bod_FK = %s) '''
-            cursor.execute(bod_id_query, (user_id, book_isbn))
-            bod_id = cursor.fetchall()[0][0]
+                # remove from shoppingcart tbl first
+                bod_id_query = '''SELECT bod_sc_FK FROM shoppingcart WHERE userID_sc_FK = %s AND bod_sc_FK = (SELECT id FROM book_orderdetail WHERE ISBN_bod_FK = %s) '''
+                cursor.execute(bod_id_query, (user_id, book_isbn))
+                bod_id = cursor.fetchall()[0][0]
 
-            query = '''DELETE FROM shoppingcart WHERE userID_sc_FK = %s AND bod_sc_FK = (SELECT id FROM book_orderdetail WHERE ISBN_bod_FK = %s)'''
-            cursor.execute(query, (user_id, book_isbn))
-            conn.commit()
+                query = '''DELETE FROM shoppingcart WHERE userID_sc_FK = %s AND bod_sc_FK = (SELECT id FROM book_orderdetail WHERE ISBN_bod_FK = %s)'''
+                cursor.execute(query, (user_id, book_isbn))
+                conn.commit()
 
-            # remove from book_orderdetail next
-            query = '''DELETE FROM book_orderdetail WHERE id = %s'''
-            cursor.execute(query, (bod_id))
-            conn.commit()
+                # remove from book_orderdetail next
+                query = '''DELETE FROM book_orderdetail WHERE id = %s'''
+                cursor.execute(query, (bod_id))
+                conn.commit()
         else:
             old_cart.append(book_isbn)
 
-            query = '''INSERT INTO book_orderdetail (ISBN_bod_FK,quantity) VALUES (%s, %s)'''
-            cursor.execute(query, (book_isbn, str(1)))
-            conn.commit()
+            if 'logged_in' in session and session['logged_in']:
+                query = '''INSERT INTO book_orderdetail (ISBN_bod_FK,quantity) VALUES (%s, %s)'''
+                cursor.execute(query, (book_isbn, str(1)))
+                conn.commit()
 
-            bod_id_query = '''SELECT id FROM book_orderdetail ORDER BY id DESC LIMIT 1'''
-            cursor.execute(bod_id_query)
-            bod_id = cursor.fetchall()[0][0]
+                bod_id_query = '''SELECT id FROM book_orderdetail ORDER BY id DESC LIMIT 1'''
+                cursor.execute(bod_id_query)
+                bod_id = cursor.fetchall()[0][0]
 
-            user_id_query = 'SELECT id FROM user WHERE email = %s'
-            cursor.execute(user_id_query, (session['email']))
-            user_id = cursor.fetchall()[0][0]
+                user_id_query = 'SELECT id FROM user WHERE email = %s'
+                cursor.execute(user_id_query, (session['email']))
+                user_id = cursor.fetchall()[0][0]
 
-            query = '''INSERT INTO shoppingcart (userID_sc_FK, bod_sc_FK) VALUES (%s, %s)'''
-            cursor.execute(query, (user_id, str(bod_id)))
-            conn.commit()
+                query = '''INSERT INTO shoppingcart (userID_sc_FK, bod_sc_FK) VALUES (%s, %s)'''
+                cursor.execute(query, (user_id, str(bod_id)))
+                conn.commit()
 
         session['shopping_cart'] = old_cart
         return jsonify(session['shopping_cart'])
