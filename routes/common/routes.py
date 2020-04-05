@@ -360,28 +360,56 @@ def register():
 #            "text": f"{message_body}"
 #        })
 # return render_template('reg_conf.html')
-
-
-@common_bp.route('/conf/register_confirmation/<verify_token>', methods=['POST', 'GET'])
+@common_bp.route('/conf/register_confirmation/<sending_token>++<email>+<user_id>+<name>', methods=['GET'])
 @cart_session
-def register_confirmation(verify_token):
-    # system needs to send an email with url back to a page
-    # if request.method == 'GET':
+def register_confirmation(sending_token, email=None, user_id=None, name=None):
+    try:
+        conn = mysql.connect()
+        cursor = conn.cursor()
+
+        verification_token = secrets.token_urlsafe(16)
+
+        query = 'INSERT INTO user_token (userID_utoken_FK,token) VALUES (%s, %s)'
+        cursor.execute(query, (user_id, verification_token))
+
+        conn.commit()
+        conn.close()
+
+        verification_url = f'http://127.0.0.1:5000/email_confirmation/{verification_token}'
+
+        message_body = 'Hi ' + name + \
+            f',\n\nPlease click on the following link to confirm your registration here at Nile!\n\n{verification_url}\n\nRegards, Nile Bookstore Management'
+        msg = Message(subject='Nile Registration Confirmation', recipients=[
+            email, 'rootatnilebookstore@gmail.com'], sender='rootatnilebookstore@gmail.com', body=message_body)
+        mail.send(msg)
+
+    except(pymysql.err.IntegrityError):
+        return render_template('confirmation/reg_conf.html')
 
     return render_template('confirmation/reg_conf.html')
 
 
-@common_bp.route('/conf/email_confirmation/', methods=['POST', 'GET'])
+@common_bp.route('/conf/email_confirmation/<verify_token>', methods=['GET'])
 @cart_session
-def email_confirmation():
+def email_confirmation(verify_token):
     # system needs to send an email with url back to a page
-    # if request.method == 'GET':
+    conn = mysql.connect()
+    cursor = conn.cursor()
+
+    verification_token = request.path[20:]
+    print('emailconfirmation', verification_token)
+    user_id_query = 'SELECT userID_utoken_FK FROM user_token WHERE user_token.token = %s'
+    cursor.execute(user_id_query, (verification_token))
+    user_id = cursor.fetchall()[0][0]
+
+    query = 'UPDATE user SET statusID_user_FK = 2 WHERE user.id = %s'
+
+    cursor.execute(query, (user_id))
+    conn.commit()
+    conn.close()
 
     return render_template('confirmation/email_conf.html')
-    if request.method == 'GET':
-        return render_template('reg_conf.html')
-    else:
-        pass
+
 
 @common_bp.route('/forgot/')
 @cart_session
