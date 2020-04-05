@@ -5,7 +5,8 @@ import requests as r
 import bcrypt
 import sys
 import secrets
-from server import mysql
+from flask_mail import Message
+from server import mysql, mail
 
 common_bp = Blueprint('common_bp', __name__,
                       template_folder='templates', static_folder='static')
@@ -337,77 +338,58 @@ def register():
             conn.commit()
             conn.close()
 
-        return render_template('confirmation/reg_conf.html')
+        return redirect(url_for('common_bp.register_confirmation', sending_token=secrets.token_urlsafe(256), email=email, user_id=user_id, name=firstName))
 
 
-# @common_bp.route('/base_confirmation/', methods=['POST', 'GET'])
-# @cart_session
-# def base_confirmation():
-#     # system needs to send an email with url back to a page
-#     # if request.method == 'GET':
-#
-#     return render_template('confirmation/baseConfirm.html')
-# verify_token = secrets.token_urlsafe(16)
-# verify_url = f'http://127.0.0.1:5000/register_confirmation/{verify_token}'
-# message_body = 'Hi ' + firstName + \
-#     f',\nPlease click on the following link to confirm your registration here at Nile!\n{verify_url}\n\nRegards, Nile Bookstore Management'
-# r.post(url='https://api.mailgun.net/v3/sandboxefa3f05fb1d84b299525cb6dfd7a4d18.mailgun.org',
-#        auth=("api", "c99575d1f018ef008fea3f36b2bc35cc-ed4dc7c4-8b3cd4ea"),
-#        data={
-#            "from": "Excited User <mailgun@sandboxefa3f05fb1d84b299525cb6dfd7a4d18.mailgun.org>",
-#            "to": [email, 'samuel.s.yuen@gmail.com'],
-#            "subject": "Nile Registration Confirmation",
-#            "text": f"{message_body}"
-#        })
-# return render_template('reg_conf.html')
-
-
-@common_bp.route('/conf/register_confirmation/<verify_token>', methods=['POST', 'GET'])
+@common_bp.route('/conf/register_confirmation/<sending_token>++<email>+<user_id>+<name>', methods=['GET'])
 @cart_session
-def register_confirmation(verify_token):
-    # system needs to send an email with url back to a page
-    # if request.method == 'GET':
+def register_confirmation(sending_token, email=None, user_id=None, name=None):
+    try:
+        conn = mysql.connect()
+        cursor = conn.cursor()
+
+        verification_token = secrets.token_urlsafe(16)
+
+        query = 'INSERT INTO user_token (userID_utoken_FK,token) VALUES (%s, %s)'
+        cursor.execute(query, (user_id, verification_token))
+
+        conn.commit()
+        conn.close()
+
+        verification_url = f'http://127.0.0.1:5000/email_confirmation/{verification_token}'
+
+        message_body = 'Hi ' + name + \
+            f',\n\nPlease click on the following link to confirm your registration here at Nile!\n\n{verification_url}\n\nRegards, Nile Bookstore Management'
+        msg = Message(subject='Nile Registration Confirmation', recipients=[
+            email, 'rootatnilebookstore@gmail.com'], sender='rootatnilebookstore@gmail.com', body=message_body)
+        mail.send(msg)
+
+    except(pymysql.err.IntegrityError):
+        return render_template('confirmation/reg_conf.html')
 
     return render_template('confirmation/reg_conf.html')
 
 
-@common_bp.route('/conf/email_confirmation/', methods=['POST', 'GET'])
+@common_bp.route('/conf/email_confirmation/<verify_token>', methods=['GET'])
 @cart_session
-def email_confirmation():
+def email_confirmation(verify_token):
     # system needs to send an email with url back to a page
-    # if request.method == 'GET':
+    conn = mysql.connect()
+    cursor = conn.cursor()
+
+    verification_token = request.path[20:]
+    print('emailconfirmation', verification_token)
+    user_id_query = 'SELECT userID_utoken_FK FROM user_token WHERE user_token.token = %s'
+    cursor.execute(user_id_query, (verification_token))
+    user_id = cursor.fetchall()[0][0]
+
+    query = 'UPDATE user SET statusID_user_FK = 2 WHERE user.id = %s'
+
+    cursor.execute(query, (user_id))
+    conn.commit()
+    conn.close()
 
     return render_template('confirmation/email_conf.html')
-    if request.method == 'GET':
-        return render_template('reg_conf.html')
-    else:
-        pass
-
-
-# @common_bp.route('/password_change/', methods=['POST'])
-# @login_required
-# @cart_session
-# def password_change():
-#     if request.method == 'POST':
-#         new_password = request.form.get('newPassword')
-#         confirm_new_password = request.form.get('confirmNewPassword')
-
-#         print(new_password)
-#         print(confirm_new_password)
-#         print(type(new_password))
-#         if new_password != confirm_new_password:
-#             return jsonify({'Response': 400})
-#         else:
-#             new_password = bcrypt.hashpw(
-#                 new_password.encode('utf-8'), bcrypt.gensalt())
-#             conn = mysql.connect()
-#             cursor = conn.cursor()
-#             print(session['email'])
-#             query = 'UPDATE user SET pass=%s WHERE email=%s'
-#             cursor.execute(query, (new_password, session['email']))
-#             conn.commit()
-#             conn.close()
-#             return jsonify({'Response': 200})
 
 
 @common_bp.route('/forgot/')
