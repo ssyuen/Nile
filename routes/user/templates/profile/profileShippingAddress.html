@@ -49,22 +49,6 @@
             </div>
             <form method="POST">
                 <div class="form-row">
-                    <div class="col-md-6">
-                        <div class="form-group md-form md-outline mb-0">
-                            <label for="address1FirstName">First Name</label>
-                            <input type="text" class="form-control mt-0" id="address1FirstName"
-                                   disabled required name="address1FirstName">
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group md-form md-outline">
-                            <label for="address1LastName">Last Name</label>
-                            <input type="text" class="form-control" id="address1LastName"
-                                   disabled required name="address1LastName">
-                        </div>
-                    </div>
-                </div>
-                <div class="form-row">
                     <div class="col">
                         <div class="form-group md-form md-outline">
                             <label for="address1StreetAddress">Street Address</label>
@@ -79,6 +63,15 @@
                             <label for="address1ApartmentOrSuite">Apartment or Suite</label>
                             <input type="text" class="form-control" id="address1ApartmentOrSuite" disabled
                                    name="address1ApartmentOrSuite">
+                        </div>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="col">
+                        <div class="form-group md-form md-outline">
+                            <label for="zip">ZIP or Postal code</label>
+                            <input type="text" class="form-control" id="zip" disabled
+                                   name="zip">
                         </div>
                     </div>
                 </div>
@@ -143,24 +136,7 @@
         </div>
         <!-- Content -->
         <div class="card-body white">
-            <form method="POST">
-                <div class="form-row">
-                    <div class="col-md-6">
-                        <div class="form-group md-form md-outline mb-0">
-                            <label for="addAddress1FirstName">First Name</label>
-                            <input type="text" class="form-control mt-0" id="addAddress1FirstName"
-                                   name="addAddress1FirstName"
-                                   required>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group md-form md-outline">
-                            <label for="addAddress1LastName">Last Name</label>
-                            <input type="text" class="form-control" id="addAddress1LastName" name="addAddress1LastName"
-                                   required>
-                        </div>
-                    </div>
-                </div>
+            <form method="POST" id="createShippingAddressForm" action="/nileuser/shipping_address/">
                 <div class="form-row">
                     <div class="col">
                         <div class="form-group md-form md-outline">
@@ -175,8 +151,17 @@
                     <div class="col">
                         <div class="form-group md-form md-outline">
                             <label for="addAddress1ApartmentOrSuite">Apartment or Suite</label>
-                            <input type="text" class="form-control" id="addAddress1ApartmentOrSuite" required
+                            <input type="text" class="form-control" id="addAddress1ApartmentOrSuite"
                                    name="addAddress1ApartmentOrSuite">
+                        </div>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="col">
+                        <div class="form-group md-form md-outline">
+                            <label for="addAddressZip">ZIP or Postal code</label>
+                            <input type="text" class="form-control" id="addAddressZip"
+                                   name="addAddressZip">
                         </div>
                     </div>
                 </div>
