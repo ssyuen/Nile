@@ -5,6 +5,7 @@ import requests as r
 import bcrypt
 import sys
 import secrets
+from flask_mail import Message
 from server import mysql, mail
 
 common_bp = Blueprint('common_bp', __name__,
