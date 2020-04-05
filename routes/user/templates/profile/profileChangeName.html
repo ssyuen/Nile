@@ -45,22 +45,21 @@
     </div>
     <!-- Content -->
     <div class="card-body white change-my-name">
-        <h4 class="text-uppercase font-weight-bold my-4" id="nameDetails">Details</h4>
+        <div class="d-inline-block w-100 ">
+            <h4 class="text-uppercase font-weight-bold my-4 d-inline-block" id="nameDetails">Manage my
+                Information</h4>
+            <button class="btn btn-outline-warning float-md-right align-content-center waves-effect" id="editBtn">Edit
+            </button>
+        </div>
         <form id="changeNameForm" class="profile-form" method="POST">
             <i class="fas fa-user prefix"></i>
             <label for="inputFirstname">First Name</label>
             <div class="form-row mb-3">
                 <div class="col">
-                    <div class="input-group form-group md-form md-outline mb-0" id="inputFirstnameGroup">
+                    <div class="form-group md-form md-outline mb-0" id="inputFirstnameGroup">
                         <input id="inputFirstname" type="text" class="form-control mt-0"
                                placeholder="First Name" readonly aria-readonly="true"
                                aria-label="First Name" value="Manu">
-                        <div class="input-group-append">
-                            <button class="btn btn-outline-warning m-0 px-3 py-2 z-depth-0 waves-effect"
-                                    type="button"
-                                    id="editFirstnameBtn">Edit
-                            </button>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -68,15 +67,9 @@
                 <div class="col">
                     <i class="fas fa-user prefix"></i>
                     <label for="inputLastname">Last Name</label>
-                    <div class="input-group form-group md-form md-outline mb-0" id="inputLastnameGroup">
+                    <div class="form-group md-form md-outline mb-0" id="inputLastnameGroup">
                         <input id="inputLastname" type="text" class="form-control" placeholder="Last Name"
                                aria-label="Last Name" value="Puduvalli" readonly aria-readonly="true">
-                        <div class="input-group-append">
-                            <button class="btn btn-outline-warning m-0 px-3 py-2 z-depth-0 waves-effect"
-                                    type="button" disabled
-                                    id="editLastnameBtn">Edit
-                            </button>
-                        </div>
                     </div>
                 </div>
             </div>

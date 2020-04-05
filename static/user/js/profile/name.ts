@@ -9,9 +9,7 @@ const L_NAME: HTMLInputElement = document.getElementById("inputLastname") as HTM
 let oldFirst: string = F_NAME.value;
 let oldLast: string = L_NAME.value;
 
-const EDIT_F: HTMLButtonElement = document.getElementById("editFirstnameBtn") as HTMLButtonElement;
-const EDIT_L: HTMLButtonElement = document.getElementById("editLastnameBtn") as HTMLButtonElement;
-
+const EDIT: HTMLButtonElement = document.getElementById("editBtn") as HTMLButtonElement;
 
 const vc = new InputValidationComplex();
 
@@ -45,15 +43,14 @@ Array<string>('input', 'focusin').forEach((evt: string) => {
     });
 });
 
-EDIT_F.addEventListener("click", function () {
+EDIT.addEventListener("click", function () {
     F_NAME.removeAttribute("readonly");
     F_NAME.setAttribute("aria-readonly", "false");
+
+    L_NAME.removeAttribute("readonly");
+    L_NAME.setAttribute("aria-readonly", "false")
 });
 
-EDIT_L.addEventListener("click", function () {
-    L_NAME.removeAttribute("readonly");
-    L_NAME.setAttribute("aria-readonly", "false");
-});
 
 //Make sure the User saved their Changes!!
 // @ts-ignore
