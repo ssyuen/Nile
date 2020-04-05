@@ -449,13 +449,18 @@ def reset_pass(verify_token):
     cursor.execute(user_id_query, (verification_token))
     user_id = cursor.fetchall()[0][0]
 
+
+    # CHANGE PASSWORD TO APPROPRIATE FORM VAR
+    password = request.form.get('inputPassword')
+    password = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
+
     query = 'UPDATE user SET pass = %s WHERE user.id = %s'
 
-    cursor.execute(query, (user_id))
+    cursor.execute(query, (password,user_id))
     conn.commit()
     conn.close()
 
-    pass
+    return ''
 
 
 
