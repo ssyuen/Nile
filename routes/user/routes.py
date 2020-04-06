@@ -274,12 +274,8 @@ def payment_methods():
             conn.close()
 
         elif REMOVE_FLAG:
-            addr_id_query = '''
-            SELECT addressID_ua_FK FROM user_address
-            WHERE userID_ua_FK = (SELECT id FROM user WHERE email = %s)
-            '''
-            cursor.execute(addr_id_query, (session['email']))
-            addr_id = cursor.fetchall()[0][0]
+            
+            addr_id = request.form.get('addressID')
 
             remove_query = '''
             DELETE FROM user_address
@@ -312,12 +308,8 @@ def payment_methods():
             cursor.execute(user_id_query, (session['email']))
             user_id = cursor.fetchall()[0][0]
 
-            addr_id_query = '''
-            SELECT addressID_ua_FK FROM user_address
-            WHERE userID_ua_FK = %s
-            '''
-            cursor.execute(addr_id_query, (user_id))
-            addr_id = cursor.fetchall()[0][0]
+            
+            addr_id = request.form.get('addressID')
 
             update_query = '''
             UPDATE address SET street1 = %s, street2 = %s, city = %s, zip = %s, state = %s, country = %s, addressTypeID_address_FK = %s)
