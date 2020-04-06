@@ -114,37 +114,41 @@ def login(ctx=None):
         else:
 
             user_payload = userEmail
-            query = 'SELECT email, pass, firstName, lastName from user WHERE email= %s'
+            query = 'SELECT email, pass, firstName, lastName, statusID_user_FK from user WHERE email= %s'
             cursor.execute(query, user_payload)
             conn.close()
+
             try:
                 results = cursor.fetchall()[0]
-                # print(results)
-                # unencoded_pass = results[1]
                 db_pass = results[1].encode('utf-8')
-                # print(f'unencoded = {unencoded_pass}')
-                # print(db_pass)
-                # db_pass = db_pass[2:-1].encode('utf-8')
 
+                # password is correct
                 if bcrypt.checkpw(password.encode('utf-8'), db_pass):
                     session['logged_in'] = True
                     session['email'] = results[0]
-                    session['admin'] = False
-                    session['lastName'] = results[3]
                     session['firstName'] = results[2]
+                    session['lastName'] = results[3]
+                    session['admin'] = False
+                    
+                    # check for if verified user
+                    if int(results[4]) == 2:
+                        session['verified'] = True
+                    else:
+                        session['verified'] = False
+
+
                     ctx = request.args.get('ctx')
                     if ctx is not None:
                         return redirect(url_for('user_bp.' + ctx))
                     else:
                         return redirect('/')
+                
+                # incorrect password
                 else:
                     flash('Your login details were incorrect. Please try again.')
                     return redirect('/login/')
-                session['logged_in'] = True
-                session['email'] = userEmail
-                session['firstName'] = results[2]
-                flash('Welcome, ' + session['firstName'] + '!')
-                return redirect('/')
+            
+            # email is not found in db
             except IndexError:
                 flash('Your login details were not found. Please try again.')
                 return redirect('/login/')
