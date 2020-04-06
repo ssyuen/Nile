@@ -128,7 +128,8 @@ def shipping_address():
         ORDER BY addressID_ua_FK;
         """
         cursor.execute(user_addresses, (session['email']))
-        data = cursor.fetchall()  # ((68, '123 Wallaby', '', 'Lilburn', '30609', 'Georgia', 'United States'), (68, '362', ...))
+        # ((68, '123 Wallaby', '', 'Lilburn', '30609', 'Georgia', 'United States'), (68, '362', ...))
+        data = cursor.fetchall()
         # We want [{street1: 123 Wallaby, street2: 23}, {street1: 362 Nowhere, street2: ''}, {street1: 999 Somewhere, street2: 27}]
         conn.close()
         sendable = []
@@ -149,8 +150,96 @@ def shipping_address():
 
     elif request.method == 'POST':
 
+        CREATE_FLAG = request.form.get('CREATE_FLAG')
+        REMOVE_FLAG = request.form.get('REMOVE_FLAG')
+        EDIT_FLAG = request.form.get('EDIT_FLAG')
 
+        street_addr = request.form.get("addAddressStreetAddress")
+        street_addr2 = request.form.get("addAddressApartmentOrSuite")
+        zipcode = request.form.get("addAddressZip")
+        city = request.form.get("addAddressCity")
+        state = request.form.get("addAddressState")
+        country = request.form.get("addAddressCountry")
 
+        if CREATE_FLAG:
+
+            query = """
+            INSERT INTO address (street1, street2, city, zipcode, state, country, addressTypeID_address_FK) 
+            VALUES (%s, %s, %s, %s, %s, %s, %s);
+            """
+
+            create_ship_payload = (
+                street_addr, street_addr2, city, zipcode, state, country, 1)
+            cursor.execute(query, create_ship_payload)
+
+            query2 = """
+            INSERT INTO user_address (userID_ua_FK, addressID_ua_FK) 
+            VALUES (
+                (SELECT id FROM user WHERE email = %s),
+                (SELECT id FROM address ORDER BY id DESC LIMIT 1)  
+            ) 
+            """
+            cursor.execute(query2, (session['email']))
+            conn.commit()
+            conn.close()
+
+        elif REMOVE_FLAG:
+
+            addr_id_query = '''
+            SELECT addressID_ua_FK FROM user_address
+            WHERE userID_ua_FK = (SELECT id FROM user WHERE email = %s)
+            '''
+            cursor.execute(addr_id_query, (session['email']))
+            addr_id = cursor.fetchall()[0][0]
+
+            remove_query = '''
+            DELETE FROM user_address
+            WHERE userID_ua_FK = (SELECT id FROM user WHERE email = %s) AND addressID_ua_FK = %s
+            '''
+            cursor.execute(remove_query,(session['email'],addr_id))
+            conn.commit()
+
+            remove_query = '''
+            DELETE FROM address
+            WHERE id = %s
+            '''
+            cursor.execute(remove_query,(addr_id))
+            conn.commit()
+
+            conn.close()
+
+        elif EDIT_FLAG:
+
+            addr_id_query = '''
+            SELECT addressID_ua_FK FROM user_address
+            WHERE userID_ua_FK = (SELECT id FROM user WHERE email = %s)
+            '''
+            cursor.execute(addr_id_query, (session['email']))
+            addr_id = cursor.fetchall()[0][0]
+
+            update_query = '''
+            UPDATE address SET street1 = %s, street2 = %s, city = %s, zipcode = %s, state = %s, country = %s, addressTypeID_address_FK = %s)
+            WHERE id = %s
+            '''
+            cursor.execute(update_query, (street_addr, street_addr2,
+                                          zipcode, city, state, country, 1, addr_id))
+            conn.commit()
+            conn.close()
+
+    return render_template('profile/profileShippingAddress.html')
+
+# TODO
+@user_bp.route('/payment_methods/', methods=['GET', 'POST'])
+@login_required
+@cart_session
+def payment_methods():
+    conn = mysql.connect()
+    cursor = conn.cursor()
+    if request.method == 'GET':
+
+        conn.close()
+        return render_template('profile/profilePaymentMethods.html')
+    else:
         CREATE_FLAG = request.form.get('CREATE_FLAG')
         REMOVE_FLAG = request.form.get('REMOVE_FLAG')
         EDIT_FLAG = request.form.get('EDIT_FLAG')
@@ -168,7 +257,8 @@ def shipping_address():
             VALUES (%s, %s, %s, %s, %s, %s, %s);
             """
 
-            create_ship_payload = (street_addr, street_addr2, city, zipcode, state, country, 1)
+            create_ship_payload = (
+                street_addr, street_addr2, city, zipcode, state, country, 1)
             cursor.execute(query, create_ship_payload)
 
             query2 = """
@@ -181,10 +271,31 @@ def shipping_address():
             cursor.execute(query2, (session['email']))
             conn.commit()
             conn.close()
-        
+
         elif REMOVE_FLAG:
-            pass
-        
+            addr_id_query = '''
+            SELECT addressID_ua_FK FROM user_address
+            WHERE userID_ua_FK = (SELECT id FROM user WHERE email = %s)
+            '''
+            cursor.execute(addr_id_query, (session['email']))
+            addr_id = cursor.fetchall()[0][0]
+
+            remove_query = '''
+            DELETE FROM user_address
+            WHERE userID_ua_FK = (SELECT id FROM user WHERE email = %s) AND addressID_ua_FK = %s
+            '''
+            cursor.execute(remove_query,(session['email'],addr_id))
+            conn.commit()
+
+            remove_query = '''
+            DELETE FROM address
+            WHERE id = %s
+            '''
+            cursor.execute(remove_query,(addr_id))
+            conn.commit()
+
+            conn.close()
+
         elif EDIT_FLAG:
             street_addr = request.form.get("addAddressStreetAddress")
             street_addr2 = request.form.get("addAddressApartmentOrSuite")
@@ -193,39 +304,25 @@ def shipping_address():
             state = request.form.get("addAddressState")
             country = request.form.get("addAddressCountry")
 
-
             user_id_query = '''
             SELECT id FROM user
             WHERE email = %s
             '''
-            cursor.execute(user_id_query,(session['email']))
+            cursor.execute(user_id_query, (session['email']))
             user_id = cursor.fetchall()[0][0]
 
             addr_id_query = '''
             SELECT addressID_ua_FK FROM user_address
             WHERE userID_ua_FK = %s
             '''
-            cursor.execute(addr_id_query,(user_id))
+            cursor.execute(addr_id_query, (user_id))
             addr_id = cursor.fetchall()[0][0]
 
             update_query = '''
             UPDATE address SET street1 = %s, street2 = %s, city = %s, zipcode = %s, state = %s, country = %s, addressTypeID_address_FK = %s)
             WHERE id = %s
             '''
-            cursor.execute(update_query,(street_addr,street_addr2,zipcode,city,state,country,1,addr_id))
+            cursor.execute(update_query, (street_addr, street_addr2,
+                                          zipcode, city, state, country, 1, addr_id))
             conn.commit()
             conn.close()
-
-
-        
-
-        
-
-    return render_template('profile/profileShippingAddress.html')
-
-# TODO
-@user_bp.route('/payment_methods/', methods=['GET'])
-@login_required
-@cart_session
-def payment_methods():
-    return render_template('profile/profilePaymentMethods.html')
