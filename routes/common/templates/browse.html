@@ -300,7 +300,8 @@
                     {% for book in books %}
                         <div class="col-lg-3 col-md-6 mb-4">
                             <a href="{{ url_for('common_bp.product', title=book['title'],price=book['price'],author_name=book['author_name'],isbn=book['ISBN'],summary=book['summary'],publicationDate=book['publicationDate'],numPages=book['numPages'],binding=book['binding'],genre=book['genre'],nile_cover_ID=book['nile_cover_ID']) }}">
-                                <div class="card h-100 bg-dark text-white modal-card waves-effect" id="hp">
+                                <div class="card h-100 rounded text-white modal-card waves-effect" id="hp"
+                                     style="background: linear-gradient(180deg, rgba(33,37,41,1) 0%, rgba(33,37,41,1) 100%);">
                                     <img class="card-img-top"
                                          src="{{ '/static/images/CoverImages/' + book['nile_cover_ID'] + '.jpg' }}"
                                          alt="Cover Image of {{ book['title'] }}"
@@ -310,9 +311,10 @@
                                             <h6 class="complement card-title">{{ book['title'] }}</h6>
                                         </div>
                                     </div>
-                                    <div class="card-footer our-color text-dark">
+                                    <div class="card-footer our-color text-white"
+                                         style="background: linear-gradient(180deg, rgba(33,37,41,1) 0%, rgba(33,33,33,1) 100%);">
                                         <span class="primary-sm float-left">Price:</span>
-                                        <span class="book-price primary-sm text-dark float-right d-inline-flex"
+                                        <span class="book-price primary-sm text-white float-right d-inline-flex"
                                               style="font-size: x-large">${{ book['price'] }}</span>
                                     </div>
                                 </div>
