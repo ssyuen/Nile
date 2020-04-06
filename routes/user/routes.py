@@ -121,7 +121,7 @@ def shipping_address():
 
     if request.method == 'GET':
         user_addresses = """
-        SELECT UA.userID_ua_FK, A.street1, A.street2, A.city, A.zip, A.state, A.country
+        SELECT UA.userID_ua_FK, A.id, A.street1, A.street2, A.city, A.zip, A.state, A.country
         FROM user_address UA
                  INNER JOIN address A ON UA.addressID_ua_FK = A.id
         WHERE userID_ua_FK = (SELECT id FROM user WHERE email = %s)
@@ -136,12 +136,13 @@ def shipping_address():
 
         for addr_tup in data:
             addr_dict = {}
-            addr_dict['street1'] = addr_tup[1]
-            addr_dict['street2'] = addr_tup[2]
-            addr_dict['city'] = addr_tup[3]
-            addr_dict['zip'] = addr_tup[4]
-            addr_dict['state'] = addr_tup[5]
-            addr_dict['country'] = addr_tup[6]
+            addr_dict['addressID'] = addr_tup[1]
+            addr_dict['street1'] = addr_tup[2]
+            addr_dict['street2'] = addr_tup[3]
+            addr_dict['city'] = addr_tup[4]
+            addr_dict['zip'] = addr_tup[5]
+            addr_dict['state'] = addr_tup[6]
+            addr_dict['country'] = addr_tup[7]
             sendable.append(addr_dict)
 
         print(sendable, file=sys.stderr)
@@ -164,7 +165,7 @@ def shipping_address():
         if CREATE_FLAG:
 
             query = """
-            INSERT INTO address (street1, street2, city, zipcode, state, country, addressTypeID_address_FK) 
+            INSERT INTO address (street1, street2, city, zip, state, country, addressTypeID_address_FK) 
             VALUES (%s, %s, %s, %s, %s, %s, %s);
             """
 
@@ -218,7 +219,7 @@ def shipping_address():
             addr_id = cursor.fetchall()[0][0]
 
             update_query = '''
-            UPDATE address SET street1 = %s, street2 = %s, city = %s, zipcode = %s, state = %s, country = %s, addressTypeID_address_FK = %s)
+            UPDATE address SET street1 = %s, street2 = %s, city = %s, zip = %s, state = %s, country = %s, addressTypeID_address_FK = %s
             WHERE id = %s
             '''
             cursor.execute(update_query, (street_addr, street_addr2,
@@ -253,7 +254,7 @@ def payment_methods():
             country = request.form.get("addAddressCountry")
 
             query = """
-            INSERT INTO address (street1, street2, city, zipcode, state, country, addressTypeID_address_FK) 
+            INSERT INTO address (street1, street2, city, zip, state, country, addressTypeID_address_FK) 
             VALUES (%s, %s, %s, %s, %s, %s, %s);
             """
 
@@ -319,7 +320,7 @@ def payment_methods():
             addr_id = cursor.fetchall()[0][0]
 
             update_query = '''
-            UPDATE address SET street1 = %s, street2 = %s, city = %s, zipcode = %s, state = %s, country = %s, addressTypeID_address_FK = %s)
+            UPDATE address SET street1 = %s, street2 = %s, city = %s, zip = %s, state = %s, country = %s, addressTypeID_address_FK = %s)
             WHERE id = %s
             '''
             cursor.execute(update_query, (street_addr, street_addr2,

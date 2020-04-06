@@ -55,7 +55,7 @@
                             class="btn btn-outline-warning float-md-right align-content-center waves-effect">Edit
                     </button>
                 </div>
-                <form method="POST">
+                <form method="POST" nile-address-ident="{{ addr_dict['addressID'] }}">
                     <div class="form-row">
                         <div class="col">
                             <div class="form-group md-form md-outline">
@@ -119,19 +119,18 @@
                     </div>
                     <div class="form-row mt-3 w-100">
                         <div class="col-md-9 mb-2">
-                            <button type="submit" id="updateShippingAddress{{ loop.index }}"
-                                    class="btn blue-gradient btn-block">Save and Update
+                            <button id="updateShippingAddress{{ loop.index }}"
+                                    class="btn blue-gradient btn-block update-addr-btn">Save and Update
                             </button>
                         </div>
                         <div class="col-md-3 mb-2">
-                            <button type="submit" id="removeShippingAddress{{ loop.index }}"
-                                    class="btn btn-danger btn-block">Remove Address
+                            <button id="removeShippingAddress{{ loop.index }}"
+                                    class="btn btn-danger btn-block remove-addr-btn">Remove Address
                             </button>
                         </div>
                     </div>
                 </form>
             </div>
-
         </div>
     {% endfor %}
     <div class="card gradient-card">
@@ -215,7 +214,7 @@
                     </div>
                 </div>
                 <button type="submit" id="updateShippingAddress"
-                        class="btn blue-gradient btn-block mb-2 mt-3">Save and Update
+                        class="btn blue-gradient btn-block mb-2 mt-3">Add an address
                 </button>
             </form>
         </div>
