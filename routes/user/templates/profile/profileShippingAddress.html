@@ -61,7 +61,7 @@
                             <div class="form-group md-form md-outline">
                                 <label for="address{{ loop.index }}StreetAddress">Street Address</label>
                                 <input type="text" class="form-control" id="address{{ loop.index }}StreetAddress"
-                                       readonly required name="address{{ loop.index }}StreetAddress"
+                                       readonly required name="addressStreetAddress"
                                        value="{{ addr_dict['street1'] }}">
                             </div>
                         </div>
@@ -72,7 +72,7 @@
                                 <label for="address{{ loop.index }}ApartmentOrSuite">Apartment or Suite</label>
                                 <input type="text" class="form-control" id="address{{ loop.index }}ApartmentOrSuite"
                                        readonly
-                                       name="address{{ loop.index }}ApartmentOrSuite"
+                                       name="addressApartmentOrSuite"
                                        value="{{ addr_dict['street2'] }}">
                             </div>
                         </div>
@@ -82,7 +82,7 @@
                             <div class="form-group md-form md-outline">
                                 <label for="addAddress{{ loop.index }}Zip">ZIP or Postal code</label>
                                 <input type="text" class="form-control" id="addAddress{{ loop.index }}Zip" readonly
-                                       name="addAddress{{ loop.index }}Zip" value="{{ addr_dict['zip'] }}">
+                                       name="addAddressZip" value="{{ addr_dict['zip'] }}">
                             </div>
                         </div>
                     </div>
@@ -92,13 +92,13 @@
                                 <label for="address{{ loop.index }}City">City</label>
                                 <input type="text" class="form-control" id="address{{ loop.index }}City" required
                                        readonly
-                                       name="address{{ loop.index }}City" value="{{ addr_dict['city'] }}">
+                                       name="addressCity" value="{{ addr_dict['city'] }}">
                             </div>
                         </div>
                         <div class="form-group col-md-2" style="margin-top: 8px">
                             <label for="address{{ loop.index }}State" class="d-none">State</label>
                             <select id="address{{ loop.index }}State" class="form-control" required
-                                    name="address{{ loop.index }}State" disabled>
+                                    name="addressState" disabled>
                                 <option value="GA">GA</option>
                                 <option value="CA">CA</option>
                             </select>
@@ -109,7 +109,7 @@
                         <div class="form-group col-md-2" style="margin-top: 8px">
                             <label for="address{{ loop.index }}Country" class="d-none">Country</label>
                             <select id="address{{ loop.index }}Country" class="form-control" required
-                                    name="address{{ loop.index }}Country" disabled>
+                                    name="addressCountry" disabled>
                                 <option value="United States">United States</option>
                             </select>
                             <script>
