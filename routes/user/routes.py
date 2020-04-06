@@ -31,7 +31,11 @@ def login_required(f):
 @login_required
 @cart_session
 def checkout():
-    return render_template('./checkout.html')
+    if session['verified']:
+        return render_template('./checkout.html')
+    else:
+        flash('You must verify your email before checking out!')
+        return redirect(url_for('user_bp.checkout'))
 
 
 @user_bp.route('/base_profile/', methods=['GET'])
