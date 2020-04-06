@@ -15,6 +15,10 @@
                     border: none !important;
                     padding-right: 15px !important;
                 }
+
+                .reg-for-free {
+                    padding-bottom: 20px;
+                }
             }
 
             footer .rel-links a:hover {
@@ -72,15 +76,17 @@
                         Glen George</strong>
                     </div>
                     <br>
-                    <p>Our application stack includes:</p>
-                    <ul>
-                        <li><i class="fab fa-bootstrap mr-2 mb-2 fa-lg"></i> Bootstrap Framework</li>
-                        <li><i class="fab fa-mdb mr-2 mb-2 fa-lg"></i>MDBootstrap Framework</li>
-                        <li><i class="fab fa-js mr-2 mb-2 fa-lg"></i>Vanilla JavaScript/JQuery</li>
-                        <li><i class="fas fa-database mr-2 mb-2 fa-lg"></i>MySQL</li>
-                        <li><i class="fab fa-python mr-2 mb-2 fa-lg"></i>Flask + Python</li>
-                        <li><i class="fab fa-microsoft mr-2 mb-2 fa-lg"></i>TypeScript</li>
-                    </ul>
+                    <div id="applicationStackGroup" class="text-center">
+                        <p>Our application stack includes:</p>
+                        <ul class="list-unstyled d-inline-block text-left">
+                            <li><i class="fab fa-bootstrap mr-2 mb-3 fa-lg"></i> Bootstrap Framework</li>
+                            <li><i class="fab fa-mdb mr-2 mb-3 fa-lg"></i>MDBootstrap Framework</li>
+                            <li><i class="fab fa-js mr-2 mb-3 fa-lg"></i>Vanilla JavaScript/JQuery</li>
+                            <li><i class="fas fa-database mr-2 mb-3 fa-lg"></i>MySQL</li>
+                            <li><i class="fab fa-python mr-2 mb-3 fa-lg"></i>Flask + Python</li>
+                            <li><i class="fab fa-microsoft mr-2 mb-3 fa-lg"></i>TypeScript</li>
+                        </ul>
+                    </div>
                 </div>
             </div>
             <hr class="clearfix w-100 d-md-none">
@@ -135,16 +141,19 @@
     <hr>
     <ul class="list-unstyled list-inline text-center py-2">
         {% if not session['logged_in'] %}
-            <li class="list-inline-item">
+
+            <li class="list-inline-item reg-for-free">
                 <h5 class="mb-1 complement">Register for free</h5>
             </li>
-            <li class="list-inline-item">
+            <li class="list-inline-item reg-for-free">
                 <a href="/register/" class="href">
                     <button class="btn blue-gradient btn-rounded btn-sm primary waves-effect waves-light sign-btn"
                             id="signUpBtn">Sign Up
                     </button>
                 </a>
             </li>
+
+
         {% else %}
             <li class="list-inline-item">
                 <h5 class="mb-1 complement">View my Profile</h5>
