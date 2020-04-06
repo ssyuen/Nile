@@ -51,14 +51,14 @@ def base_profile():
 def overview():
     return render_template('profile/profileOverview.html')
 
-
+# TODO
 @user_bp.route('/change_name/', methods=['GET'])
 @login_required
 @cart_session
 def change_name():
     return render_template('profile/profileChangeName.html')
 
-
+# TODO
 @user_bp.route('/change_pass/', methods=['GET'])
 @login_required
 @cart_session
@@ -111,7 +111,7 @@ def order_history():
     conn.close()
     return render_template('profile/profileOrderHistory.html', data=data)
 
-
+# TODO
 @user_bp.route('/shipping_address/', methods=['GET', 'POST'])
 @login_required
 @cart_session
@@ -175,7 +175,7 @@ def shipping_address():
 
     return render_template('profile/profileShippingAddress.html')
 
-
+# TODO
 @user_bp.route('/payment_methods/', methods=['GET'])
 @login_required
 @cart_session
