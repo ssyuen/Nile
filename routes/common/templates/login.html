@@ -53,7 +53,7 @@
                 {% with invalid_login = get_flashed_messages() %}
                     {% if invalid_login %}
 
-                        <p class="flashes" style="color: red;">
+                        <p class="flashes text-center" style="color: red;">
                             {% for msg in invalid_login %}
                                 {{ msg }}
                             {% endfor %}
