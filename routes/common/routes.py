@@ -7,6 +7,7 @@ import sys
 import secrets
 from flask_mail import Message
 from server import mysql, mail
+from key import FERNET
 
 common_bp = Blueprint('common_bp', __name__,
                       template_folder='templates', static_folder='static')
@@ -214,8 +215,7 @@ def register():
         card_first_name = request.form.get('cardHolderFirstName')
         card_last_name = request.form.get('cardHolderLastName')
         try:
-            ccn = bcrypt.hashpw(request.form.get(
-                'ccn').encode('utf-8'), bcrypt.gensalt())
+            ccn = FERNET.encrypt(request.form.get('ccn').encode('utf-8'))
         except:
             ccn = ''
         ccexp = request.form.get('ccexp') + '-01'

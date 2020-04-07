@@ -7,7 +7,7 @@ import bcrypt
 import sys
 import secrets
 from server import mysql, mail
-from datetime import datetime
+from key import FERNET
 
 from routes.common.routes import cart_session
 
@@ -239,11 +239,11 @@ def payment_methods():
         pay_dict = {}
         pay_dict['firstname'] = pay_tup[0]
         pay_dict['lastname'] = pay_tup[1]
-        pay_dict['cardNumber'] = pay_tup[2]
+        pay_dict['cardNumber'] = FERNET.decrypt(pay_tup[2].encode('utf-8')).decode('utf-8')
         pay_dict['cardType'] = pay_tup[3]
         pay_dict['expirationDate'] = str(pay_tup[4].year) +'-'+str(pay_tup[4].month)
         sendable.append(pay_dict)
-    print(sendable)
+
     user_billing = '''
     SELECT UA.userID_ua_FK, A.id, A.street1, A.street2, A.city, A.zip, A.state, A.country
         FROM user_address UA
