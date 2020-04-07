@@ -7,6 +7,7 @@ import bcrypt
 import sys
 import secrets
 from server import mysql, mail
+from datetime import datetime
 
 from routes.common.routes import cart_session
 
@@ -215,4 +216,39 @@ def shipping_address():
 @login_required
 @cart_session
 def payment_methods():
-    pass
+    conn = mysql.connect()
+    cursor = conn.cursor()
+
+    if request.method == 'POST':
+        pass
+
+
+    user_payments = """
+        SELECT firstname, lastname, cardNumber, cardType, expirationDate FROM user 
+        JOIN payment_method ON user.id = payment_method.userID_payment_FK
+        WHERE user.id = (SELECT user.id FROM user WHERE email = %s) 
+        """
+    cursor.execute(user_payments, (session['email']))
+    # ((68, '123 Wallaby', '', 'Lilburn', '30609', 'Georgia', 'United States'), (68, '362', ...))
+    data = cursor.fetchall()
+    # We want [{street1: 123 Wallaby, street2: 23}, {street1: 362 Nowhere, street2: ''}, {street1: 999 Somewhere, street2: 27}]
+
+    sendable = []
+
+    for pay_tup in data:
+        pay_dict = {}
+        pay_dict['firstname'] = pay_tup[0]
+        pay_dict['lastname'] = pay_tup[1]
+        pay_dict['cardNumber'] = pay_tup[2]
+        pay_dict['cardType'] = pay_tup[3]
+        pay_dict['expirationDate'] = str(pay_tup[4].year) +'-'+str(pay_tup[4].month)
+        sendable.append(pay_dict)
+    print(sendable)
+    user_billing = '''
+    SELECT UA.userID_ua_FK, A.id, A.street1, A.street2, A.city, A.zip, A.state, A.country
+        FROM user_address UA
+                 INNER JOIN address A ON UA.addressID_ua_FK = A.id
+        WHERE userID_ua_FK = (SELECT id FROM user WHERE email = %s)
+        ORDER BY addressID_ua_FK; 
+    '''
+    return render_template('profile/profilePaymentMethods.html', data=sendable)

@@ -10,99 +10,105 @@
 
 {% block content %}
 
-    <div class="card gradient-card mb-5">
-        <div class="card-image"
-             style="background-image: url(https://mdbootstrap.com/img/Photos/Horizontal/Work/4-col/img%20%2814%29.jpg)">
-            <!-- Content -->
-            <div class="text-white mask card-contextual-info">
-                <div class="row">
-                    <div class="col align-self-center">
-                        <div class="first-content p-3">
-                            <h3 class="card-title">Payment Method 1</h3>
+    {% for pay_dict in data %}
+        <div class="card gradient-card mb-5">
+            <div class="card-image"
+                style="background-image: url(https://mdbootstrap.com/img/Photos/Horizontal/Work/4-col/img%20%2814%29.jpg)">
+                <!-- Content -->
+                <div class="text-white mask card-contextual-info">
+                    <div class="row">
+                        <div class="col align-self-center">
+                            <div class="first-content p-3">
+                                <h3 class="card-title">Payment Method {{ loop.index }}</h3>
+                            </div>
                         </div>
-                    </div>
-                    <div class="col align-self-center">
-                        <div class="second-content pr-3" style="float: right;">
-                            <i class="fas fa-dollar-sign fa-3x"></i>
+                        <div class="col align-self-center">
+                            <div class="second-content pr-3" style="float: right;">
+                                <i class="fas fa-dollar-sign fa-3x"></i>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
+            <!-- Content -->
+            <div class="card-body white">
+                <form>
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <i class="fas fa-signature"></i>
+                            <label for="pm{{ loop.index }}FirstName">Card Holder First Name</label>
+                            <div class="input-group">
+                                <input type="text" class="form-control" id="pm{{ loop.index }}FirstName"
+                                    placeholder="First Name" name="pm{{ loop.index }}FirstName"
+                                    value="{{ pay_dict['firstname'] }}"required>
+                                <div class="input-group-append">
+                                    <button class="btn btn-outline-warning m-0 px-3 py-2 z-depth-0 waves-effect"
+                                            type="button" id="editPm{{ loop.index }}FirstName">Edit
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <i class="fas fa-signature"></i>
+                            <label for="pm{{ loop.index }}LastName">Card Holder Last Name</label>
+                            <div class="input-group">
+                                <input type="text" class="form-control" id="pm{{ loop.index }}LastName"
+                                    placeholder="Last Name" name="pm{{ loop.index }}LastName"
+                                    value="{{ pay_dict['lastname'] }}"required>
+                                <div class="input-group-append">
+                                    <button class="btn btn-outline-warning m-0 px-3 py-2 z-depth-0 waves-effect"
+                                            type="button" id="editPm{{ loop.index }}LastName">Edit
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col">
+                            <i class="far fa-credit-card"></i>
+                            <label for="pm{{ loop.index }}CCN">Credit Card Number</label>
+                            <div class="input-group">
+                                <input type="text" class="form-control" id="pm{{ loop.index }}CCN"
+                                    placeholder="Credit Card Number" name="pm{{ loop.index }}CCN"
+                                    value="{{ pay_dict['cardNumber'] }}"required>
+                                <div class="input-group-append">
+                                    <button class="btn btn-outline-warning m-0 px-3 py-2 z-depth-0 waves-effect"
+                                            type="button" id="editPm{{ loop.index }}CCN">Edit
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group col">
+                            <i class="far fa-clock"></i>
+                            <label for="pm{{ loop.index }}Expiry">Expiriration Date</label>
+                            <div class="input-group">
+                                <input type="month" class="form-control" id="pm{{ loop.index }}Expiry"
+                                    name="pm{{ loop.index }}Expiry"value="{{ pay_dict['expirationDate'] }}">
+                                <div class="input-group-append">
+                                    <button class="btn btn-outline-warning m-0 px-3 py-2 z-depth-0 waves-effect"
+                                            type="button" id="editPm{{ loop.index }}Expiry">Edit
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-row mt-5">
+                        <div class="col-9">
+                            <button type="button" id="savePaymentInformation{{ loop.index }}"
+                                    class="btn blue-gradient btn-block">Save and Update
+                            </button>
+                        </div>
+                        <div class="col-3">
+                            <button type="button" id="removePaymentInformation{{ loop.index }}"
+                                    class="btn btn-outline-danger btn-block">Remove Payment Method
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
         </div>
-        <!-- Content -->
-        <div class="card-body white">
-            <form>
-                <div class="form-row">
-                    <div class="form-group col-md-6">
-                        <i class="fas fa-signature"></i>
-                        <label for="pm1FirstName">Card Holder First Name</label>
-                        <div class="input-group">
-                            <input type="text" class="form-control" id="pm1FirstName"
-                                   placeholder="First Name" required>
-                            <div class="input-group-append">
-                                <button class="btn btn-outline-warning m-0 px-3 py-2 z-depth-0 waves-effect"
-                                        type="button" id="editPm1FirstName">Edit
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-group col-md-6">
-                        <i class="fas fa-signature"></i>
-                        <label for="pm1LastName">Card Holder Last Name</label>
-                        <div class="input-group">
-                            <input type="text" class="form-control" id="pm1LastName"
-                                   placeholder="Last Name" required>
-                            <div class="input-group-append">
-                                <button class="btn btn-outline-warning m-0 px-3 py-2 z-depth-0 waves-effect"
-                                        type="button" id="editPm1LastName">Edit
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="form-row">
-                    <div class="form-group col">
-                        <i class="far fa-credit-card"></i>
-                        <label for="pm1CCN">Credit Card Number</label>
-                        <div class="input-group">
-                            <input type="text" class="form-control" id="pmCCN"
-                                   placeholder="Credit Card Number" required>
-                            <div class="input-group-append">
-                                <button class="btn btn-outline-warning m-0 px-3 py-2 z-depth-0 waves-effect"
-                                        type="button" id="editPmCCN">Edit
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-group col">
-                        <i class="far fa-clock"></i>
-                        <label for="pm1Expiry">Expiriration Date</label>
-                        <div class="input-group">
-                            <input type="month" class="form-control" id="pm1Expiry"
-                                   value="2020-05">
-                            <div class="input-group-append">
-                                <button class="btn btn-outline-warning m-0 px-3 py-2 z-depth-0 waves-effect"
-                                        type="button" id="editPm1Expiry">Edit
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="form-row mt-5">
-                    <div class="col-9">
-                        <button type="button" id="savePaymentInformation"
-                                class="btn blue-gradient btn-block">Save and Update
-                        </button>
-                    </div>
-                    <div class="col-3">
-                        <button type="button" id="removePaymentInformation"
-                                class="btn btn-outline-danger btn-block">Remove Payment Method
-                        </button>
-                    </div>
-                </div>
-            </form>
-        </div>
-    </div>
+    {% endfor %}
+
     <div class="card gradient-card">
         <div class="card-image"
              style="background-image: url(https://mdbootstrap.com/img/Photos/Horizontal/Work/4-col/img%20%2814%29.jpg)">
