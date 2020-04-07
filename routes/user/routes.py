@@ -233,7 +233,7 @@ def payment_methods():
     data = cursor.fetchall()
     # We want [{street1: 123 Wallaby, street2: 23}, {street1: 362 Nowhere, street2: ''}, {street1: 999 Somewhere, street2: 27}]
 
-    sendable = []
+    payment_sendable = []
 
     for pay_tup in data:
         pay_dict = {}
@@ -242,13 +242,30 @@ def payment_methods():
         pay_dict['cardNumber'] = FERNET.decrypt(pay_tup[2].encode('utf-8')).decode('utf-8')
         pay_dict['cardType'] = pay_tup[3]
         pay_dict['expirationDate'] = str(pay_tup[4].year) +'-'+str(pay_tup[4].month)
-        sendable.append(pay_dict)
+        payment_sendable.append(pay_dict)
+
+
+    # select users billing address
 
     user_billing = '''
-    SELECT UA.userID_ua_FK, A.id, A.street1, A.street2, A.city, A.zip, A.state, A.country
-        FROM user_address UA
-                 INNER JOIN address A ON UA.addressID_ua_FK = A.id
-        WHERE userID_ua_FK = (SELECT id FROM user WHERE email = %s)
-        ORDER BY addressID_ua_FK; 
+    SELECT address.id, street1, street2, city, zip, state, country FROM address
+    JOIN payment_method ON address.id = billingAddress_addr_FK
+    WHERE payment_method.userID_payment_FK = (SELECT id FROM user WHERE email = %s)
     '''
-    return render_template('profile/profilePaymentMethods.html', data=sendable)
+    cursor.execute(user_billing,(session['email']))
+    data = cursor.fetchall()
+
+    billing_sendable = []
+
+    for bill_tup in data:
+        bill_dict = {}
+        bill_dict['addressID'] = bill_tup[0]
+        bill_dict['street1'] = bill_tup[0]
+        bill_dict['street2'] = bill_tup[1]
+        bill_dict['city'] = bill_tup[2]
+        bill_dict['zip'] = bill_tup[3]
+        bill_dict['state'] = bill_tup[4]
+        bill_dict['country'] = bill_tup[5]
+        billing_sendable.append(bill_dict)
+
+    return render_template('profile/profilePaymentMethods.html', pay_data=payment_sendable, bill_data=billing_sendable)
