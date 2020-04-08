@@ -18,7 +18,6 @@ def cart_session(f):
     @wraps(f)
     def wrapped_func(*args, **kws):
         if 'shopping_cart' in session:
-            # print(True)
             return f(*args, **kws)
         else:
             session['shopping_cart'] = list()
@@ -34,7 +33,6 @@ def login_required(f):
             return f(*args, **kws)
         else:
             flash('You need to login to access this area!')
-            # return redirect('/login/')
             return redirect(url_for('common_bp.login', ctx=f.__name__))
 
     return wrapped_func
