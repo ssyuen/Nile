@@ -1,8 +1,6 @@
-enum PostFlags {
-    REMOVE = "REMOVE_FLAG",
-    EDIT = "EDIT_FLAG",
-    CREATE = "CREATE_FLAG"
-}
+import {
+    PostFlags
+} from "./ShippingPaymentCommon.js";
 
 $(".remove-addr-btn").click(function (event) {
 
