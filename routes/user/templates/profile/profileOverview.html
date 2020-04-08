@@ -4,7 +4,11 @@
 {% block head %}
     {{ super() }}
     <style>
-
+        @media (max-width: 576px) {
+            #ordersCard {
+                margin-right: 0 !important;
+            }
+        }
     </style>
 {% endblock %}
 
