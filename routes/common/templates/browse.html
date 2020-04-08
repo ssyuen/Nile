@@ -48,11 +48,9 @@
                                 </form>
                                 <div class="list-menu complement-light" style="list-style-type: none; padding: 0px">
                                     <ul>
-                                        <li><a href="#">Textbook</a></li>
-                                        <li><a href="#">Novel</a></li>
-                                        <li><a href="#">E-book (Electronic)</a></li>
-                                        <li><a href="#">Audio CD</a></li>
-                                        <li><a href="#">Audiobook</a></li>
+                                        {% for type in product_types %}
+                                            <li><a href="#">{{ type }}</a></li>
+                                        {% endfor %}
                                     </ul>
                                 </div>
                             </div> <!-- card-body.// -->
@@ -67,76 +65,13 @@
                         </header>
                         <div class="filter-content collapse show" id="collapse_2">
                             <div class="card-body">
-                                <label class="custom-control custom-checkbox">
-                                    <input type="checkbox" checked="" class="custom-control-input">
-                                    <div class="custom-control-label d-inline">Mystery
-                                        <b class="badge badge-pill badge-light float-right">120</b></div>
-                                </label>
-                                <label class="custom-control custom-checkbox">
-                                    <input type="checkbox" class="custom-control-input">
-                                    <div class="custom-control-label">Horror
-                                        <b class="badge badge-pill badge-light float-right">15</b></div>
-                                </label>
-                                <label class="custom-control custom-checkbox">
-                                    <input type="checkbox" class="custom-control-input">
-                                    <div class="custom-control-label">Adventure
-                                        <b class="badge badge-pill badge-light float-right">35</b></div>
-                                </label>
-                                <label class="custom-control custom-checkbox">
-                                    <input type="checkbox" class="custom-control-input">
-                                    <div class="custom-control-label">Fantasy
-                                        <b class="badge badge-pill badge-light float-right">89</b></div>
-                                </label>
-                                <label class="custom-control custom-checkbox">
-                                    <input type="checkbox" class="custom-control-input">
-                                    <div class="custom-control-label">Romance
-                                        <b class="badge badge-pill badge-light float-right">30</b></div>
-                                </label>
-                                <label class="custom-control custom-checkbox">
-                                    <input type="checkbox" class="custom-control-input">
-                                    <div class="custom-control-label">Sci-Fi
-                                        <b class="badge badge-pill badge-light float-right">30</b></div>
-                                </label>
-                                <label class="custom-control custom-checkbox">
-                                    <input type="checkbox" class="custom-control-input">
-                                    <div class="custom-control-label">Dystopian
-                                        <b class="badge badge-pill badge-light float-right">30</b></div>
-                                </label>
-                                <label class="custom-control custom-checkbox">
-                                    <input type="checkbox" class="custom-control-input">
-                                    <div class="custom-control-label">Humor
-                                        <b class="badge badge-pill badge-light float-right">30</b></div>
-                                </label>
-                                <label class="custom-control custom-checkbox">
-                                    <input type="checkbox" class="custom-control-input">
-                                    <div class="custom-control-label">Non-Fiction
-                                        <b class="badge badge-pill badge-light float-right">30</b></div>
-                                </label>
-                                <label class="custom-control custom-checkbox">
-                                    <input type="checkbox" class="custom-control-input">
-                                    <div class="custom-control-label">Biography
-                                        <b class="badge badge-pill badge-light float-right">30</b></div>
-                                </label>
-                                <label class="custom-control custom-checkbox">
-                                    <input type="checkbox" class="custom-control-input">
-                                    <div class="custom-control-label">Cartoon
-                                        <b class="badge badge-pill badge-light float-right">30</b></div>
-                                </label>
-                                <label class="custom-control custom-checkbox">
-                                    <input type="checkbox" class="custom-control-input">
-                                    <div class="custom-control-label">Graphic Novels
-                                        <b class="badge badge-pill badge-light float-right">30</b></div>
-                                </label>
-                                <label class="custom-control custom-checkbox">
-                                    <input type="checkbox" class="custom-control-input">
-                                    <div class="custom-control-label">Children
-                                        <b class="badge badge-pill badge-light float-right">30</b></div>
-                                </label>
-                                <label class="custom-control custom-checkbox">
-                                    <input type="checkbox" class="custom-control-input">
-                                    <div class="custom-control-label">Anthology
-                                        <b class="badge badge-pill badge-light float-right">30</b></div>
-                                </label>
+                                {% for genre in genres %}
+                                    <label class="custom-control custom-checkbox">
+                                        <input type="checkbox" checked="" class="custom-control-input">
+                                        <div class="custom-control-label d-inline">{{ genre }}
+                                            <b class="badge badge-pill badge-light float-right">120</b></div>
+                                    </label>
+                                {% endfor %}
                             </div> <!-- card-body.// -->
                         </div>
                     </article> <!-- filter-group .// -->
@@ -218,16 +153,13 @@
                         </header>
                         <div class="filter-content collapse in" id="collapse_4">
                             <div class="card-body">
-                                <label class="custom-control custom-checkbox">
-                                    <input type="checkbox" checked="" class="custom-control-input">
-                                    <div class="custom-control-label">Hardcover
-                                        <b class="badge badge-pill badge-light float-right">120</b></div>
-                                </label>
-                                <label class="custom-control custom-checkbox">
-                                    <input type="checkbox" class="custom-control-input">
-                                    <div class="custom-control-label">Paperback
-                                        <b class="badge badge-pill badge-light float-right">15</b></div>
-                                </label>
+                                {% for binding in bindings %}
+                                    <label class="custom-control custom-checkbox">
+                                        <input type="checkbox" checked="" class="custom-control-input">
+                                        <div class="custom-control-label"> {{ binding }}
+                                            <b class="badge badge-pill badge-light float-right">120</b></div>
+                                    </label>                                    
+                                {% endfor %}
                             </div> <!-- card-body.// -->
                         </div>
                     </article> <!-- filter-group .// -->
@@ -269,7 +201,7 @@
             <div class="col-lg-9">
                 <header class="border-bottom mb-4 pb-3">
                     <div class="form-inline">
-                        <span class="mr-md-auto mr-3" id="itemsFound">12 Items found</span>
+                        <span class="mr-md-auto mr-3" id="itemsFound">{{ books|length }} Items found</span>
 
                         <div class="row h-100 view-selection">
                             <div class="col view-selection-opt" style="align-self: center">

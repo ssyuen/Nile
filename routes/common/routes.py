@@ -53,6 +53,14 @@ def remember_me(f):
     return wrapped_func
     
 
+def get_genres(cursor):
+    cursor.execute('SELECT genre FROM genre')
+    return [genre[0] for genre in cursor.fetchall()]
+
+def get_bindings_and_types(cursor):
+    cursor.execute('SELECT binding FROM binding')
+    results = cursor.fetchall()
+    return [binding[0] for binding in results[:5]], [binding[0] for binding in results[5:]]
 
 @common_bp.route('/about/')
 @cart_session
@@ -83,16 +91,22 @@ def landing_page(search_results=None):
         (SELECT genre from genre WHERE genre.id=book.genreID_book_FK) AS genre,
         nile_cover_ID
         FROM book'''
-    cursor.execute(query)
+        cursor.execute(query)
 
-    # STEP 2: Pass list of books to browse.html
-    results = cursor.fetchall()
-    header = [desc[0] for desc in cursor.description]
-    books = [dict(zip(header, result)) for result in results]
+        # STEP 2: Pass list of books to browse.html
+        results = cursor.fetchall()
+        header = [desc[0] for desc in cursor.description]
+        books = [dict(zip(header, result)) for result in results]
 
-    # STEP 3: In browse.html, iterate through list of books to populate page
-    conn.close()
-    return render_template('browse.html', books=books)
+        # STEP 3: In browse.html, iterate through list of books to populate page
+        genres = get_genres(cursor)
+        product_types,bindings = get_bindings_and_types(cursor)
+        print(bindings)
+        conn.close()
+        return render_template('browse.html', books=books,genres=genres,bindings=bindings,product_types=product_types)
+    else:
+        # books = search_results
+        return render_template('browse.html', books=books)
 
 
 @common_bp.route('/login/', methods=['POST', 'GET'])
