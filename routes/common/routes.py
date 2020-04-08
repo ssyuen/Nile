@@ -416,14 +416,10 @@ def email_confirmation(verify_token):
 
     # extract token from url
     verification_token = request.path[25:]
-    print('emailconfirmation', verification_token)
-    user_id_query = 'SELECT userID_utoken_FK FROM user_token WHERE user_token.token = %s'
-    cursor.execute(user_id_query, (verification_token))
-    user_id = cursor.fetchall()[0][0]
 
-    query = 'UPDATE user SET statusID_user_FK = 2 WHERE user.id = %s'
+    query = 'UPDATE user SET statusID_user_FK = 2 WHERE user.id = (SELECT userID_utoken_FK FROM user_token WHERE user_token.token = %s)'
 
-    cursor.execute(query, (user_id))
+    cursor.execute(query, (verification_token))
     conn.commit()
     conn.close()
 
@@ -447,12 +443,8 @@ def forgot():
 
         verification_token = secrets.token_urlsafe(16)
 
-        user_id_query = 'SELECT id FROM user WHERE email = %s'
-        cursor.execute(user_id_query, (email))
-        user_id = cursor.fetchall()[0][0]
-
-        query = 'INSERT INTO user_token (userID_utoken_FK,token) VALUES (%s, %s)'
-        cursor.execute(query, (user_id, verification_token))
+        query = 'INSERT INTO user_token (userID_utoken_FK,token) VALUES ((SELECT id FROM user WHERE email = %s), %s)'
+        cursor.execute(query, (email, verification_token))
         conn.commit()
         conn.close() 
 
@@ -480,12 +472,6 @@ def reset_pass(verify_token):
 
         # extract token from url
         verification_token = request.path[12:]
-        print(verification_token)
-
-        # extract user id from user_token
-        user_id_query = 'SELECT userID_utoken_FK FROM user_token WHERE user_token.token = %s'
-        cursor.execute(user_id_query, (verification_token))
-        user_id = cursor.fetchall()[0][0]
 
         # extract password from request
         confirmNewPassword = request.form.get('confirmNewPassword')
@@ -493,13 +479,13 @@ def reset_pass(verify_token):
         
         print(confirmNewPassword)
         # update password in user
-        query = 'UPDATE user SET pass = %s WHERE id = %s'
-        cursor.execute(query, (confirmNewPassword,user_id))
+        query = 'UPDATE user SET pass = %s WHERE id = (SELECT id FROM user WHERE email = %s)'
+        cursor.execute(query, (confirmNewPassword,session['email']))
         conn.commit()
 
         # delete user/token pair from user_token
-        query = 'DELETE FROM user_token WHERE userID_utoken_FK = %s AND token = %s'
-        cursor.execute(query,(user_id,verification_token))
+        query = 'DELETE FROM user_token WHERE userID_utoken_FK = (SELECT userID_utoken_FK FROM user_token WHERE user_token.token = %s) AND token = %s'
+        cursor.execute(query,(verification_token,verification_token))
         conn.commit()
 
         conn.close()
@@ -574,17 +560,12 @@ def product(title=None, price=None, author_name=None, ISBN=None, summary=None, p
         if book_isbn in session['shopping_cart']:
             old_cart.remove(book_isbn)
 
-            user_id_query = 'SELECT id FROM user WHERE email = %s'
-            cursor.execute(user_id_query, (session['email']))
-            user_id = cursor.fetchall()[0][0]
-
-            # remove from shoppingcart tbl first
-            bod_id_query = '''SELECT bod_sc_FK FROM shoppingcart WHERE userID_sc_FK = %s AND bod_sc_FK = (SELECT id FROM book_orderdetail WHERE ISBN_bod_FK = %s) '''
-            cursor.execute(bod_id_query, (user_id, book_isbn))
+            bod_id_query = '''SELECT bod_sc_FK FROM shoppingcart WHERE userID_sc_FK = (SELECT id FROM user WHERE email = %s) AND bod_sc_FK = (SELECT id FROM book_orderdetail WHERE ISBN_bod_FK = %s) '''
+            cursor.execute(bod_id_query, (session['email'], book_isbn))
             bod_id = cursor.fetchall()[0][0]
 
-            query = '''DELETE FROM shoppingcart WHERE userID_sc_FK = %s AND bod_sc_FK = (SELECT id FROM book_orderdetail WHERE ISBN_bod_FK = %s)'''
-            cursor.execute(query, (user_id, book_isbn))
+            query = '''DELETE FROM shoppingcart WHERE userID_sc_FK = (SELECT id FROM user WHERE email = %s) AND bod_sc_FK = (SELECT id FROM book_orderdetail WHERE ISBN_bod_FK = %s)'''
+            cursor.execute(query, (session['email'], book_isbn))
             conn.commit()
 
             # remove from book_orderdetail next
@@ -602,12 +583,8 @@ def product(title=None, price=None, author_name=None, ISBN=None, summary=None, p
             cursor.execute(bod_id_query)
             bod_id = cursor.fetchall()[0][0]
 
-            user_id_query = 'SELECT id FROM user WHERE email = %s'
-            cursor.execute(user_id_query, (session['email']))
-            user_id = cursor.fetchall()[0][0]
-
-            query = '''INSERT INTO shoppingcart (userID_sc_FK, bod_sc_FK) VALUES (%s, %s)'''
-            cursor.execute(query, (user_id, str(bod_id)))
+            query = '''INSERT INTO shoppingcart (userID_sc_FK, bod_sc_FK) VALUES ((SELECT id FROM user WHERE email = %s), %s)'''
+            cursor.execute(query, (session['email'], str(bod_id)))
             conn.commit()
 
         session['shopping_cart'] = old_cart
