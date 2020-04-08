@@ -63,7 +63,7 @@ def change_name():
     else:
         conn = mysql.connect()
         cursor = conn.cursor()
-        
+
         fname = request.form.get('inputFirstname')
         firstLetter = fname[0].upper()
         fname = firstLetter + fname[1:].lower()
@@ -270,10 +270,12 @@ def payment_methods():
         pay_dict['firstname'] = pay_tup[0]
         pay_dict['lastname'] = pay_tup[1]
         pay_dict['cardNumber'] = FERNET.decrypt(
-            pay_tup[2].encode('utf-8')).decode('utf-8')
+            pay_tup[2].encode('utf-8')).decode('utf-8')[15:]
         pay_dict['cardType'] = pay_tup[3]
         pay_dict['expirationDate'] = str(
             pay_tup[4].year) + '-'+str(pay_tup[4].month)
+        
+        print(pay_dict['expirationDate'])
         payment_sendable.append(pay_dict)
 
     # select users billing address
