@@ -75,7 +75,7 @@ def manage_users():
     return render_template('./adminManageUsers.html')
 
 
-@admin_bp.route('/manage_books/abooksf/', methods=['GET', 'POST'])
+@admin_bp.route('/manage_books/mbooksf/', methods=['GET', 'POST'])
 @admin_required
 def add_books_form():
     if request.method == 'POST':
@@ -114,13 +114,7 @@ def add_books_form():
         conn.commit()
         conn.close()
 
-    return render_template('./forms/add_books_form.html')
-
-
-@admin_bp.route('/manage_books/ebooksf/')
-@admin_required
-def edit_books_form():
-    return render_template('./forms/edit_books_form.html')
+    return render_template('./forms/manage_books_form.html')
 
 
 @admin_bp.route('/manage_promotions/epromof/')
