@@ -42,8 +42,12 @@ def login_required(f):
 def remember_me(f):
     @wraps(f)
     def wrapped_func(*args, **kws):
-        if session['remember_me']:
-            app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(days=7)
+        try:
+            if session['remember_me']:
+                app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(days=7)
+                return f(*args, **kws)
+        except KeyError:
+            session['remember_me'] = False
             return f(*args, **kws)
         else:
             return f(*args, **kws)
@@ -119,6 +123,7 @@ def login(ctx=None):
                     session['admin'] = True
                     session['lastName'] = results[3]
                     session['firstName'] = results[2]
+                    session['remember_me'] = False
                     # flash('Welcome, ' + session['firstName'] + '!')
                     ctx = request.args.get('next')
                     return redirect(ctx or url_for('common_bp.landing_page'))
@@ -146,6 +151,7 @@ def login(ctx=None):
                     session['firstName'] = results[2]
                     session['lastName'] = results[3]
                     session['admin'] = False
+                    session['remember_me'] = False
                     
                     # check for if verified user
                     if int(results[4]) == 2:
