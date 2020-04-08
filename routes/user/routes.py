@@ -296,8 +296,8 @@ def payment_methods():
             cursor.execute(update_pm,(cfn,cln,ccexp))
             conn.commit()
 
-            update_a = '''UPDATE address SET street1 = %s, street2 = %s, city = %s, zip = %s, state = %s, country = %s'''
-            cursor.execute(update_a,(street1,street2,city,zipcode,state,country))
+            update_a = '''UPDATE address SET street1 = %s, street2 = %s, city = %s, zip = %s, state = %s, country = %s WHERE id = %s'''
+            cursor.execute(update_a,(street1,street2,city,zipcode,state,country, addr_id))
             conn.commit()
 
 
