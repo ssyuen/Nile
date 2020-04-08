@@ -83,16 +83,19 @@ def landing_page(search_results=None):
         (SELECT genre from genre WHERE genre.id=book.genreID_book_FK) AS genre,
         nile_cover_ID
         FROM book'''
-    cursor.execute(query)
+        cursor.execute(query)
 
-    # STEP 2: Pass list of books to browse.html
-    results = cursor.fetchall()
-    header = [desc[0] for desc in cursor.description]
-    books = [dict(zip(header, result)) for result in results]
+        # STEP 2: Pass list of books to browse.html
+        results = cursor.fetchall()
+        header = [desc[0] for desc in cursor.description]
+        books = [dict(zip(header, result)) for result in results]
 
-    # STEP 3: In browse.html, iterate through list of books to populate page
-    conn.close()
-    return render_template('browse.html', books=books)
+        # STEP 3: In browse.html, iterate through list of books to populate page
+        conn.close()
+        return render_template('browse.html', books=books)
+    else:
+        # books = search_results
+        return render_template('browse.html', books=books)
 
 
 @common_bp.route('/login/', methods=['POST', 'GET'])

@@ -1,4 +1,5 @@
-from flask import Blueprint, render_template, request, jsonify, redirect, flash, session, url_for
+from flask import Blueprint, request, render_template, jsonify, redirect, flash, session, url_for
+from flaskext.mysql import pymysql
 from functools import wraps
 from server import mysql
 
@@ -12,32 +13,41 @@ def query_books(search_query=None):
         return redirect(url_for('common_bp.landing_page'))
     else:
         if len(request.args) == 1:
-            # try:
+            try:
 
-            search_query = request.args['search_query']
-            conn = mysql.connect()
-            cursor = conn.cursor()
-            query = '''SELECT ISBN, (SELECT genre from genre WHERE genre.id=book.genreID_book_FK) AS genre, title, price, CONCAT(authorFirstName, ' ', authorLastName) AS author_name FROM book'''
-            cursor.execute(query)
-            results = cursor.fetchall()
+                search_query = request.args['search_query']
+                conn = mysql.connect()
+                cursor = conn.cursor()
+                query = '''SELECT 
+                title,
+                price,
+                CONCAT(authorFirstName, ' ', authorLastName) AS author_name,
+                ISBN,
+                summary,
+                publicationDate,
+                numPages,
+                (SELECT binding FROM binding WHERE binding.id=book.bindingID_book_FK) AS binding,
+                (SELECT genre from genre WHERE genre.id=book.genreID_book_FK) AS genre,
+                nile_cover_ID
+                FROM book'''
+                cursor.execute(query)
+                results = cursor.fetchall()
 
-            print(f'results: {results}')
+                payload = []
+                header = [desc[0] for desc in cursor.description]
+                payload = [dict(zip(header, result)) for result in results]
+                books = [book for book in payload if search_query in str(
+                    book.values()).lower()]
 
-            payload = []
-            header = [desc[0] for desc in cursor.description]
-            payload = [dict(zip(header, result)) for result in results]
-            books = [book for book in payload if search_query in str(
-                book.values()).lower()]
+                print(request.args['search_query'].lower())
+                conn.close()
 
-            print(request.args['search_query'].lower())
-            conn.close()
+                if request.args['search_query'].lower() == 'test':
+                    return jsonify(payload)
 
-            if request.args['search_query'].lower() == 'test':
-                return jsonify(payload)
-
-            return jsonify(books)
-            # except:
-            #     return redirect(url_for('common_bp.landing_page'))
+                return render_template('browse.html',books=books)
+            except pymysql.Error:
+                return redirect(url_for('common_bp.landing_page'))
 
         else:
             return redirect(url_for('common_bp.landing_page'))
