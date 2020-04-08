@@ -291,9 +291,9 @@ def register():
                 cursor.execute(query, (user_id, shipping_id))
 
                 # payment_payload depends on user and billing FKs
-                payment_payload = (ccn, ccn_provider, ccexp,
+                payment_payload = (card_first_name,card_last_name,ccn, ccn_provider, ccexp,
                                    user_id, billing_id)
-                query = 'INSERT INTO payment_method (cardNumber, cardType, expirationDate, userID_payment_FK, billingAddress_addr_FK) VALUES (%s, %s, %s, %s, %s)'
+                query = 'INSERT INTO payment_method (firstname,lastname,cardNumber, cardType, expirationDate, userID_payment_FK, billingAddress_addr_FK) VALUES (%s,%s,%s, %s, %s, %s, %s)'
                 cursor.execute(query, payment_payload)
 
             # INSERTING BILLING ADDRESS (PAYMENT INFO ONLY)
@@ -316,9 +316,9 @@ def register():
                 user_id = cursor.fetchall()[0][0]
 
                 # payment_payload depends on user and billing FKs
-                payment_payload = (ccn, ccn_provider, ccexp,
+                payment_payload = (card_first_name,card_last_name,ccn, ccn_provider, ccexp,
                                    user_id, billing_id)
-                query = 'INSERT INTO payment_method (cardNumber, cardType, expirationDate, userID_payment_FK, billingAddress_addr_FK) VALUES (%s, %s, %s, %s, %s)'
+                query = 'INSERT INTO payment_method (firstname,lastname,cardNumber, cardType, expirationDate, userID_payment_FK, billingAddress_addr_FK) VALUES (%s,%s,%s, %s, %s, %s, %s)'
                 cursor.execute(query, payment_payload)
 
             # INSERTING SHIPPING ADDRESS (SHIPPING ADDRESS ONLY)
