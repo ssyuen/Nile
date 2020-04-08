@@ -272,7 +272,7 @@ def payment_methods():
             create_a = """
                 INSERT INTO address(street1, street2, city, zip, state, country, addressTypeID_address_FK) 
                 VALUES(%s, %s, %s, %s, %s, %s, %s)"""
-            cursor.execute(create_a, (street1, street2, zipcode, city, state, country, 2))
+            cursor.execute(create_a, (street1, street2, city, zipcode, state, country, 2))
 
             create_pm = """
                 INSERT INTO payment_method(firstname, lastname, cardNumber, cardType, expirationDate, userID_payment_FK, billingAddress_addr_FK)
