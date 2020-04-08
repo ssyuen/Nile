@@ -9,32 +9,35 @@ books_bp = Blueprint('books_bp', __name__,
 @books_bp.route('/api/books/', methods=['GET'])
 def query_books(search_query=None):
     if request.args is None:
-        return redirect(url_for('user_bp.landing_page'))
+        return redirect(url_for('common_bp.landing_page'))
     else:
         if len(request.args) == 1:
-            try:
-                
-                search_query = request.args['search_query']
-                conn = mysql.connect()
-                cursor = conn.cursor()
-                query = f'''SELECT ISBN, (SELECT genre from genre WHERE genre.genreID=book.genreID) AS genre, title, price, CONCAT(authorFirstName, ' ', authorLastName) AS author_name FROM book'''
-                cursor.execute(query)
-                conn.close()
-                results = cursor.fetchall()
+            # try:
 
-                payload = []
-                header = [desc[0] for desc in cursor.description]
-                payload = [dict(zip(header, result)) for result in results]
-                books = [book for book in payload if search_query in str(book.values()).lower()]
+            search_query = request.args['search_query']
+            conn = mysql.connect()
+            cursor = conn.cursor()
+            query = '''SELECT ISBN, (SELECT genre from genre WHERE genre.id=book.genreID_book_FK) AS genre, title, price, CONCAT(authorFirstName, ' ', authorLastName) AS author_name FROM book'''
+            cursor.execute(query)
+            results = cursor.fetchall()
 
-                print(request.args['search_query'].lower())
+            print(f'results: {results}')
 
-                if request.args['search_query'].lower() == 'test':
-                    return jsonify(payload)
+            payload = []
+            header = [desc[0] for desc in cursor.description]
+            payload = [dict(zip(header, result)) for result in results]
+            books = [book for book in payload if search_query in str(
+                book.values()).lower()]
 
-                return jsonify(books)
-            except:
-                return redirect(url_for('user_bp.landing_page'))
-            
+            print(request.args['search_query'].lower())
+            conn.close()
+
+            if request.args['search_query'].lower() == 'test':
+                return jsonify(payload)
+
+            return jsonify(books)
+            # except:
+            #     return redirect(url_for('common_bp.landing_page'))
+
         else:
-            return redirect(url_for('user_bp.landing_page'))
+            return redirect(url_for('common_bp.landing_page'))
