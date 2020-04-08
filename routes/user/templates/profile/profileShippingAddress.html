@@ -29,109 +29,118 @@
     {% for addr_dict in data %}
         <div class="card gradient-card mb-5">
             <div class="card-image"
-                 style="background-image: url(https://mdbootstrap.com/img/Photos/Horizontal/Work/4-col/img%20%2814%29.jpg)">
+            >
                 <!-- Content -->
                 <div class="text-white mask card-contextual-info">
                     <div class="row">
                         <div class="col align-self-center">
                             <div class="first-content p-3">
-                                <h3 class="card-title">Shipping Address {{ loop.index }}</h3>
+                                <h4 class="card-title complement">{{ addr_dict['street1'] }}</h4>
                             </div>
                         </div>
                         <div class="col align-self-center">
-                            <div class="second-content pr-3" style="float: right;">
-                                <i class="far fa-address-card fa-3x"></i>
+                            <div class="first-content p-3 float-right">
+                                <button class="btn blue-gradient btn-circle btn-md"
+                                        data-toggle="collapse"
+                                        data-target="#target{{ addr_dict['zip'] }}{{ addr_dict['addressID'] }}"
+                                        type="button"
+                                        aria-controls="target{{ addr_dict['zip'] }}{{ addr_dict['addressID'] }}"
+                                        aria-expanded="false"><i
+                                        class="fas fa-angle-down fa-2x"></i>
+                                </button>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
             <!-- Content -->
-            <div class="card-body white">
-                <div class="d-inline-block w-100 ">
-                    <h4 class="text-uppercase font-weight-bold my-4 d-inline-block" id="nameDetails">Manage my
-                        Addresses</h4>
-                    <button id="editBtnForAddress{{ loop.index }}"
-                            class="btn btn-outline-warning float-md-right align-content-center waves-effect edit-btn">
-                        Edit
-                    </button>
+            <div class="collapse" id="target{{ addr_dict['zip'] }}{{ addr_dict['addressID'] }}">
+                <div class="card-body white">
+                    <div class="d-inline-block w-100 ">
+                        <h4 class="text-uppercase font-weight-bold my-4 d-inline-block" id="nameDetails">Manage my
+                            Addresses</h4>
+                        <button id="editBtnForAddress{{ loop.index }}"
+                                class="btn btn-outline-warning float-md-right align-content-center waves-effect edit-btn">
+                            Edit
+                        </button>
+                    </div>
+                    <form method="POST" nile-address-ident="{{ addr_dict['addressID'] }}"
+                          action="/nileuser/shipping_address/">
+                        <div class="form-row">
+                            <div class="col">
+                                <div class="form-group md-form md-outline">
+                                    <label for="address{{ loop.index }}StreetAddress">Street Address</label>
+                                    <input type="text" class="form-control" id="address{{ loop.index }}StreetAddress"
+                                           readonly required name="addressStreetAddress"
+                                           value="{{ addr_dict['street1'] }}">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="col">
+                                <div class="form-group md-form md-outline">
+                                    <label for="address{{ loop.index }}ApartmentOrSuite">Apartment or Suite</label>
+                                    <input type="text" class="form-control" id="address{{ loop.index }}ApartmentOrSuite"
+                                           readonly
+                                           name="addressApartmentOrSuite"
+                                           value="{{ addr_dict['street2'] }}">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="col">
+                                <div class="form-group md-form md-outline">
+                                    <label for="addAddress{{ loop.index }}Zip">ZIP or Postal code</label>
+                                    <input type="text" class="form-control" id="addAddress{{ loop.index }}Zip" readonly
+                                           name="addressZip" value="{{ addr_dict['zip'] }}">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-md-8">
+                                <div class="form-group md-form md-outline">
+                                    <label for="address{{ loop.index }}City">City</label>
+                                    <input type="text" class="form-control" id="address{{ loop.index }}City" required
+                                           readonly
+                                           name="addressCity" value="{{ addr_dict['city'] }}">
+                                </div>
+                            </div>
+                            <div class="form-group col-md-2" style="margin-top: 8px">
+                                <label for="address{{ loop.index }}State" class="d-none">State</label>
+                                <select id="address{{ loop.index }}State" class="form-control" required
+                                        name="addressState" disabled>
+                                    <option value="GA">GA</option>
+                                    <option value="CA">CA</option>
+                                </select>
+                                <script>
+                                    doSelect(document.getElementById("address{{ loop.index }}State").id, "{{ addr_dict['state'] }}");
+                                </script>
+                            </div>
+                            <div class="form-group col-md-2" style="margin-top: 8px">
+                                <label for="address{{ loop.index }}Country" class="d-none">Country</label>
+                                <select id="address{{ loop.index }}Country" class="form-control" required
+                                        name="addressCountry" disabled>
+                                    <option value="United States">United States</option>
+                                </select>
+                                <script>
+                                    doSelect(document.getElementById("address{{ loop.index }}Country").id, "{{ addr_dict['country'] }}")
+                                </script>
+                            </div>
+                        </div>
+                        <div class="form-row mt-3 w-100">
+                            <div class="col-md-9 mb-2">
+                                <button id="updateShippingAddress{{ loop.index }}"
+                                        class="btn blue-gradient btn-block update-addr-btn">Save and Update
+                                </button>
+                            </div>
+                            <div class="col-md-3 mb-2">
+                                <button id="removeShippingAddress{{ loop.index }}"
+                                        class="btn btn-danger btn-block remove-addr-btn">Remove Address
+                                </button>
+                            </div>
+                        </div>
+                    </form>
                 </div>
-                <form method="POST" nile-address-ident="{{ addr_dict['addressID'] }}"
-                      action="/nileuser/shipping_address/">
-                    <div class="form-row">
-                        <div class="col">
-                            <div class="form-group md-form md-outline">
-                                <label for="address{{ loop.index }}StreetAddress">Street Address</label>
-                                <input type="text" class="form-control" id="address{{ loop.index }}StreetAddress"
-                                       readonly required name="addressStreetAddress"
-                                       value="{{ addr_dict['street1'] }}">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-row">
-                        <div class="col">
-                            <div class="form-group md-form md-outline">
-                                <label for="address{{ loop.index }}ApartmentOrSuite">Apartment or Suite</label>
-                                <input type="text" class="form-control" id="address{{ loop.index }}ApartmentOrSuite"
-                                       readonly
-                                       name="addressApartmentOrSuite"
-                                       value="{{ addr_dict['street2'] }}">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-row">
-                        <div class="col">
-                            <div class="form-group md-form md-outline">
-                                <label for="addAddress{{ loop.index }}Zip">ZIP or Postal code</label>
-                                <input type="text" class="form-control" id="addAddress{{ loop.index }}Zip" readonly
-                                       name="addressZip" value="{{ addr_dict['zip'] }}">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-row">
-                        <div class="form-group col-md-8">
-                            <div class="form-group md-form md-outline">
-                                <label for="address{{ loop.index }}City">City</label>
-                                <input type="text" class="form-control" id="address{{ loop.index }}City" required
-                                       readonly
-                                       name="addressCity" value="{{ addr_dict['city'] }}">
-                            </div>
-                        </div>
-                        <div class="form-group col-md-2" style="margin-top: 8px">
-                            <label for="address{{ loop.index }}State" class="d-none">State</label>
-                            <select id="address{{ loop.index }}State" class="form-control" required
-                                    name="addressState" disabled>
-                                <option value="GA">GA</option>
-                                <option value="CA">CA</option>
-                            </select>
-                            <script>
-                                doSelect(document.getElementById("address{{ loop.index }}State").id, "{{ addr_dict['state'] }}");
-                            </script>
-                        </div>
-                        <div class="form-group col-md-2" style="margin-top: 8px">
-                            <label for="address{{ loop.index }}Country" class="d-none">Country</label>
-                            <select id="address{{ loop.index }}Country" class="form-control" required
-                                    name="addressCountry" disabled>
-                                <option value="United States">United States</option>
-                            </select>
-                            <script>
-                                doSelect(document.getElementById("address{{ loop.index }}Country").id, "{{ addr_dict['country'] }}")
-                            </script>
-                        </div>
-                    </div>
-                    <div class="form-row mt-3 w-100">
-                        <div class="col-md-9 mb-2">
-                            <button id="updateShippingAddress{{ loop.index }}"
-                                    class="btn blue-gradient btn-block update-addr-btn">Save and Update
-                            </button>
-                        </div>
-                        <div class="col-md-3 mb-2">
-                            <button id="removeShippingAddress{{ loop.index }}"
-                                    class="btn btn-danger btn-block remove-addr-btn">Remove Address
-                            </button>
-                        </div>
-                    </div>
-                </form>
             </div>
         </div>
     {% endfor %}
@@ -144,14 +153,13 @@
 
 
     <div class="card gradient-card">
-        <div class="card-image"
-             style="background-image: url(https://mdbootstrap.com/img/Photos/Horizontal/Work/4-col/img%20%2814%29.jpg)">
+        <div class="card-image">
             <!-- Content -->
             <div class="text-white mask card-contextual-info">
                 <div class="row">
                     <div class="col align-self-center">
                         <div class="first-content p-3">
-                            <h3 class="card-title">Add Shipping Address</h3>
+                            <h3 class="card-title complement">Add Shipping Address</h3>
                         </div>
                     </div>
                     <div class="col align-self-center">
@@ -167,8 +175,8 @@
                 <div class="form-row">
                     <div class="col">
                         <div class="form-group md-form md-outline">
-                            <label for="addAddress1StreetAddress">Street Address</label>
-                            <input type="text" class="form-control" id="addAddress1StreetAddress"
+                            <label for="addAddressStreetAddress">Street Address</label>
+                            <input type="text" class="form-control" id="addAddressStreetAddress"
                                    name="addressStreetAddress"
                                    required>
                         </div>
@@ -177,8 +185,8 @@
                 <div class="form-row">
                     <div class="col">
                         <div class="form-group md-form md-outline">
-                            <label for="addAddress1ApartmentOrSuite">Apartment or Suite</label>
-                            <input type="text" class="form-control" id="addAddress1ApartmentOrSuite"
+                            <label for="addAddressApartmentOrSuite">Apartment or Suite</label>
+                            <input type="text" class="form-control" id="addAddressApartmentOrSuite"
                                    name="addressApartmentOrSuite">
                         </div>
                     </div>
@@ -195,14 +203,14 @@
                 <div class="form-row">
                     <div class="form-group col-md-8">
                         <div class="form-group md-form md-outline">
-                            <label for="addAddress1City">City</label>
-                            <input type="text" class="form-control" id="addAddress1City" required
+                            <label for="addAddressCity">City</label>
+                            <input type="text" class="form-control" id="addAddressCity" required
                                    name="addressCity">
                         </div>
                     </div>
                     <div class="form-group col-md-2" style="margin-top: 8px">
-                        <label for="addAddress1State" class="d-none">State</label>
-                        <select id="addAddress1State"
+                        <label for="addAddressState" class="d-none">State</label>
+                        <select id="addAddressState"
                                 class="form-control" required
                                 name="addressState">
                             <option value="" disabled selected>State</option>
@@ -212,8 +220,8 @@
 
                     </div>
                     <div class="form-group col-md-2" style="margin-top: 8px">
-                        <label for="addAddress1Country" class="d-none">Country</label>
-                        <select id="addAddress1Country"
+                        <label for="addAddressCountry" class="d-none">Country</label>
+                        <select id="addAddressCountry"
                                 class="form-control"
                                 required
                                 name="addressCountry">
