@@ -146,19 +146,21 @@ def login(ctx=None):
 
                 # password is correct
                 if bcrypt.checkpw(password.encode('utf-8'), db_pass):
+                    # check for if verified user
+                    if int(results[4]) == 2:
+                        session['verified'] = True
+                    # user is not allowed to login with unverified account
+                    else:
+                        session['verified'] = False
+                        flash('You must verifiy your account before being able to login!')
+                        return redirect(url_for('common_bp.login'))
+
                     session['logged_in'] = True
                     session['email'] = results[0]
                     session['firstName'] = results[2]
                     session['lastName'] = results[3]
                     session['admin'] = False
                     session['remember_me'] = False
-                    
-                    # check for if verified user
-                    if int(results[4]) == 2:
-                        session['verified'] = True
-                    else:
-                        session['verified'] = False
-
 
                     ctx = request.args.get('ctx')
                     if ctx is not None:
@@ -169,12 +171,12 @@ def login(ctx=None):
                 # incorrect password
                 else:
                     flash('Your login details were incorrect. Please try again.')
-                    return redirect('/login/')
+                    return redirect(url_for('common_bp.login'))
             
             # email is not found in db
             except IndexError:
                 flash('Your login details were not found. Please try again.')
-                return redirect('/login/')
+                return redirect(url_for('common_bp.login'))
 
     else:
         return render_template('login.html')
