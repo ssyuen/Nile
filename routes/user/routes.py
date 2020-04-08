@@ -291,12 +291,21 @@ def payment_methods():
             conn.commit()
 
         elif flag == "EDIT_FLAG":
-            pass
 
+            update_pm = '''UPDATE payment_method SET firstname = %s, lastname = %s, expirationDate = %s WHERE id = %s'''
+            cursor.execute(update_pm,(cfn,cln,ccexp))
+            conn.commit()
+
+            update_a = '''UPDATE address SET street1 = %s, street2 = %s, city = %s, zip = %s, state = %s, country = %s'''
+            cursor.execute(update_a,(street1,street2,city,zipcode,state,country))
+            conn.commit()
+
+
+        conn.close()
         return redirect(url_for('user_bp.payment_methods'))
 
 
-    
+    # GET REQUEST
     else:
 
         user_payments = """
