@@ -250,17 +250,60 @@ def payment_methods():
     cursor = conn.cursor()
 
     if request.method == 'POST':
-        pass
+        flag = request.form.get("form_flag")
+        addr_id = request.form.get('billingAddressID')
+
+        cfn = request.form.get("cardHolderFirstName")
+        cln = request.form.get("cardHolderLastName")
+        try:
+            ccn = FERNET.encrypt(request.form.get('ccn').encode('utf-8'))
+        except:
+            ccn = ''
+        ct = request.form.get("CCNProvider")
+        ccexp = request.form.get("ccexp") + '-01'
+        street1 = request.form.get("billingStreetAddress")
+        street2 = request.form.get("billingApartmentOrSuite")
+        zipcode = request.form.get("billingAddressZip")
+        city = request.form.get("billingAddressCity")
+        state = request.form.get("billingAddressState")
+        country = request.form.get("billingAddressCountry")
+
+        if flag == "CREATE_FLAG":
+            create_a = """
+                INSERT INTO address(street1, street2, city, zip, state, country, addressTypeID_address_FK) 
+                VALUES(%s, %s, %s, %s, %s, %s, %s)"""
+            cursor.execute(create_a, (street1, street2, zipcode, city, state, country, 2))
+
+            create_pm = """
+                INSERT INTO payment_method(firstname, lastname, cardNumber, cardType, expirationDate, userID_payment_FK, billingAddress_addr_FK)
+                VALUES (%s, %s, %s, %s, %s, 
+                (SELECT id FROM user WHERE email = %s), 
+                (SELECT id FROM address ORDER BY id DESC LIMIT 1)
+                )
+            """
+            cursor.execute(create_pm, (cfn, cln, ccn, ct, ccexp, session['email']))
+            conn.commit()
+
+        elif flag == "REMOVE_FLAG":
+            pass
+
+        elif flag == "EDIT_FLAG":
+            pass
+
+    """GET PORTION OF THE PAYMENT"""
 
     user_payments = """
-        SELECT firstname, lastname, cardNumber, cardType, expirationDate FROM user 
-        JOIN payment_method ON user.id = payment_method.userID_payment_FK
-        WHERE user.id = (SELECT user.id FROM user WHERE email = %s) 
+        SELECT PM.firstname, PM.lastname, PM.cardNumber, PM.cardType, PM.expirationDate, PM.billingAddress_addr_FK, A.id,
+                A.street1, A.street2, A.zip, A.city, A.state, A.country
+        FROM payment_method PM
+                 INNER JOIN address A ON PM.billingAddress_addr_FK = A.id
+        WHERE userID_payment_FK = (SELECT id FROM user WHERE email = %s)
+        ORDER BY addressTypeID_address_FK;
+        
+        
         """
     cursor.execute(user_payments, (session['email']))
-    # ((68, '123 Wallaby', '', 'Lilburn', '30609', 'Georgia', 'United States'), (68, '362', ...))
     data = cursor.fetchall()
-    # We want [{street1: 123 Wallaby, street2: 23}, {street1: 362 Nowhere, street2: ''}, {street1: 999 Somewhere, street2: 27}]
 
     payment_sendable = []
 
@@ -268,36 +311,18 @@ def payment_methods():
         pay_dict = {}
         pay_dict['firstname'] = pay_tup[0]
         pay_dict['lastname'] = pay_tup[1]
-        pay_dict['cardNumber'] = FERNET.decrypt(
-            pay_tup[2].encode('utf-8')).decode('utf-8')[15:]
+        pay_dict['cardNumber'] = FERNET.decrypt(pay_tup[2].encode('utf-8')).decode('utf-8')[-4:]
         pay_dict['cardType'] = pay_tup[3]
-        pay_dict['expirationDate'] = str(
-            pay_tup[4].year) + '-'+str(pay_tup[4].month)
-        
+        pay_dict['expirationDate'] = str(pay_tup[4].year) + '-' + str(pay_tup[4].month)
+        pay_dict['billingAddressID'] = pay_tup[6]
+        pay_dict['street1'] = pay_tup[7]
+        pay_dict['street2'] = pay_tup[8]
+        pay_dict['zip'] = pay_tup[9]
+        pay_dict['city'] = pay_tup[10]
+        pay_dict['state'] = pay_tup[11]
+        pay_dict['country'] = pay_tup[12]
+
         print(pay_dict['expirationDate'])
         payment_sendable.append(pay_dict)
 
-    # select users billing address
-
-    user_billing = '''
-    SELECT address.id, street1, street2, city, zip, state, country FROM address
-    JOIN payment_method ON address.id = billingAddress_addr_FK
-    WHERE payment_method.userID_payment_FK = (SELECT id FROM user WHERE email = %s)
-    '''
-    cursor.execute(user_billing, (session['email']))
-    data = cursor.fetchall()
-
-    billing_sendable = []
-
-    for bill_tup in data:
-        bill_dict = {}
-        bill_dict['addressID'] = bill_tup[0]
-        bill_dict['street1'] = bill_tup[0]
-        bill_dict['street2'] = bill_tup[1]
-        bill_dict['city'] = bill_tup[2]
-        bill_dict['zip'] = bill_tup[3]
-        bill_dict['state'] = bill_tup[4]
-        bill_dict['country'] = bill_tup[5]
-        billing_sendable.append(bill_dict)
-
-    return render_template('profile/profilePaymentMethods.html', pay_data=payment_sendable, bill_data=billing_sendable)
+    return render_template('profile/profilePaymentMethods.html', data=payment_sendable)
