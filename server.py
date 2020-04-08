@@ -14,7 +14,7 @@ app.config['MYSQL_DATABASE_DB'] = 'niledb'  # change to whatever the db will be 
 app.config['MYSQL_DATABASE_HOST'] = 'localhost'
 
 # FLASK SESSION LIFETIME SETUP
-app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(minutes=45)
+# app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(minutes=45)
 
 # FLASK-MAIL SETUP
 app.config['DEBUG'] = True

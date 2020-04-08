@@ -9,7 +9,7 @@ import secrets
 from server import mysql, mail
 from key import FERNET
 
-from routes.common.routes import cart_session
+from routes.common.routes import cart_session, remember_me
 
 user_bp = Blueprint('user_bp', __name__,
                     template_folder='templates', static_folder='static')
@@ -31,6 +31,7 @@ def login_required(f):
 @user_bp.route('/checkout/')
 @login_required
 @cart_session
+@remember_me
 def checkout():
     if session['verified']:
         return render_template('./checkout.html')
@@ -42,6 +43,7 @@ def checkout():
 @user_bp.route('/base_profile/', methods=['GET'])
 @login_required
 @cart_session
+@remember_me
 def base_profile():
     return render_template('profile/profileBase.html')
 
@@ -49,14 +51,15 @@ def base_profile():
 @user_bp.route('/overview/', methods=['GET'])
 @login_required
 @cart_session
+@remember_me
 def overview():
     return render_template('profile/profileOverview.html')
 
 
-# TODO
 @user_bp.route('/change_name/', methods=['GET', 'POST'])
 @login_required
 @cart_session
+@remember_me
 def change_name():
     if request.method == 'GET':
         return render_template('profile/profileChangeName.html')
@@ -92,10 +95,10 @@ def change_name():
         return redirect(url_for('user_bp.change_name'))
 
 
-# TODO
 @user_bp.route('/change_pass/', methods=['GET', 'POST'])
 @login_required
 @cart_session
+@remember_me
 def change_pass():
     if request.method == 'POST':
         conn = mysql.connect()
@@ -124,6 +127,7 @@ def change_pass():
 @user_bp.route('/order_history/', methods=['GET'])
 @login_required
 @cart_session
+@remember_me
 def order_history():
     # Connect to niledb
     conn = mysql.connect()
@@ -146,10 +150,10 @@ def order_history():
     return render_template('profile/profileOrderHistory.html', data=data)
 
 
-# TODO
 @user_bp.route('/shipping_address/', methods=['GET', 'POST'])
 @login_required
 @cart_session
+@remember_me
 def shipping_address():
     conn = mysql.connect()
     cursor = conn.cursor()
@@ -242,10 +246,10 @@ def shipping_address():
     return render_template('profile/profileShippingAddress.html', data=sendable)
 
 
-# TODO
 @user_bp.route('/payment_methods/', methods=['GET', 'POST'])
 @login_required
 @cart_session
+@remember_me
 def payment_methods():
     conn = mysql.connect()
     cursor = conn.cursor()

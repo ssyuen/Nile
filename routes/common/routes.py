@@ -7,6 +7,7 @@ import sys
 import secrets
 from flask_mail import Message
 from server import mysql, mail
+from datetime import timedelta
 from key import FERNET
 
 common_bp = Blueprint('common_bp', __name__,
@@ -38,14 +39,28 @@ def login_required(f):
 
     return wrapped_func
 
+def remember_me(f):
+    @wraps(f)
+    def wrapped_func(*args, **kws):
+        if session['remember_me']:
+            app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(days=7)
+            return f(*args, **kws)
+        else:
+            return f(*args, **kws)
+
+    return wrapped_func
+
 
 @common_bp.route('/about/')
+@cart_session
+@remember_me
 def about():
     return render_template('about.html')
 
 
 @common_bp.route('/')
 @cart_session
+@remember_me
 def landing_page(search_results=None):
     # print(session['shopping_cart'])
     # STEP 1: Make call to database to return all books, need ISBN for query in /product/?isbn=<isbn>
@@ -79,6 +94,7 @@ def landing_page(search_results=None):
 
 @common_bp.route('/login/', methods=['POST', 'GET'])
 @cart_session
+@remember_me
 def login(ctx=None):
     if request.method == 'POST':
         userEmail = request.form.get('userEmail')
@@ -160,6 +176,7 @@ def login(ctx=None):
 
 @common_bp.route('/logout/', methods=['GET'])
 @cart_session
+@remember_me
 def logout():
     if 'logged_in' in session and session['logged_in']:
         if 'admin' in session:
@@ -174,6 +191,7 @@ def logout():
 
 @common_bp.route('/register/', methods=['POST', 'GET'])
 @cart_session
+@remember_me
 def register():
     if request.method == 'GET':
         return render_template('reg.html')
@@ -353,6 +371,7 @@ def register():
 
 @common_bp.route('/conf/register_confirmation/<sending_token>++<email>+<user_id>+<name>', methods=['GET'])
 @cart_session
+@remember_me
 def register_confirmation(sending_token, email=None, user_id=None, name=None):
     try:
         conn = mysql.connect()
@@ -382,6 +401,7 @@ def register_confirmation(sending_token, email=None, user_id=None, name=None):
 
 @common_bp.route('/conf/email_confirmation/<verify_token>', methods=['GET'])
 @cart_session
+@remember_me
 def email_confirmation(verify_token):
     # system needs to send an email with url back to a page
     conn = mysql.connect()
@@ -405,6 +425,7 @@ def email_confirmation(verify_token):
 
 @common_bp.route('/forgot/',methods=['POST','GET'])
 @cart_session
+@remember_me
 def forgot():
     if request.method == 'GET':
         return render_template('./forgot.html')
@@ -441,6 +462,7 @@ def forgot():
 
 @common_bp.route('/reset_pass/<verify_token>',methods=['POST','GET'])
 @cart_session
+@remember_me
 def reset_pass(verify_token):
     if request.method == 'GET':
         return render_template('confirmation/reset_pass_conf.html')
@@ -479,17 +501,20 @@ def reset_pass(verify_token):
 
 @common_bp.route('/forgot_email_conf/')
 @cart_session
+@remember_me
 def forgot_email_conf():
     return render_template('confirmation/forgot_email_conf.html')
 
 @common_bp.route('/add_to_cart/', methods=['POST'])
 @cart_session
+@remember_me
 def add_to_cart():
     return ''
 
 
 @common_bp.route('/shoppingcart/')
 @cart_session
+@remember_me
 def shopping_cart():
     conn = mysql.connect()
     cursor = conn.cursor()
@@ -526,6 +551,7 @@ def shopping_cart():
 
 @common_bp.route('/product/', methods=['GET', 'POST'])
 @cart_session
+@remember_me
 def product(title=None, price=None, author_name=None, ISBN=None, summary=None, publicationDate=None, numPages=None, binding=None, genre=None, nile_cover_ID=None):
     # STEP 1: User clicks on a book from browse.html
 

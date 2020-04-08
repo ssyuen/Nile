@@ -4,6 +4,8 @@ from server import mysql
 import sys
 import string
 
+from routes.common.routes import remember_me
+
 admin_bp = Blueprint('admin_bp', __name__,
                      template_folder='templates', static_folder='static')
 
@@ -40,43 +42,51 @@ def login_required(f):
 #     flash('Error logging out.')
 #     return redirect('/')
 
+
 @admin_bp.route('/overview/')
 @admin_required
+@remember_me
 def overview():
     return render_template('./adminOverview.html')
 
 
 @admin_bp.route('/change_name/')
 @admin_required
+@remember_me
 def change_name():
     return render_template('./adminChangeName.html')
 
 
 @admin_bp.route('/change_pass/')
 @admin_required
+@remember_me
 def change_pass():
     return render_template('./adminChangePassword.html')
 
 @admin_bp.route('/manage_books/')
 @admin_required
+@remember_me
 def manage_books():
     return render_template('./adminManageBooks.html')
 
 
 @admin_bp.route('/manage_promotions/')
 @admin_required
+@remember_me
 def manage_promotions():
     return render_template('./adminManagePromotions.html')
 
 
 @admin_bp.route('/manage_users/')
 @admin_required
+@remember_me
 def manage_users():
     return render_template('./adminManageUsers.html')
 
 
 @admin_bp.route('/manage_books/mbooksf/', methods=['GET', 'POST'])
 @admin_required
+@remember_me
 def add_books_form():
     if request.method == 'POST':
         book_title = string.capwords(request.form.get('bookTitle')).strip()
@@ -119,17 +129,20 @@ def add_books_form():
 
 @admin_bp.route('/manage_promotions/epromof/')
 @admin_required
+@remember_me
 def edit_promo_form():
     return render_template('./forms/edit_promo_form.html')
 
 
 @admin_bp.route('/manage_promotions/apromof/')
 @admin_required
+@remember_me
 def add_promo_form():
     return render_template('./forms/add_promo_form.html')
 
 
 @admin_bp.route('/manage_users/eusrf/')
 @admin_required
+@remember_me
 def edit_users_form():
     return render_template('./forms/edit_users_form.html')
