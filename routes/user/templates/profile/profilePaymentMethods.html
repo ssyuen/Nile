@@ -65,14 +65,15 @@
             <div class="collapse" id="target{{ info['cardNumber'] }}{{ info['billingAddressID'] }}">
                 <div class="card-body white">
                     <div class="d-inline-block w-100 ">
-                        <h4 class="text-uppercase font-weight-bold my-4 d-inline-block" id="nameDetails">Manage my
-                            {{ info['cardType'] }} Card</h4>
+                        <h4 class="text-uppercase font-weight-bold my-4 d-inline-block" id="nameDetails">Manage
+                            my {{ info['cardType'] }}</h4>
                         <button id="editBtnForPM{{ loop.index }}"
                                 class="btn btn-outline-warning float-md-right align-content-center waves-effect edit-btn">
                             Edit
                         </button>
                     </div>
                     <form method="POST" nile-address-ident="{{ info['billingAddressID'] }}"
+                          nile-pm-ident="{{ info['pm_id'] }}"
                           action="/nileuser/payment_methods/">
                         <small>
                             <p class="text-muted font-italic">Card Information</p>

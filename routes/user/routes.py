@@ -252,6 +252,7 @@ def payment_methods():
     if request.method == 'POST':
         flag = request.form.get("form_flag")
         addr_id = request.form.get('billingAddressID')
+        pm_id = request.form.get("pm_id")
 
         cfn = request.form.get("cardHolderFirstName")
         cln = request.form.get("cardHolderLastName")
@@ -285,7 +286,12 @@ def payment_methods():
             conn.commit()
 
         elif flag == "REMOVE_FLAG":
-            pass
+            remove_pm = """DELETE FROM payment_method WHERE id = %s"""
+            cursor.execute(remove_pm, (pm_id))
+
+            remove_a = """DELETE FROM address WHERE id = %s"""
+            cursor.execute(remove_a, (addr_id))
+            conn.commit()
 
         elif flag == "EDIT_FLAG":
             pass
@@ -293,7 +299,7 @@ def payment_methods():
     """GET PORTION OF THE PAYMENT"""
 
     user_payments = """
-        SELECT PM.firstname, PM.lastname, PM.cardNumber, PM.cardType, PM.expirationDate, PM.billingAddress_addr_FK, A.id,
+        SELECT PM.id, PM.firstname, PM.lastname, PM.cardNumber, PM.cardType, PM.expirationDate, PM.billingAddress_addr_FK, A.id,
                 A.street1, A.street2, A.zip, A.city, A.state, A.country
         FROM payment_method PM
                  INNER JOIN address A ON PM.billingAddress_addr_FK = A.id
@@ -309,18 +315,19 @@ def payment_methods():
 
     for pay_tup in data:
         pay_dict = {}
-        pay_dict['firstname'] = pay_tup[0]
-        pay_dict['lastname'] = pay_tup[1]
-        pay_dict['cardNumber'] = FERNET.decrypt(pay_tup[2].encode('utf-8')).decode('utf-8')[-4:]
-        pay_dict['cardType'] = pay_tup[3]
-        pay_dict['expirationDate'] = str(pay_tup[4].year) + '-' + str(pay_tup[4].month)
-        pay_dict['billingAddressID'] = pay_tup[6]
-        pay_dict['street1'] = pay_tup[7]
-        pay_dict['street2'] = pay_tup[8]
-        pay_dict['zip'] = pay_tup[9]
-        pay_dict['city'] = pay_tup[10]
-        pay_dict['state'] = pay_tup[11]
-        pay_dict['country'] = pay_tup[12]
+        pay_dict['pm_id'] = pay_tup[0]
+        pay_dict['firstname'] = pay_tup[1]
+        pay_dict['lastname'] = pay_tup[2]
+        pay_dict['cardNumber'] = FERNET.decrypt(pay_tup[3].encode('utf-8')).decode('utf-8')[-4:]
+        pay_dict['cardType'] = pay_tup[4]
+        pay_dict['expirationDate'] = str(pay_tup[5].year) + '-' + str(pay_tup[5].month)
+        pay_dict['billingAddressID'] = pay_tup[7]
+        pay_dict['street1'] = pay_tup[8]
+        pay_dict['street2'] = pay_tup[9]
+        pay_dict['zip'] = pay_tup[10]
+        pay_dict['city'] = pay_tup[11]
+        pay_dict['state'] = pay_tup[12]
+        pay_dict['country'] = pay_tup[13]
 
         print(pay_dict['expirationDate'])
         payment_sendable.append(pay_dict)

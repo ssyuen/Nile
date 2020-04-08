@@ -1,10 +1,26 @@
 import {
-    PostFlags
+    getClosestCard,
+    getClosestForm,
+    PostFlags, submitRemoval
 } from "./ShippingPaymentCommon.js";
 
 
 import {CreditCard, InputValidationComplex, PURPOSE} from "../inputvalidation.js";
 
+$(".remove-pm-btn").click(function (event) {
+
+    let form = getClosestForm(event);
+    let addressId = $(form).attr("nile-address-ident");
+    let pmID = $(form).attr("nile-pm-ident");
+    submitRemoval(
+        form,
+        {name: "billingAddressID", value: addressId},
+        {name: "pm_id", value: pmID}
+    )
+});
+
+
+////////////////////////////////////CREATE SCRIPT/////////////////////////////////////////////////////////////////////
 
 let createValidator = new InputValidationComplex();
 let createCreditValidator = new CreditCard();
