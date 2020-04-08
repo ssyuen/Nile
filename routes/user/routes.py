@@ -256,10 +256,7 @@ def payment_methods():
 
         cfn = request.form.get("cardHolderFirstName")
         cln = request.form.get("cardHolderLastName")
-        try:
-            ccn = FERNET.encrypt(request.form.get('ccn').encode('utf-8'))
-        except:
-            ccn = ''
+        ccn = FERNET.encrypt(request.form.get('ccn').encode('utf-8'))
         ct = request.form.get("CCNProvider")
         ccexp = request.form.get("ccexp") + '-01'
         street1 = request.form.get("billingStreetAddress")
