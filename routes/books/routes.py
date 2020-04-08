@@ -3,6 +3,8 @@ from flaskext.mysql import pymysql
 from functools import wraps
 from server import mysql
 
+from routes.common.routes import get_genres
+
 books_bp = Blueprint('books_bp', __name__,
                      template_folder='templates', static_folder='static')
 
@@ -40,12 +42,13 @@ def query_books(search_query=None):
                     book.values()).lower()]
 
                 print(request.args['search_query'].lower())
+                genres = get_genres(cursor)
                 conn.close()
 
                 if request.args['search_query'].lower() == 'test':
                     return jsonify(payload)
 
-                return render_template('browse.html',books=books)
+                return render_template('browse.html',books=books, genres=genres)
             except pymysql.Error:
                 return redirect(url_for('common_bp.landing_page'))
 

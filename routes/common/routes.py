@@ -53,6 +53,9 @@ def remember_me(f):
     return wrapped_func
     
 
+def get_genres(cursor):
+    cursor.execute('SELECT genre FROM genre')
+    return [genre[0] for genre in cursor.fetchall()]
 
 @common_bp.route('/about/')
 @cart_session
@@ -91,8 +94,9 @@ def landing_page(search_results=None):
         books = [dict(zip(header, result)) for result in results]
 
         # STEP 3: In browse.html, iterate through list of books to populate page
+        genres = get_genres(cursor)
         conn.close()
-        return render_template('browse.html', books=books)
+        return render_template('browse.html', books=books,genres=genres)
     else:
         # books = search_results
         return render_template('browse.html', books=books)
