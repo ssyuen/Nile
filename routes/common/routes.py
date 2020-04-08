@@ -57,6 +57,11 @@ def get_genres(cursor):
     cursor.execute('SELECT genre FROM genre')
     return [genre[0] for genre in cursor.fetchall()]
 
+def get_bindings_and_types(cursor):
+    cursor.execute('SELECT binding FROM binding')
+    results = cursor.fetchall()
+    return [binding[0] for binding in results[:5]], [binding[0] for binding in results[5:]]
+
 @common_bp.route('/about/')
 @cart_session
 @remember_me
@@ -95,8 +100,10 @@ def landing_page(search_results=None):
 
         # STEP 3: In browse.html, iterate through list of books to populate page
         genres = get_genres(cursor)
+        product_types,bindings = get_bindings_and_types(cursor)
+        print(bindings)
         conn.close()
-        return render_template('browse.html', books=books,genres=genres)
+        return render_template('browse.html', books=books,genres=genres,bindings=bindings,product_types=product_types)
     else:
         # books = search_results
         return render_template('browse.html', books=books)

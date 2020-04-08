@@ -48,11 +48,9 @@
                                 </form>
                                 <div class="list-menu complement-light" style="list-style-type: none; padding: 0px">
                                     <ul>
-                                        <li><a href="#">Textbook</a></li>
-                                        <li><a href="#">Novel</a></li>
-                                        <li><a href="#">E-book (Electronic)</a></li>
-                                        <li><a href="#">Audio CD</a></li>
-                                        <li><a href="#">Audiobook</a></li>
+                                        {% for type in product_types %}
+                                            <li><a href="#">{{ type }}</a></li>
+                                        {% endfor %}
                                     </ul>
                                 </div>
                             </div> <!-- card-body.// -->
@@ -155,16 +153,13 @@
                         </header>
                         <div class="filter-content collapse in" id="collapse_4">
                             <div class="card-body">
-                                <label class="custom-control custom-checkbox">
-                                    <input type="checkbox" checked="" class="custom-control-input">
-                                    <div class="custom-control-label">Hardcover
-                                        <b class="badge badge-pill badge-light float-right">120</b></div>
-                                </label>
-                                <label class="custom-control custom-checkbox">
-                                    <input type="checkbox" class="custom-control-input">
-                                    <div class="custom-control-label">Paperback
-                                        <b class="badge badge-pill badge-light float-right">15</b></div>
-                                </label>
+                                {% for binding in bindings %}
+                                    <label class="custom-control custom-checkbox">
+                                        <input type="checkbox" checked="" class="custom-control-input">
+                                        <div class="custom-control-label"> {{ binding }}
+                                            <b class="badge badge-pill badge-light float-right">120</b></div>
+                                    </label>                                    
+                                {% endfor %}
                             </div> <!-- card-body.// -->
                         </div>
                     </article> <!-- filter-group .// -->
