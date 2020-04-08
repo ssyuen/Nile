@@ -1,9 +1,4 @@
-var PostFlags;
-(function (PostFlags) {
-    PostFlags["REMOVE"] = "REMOVE_FLAG";
-    PostFlags["EDIT"] = "EDIT_FLAG";
-    PostFlags["CREATE"] = "CREATE_FLAG";
-})(PostFlags || (PostFlags = {}));
+import { PostFlags } from "./ShippingPaymentCommon.js";
 $(".remove-addr-btn").click(function (event) {
     let form = getClosestForm(event);
     let addressId = $(form).attr("nile-address-ident");
