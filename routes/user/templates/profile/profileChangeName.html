@@ -20,6 +20,7 @@
 {% endblock %}
 
 {% block content %}
+
     <div class="card-image"
          style="background-image: url(https://mdbootstrap.com/img/Photos/Horizontal/Work/4-col/img%20%2814%29.jpg)">
         <!-- Content -->
@@ -57,7 +58,8 @@
                     <div class="form-group md-form md-outline mb-0" id="inputFirstnameGroup">
                         <input id="inputFirstname" type="text" class="form-control mt-0"
                                placeholder="First Name" readonly aria-readonly="true"
-                               aria-label="First Name" value="{{ session['firstName'] }}">
+                               aria-label="First Name" name="inputFirstname"
+                               value="{{ session['firstName'] }}">
                     </div>
                 </div>
             </div>
@@ -67,12 +69,22 @@
                     <label for="inputLastname">Last Name</label>
                     <div class="form-group md-form md-outline mb-0" id="inputLastnameGroup">
                         <input id="inputLastname" type="text" class="form-control" placeholder="Last Name"
-                               aria-label="Last Name" value="{{ session['lastName'] }}" readonly aria-readonly="true">
+                               aria-label="Last Name" name="inputLastname"
+                               value="{{ session['lastName'] }}" readonly aria-readonly="true">
                     </div>
                 </div>
             </div>
             <div class="row mt-4">
                 <div class="col">
+                    {% with name_change = get_flashed_messages() %}
+                        {% if name_change %}
+                            <p class="flashes text-center" style="color: rgb(37, 179, 132);">
+                                {% for msg in name_change %}
+                                    {{ msg }}
+                                {% endfor %}
+                            </p>
+                        {% endif %}
+                    {% endwith %}
                     <!--PLEASE FOR THE LOVE OF GOD CHANGE THIS MARGIN TOP VALUEs-->
                     <button class="btn blue-gradient btn-block" style="margin-top: 30px;" type="submit">Update</button>
                 </div>
