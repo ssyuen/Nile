@@ -24,6 +24,16 @@
             margin-top: 0.5rem !important;
         }
 
+        .form-group i.fas.fa-lock {
+            position: absolute;
+            right: 10px;
+            bottom: 6.5px;
+        }
+
+        input[type="password"] {
+            padding-right: 40px;
+        }
+
     </style>
 {% endblock %}
 
@@ -81,11 +91,12 @@
                     <div class="form-row">
                         <div class="col-sm-12">
                             <div class="form-group md-form md-outline">
+                                <label for="inputPassword">Password</label>
                                 <input type="password" id="inputPassword" class="form-control"
                                        name="inputPassword"
                                        data-error="Password must be more than 8 or more characters long, contain at least 1 uppercase character, 1 lowercase character, and 1 number."
                                        required>
-                                <label for="inputPassword">Password</label>
+                                <i class="fas fa-lock prefix"></i>
                             </div>
                         </div>
                     </div>
@@ -93,9 +104,10 @@
                     <div class="form-row">
                         <div class="col-sm-12">
                             <div class="form-group md-form md-outline">
+                                <label for="inputConfirmPassword">Confirm Password</label>
                                 <input type="password" id="inputConfirmPassword" class="form-control"
                                        name="inputConfirmPassword" data-error="Password's do not match" required>
-                                <label for="inputConfirmPassword">Confirm Password</label>
+                                <i class="fas fa-lock prefix"></i>
                             </div>
                         </div>
                     </div>
