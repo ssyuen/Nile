@@ -159,10 +159,14 @@
                 <h5 class="mb-1 complement">View my Profile</h5>
             </li>
             <li class="list-inline-item reg-for-free">
-                <a href="/nileuser/overview/" class="href">
-                    <button class="btn blue-gradient btn-rounded btn-sm primary waves-effect waves-light sign-btn"
-                            id="signUpBtn">My Profile
-                    </button>
+                {% if not session['admin'] %}
+                    <a href="/nileuser/overview/" class="href">
+                {% else %}
+                    <a href="/admin/overview/" class="href">
+                {% endif %}
+                <button class="btn blue-gradient btn-rounded btn-sm primary waves-effect waves-light sign-btn"
+                        id="signUpBtn">My Profile
+                </button>
                 </a>
             </li>
         {% endif %}
