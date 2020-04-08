@@ -46,6 +46,9 @@ export class InputValidationComplex {
     static cvvConstraint(cc) {
         return cc.checkCVV();
     }
+    static titleConstraint(value) {
+        return value.length >= 1;
+    }
     setValidity(elem, loc, purpose, constr) {
         this.curr_validity[elem.id] = this.validator(elem, loc, purpose['template'], constr);
     }

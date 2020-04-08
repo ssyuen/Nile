@@ -104,7 +104,7 @@ function scr(selector, off = 0) {
     }, 500);
 }
 Array('input', 'focusin').forEach((evt) => {
-    console.log("entered");
+    console.log("here");
     [CARD_F_NAME, F_NAME].forEach(function (elem) {
         elem.addEventListener(evt, function () {
             vc.setValidity(elem, elem, PURPOSE.Firstname, PURPOSE.Firstname.constraint(elem.value));
