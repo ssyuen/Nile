@@ -54,38 +54,69 @@ def overview():
 
 
 # TODO
-@user_bp.route('/change_name/', methods=['GET'])
+@user_bp.route('/change_name/', methods=['GET', 'POST'])
 @login_required
 @cart_session
 def change_name():
-    return render_template('profile/profileChangeName.html')
+    if request.method == 'GET':
+        return render_template('profile/profileChangeName.html')
+    else:
+        conn = mysql.connect()
+        cursor = conn.cursor()
+        
+        fname = request.form.get('inputFirstname')
+        firstLetter = fname[0].upper()
+        fname = firstLetter + fname[1:].lower()
+
+        lname = request.form.get('inputLastname')
+        firstLetter = lname[0].upper()
+        lname = firstLetter + lname[1:].lower()
+
+        session['firstName'] = fname
+        fname_query = '''
+        UPDATE user SET firstname = %s WHERE email = %s
+        '''
+        cursor.execute(fname_query, (fname, session['email']))
+        conn.commit()
+
+        session['lastName'] = lname
+        lname_query = '''
+        UPDATE user SET lastname = %s WHERE email = %s
+        '''
+        cursor.execute(lname_query, (lname, session['email']))
+        conn.commit()
+
+        conn.close()
+
+        flash('Your information has been recorded.')
+        return redirect(url_for('user_bp.change_name'))
 
 
 # TODO
-@user_bp.route('/change_pass/', methods=['GET'])
+@user_bp.route('/change_pass/', methods=['GET', 'POST'])
 @login_required
 @cart_session
 def change_pass():
     if request.method == 'POST':
+        conn = mysql.connect()
+        cursor = conn.cursor()
+
         new_password = request.form.get('newPassword')
         confirm_new_password = request.form.get('confirmNewPassword')
 
-        print(new_password)
-        print(confirm_new_password)
-        print(type(new_password))
         if new_password != confirm_new_password:
             return jsonify({'Response': 400})
         else:
             new_password = bcrypt.hashpw(
                 new_password.encode('utf-8'), bcrypt.gensalt())
-            conn = mysql.connect()
-            cursor = conn.cursor()
-            print(session['email'])
+
             query = 'UPDATE user SET pass=%s WHERE email=%s'
             cursor.execute(query, (new_password, session['email']))
             conn.commit()
             conn.close()
-            return jsonify({'Response': 200})
+
+            flash('Your information has been recorded.')
+            return redirect(url_for('user_bp.change_pass'))
     else:
         return render_template('profile/profileChangePassword.html')
 
@@ -222,7 +253,6 @@ def payment_methods():
     if request.method == 'POST':
         pass
 
-
     user_payments = """
         SELECT firstname, lastname, cardNumber, cardType, expirationDate FROM user 
         JOIN payment_method ON user.id = payment_method.userID_payment_FK
@@ -239,11 +269,12 @@ def payment_methods():
         pay_dict = {}
         pay_dict['firstname'] = pay_tup[0]
         pay_dict['lastname'] = pay_tup[1]
-        pay_dict['cardNumber'] = FERNET.decrypt(pay_tup[2].encode('utf-8')).decode('utf-8')
+        pay_dict['cardNumber'] = FERNET.decrypt(
+            pay_tup[2].encode('utf-8')).decode('utf-8')
         pay_dict['cardType'] = pay_tup[3]
-        pay_dict['expirationDate'] = str(pay_tup[4].year) +'-'+str(pay_tup[4].month)
+        pay_dict['expirationDate'] = str(
+            pay_tup[4].year) + '-'+str(pay_tup[4].month)
         payment_sendable.append(pay_dict)
-
 
     # select users billing address
 
@@ -252,7 +283,7 @@ def payment_methods():
     JOIN payment_method ON address.id = billingAddress_addr_FK
     WHERE payment_method.userID_payment_FK = (SELECT id FROM user WHERE email = %s)
     '''
-    cursor.execute(user_billing,(session['email']))
+    cursor.execute(user_billing, (session['email']))
     data = cursor.fetchall()
 
     billing_sendable = []
