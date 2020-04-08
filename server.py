@@ -3,7 +3,6 @@ from flask_mail import Mail
 from flaskext.mysql import MySQL
 import secrets
 import os
-from datetime import timedelta
 
 app = Flask(__name__)
 

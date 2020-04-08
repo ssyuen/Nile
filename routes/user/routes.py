@@ -22,7 +22,6 @@ def login_required(f):
             return f(*args, **kws)
         else:
             flash('You need to login to access this area!')
-            # return redirect('/login/')
             return redirect(url_for('common_bp.login', ctx=f.__name__))
 
     return wrapped_func
