@@ -13,9 +13,6 @@ app.config['MYSQL_DATABASE_PASSWORD'] = os.environ['DB_PASS']  # change to ur lo
 app.config['MYSQL_DATABASE_DB'] = 'niledb'  # change to whatever the db will be named
 app.config['MYSQL_DATABASE_HOST'] = 'localhost'
 
-# FLASK SESSION LIFETIME SETUP
-# app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(minutes=45)
-
 # FLASK-MAIL SETUP
 app.config['DEBUG'] = True
 app.config['MAIL_SERVER'] = 'smtp.gmail.com'
@@ -45,7 +42,3 @@ app.register_blueprint(common_routes.common_bp)
 app.register_blueprint(user_routes.user_bp, url_prefix="/nileuser")
 app.register_blueprint(admin_routes.admin_bp, url_prefix="/admin")
 app.register_blueprint(book_routes.books_bp)
-
-# @app.route('/about/')
-# def about():
-#     return render_template('about.html')

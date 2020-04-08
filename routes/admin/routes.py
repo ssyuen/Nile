@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request, jsonify, redirect, flash, session
+from flask import Blueprint, render_template, request, jsonify, redirect, flash, session, url_for
 from functools import wraps
 from server import mysql
 import sys
@@ -17,7 +17,7 @@ def admin_required(f):
             return f(*args, **kws)
         else:
             flash('You need to be an admin to access that area!')
-            return redirect('/')
+            return redirect(url_for('common_bp.landing_page'))
     return wrapped_func
 
 def login_required(f):
@@ -27,20 +27,8 @@ def login_required(f):
             return f(*args, **kws)
         else:
             flash('You need to login to access this area!')
-            return redirect('/login/')
+            return redirect(url_for('common_bp.login'))
     return wrapped_func
-
-# @admin_bp.route('/logout/', methods=['GET'])
-# def logout():
-#     if 'logged_in' in session and session['logged_in']:
-#         if 'admin' in session:
-#             session['admin'] = False
-#         session['logged_in'] = False
-#         session['admin'] = False
-#         flash('Logged out successfully.')
-#         return redirect('/')
-#     flash('Error logging out.')
-#     return redirect('/')
 
 
 @admin_bp.route('/overview/')

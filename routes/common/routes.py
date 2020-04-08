@@ -53,6 +53,7 @@ def remember_me(f):
             return f(*args, **kws)
 
     return wrapped_func
+    
 
 
 @common_bp.route('/about/')
@@ -194,7 +195,7 @@ def logout():
         flash('Logged out successfully.')
         return redirect('/')
     flash('Error logging out.')
-    return redirect('/')
+    return redirect(url_for('common_bp.landing_page'))
 
 
 @common_bp.route('/register/', methods=['POST', 'GET'])
