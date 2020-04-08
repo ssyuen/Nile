@@ -67,8 +67,12 @@ $(':input').change(function () {
     _isDirty = true;
 });
 window.onbeforeunload = function (ev) {
-    promptConfirm(ev);
+    if (_isDirty) {
+        promptConfirm(ev);
+    }
 };
 $("#accountListings").on('click', function (e) {
-    promptConfirm(e);
+    if (_isDirty) {
+        promptConfirm(e);
+    }
 });

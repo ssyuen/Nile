@@ -86,9 +86,13 @@ $(':input').change(function () {
 });
 
 window.onbeforeunload = function (ev) {
-    promptConfirm(ev);
+    if (_isDirty) {
+        promptConfirm(ev);
+    }
 };
 
 $("#accountListings").on('click', function (e: Event) {
-    promptConfirm(e);
+    if (_isDirty) {
+        promptConfirm(e);
+    }
 });
