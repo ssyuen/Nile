@@ -11,15 +11,15 @@ class DevelopmentConfig:
     #MySQL setup
     MYSQL_DATABASE_USER = os.environ['DB_USER']
     MYSQL_DATABASE_PASSWORD = os.environ['DB_PASS']
-    MYSQL_DATABASE_DB = 'niledb'
-    MYSQL_DATABASE_HOST = 'localhost'
+    MYSQL_DATABASE_DB = os.environ.get('DB')
+    MYSQL_DATABASE_HOST = os.environ.get('DB_HOST')
 
     # FLASK-MAIL SETUP
-    MAIL_SERVER = 'smtp.gmail.com'
-    MAIL_PORT = 465
+    MAIL_SERVER = os.environ.get('MAIL_SERVER')
+    MAIL_PORT = os.environ.get('MAIL_PORT')
     MAIL_USE_SSL = True
-    MAIL_USERNAME = 'rootatnilebookstore@gmail.com'
-    MAIL_PASSWORD = 'Testing1'
+    MAIL_USERNAME = os.environ.get('MAIL_USER')
+    MAIL_PASSWORD = os.environ.get('MAIL_PASS')
 
 
 '''
