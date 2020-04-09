@@ -120,7 +120,7 @@ export class InputValidationComplex {
         }, 500);
     }
 
-    public validateAll(selectorPlace: string): boolean {
+    public validateAll(selectorPlace: string | HTMLElement | any): boolean {
         let errorHTML: string =
             `<p class="text-center text-danger" id="somethingWrong">
                 One or more of the fields were incomplete or invalid
