@@ -411,7 +411,7 @@ def register_confirmation(sending_token, email=None, user_id=None, name=None):
         production_url = f'https://www.nilebookstore.com/conf/email_confirmation/{verification_token}'
 
         message_body = 'Hi ' + name + \
-            f',\n\nPlease click on the following link to confirm your registration here at Nile!\n\nDevelopment:{verification_url}\n_________________\n\nProduction:{production_url}Regards, Nile Bookstore Management'
+            f',\n\nPlease click on the following link to confirm your registration here at Nile!\n\nDevelopment:{verification_url}\n_________________\n\nProduction:{production_url}\n\nRegards, Nile Bookstore Management'
         msg = Message(subject='Nile Registration Confirmation', recipients=[
             email, 'rootatnilebookstore@gmail.com'], sender='rootatnilebookstore@gmail.com', body=message_body)
         mail.send(msg)
