@@ -1,5 +1,7 @@
 <p align="center">
-  <img src="static/images/Misc/Nile Dark Text Rectangular.png">
+  <a href="https://www.nilebookstore.com" target="_blank">
+    <img src="static/images/Misc/Nile Dark Text Rectangular.png">
+  </a>
   https://www.nilebookstore.com
 </p>
 
