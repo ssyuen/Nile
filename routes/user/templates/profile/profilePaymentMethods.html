@@ -64,7 +64,7 @@
             <!-- Content -->
             <div class="collapse" id="target{{ info['cardNumber'] }}{{ info['billingAddressID'] }}">
                 <div class="card-body white">
-                    <div class="d-inline-block w-100 ">
+                    <div class="d-inline-block w-100 pre-content">
                         <h4 class="text-uppercase font-weight-bold my-4 d-inline-block" id="nameDetails">Manage
                             my {{ info['cardType'] }}</h4>
                         <button id="editBtnForPM{{ loop.index }}"
@@ -73,6 +73,7 @@
                         </button>
                     </div>
                     <form method="POST" nile-address-ident="{{ info['billingAddressID'] }}"
+                          nile-form-ident="{{ loop.index }}"
                           nile-pm-ident="{{ info['pm_id'] }}"
                           action="/nileuser/payment_methods/">
                         <small>
@@ -82,20 +83,24 @@
                             <div class="form-row">
                                 <div class="col-sm-6">
                                     <div class="form-group md-form md-outline">
-                                        <input type="text" class="form-control" id="cardHolderFirstName{{ loop.index }}"
+                                        <input type="text" class="form-control targetName1"
+                                               id="cardHolderFirstName{{ loop.index }}"
                                                required readonly
                                                value="{{ info['firstname'] }}"
                                                name="cardHolderFirstName"
+                                               style="text-transform: uppercase;"
                                                data-error="First Name must me more than one character">
                                         <label for="cardHolderFirstName{{ loop.index }}">First Name on Card</label>
                                     </div>
                                 </div>
                                 <div class="col-sm-6">
                                     <div class="form-group md-form md-outline">
-                                        <input type="text" class="form-control" id="cardHolderLastName{{ loop.index }}"
+                                        <input type="text" class="form-control targetName2"
+                                               id="cardHolderLastName{{ loop.index }}"
                                                required readonly
                                                value="{{ info['lastname'] }}"
                                                name="cardHolderLastName"
+                                               style="text-transform: uppercase;"
                                                data-error="Last Name must me more than two characters">
                                         <label for="cardHolderLastName{{ loop.index }}">Last Name on Card</label>
                                     </div>
@@ -105,7 +110,8 @@
                                 <div class="col">
                                     <div class="form-group">
                                         <label for="ccexp{{ loop.index }}">Credit Card Expiration Date</label>
-                                        <input type="month" class="form-control" id="ccexp{{ loop.index }}" required
+                                        <input type="month" class="form-control targetCCEXP" id="ccexp{{ loop.index }}"
+                                               required
                                                readonly
                                                name="ccexp" value="{{ info['expirationDate'] }}">
                                     </div>
@@ -120,7 +126,7 @@
                                 <div class="col">
                                     <div class="form-group md-form md-outline">
                                         <label for="billingStreetAddress{{ loop.index }}">Street Address</label>
-                                        <input type="text" class="form-control"
+                                        <input type="text" class="form-control targetStreet1"
                                                id="billingStreetAddress{{ loop.index }}"
                                                required
                                                name="billingStreetAddress"
@@ -134,7 +140,7 @@
                                     <div class="form-group md-form md-outline">
                                         <label for="billingApartmentOrSuite{{ loop.index }}">Apartment or Suite
                                             (Optional)</label>
-                                        <input type="text" class="form-control"
+                                        <input type="text" class="form-control targetStreet2"
                                                id="billingApartmentOrSuite{{ loop.index }}"
                                                value="{{ info['street2'] }}" readonly
                                                name="billingApartmentOrSuite" data-success="This field is optional">
@@ -145,7 +151,8 @@
                                 <div class="col">
                                     <div class="form-group md-form md-outline">
                                         <label for="billlingAddressZip{{ loop.index }}">ZIP or Postal code</label>
-                                        <input type="text" class="form-control" id="billlingAddressZip{{ loop.index }}"
+                                        <input type="text" class="form-control targetZip"
+                                               id="billlingAddressZip{{ loop.index }}"
                                                readonly
                                                name="billingAddressZip" value="{{ info['zip'] }}">
                                     </div>
@@ -155,7 +162,8 @@
                                 <div class="form-group col-md-8">
                                     <div class="form-group md-form md-outline">
                                         <label for="billingAddressCity{{ loop.index }}">City</label>
-                                        <input type="text" class="form-control" id="billingAddressCity{{ loop.index }}"
+                                        <input type="text" class="form-control targetCity"
+                                               id="billingAddressCity{{ loop.index }}"
                                                required readonly
                                                value="{{ info['city'] }}"
                                                name="billingAddressCity">
@@ -237,6 +245,7 @@
                             <div class="form-group md-form md-outline">
                                 <input type="text" class="form-control" id="createCardHolderFirstName" required
                                        name="cardHolderFirstName"
+                                       style="text-transform: uppercase;"
                                        data-error="First Name must me more than one character"/>
                                 <label for="createCardHolderFirstName">First Name on Card</label>
                             </div>
@@ -245,6 +254,7 @@
                             <div class="form-group md-form md-outline">
                                 <input type="text" class="form-control" id="createCardHolderLastName" required
                                        name="cardHolderLastName"
+                                       style="text-transform: uppercase;"
                                        data-error="Last Name must me more than two characters">
                                 <label for="createCardHolderLastName">Last Name on Card</label>
                             </div>
