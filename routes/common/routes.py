@@ -116,6 +116,7 @@ def login(ctx=None):
     if request.method == 'POST':
         userEmail = request.form.get('userEmail')
         password = request.form.get('userPassword')
+        remember_me = request.form.get('rememberMe')
         conn = mysql.connect()
         cursor = conn.cursor()
 
@@ -136,7 +137,7 @@ def login(ctx=None):
                     session['admin'] = True
                     session['lastName'] = results[3]
                     session['firstName'] = results[2]
-                    session['remember_me'] = False
+                    session['remember_me'] = remember_me
                     # flash('Welcome, ' + session['firstName'] + '!')
                     ctx = request.args.get('next')
                     return redirect(ctx or url_for('common_bp.landing_page'))
@@ -173,7 +174,7 @@ def login(ctx=None):
                     session['firstName'] = results[2]
                     session['lastName'] = results[3]
                     session['admin'] = False
-                    session['remember_me'] = False
+                    session['remember_me'] = remember_me
 
                     ctx = request.args.get('ctx')
                     if ctx is not None:
