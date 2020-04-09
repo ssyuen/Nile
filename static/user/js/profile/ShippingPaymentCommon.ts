@@ -1,4 +1,4 @@
-import {InputValidationComplex} from 'inputvalidation.js'
+import {RegistrationInputValidator} from "../regValidation";
 
 export enum PostFlags {
     REMOVE = "REMOVE_FLAG",
@@ -60,7 +60,7 @@ export function promptConfirm(e: Event) {
     }
 }
 
-export const GeneralFormValidity = new Map<string, InputValidationComplex>();
+export const GeneralFormValidity = new Map<string, RegistrationInputValidator>();
 
 $(":input").click(function (event) {
     if ($(this).attr("readonly") || $(this).attr("readonly")) {
