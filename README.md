@@ -22,7 +22,7 @@ The following is required to run this project:
 
 3. If you are on windows, run the following command in Powershell to set up the appropriate environment variables: 
 ``Set-Content ./test.txt "DB=niledb`nDB_HOST=localhost`nMAIL_SERVER=smtp.gmail.com`nMAIL_PORT=465`nMAIL_USER=rootatnilebookstore@gmail.com`nMAIL_PASS=Testing1``
-where the ```n``` is the newline break.
+where the `` `n `` is the newline break.
 
 4. If you are on mac or some variant of linux, run the following command to set up the appropriate environment variables:   
 `printf "DB=niledb\nDB_HOST=localhost\nMAIL_SERVER=smtp.gmail.com\nMAIL_PORT=465\nMAIL_USER=rootatnilebookstore@gmail.com\nMAIL_PASS=Testing1" > .env`
