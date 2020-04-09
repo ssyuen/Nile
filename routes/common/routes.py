@@ -408,9 +408,10 @@ def register_confirmation(sending_token, email=None, user_id=None, name=None):
         conn.close()
 
         verification_url = f'http://127.0.0.1:5000/conf/email_confirmation/{verification_token}'
+        production_url = f'https://www.nilebookstore.com/conf/email_confirmation/{verification_token}'
 
         message_body = 'Hi ' + name + \
-            f',\n\nPlease click on the following link to confirm your registration here at Nile!\n\n{verification_url}\n\nRegards, Nile Bookstore Management'
+            f',\n\nPlease click on the following link to confirm your registration here at Nile!\n\nDevelopment:{verification_url}\n_________________\n\nProduction:{production_url}\n\nRegards, Nile Bookstore Management'
         msg = Message(subject='Nile Registration Confirmation', recipients=[
             email, 'rootatnilebookstore@gmail.com'], sender='rootatnilebookstore@gmail.com', body=message_body)
         mail.send(msg)
@@ -553,6 +554,7 @@ def shopping_cart():
     #     book = [dict(zip(header, result)) for result in results]
     #     book_payload.append(book)
     print(book_payload)
+    
 
     return render_template('shoppingcart.html',books=book_payload)
 
