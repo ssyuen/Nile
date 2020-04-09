@@ -15,7 +15,7 @@ flask-mail = "*"
 cryptography = "*"
 
 [scripts]
-server = "./start.sh"
+server = "start.sh"
 
 [requires]
 python_version = "3.7"
