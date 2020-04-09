@@ -1,5 +1,3 @@
-
-// ../../user/js/inputvalidation.js does not work?
 import { InputValidationComplex, PURPOSE } from "../../user/js/inputvalidation.js";
 let vc = new InputValidationComplex();
 const A_FNAME = document.getElementById("authorFirstName");
