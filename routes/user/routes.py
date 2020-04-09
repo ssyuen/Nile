@@ -271,6 +271,7 @@ def payment_methods():
         flag = request.form.get("form_flag")
         addr_id = request.form.get('billingAddressID')
         pm_id = request.form.get("pm_id")
+
         cfn = request.form.get("cardHolderFirstName").title()
         cln = request.form.get("cardHolderLastName").title()
         ct = request.form.get("CCNProvider")
@@ -314,8 +315,7 @@ def payment_methods():
         elif flag == "EDIT_FLAG":
 
             update_pm = '''UPDATE payment_method SET firstname = %s, lastname = %s, expirationDate = %s WHERE id = %s'''
-            cursor.execute(update_pm, (cfn, cln, ccexp))
-            conn.commit()
+            cursor.execute(update_pm, (cfn, cln, ccexp, pm_id))
 
             update_a = '''UPDATE address SET street1 = %s, street2 = %s, city = %s, zip = %s, state = %s, country = %s WHERE id = %s'''
             cursor.execute(update_a, (street1, street2, city,
