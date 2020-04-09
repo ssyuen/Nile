@@ -21,10 +21,10 @@ The following is required to run this project:
 2. Go to INTO the directory of the unzipped file.'
 
 3. If you are on windows, run the following command in Powershell to set up the appropriate environment variables: 
-``Set-Content ./test.txt "DB=niledb`nDB_HOST=localhost `n MAIL_SERVER=smtp.gmail.com`nMAIL_PORT=465`nMAIL_USER=rootatnilebookstore@gmail.com `n MAIL_PASS=Testing1``
+``Set-Content ./test.txt "DB=niledb`nDB_HOST=localhost`nMAIL_SERVER=smtp.gmail.com`nMAIL_PORT=465`nMAIL_USER=rootatnilebookstore@gmail.com`nMAIL_PASS=Testing1``
 where the ```n``` is the newline break.
 
-4. If you are on mac or some variant of linux, run the following command to set up the appropriate environment variables: 
+4. If you are on mac or some variant of linux, run the following command to set up the appropriate environment variables:   
 `printf "DB=niledb\nDB_HOST=localhost\nMAIL_SERVER=smtp.gmail.com\nMAIL_PORT=465\nMAIL_USER=rootatnilebookstore@gmail.com\nMAIL_PASS=Testing1" > .env`
 
 5. If you are on windows, run this to start the server: `pipenv run windows_server`
@@ -63,27 +63,25 @@ for it. Read the instructions at the top of the script.
   - [ ] If web user clicks on checkout, direct to login, redirect to checkout upon successful login
   - [x] Install third party libraries (bootstrap, JQuery, JS)
   - [ ] Books
-    - [x] Add Books
-    - [ ] Manage Books
-    - [ ] Add Promotions
+    - [x] Manage Books
     - [ ] Manage Promotions
     - [ ] Manage Users
-  - [ ] User Profile
+  - [x] User Profile
     - [x] Update My Info
       - [x] Individual Edit Buttons
       - [x] Update all fields
     - [x] Update Password
-  - [ ] Payment Info
-    - [ ] Individual Edit Buttons
-    - [ ] Update all fields
+  - [x] Payment Info
+    - [x] Individual Edit Buttons
+    - [x] Update all fields
     - [x] Remove payment method
   - [x] Add Payment Info
-  - [ ] Billing Address
-    - [ ] Individual Edit Buttons
+  - [x] Billing Address
+    - [x] Individual Edit Buttons
     - [x] Update all fields
     - [x] Remove address
   - [x] Add Address
-  - [ ] Search Bar
+  - [x] Search Bar
   - [ ] Shopping Cart
     - [ ] Fill Shopping Cart with user's items from database
     - [ ] Items should be tracked in users table with under items column
@@ -96,7 +94,7 @@ for it. Read the instructions at the top of the script.
 - [ ] Front-end Development
   - [x] About page
   - [ ] Promotions
-    - [ ] Expiration dates need to be added for admin
+    - [x] Expiration dates need to be added for admin
   - [ ] Scripting
     - [x] Required columns for address when the user chooses the optional
     - [x] Change active on Browse to unactive when About is clicked on
