@@ -55,7 +55,7 @@
             <!-- Content -->
             <div class="collapse" id="target{{ addr_dict['zip'] }}{{ addr_dict['addressID'] }}">
                 <div class="card-body white">
-                    <div class="d-inline-block w-100 ">
+                    <div class="d-inline-block w-100 pre-content">
                         <h4 class="text-uppercase font-weight-bold my-4 d-inline-block" id="nameDetails">Manage my
                             Addresses</h4>
                         <button id="editBtnForAddress{{ loop.index }}"
@@ -64,12 +64,14 @@
                         </button>
                     </div>
                     <form method="POST" nile-address-ident="{{ addr_dict['addressID'] }}"
+                          nile-form-ident="{{ loop.index }}"
                           action="/nileuser/shipping_address/">
                         <div class="form-row">
                             <div class="col">
                                 <div class="form-group md-form md-outline">
                                     <label for="address{{ loop.index }}StreetAddress">Street Address</label>
-                                    <input type="text" class="form-control" id="address{{ loop.index }}StreetAddress"
+                                    <input type="text" class="form-control targetStreet1"
+                                           id="address{{ loop.index }}StreetAddress"
                                            readonly required name="addressStreetAddress"
                                            value="{{ addr_dict['street1'] }}">
                                 </div>
@@ -79,7 +81,8 @@
                             <div class="col">
                                 <div class="form-group md-form md-outline">
                                     <label for="address{{ loop.index }}ApartmentOrSuite">Apartment or Suite</label>
-                                    <input type="text" class="form-control" id="address{{ loop.index }}ApartmentOrSuite"
+                                    <input type="text" class="form-control targetStreet2"
+                                           id="address{{ loop.index }}ApartmentOrSuite"
                                            readonly
                                            name="addressApartmentOrSuite"
                                            value="{{ addr_dict['street2'] }}">
@@ -90,8 +93,9 @@
                             <div class="col">
                                 <div class="form-group md-form md-outline">
                                     <label for="addAddress{{ loop.index }}Zip">ZIP or Postal code</label>
-                                    <input type="text" class="form-control" id="addAddress{{ loop.index }}Zip" readonly
-                                           name="addressZip" value="{{ addr_dict['zip'] }}">
+                                    <input type="text" class="form-control targetZip" id="addAddress{{ loop.index }}Zip"
+                                           readonly
+                                           name="addressZip" value="{{ addr_dict['zip'] }}" required>
                                 </div>
                             </div>
                         </div>
@@ -99,7 +103,8 @@
                             <div class="form-group col-md-8">
                                 <div class="form-group md-form md-outline">
                                     <label for="address{{ loop.index }}City">City</label>
-                                    <input type="text" class="form-control" id="address{{ loop.index }}City" required
+                                    <input type="text" class="form-control targetCity" id="address{{ loop.index }}City"
+                                           required
                                            readonly
                                            name="addressCity" value="{{ addr_dict['city'] }}">
                                 </div>
