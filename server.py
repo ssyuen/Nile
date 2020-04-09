@@ -1,4 +1,4 @@
-from flask import Flask, render_template
+from flask import Flask
 from flask_mail import Mail
 from flaskext.mysql import MySQL
 import secrets
