@@ -35,7 +35,7 @@ $("#createShippingAddress").click(function (event) {
 $(".edit-btn").click(function (event) {
     let form: HTMLFormElement = <HTMLFormElement><any>$(getClosestCard(event)).find("form").first();
     $(form).find("input, select").removeAttr("readonly disabled");
-    GeneralFormValidity.set(form, new InputValidationComplex());
+   // GeneralFormValidity.set(form, new InputValidationComplex());
 
 
 });

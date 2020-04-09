@@ -1,5 +1,4 @@
-import { GeneralFormValidity, getClosestCard, getClosestForm, PostFlags, submitRemoval } from "./ShippingPaymentCommon.js";
-import { InputValidationComplex } from "../inputvalidation";
+import { getClosestCard, getClosestForm, PostFlags, submitRemoval } from "./ShippingPaymentCommon.js";
 $(".remove-addr-btn").click(function (event) {
     let form = getClosestForm(event);
     let addressId = $(form).attr("nile-address-ident");
@@ -24,5 +23,5 @@ $("#createShippingAddress").click(function (event) {
 $(".edit-btn").click(function (event) {
     let form = $(getClosestCard(event)).find("form").first();
     $(form).find("input, select").removeAttr("readonly disabled");
-    GeneralFormValidity.set(form, new InputValidationComplex());
+    // GeneralFormValidity.set(form, new InputValidationComplex());
 });
