@@ -80,7 +80,7 @@ printf "==ALL PYTHON CHECKS PASSED==\n\n"
 
 # DEBUG TRUE - FLASK RESTARTS FOR EVERY CHANGE :)
 export FLASK_DEBUG=1
-export FLASK_APP=./server.py
+export FLASK_APP=server:create_server
 
 flask run -h 127.0.0.1 &
 f_pid=$!
