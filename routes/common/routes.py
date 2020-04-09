@@ -6,7 +6,7 @@ import bcrypt
 import sys
 import secrets
 from flask_mail import Message
-from server import mysql, mail
+from server import mysql, mail,app
 from datetime import timedelta
 from key import FERNET
 
