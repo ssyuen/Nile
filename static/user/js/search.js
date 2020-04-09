@@ -8,6 +8,16 @@ $("#searchBar").submit(function(e){
         url: url,
         type: "POST",
         data: form.serialize(),
-        success: alert('posted')
+        success: function(books){
+            $("#table").children().remove();
+            for(let book in books){
+                $("#table").append('<div class="col-lg-3 col-md-6 mb-4">' + 
+                '<a href="{{ url_for("common_bp.product", title=book["title"],price=book["price"],author_name=book["author_name"],isbn=book["ISBN"],summary=book["summary"],publicationDate=book["publicationDate"],numPages=book["numPages"],binding=book["binding"],genre=book["genre"],nile_cover_ID=book["nile_cover_ID"]) }}">' + 
+                '' )
+            }
+
+        }
     });
 });
+
+

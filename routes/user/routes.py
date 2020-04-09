@@ -8,6 +8,7 @@ import sys
 import secrets
 from server import mysql, mail
 from key import FERNET
+from datetime import datetime
 
 from routes.common.routes import cart_session, remember_me
 
@@ -25,6 +26,15 @@ def login_required(f):
             return redirect(url_for('common_bp.login', ctx=f.__name__))
 
     return wrapped_func
+
+
+def send_change_conf_email(recipient,recipient_fname,sender='rootatnilebookstore@gmail.com'):
+    current_time = datetime.now()
+    message_body = 'Hi ' + recipient_fname + \
+        f',\n\nThere have been changes made to your profile on {current_time.month}/{current_time.day}/{current_time.year}, {current_time.hour}:{current_time.minute}:{current_time.second}. If this was not you, please go and change your password.\n\nRegards, Nile Bookstore Management'
+    msg = Message(subject='Nile Profile Change', recipients=[
+        recipient, 'rootatnilebookstore@gmail.com'], sender='rootatnilebookstore@gmail.com', body=message_body)
+    mail.send(msg)
 
 
 @user_bp.route('/checkout/')
@@ -86,6 +96,8 @@ def change_name():
 
         conn.close()
 
+        send_change_conf_email(session['email'],session['firstName'])
+
         flash('Your information has been recorded.')
         return redirect(url_for('user_bp.change_name'))
 
@@ -112,6 +124,8 @@ def change_pass():
             cursor.execute(query, (new_password, session['email']))
             conn.commit()
             conn.close()
+
+            send_change_conf_email(session['email'],session['firstName'])
 
             flash('Your information has been recorded.')
             return redirect(url_for('user_bp.change_pass'))
@@ -209,36 +223,40 @@ def shipping_address():
             cursor.execute(update_query, (street_addr, street_addr2,
                                           zipcode, city, state, country, 1, addr_id))
             conn.commit()
+        
+        send_change_conf_email(session['email'],session['firstName'])
+        return redirect(url_for('user_bp.shipping_address'))
+    
+    elif request.method == 'GET':
+        user_addresses = """
+            SELECT UA.userID_ua_FK, A.id, A.street1, A.street2, A.city, A.zip, A.state, A.country
+            FROM user_address UA
+                    INNER JOIN address A ON UA.addressID_ua_FK = A.id
+            WHERE userID_ua_FK = (SELECT id FROM user WHERE email = %s)
+            ORDER BY addressID_ua_FK;
+            """
+        cursor.execute(user_addresses, (session['email']))
+        # ((68, '123 Wallaby', '', 'Lilburn', '30609', 'Georgia', 'United States'), (68, '362', ...))
+        data = cursor.fetchall()
+        # We want [{street1: 123 Wallaby, street2: 23}, {street1: 362 Nowhere, street2: ''}, {street1: 999 Somewhere, street2: 27}]
 
-    user_addresses = """
-        SELECT UA.userID_ua_FK, A.id, A.street1, A.street2, A.city, A.zip, A.state, A.country
-        FROM user_address UA
-                 INNER JOIN address A ON UA.addressID_ua_FK = A.id
-        WHERE userID_ua_FK = (SELECT id FROM user WHERE email = %s)
-        ORDER BY addressID_ua_FK;
-        """
-    cursor.execute(user_addresses, (session['email']))
-    # ((68, '123 Wallaby', '', 'Lilburn', '30609', 'Georgia', 'United States'), (68, '362', ...))
-    data = cursor.fetchall()
-    # We want [{street1: 123 Wallaby, street2: 23}, {street1: 362 Nowhere, street2: ''}, {street1: 999 Somewhere, street2: 27}]
+        sendable = []
 
-    sendable = []
+        for addr_tup in data:
+            addr_dict = {}
+            addr_dict['addressID'] = addr_tup[1]
+            addr_dict['street1'] = addr_tup[2]
+            addr_dict['street2'] = addr_tup[3]
+            addr_dict['city'] = addr_tup[4]
+            addr_dict['zip'] = addr_tup[5]
+            addr_dict['state'] = addr_tup[6]
+            addr_dict['country'] = addr_tup[7]
+            sendable.append(addr_dict)
 
-    for addr_tup in data:
-        addr_dict = {}
-        addr_dict['addressID'] = addr_tup[1]
-        addr_dict['street1'] = addr_tup[2]
-        addr_dict['street2'] = addr_tup[3]
-        addr_dict['city'] = addr_tup[4]
-        addr_dict['zip'] = addr_tup[5]
-        addr_dict['state'] = addr_tup[6]
-        addr_dict['country'] = addr_tup[7]
-        sendable.append(addr_dict)
+        print(sendable, file=sys.stderr)
 
-    print(sendable, file=sys.stderr)
-
-    conn.close()
-    return render_template('profile/profileShippingAddress.html', data=sendable)
+        conn.close()
+        return render_template('profile/profileShippingAddress.html', data=sendable)
 
 
 @user_bp.route('/payment_methods/', methods=['GET', 'POST'])
@@ -271,7 +289,8 @@ def payment_methods():
             create_a = """
                 INSERT INTO address(street1, street2, city, zip, state, country, addressTypeID_address_FK) 
                 VALUES(%s, %s, %s, %s, %s, %s, %s)"""
-            cursor.execute(create_a, (street1, street2, city, zipcode, state, country, 2))
+            cursor.execute(create_a, (street1, street2,
+                                      city, zipcode, state, country, 2))
 
             create_pm = """
                 INSERT INTO payment_method(firstname, lastname, cardNumber, cardType, expirationDate, userID_payment_FK, billingAddress_addr_FK)
@@ -280,7 +299,8 @@ def payment_methods():
                 (SELECT id FROM address ORDER BY id DESC LIMIT 1)
                 )
             """
-            cursor.execute(create_pm, (cfn, cln, ccn, ct, ccexp, session['email']))
+            cursor.execute(create_pm, (cfn, cln, ccn,
+                                       ct, ccexp, session['email']))
             conn.commit()
 
         elif flag == "REMOVE_FLAG":
@@ -294,14 +314,18 @@ def payment_methods():
         elif flag == "EDIT_FLAG":
 
             update_pm = '''UPDATE payment_method SET firstname = %s, lastname = %s, expirationDate = %s WHERE id = %s'''
-            cursor.execute(update_pm,(cfn,cln,ccexp))
+            cursor.execute(update_pm, (cfn, cln, ccexp))
             conn.commit()
 
             update_a = '''UPDATE address SET street1 = %s, street2 = %s, city = %s, zip = %s, state = %s, country = %s WHERE id = %s'''
-            cursor.execute(update_a,(street1,street2,city,zipcode,state,country, addr_id))
+            cursor.execute(update_a, (street1, street2, city,
+                                      zipcode, state, country, addr_id))
             conn.commit()
 
         conn.close()
+
+        send_change_conf_email(session['email'],session['firstName'])
+
         return redirect(url_for('user_bp.payment_methods'))
 
     # GET REQUEST
@@ -327,9 +351,11 @@ def payment_methods():
             pay_dict['pm_id'] = pay_tup[0]
             pay_dict['firstname'] = str(pay_tup[1]).upper()
             pay_dict['lastname'] = str(pay_tup[2]).upper()
-            pay_dict['cardNumber'] = FERNET.decrypt(pay_tup[3].encode('utf-8')).decode('utf-8')[-4:]
+            pay_dict['cardNumber'] = FERNET.decrypt(
+                pay_tup[3].encode('utf-8')).decode('utf-8')[-4:]
             pay_dict['cardType'] = pay_tup[4]
-            pay_dict['expirationDate'] = str(pay_tup[5].year) + '-' + str(pay_tup[5].month).zfill(2)
+            pay_dict['expirationDate'] = str(
+                pay_tup[5].year) + '-' + str(pay_tup[5].month).zfill(2)
             pay_dict['billingAddressID'] = pay_tup[7]
             pay_dict['street1'] = pay_tup[8]
             pay_dict['street2'] = pay_tup[9]
