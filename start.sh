@@ -68,6 +68,36 @@ then
     cancel
 fi
 
+if [[ -z "${DB}" ]]; then
+  eval "export DB=niledb"
+  echo "exported DB"
+fi
+
+if [[ -z "${DB_HOST}" ]]; then
+  eval "export DB_HOST=localhost"
+  echo "exported DB_HOST"
+fi
+
+if [[ -z "${MAIL_SERVER}" ]]; then
+  eval "export MAIL_SERVER=smtp.gmail.com"
+  echo "exported MAIL_SERVER"
+fi
+
+if [[ -z "${MAIL_PORT}" ]]; then
+  eval "export MAIL_PORT=465"
+  echo "exported MAIL_PORT"
+fi
+
+if [[ -z "${MAIL_USER}" ]]; then
+  eval "export MAIL_USER=rootatnilebookstore@gmail.com"
+  echo "exported MAIL_USER"
+fi
+
+if [[ -z "${MAIL_PASS}" ]]; then
+  eval "export MAIL_PASS=Testing1"
+  echo "exported MAIL_PASS"
+fi
+
 verAsInt=${version//[\.]/}
 
 if ! [[ $verAsInt -ge 375 ]];
