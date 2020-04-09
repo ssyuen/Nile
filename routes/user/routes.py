@@ -221,7 +221,7 @@ def shipping_address():
             WHERE id = %s
             '''
             cursor.execute(update_query, (street_addr, street_addr2,
-                                          zipcode, city, state, country, 1, addr_id))
+                                          city, zipcode, state, country, 1, addr_id))
             conn.commit()
         
         send_change_conf_email(session['email'],session['firstName'])
