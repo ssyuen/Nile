@@ -1,8 +1,7 @@
 <p align="center">
   <img src="static/images/Misc/Nile Dark Text Rectangular.png">
+  https://www.nilebookstore.com
 </p>
-
-https://www.nilebookstore.com
 
 ## DELIVERABLE 6 EXECUTION INSTRUCTIONS AND REQUIREMENTS
 
