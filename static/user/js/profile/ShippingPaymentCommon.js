@@ -19,6 +19,16 @@ export function submitRemoval(form, ...names) {
         $(form).append(flag);
     });
 }
+export function submitUpdate(form, ...names) {
+    $(form).submit(function (e) {
+        for (let n of names) {
+            let x = $("<input>").attr("type", "hidden").attr("name", n['name']).val(n['value']);
+            $(form).append(x);
+        }
+        let flag = $("<input>").attr("type", "hidden").attr("name", "form_flag").val(PostFlags.EDIT);
+        $(form).append(flag);
+    });
+}
 export function getClosestForm(event) {
     let buttonCaller = event.target;
     return $(buttonCaller).closest("form")[0];
@@ -34,18 +44,27 @@ export function promptConfirm(e) {
         return false;
     }
 }
-$(".edit-btn").click(function (event) {
-    let form = $(getClosestCard(event)).find("form").first();
-    $(form).find("input, select").removeAttr("readonly disabled");
-});
+export const GeneralFormValidity = new Map();
 $(":input").click(function (event) {
     if ($(this).attr("readonly") || $(this).attr("readonly")) {
         alert("Click the EDIT button to change values");
     }
 });
-$(".collapse-btn-ico").click(function () {
-    let ref = $(this);
-    setTimeout(function () {
-        ref.toggleClass("fa-angle-down fa-angle-up");
-    }, 150);
+// $(".collapse-btn-ico").click(function () {
+//     $(this).toggleClass("fa-angle-down fa-angle-up")
+// });
+/* LETS DO THE INPUT CHANGE DETECTION HERE */
+var _isDirty = false;
+$(':input').change(function () {
+    _isDirty = true;
+});
+window.onbeforeunload = function (ev) {
+    if (_isDirty) {
+        promptConfirm(ev);
+    }
+};
+$("#accountListings").on('click', function (e) {
+    if (_isDirty) {
+        promptConfirm(e);
+    }
 });

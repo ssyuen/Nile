@@ -1,3 +1,5 @@
+import {InputValidationComplex} from 'inputvalidation.js'
+
 export enum PostFlags {
     REMOVE = "REMOVE_FLAG",
     EDIT = "EDIT_FLAG",
@@ -8,7 +10,6 @@ export interface Appendable {
     name: string
     value: string
 }
-
 
 export function submitRemoval(form: HTMLFormElement, ...names: Appendable[]) {
 
@@ -29,6 +30,17 @@ export function submitRemoval(form: HTMLFormElement, ...names: Appendable[]) {
     });
 }
 
+export function submitUpdate(form: HTMLFormElement, ...names: Appendable[]) {
+    $(form).submit(function (e) {
+
+        for (let n of names) {
+            let x = $("<input>").attr("type", "hidden").attr("name", n['name']).val(n['value']);
+            $(form).append(x);
+        }
+        let flag = $("<input>").attr("type", "hidden").attr("name", "form_flag").val(PostFlags.EDIT);
+        $(form).append(flag);
+    });
+}
 
 export function getClosestForm(event): HTMLFormElement {
     let buttonCaller: HTMLButtonElement = event.target;
@@ -48,11 +60,7 @@ export function promptConfirm(e: Event) {
     }
 }
 
-$(".edit-btn").click(function (event) {
-    let form: HTMLFormElement = <HTMLFormElement><any>$(getClosestCard(event)).find("form").first();
-    $(form).find("input, select").removeAttr("readonly disabled")
-});
-
+export const GeneralFormValidity = new Map<string, InputValidationComplex>();
 
 $(":input").click(function (event) {
     if ($(this).attr("readonly") || $(this).attr("readonly")) {
@@ -60,9 +68,27 @@ $(":input").click(function (event) {
     }
 });
 
-$(".collapse-btn-ico").click(function () {
-    let ref = $(this);
-    setTimeout(function () {
-        ref.toggleClass("fa-angle-down fa-angle-up")
-    }, 150);
+// $(".collapse-btn-ico").click(function () {
+//     $(this).toggleClass("fa-angle-down fa-angle-up")
+// });
+
+/* LETS DO THE INPUT CHANGE DETECTION HERE */
+
+var _isDirty = false;
+
+$(':input').change(function () {
+    _isDirty = true;
 });
+
+window.onbeforeunload = function (ev) {
+    if (_isDirty) {
+        promptConfirm(ev);
+    }
+};
+
+$("#accountListings").on('click', function (e: Event) {
+    if (_isDirty) {
+        promptConfirm(e);
+    }
+});
+
