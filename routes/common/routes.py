@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request, jsonify, redirect, flash, session, url_for
+from flask import Blueprint, render_template, request, jsonify, redirect, flash, session, url_for, g
 from functools import wraps
 from flaskext.mysql import pymysql
 import requests as r
@@ -6,7 +6,7 @@ import bcrypt
 import sys
 import secrets
 from flask_mail import Message
-from server import mysql, mail,app
+from server import mysql, mail
 from datetime import timedelta
 from key import FERNET
 
@@ -42,7 +42,7 @@ def remember_me(f):
     def wrapped_func(*args, **kws):
         try:
             if session['remember_me']:
-                app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(days=7)
+                g.PERMANENT_SESSION_LIFETIME = timedelta(days=7)
                 return f(*args, **kws)
         except KeyError:
             session['remember_me'] = False
