@@ -1,11 +1,11 @@
-import { InputValidationComplex, PURPOSE } from "../inputvalidation.js";
+import { RegistrationInputValidator, PURPOSE } from "../regValidation.js";
 const FORM = document.getElementById("changeNameForm");
 const F_NAME = document.getElementById("inputFirstname");
 const L_NAME = document.getElementById("inputLastname");
 let oldFirst = F_NAME.value;
 let oldLast = L_NAME.value;
 const EDIT = document.getElementById("editBtn");
-const vc = new InputValidationComplex();
+const vc = new RegistrationInputValidator();
 FORM.addEventListener("submit", function (e) {
     if (!vc.validateAll("#nameDetails")) {
         e.preventDefault();

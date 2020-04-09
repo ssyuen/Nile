@@ -1,6 +1,6 @@
 import {
-    InputValidationComplex, PURPOSE
-} from "../inputvalidation.js";
+    RegistrationInputValidator, PURPOSE
+} from "../regValidation.js";
 
 const FORM: HTMLFormElement = document.getElementById("changeNameForm") as HTMLFormElement;
 const F_NAME: HTMLInputElement = document.getElementById("inputFirstname") as HTMLInputElement;
@@ -11,7 +11,7 @@ let oldLast: string = L_NAME.value;
 
 const EDIT: HTMLButtonElement = document.getElementById("editBtn") as HTMLButtonElement;
 
-const vc = new InputValidationComplex();
+const vc = new RegistrationInputValidator();
 
 
 FORM.addEventListener("submit", function (e) {

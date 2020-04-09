@@ -1,13 +1,13 @@
 import {
-    InputValidationComplex, PURPOSE
-} from "../inputvalidation.js";
+    RegistrationInputValidator, PURPOSE
+} from "../regValidation.js";
 
 const FORM: HTMLFormElement = document.getElementById("changePassForm") as HTMLFormElement;
 const PASS_CURR: HTMLInputElement = document.getElementById("currentPassword") as HTMLInputElement;
 const PASS_NEW: HTMLInputElement = document.getElementById("newPassword") as HTMLInputElement;
 const PASS_CONF: HTMLInputElement = document.getElementById("confirmNewPassword") as HTMLInputElement;
 
-const vc = new InputValidationComplex();
+const vc = new RegistrationInputValidator();
 
 FORM.addEventListener("submit", function (e) {
 

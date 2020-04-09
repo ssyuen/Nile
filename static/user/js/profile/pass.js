@@ -1,9 +1,9 @@
-import { InputValidationComplex, PURPOSE } from "../inputvalidation.js";
+import { RegistrationInputValidator, PURPOSE } from "../regValidation.js";
 const FORM = document.getElementById("changePassForm");
 const PASS_CURR = document.getElementById("currentPassword");
 const PASS_NEW = document.getElementById("newPassword");
 const PASS_CONF = document.getElementById("confirmNewPassword");
-const vc = new InputValidationComplex();
+const vc = new RegistrationInputValidator();
 FORM.addEventListener("submit", function (e) {
     if (!vc.validateAll("#nameDetails")) {
         e.preventDefault();
