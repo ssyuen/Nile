@@ -52,6 +52,9 @@ export class InputValidationComplex {
     static isbnConstraint(value) {
         return (/^[0-9]*[-][0-9]*[-][0-9]*[-][0-9]*[-][0-9]|^\d{13}$/).test(value); // 1234567891021, 123-0-596-52068-7, and 241-1-86197-876-9 valid
     }
+    static publisherConstraint(value) {
+        return InputValidationComplex.lastNameConstraint(value)
+    }
     setValidity(elem, loc, purpose, constr) {
         this.curr_validity[elem.id] = this.validator(elem, loc, purpose['template'], constr);
     }
@@ -170,6 +173,11 @@ InputValidationComplex.INVALID_ISBN_MSS = [`
             Must have 13 digits and be in the format 1234567891011 or 978-0-596-52068-7.
         </small>
 `, "#invalidISBN"];
+InputValidationComplex.INVALID_PUBLISHER_MSS = [`
+        <small class="text-danger error-message" id="invalidPublisher"">
+          Publisher needs to be 2 or more characters.
+        </small>
+`, "#invalidPublisher"];
 export const PURPOSE = {
     Firstname: {
         template: InputValidationComplex.INVALID_F_NAME_MSS,
@@ -218,6 +226,10 @@ export const PURPOSE = {
     ISBN: {
         template: InputValidationComplex.INVALID_ISBN_MSS,
         constraint: InputValidationComplex.isbnConstraint
+    },
+    PUBLISHER: {
+        template: InputValidationComplex.INVALID_PUBLISHER_MSS,
+        constraint: InputValidationComplex.publisherConstraint
     }
 };
 export class CreditCard {

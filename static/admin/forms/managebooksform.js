@@ -7,7 +7,7 @@ const A_LNAME = document.getElementById("authorLastName");
 const BOOK_TITLE = document.getElementById("bookTitle");
 const ISBN = document.getElementById("isbn");
 const PUBLISHER = document.getElementById("publisher");
-
+const FORM = document.getElementById("manageBooksForm");
 
 // GOES THROUGH EACH INPUT AND CHECKS
 Array('input', 'focusin').forEach((evt) => {
@@ -33,6 +33,18 @@ Array('input', 'focusin').forEach((evt) => {
             vc.setValidity(elem, elem, PURPOSE.ISBN, PURPOSE.ISBN.constraint(elem.value));
         });
     });
+    [PUBLISHER].forEach(function (elem) {
+        elem.addEventListener(evt, function () {
+            vc.setValidity(elem, elem, PURPOSE.PUBLISHER, PURPOSE.PUBLISHER.constraint(elem.value));
+        });
+    });
+});
+
+$(FORM).on("submit", function (e) {
+    if (!vc.validateAll('.card-title')) {
+        e.preventDefault();
+        return false;
+    }
 });
 
 $("#editBtn").click(function () {
