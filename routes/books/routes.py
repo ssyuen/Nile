@@ -38,7 +38,7 @@ def query_books(search_query=None):
                 payload = []
                 header = [desc[0] for desc in cursor.description]
                 payload = [dict(zip(header, result)) for result in results]
-                books = [book for book in payload if search_query in str(
+                books = [book for book in payload if search_query.lower() in str(
                     book.values()).lower()]
 
                 print(request.args['search_query'].lower())
