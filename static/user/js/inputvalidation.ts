@@ -242,10 +242,10 @@ export class CreditCard {
     private _provider: string;
 
     private network = {
-        Visa: /^4[0-9]{12}(?:[0-9]{3})?$/,
-        Mastercard: /^5[1-5][0-9]{14}$|^2(?:2(?:2[1-9]|[3-9][0-9])|[3-6][0-9][0-9]|7(?:[01][0-9]|20))[0-9]{12}$/,
-        Amex: /^3[47][0-9]{13}$/,
-        Discover: /^65[4-9][0-9]{13}|64[4-9][0-9]{13}|6011[0-9]{12}|(622(?:12[6-9]|1[3-9][0-9]|[2-8][0-9][0-9]|9[01][0-9]|92[0-5])[0-9]{10})$/,
+        VISA: /^4[0-9]{12}(?:[0-9]{3})?$/,
+        MASTERCARD: /^5[1-5][0-9]{14}$|^2(?:2(?:2[1-9]|[3-9][0-9])|[3-6][0-9][0-9]|7(?:[01][0-9]|20))[0-9]{12}$/,
+        AMEX: /^3[47][0-9]{13}$/,
+        DISCOVER: /^65[4-9][0-9]{13}|64[4-9][0-9]{13}|6011[0-9]{12}|(622(?:12[6-9]|1[3-9][0-9]|[2-8][0-9][0-9]|9[01][0-9]|92[0-5])[0-9]{10})$/,
     };
 
     constructor(no: string = '', cvv: string = '') {
@@ -261,19 +261,19 @@ export class CreditCard {
             var cardClass: string = undefined;
 
             switch (cardProvider) {
-                case "Visa": {
+                case "VISA": {
                     cardClass = "fa-cc-visa";
                     break;
                 }
-                case "Mastercard": {
+                case "MASTERCARD": {
                     cardClass = "fa-cc-mastercard";
                     break;
                 }
-                case "Amex": {
+                case "AMEX": {
                     cardClass = "fa-cc-amex";
                     break;
                 }
-                case "Discover": {
+                case "DISCOVER": {
                     cardClass = "fa-cc-discover";
                     break;
                 }
