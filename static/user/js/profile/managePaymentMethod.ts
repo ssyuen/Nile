@@ -1,9 +1,9 @@
 import {
+    GeneralFormValidity,
     getClosestCard,
     getClosestForm,
-    PostFlags, submitRemoval
+    PostFlags, submitRemoval, submitUpdate
 } from "./ShippingPaymentCommon.js";
-
 
 import {CreditCard, InputValidationComplex, PURPOSE} from "../inputvalidation.js";
 
@@ -17,6 +17,67 @@ $(".remove-pm-btn").click(function (event) {
         {name: "billingAddressID", value: addressId},
         {name: "pm_id", value: pmID}
     )
+});
+
+
+$(".update-pm-btn").click(function (event) {
+    let form = getClosestForm(event);
+    let card = getClosestCard(event);
+
+    let addressId = $(form).attr("nile-address-ident");
+    let pmID = $(form).attr("nile-pm-ident");
+    let ident = $(form).attr("nile-form-ident");
+
+    const vc = GeneralFormValidity.get(ident);
+
+    let errLoc = <HTMLElement><any>$(card).find(".pre-content");
+
+    if (!vc.validateAll(errLoc)) {
+        event.preventDefault();
+        return false;
+    }
+    submitUpdate(form,
+        {name: "billingAddressID", value: addressId},
+        {name: "pm_id", value: pmID});
+});
+
+
+$(".edit-btn").click(function (event) {
+    let form: HTMLFormElement = <HTMLFormElement><any>$(getClosestCard(event)).find("form").first();
+    $(form).find("input, select").removeAttr("readonly disabled");
+
+    let ident = $(form).attr("nile-form-ident");
+
+    if (!GeneralFormValidity.has(ident)) {
+        GeneralFormValidity.set(ident, new InputValidationComplex());
+    }
+
+    var vc = GeneralFormValidity.get(ident);
+
+    Array<string>('input', 'focusin').forEach((evt: string) => {
+        $(form).find(".targetName1").bind(evt, function () {
+            console.log(this);
+            vc.setValidity(this as HTMLInputElement, this as HTMLElement, PURPOSE.Firstname, PURPOSE.Firstname.constraint((this as HTMLInputElement).value));
+        });
+
+        $(form).find(".targetName2").bind(evt, function () {
+            vc.setValidity(this as HTMLInputElement, this as HTMLElement, PURPOSE.Lastname, PURPOSE.Lastname.constraint((this as HTMLInputElement).value));
+        });
+
+        //Obviously, shipping address and billing address have the same constraints
+        $(form).find(".targetStreet1").bind(evt, function () {
+            vc.setValidity(this as HTMLInputElement, this as HTMLElement, PURPOSE.StreetAddress, PURPOSE.StreetAddress.constraint((this as HTMLInputElement).value))
+        });
+
+        //Same situation as above
+        $(form).find(".targetZip").bind(evt, function () {
+            vc.setValidity(this as HTMLInputElement, this as HTMLElement, PURPOSE.Zip, PURPOSE.Zip.constraint((this as HTMLInputElement).value))
+        });
+
+        $(form).find(".targetCity").bind(evt, function () {
+            vc.setValidity(this as HTMLInputElement, this as HTMLElement, PURPOSE.City, PURPOSE.City.constraint((this as HTMLInputElement).value))
+        });
+    });
 });
 
 
