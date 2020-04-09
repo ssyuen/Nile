@@ -62,6 +62,9 @@ printf "==ALL SQL CHECKS PASSED==\n"
 #Using an actual python script in case people have python 2 on their computer too.
 version=$(python -c 'import sys; print("".join(map(str, sys.version_info[:3])))')
 re='^[0-9]+$'
+printf "==ALL PYTHON CHECKS PASSED==\n\n"
+
+
 if [[ -z "$version" || $version =~ re ]];
 then
     echo "PYTHON WAS NOT FOUND ON THE SYSTEM."
@@ -105,8 +108,6 @@ then
   echo "PYTHON VERSION IS $version BUT REQUIRES 3.7.5 OR HIGHER"
   cancel
 fi
-
-printf "==ALL PYTHON CHECKS PASSED==\n\n"
 
 # DEBUG TRUE - FLASK RESTARTS FOR EVERY CHANGE :)
 export FLASK_DEBUG=1
