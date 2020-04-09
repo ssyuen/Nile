@@ -16,6 +16,7 @@ cryptography = "*"
 
 [scripts]
 server = "./start.sh"
+windows_server = "start.sh"
 
 [requires]
 python_version = "3.7"
