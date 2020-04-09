@@ -133,8 +133,8 @@ def order_history():
                 FROM `niledb`.`user`
                 JOIN `niledb`.`order` ON `user`.`id`=`order`.`userID_order_FK`
                 JOIN `niledb`.`order_bod` ON `order`.`id`=`order_bod`.`orderID_obod_FK`
-                JOIN `niledb`.`book_orderdetail` ON `order_bod`.`bodID_obod_FK`=`book_orderdetail`.`id` 
-                JOIN `niledb`.`book` ON `book_orderdetail`.`ISBN_bod_FK`=`book`.`ISBN` 
+                JOIN `niledb`.`book_orderdetail` ON `order_bod`.`bodID_obod_FK`=`book_orderdetail`.`id`
+                JOIN `niledb`.`book` ON `book_orderdetail`.`ISBN_bod_FK`=`book`.`ISBN`
                 WHERE user.email=%s
                 ORDER BY `order`.`dateOrdered` ASC; """
     cursor.execute(order_history_query, (session["email"]))
@@ -168,7 +168,7 @@ def shipping_address():
         if flag == "CREATE_FLAG":
 
             query = """
-            INSERT INTO address (street1, street2, city, zip, state, country, addressTypeID_address_FK) 
+            INSERT INTO address (street1, street2, city, zip, state, country, addressTypeID_address_FK)
             VALUES (%s, %s, %s, %s, %s, %s, %s);
             """
 
@@ -177,11 +177,11 @@ def shipping_address():
             cursor.execute(query, create_ship_payload)
 
             query2 = """
-            INSERT INTO user_address (userID_ua_FK, addressID_ua_FK) 
+            INSERT INTO user_address (userID_ua_FK, addressID_ua_FK)
             VALUES (
                 (SELECT id FROM user WHERE email = %s),
-                (SELECT id FROM address ORDER BY id DESC LIMIT 1)  
-            ) 
+                (SELECT id FROM address ORDER BY id DESC LIMIT 1)
+            )
             """
             cursor.execute(query2, (session['email']))
             conn.commit()
@@ -189,7 +189,7 @@ def shipping_address():
         elif flag == "REMOVE_FLAG":
             remove_query = '''
             DELETE FROM user_address
-            WHERE userID_ua_FK = (SELECT id FROM user WHERE email = %s) 
+            WHERE userID_ua_FK = (SELECT id FROM user WHERE email = %s)
                 AND addressID_ua_FK = %s
             '''
             cursor.execute(remove_query, (session['email'], addr_id))
@@ -253,10 +253,8 @@ def payment_methods():
         flag = request.form.get("form_flag")
         addr_id = request.form.get('billingAddressID')
         pm_id = request.form.get("pm_id")
-
         cfn = request.form.get("cardHolderFirstName")
         cln = request.form.get("cardHolderLastName")
-        ccn = FERNET.encrypt(request.form.get('ccn').encode('utf-8'))
         ct = request.form.get("CCNProvider")
         ccexp = request.form.get("ccexp") + '-01'
         street1 = request.form.get("billingStreetAddress")
@@ -267,6 +265,9 @@ def payment_methods():
         country = request.form.get("billingAddressCountry")
 
         if flag == "CREATE_FLAG":
+            ccn = FERNET.encrypt(
+                        request.form.get('ccn').encode('utf-8'))
+
             create_a = """
                 INSERT INTO address(street1, street2, city, zip, state, country, addressTypeID_address_FK) 
                 VALUES(%s, %s, %s, %s, %s, %s, %s)"""

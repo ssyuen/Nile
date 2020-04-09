@@ -101,7 +101,7 @@ def landing_page(search_results=None):
         # STEP 3: In browse.html, iterate through list of books to populate page
         genres = get_genres(cursor)
         product_types,bindings = get_bindings_and_types(cursor)
-        print(bindings)
+        # print(bindings)
         conn.close()
         return render_template('browse.html', books=books,genres=genres,bindings=bindings,product_types=product_types)
     else:

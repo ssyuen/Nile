@@ -33,7 +33,7 @@
         </ul>
         <ul class="navbar-nav navbar-center search-group">
             <li>
-                <form class="form-inline complement" action="{{ url_for('books_bp.query_books') }}">
+                <form class="form-inline complement" id="searchBar" action="{{ url_for('books_bp.query_books') }}">
                     <div class="container-fluid search-group-parent">
                         <div class="input-group">
                             <input id="mainSearchSys" class="form-control" type="text" placeholder="Search"
@@ -112,3 +112,5 @@
         </ul>
     </div>
 </nav>
+
+<script defer src="/static/user/js/search.js"></script>
