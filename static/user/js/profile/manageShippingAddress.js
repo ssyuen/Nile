@@ -1,4 +1,5 @@
-import { getClosestCard, getClosestForm, PostFlags, promptConfirm, submitRemoval } from "./ShippingPaymentCommon.js";
+import { GeneralFormValidity, getClosestCard, getClosestForm, PostFlags, submitRemoval } from "./ShippingPaymentCommon.js";
+import { InputValidationComplex } from "../inputvalidation";
 $(".remove-addr-btn").click(function (event) {
     let form = getClosestForm(event);
     let addressId = $(form).attr("nile-address-ident");
@@ -20,18 +21,8 @@ $("#createShippingAddress").click(function (event) {
         $(this).append(flag);
     });
 });
-/* LETS DO THE INPUT CHANGE DETECTION HERE */
-var _isDirty = false;
-$(':input').change(function () {
-    _isDirty = true;
-});
-window.onbeforeunload = function (ev) {
-    if (_isDirty) {
-        promptConfirm(ev);
-    }
-};
-$("#accountListings").on('click', function (e) {
-    if (_isDirty) {
-        promptConfirm(e);
-    }
+$(".edit-btn").click(function (event) {
+    let form = $(getClosestCard(event)).find("form").first();
+    $(form).find("input, select").removeAttr("readonly disabled");
+    GeneralFormValidity.set(form, new InputValidationComplex());
 });

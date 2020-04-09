@@ -1,8 +1,10 @@
 import {
+    GeneralFormValidity,
     getClosestCard,
     getClosestForm,
     PostFlags, promptConfirm, submitRemoval
 } from "./ShippingPaymentCommon.js";
+import {InputValidationComplex} from "../inputvalidation";
 
 $(".remove-addr-btn").click(function (event) {
     let form = getClosestForm(event);
@@ -30,22 +32,10 @@ $("#createShippingAddress").click(function (event) {
 });
 
 
-/* LETS DO THE INPUT CHANGE DETECTION HERE */
+$(".edit-btn").click(function (event) {
+    let form: HTMLFormElement = <HTMLFormElement><any>$(getClosestCard(event)).find("form").first();
+    $(form).find("input, select").removeAttr("readonly disabled");
+    GeneralFormValidity.set(form, new InputValidationComplex());
 
-var _isDirty = false;
 
-$(':input').change(function () {
-    _isDirty = true;
-});
-
-window.onbeforeunload = function (ev) {
-    if (_isDirty) {
-        promptConfirm(ev);
-    }
-};
-
-$("#accountListings").on('click', function (e: Event) {
-    if (_isDirty) {
-        promptConfirm(e);
-    }
 });
