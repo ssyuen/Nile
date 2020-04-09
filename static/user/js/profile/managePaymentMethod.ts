@@ -5,7 +5,7 @@ import {
     PostFlags, submitRemoval, submitUpdate
 } from "./ShippingPaymentCommon.js";
 
-import {CreditCard, InputValidationComplex, PURPOSE} from "../inputvalidation.js";
+import {CreditCard, RegistrationInputValidator, PURPOSE} from "../regValidation.js";
 
 $(".remove-pm-btn").click(function (event) {
 
@@ -49,7 +49,7 @@ $(".edit-btn").click(function (event) {
     let ident = $(form).attr("nile-form-ident");
 
     if (!GeneralFormValidity.has(ident)) {
-        GeneralFormValidity.set(ident, new InputValidationComplex());
+        GeneralFormValidity.set(ident, new RegistrationInputValidator());
     }
 
     var vc = GeneralFormValidity.get(ident);
@@ -83,7 +83,7 @@ $(".edit-btn").click(function (event) {
 
 ////////////////////////////////////CREATE SCRIPT/////////////////////////////////////////////////////////////////////
 
-let createValidator = new InputValidationComplex();
+let createValidator = new RegistrationInputValidator();
 let createCreditValidator = new CreditCard();
 
 $("#createPaymentMethodBtn").on("click", function (e: Event) {
@@ -103,7 +103,7 @@ $("#createPaymentMethodBtn").on("click", function (e: Event) {
             </p>`);
         }
         $("#createCCN").addClass("invalid").removeClass("valid");
-        InputValidationComplex.scrollTopOfSelector(sel);
+        RegistrationInputValidator.scrollTopOfSelector(sel);
         e.preventDefault();
         return false;
     }

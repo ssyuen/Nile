@@ -1,5 +1,5 @@
 import { GeneralFormValidity, getClosestCard, getClosestForm, PostFlags, submitRemoval, submitUpdate } from "./ShippingPaymentCommon.js";
-import { CreditCard, InputValidationComplex, PURPOSE } from "../inputvalidation.js";
+import { CreditCard, RegistrationInputValidator, PURPOSE } from "../regValidation.js";
 $(".remove-pm-btn").click(function (event) {
     let form = getClosestForm(event);
     let addressId = $(form).attr("nile-address-ident");
@@ -25,7 +25,7 @@ $(".edit-btn").click(function (event) {
     $(form).find("input, select").removeAttr("readonly disabled");
     let ident = $(form).attr("nile-form-ident");
     if (!GeneralFormValidity.has(ident)) {
-        GeneralFormValidity.set(ident, new InputValidationComplex());
+        GeneralFormValidity.set(ident, new RegistrationInputValidator());
     }
     var vc = GeneralFormValidity.get(ident);
     Array('input', 'focusin').forEach((evt) => {
@@ -50,7 +50,7 @@ $(".edit-btn").click(function (event) {
     });
 });
 ////////////////////////////////////CREATE SCRIPT/////////////////////////////////////////////////////////////////////
-let createValidator = new InputValidationComplex();
+let createValidator = new RegistrationInputValidator();
 let createCreditValidator = new CreditCard();
 $("#createPaymentMethodBtn").on("click", function (e) {
     let sel = ".info-message";
@@ -65,7 +65,7 @@ $("#createPaymentMethodBtn").on("click", function (e) {
             </p>`);
         }
         $("#createCCN").addClass("invalid").removeClass("valid");
-        InputValidationComplex.scrollTopOfSelector(sel);
+        RegistrationInputValidator.scrollTopOfSelector(sel);
         e.preventDefault();
         return false;
     }
