@@ -9,7 +9,7 @@ books_bp = Blueprint('books_bp', __name__,
                      template_folder='templates', static_folder='static')
 
 
-@books_bp.route('/api/books/', methods=['POST'])
+@books_bp.route('/api/books/', methods=['GET'])
 def query_books(search_query=None):
     if request.args is None:
         return redirect(url_for('common_bp.landing_page'))
