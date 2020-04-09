@@ -148,7 +148,8 @@ Array('input', 'focusin').forEach((evt) => {
         vc.setValidity(this, this, PURPOSE.CCN, check);
         if (check) {
             CreditCard.toggleCardIcon(this, cc);
-        } else {
+        }
+        else {
             CreditCard.toggleCardIcon(this);
         }
     });

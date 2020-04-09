@@ -43,3 +43,9 @@ $(":input").click(function (event) {
         alert("Click the EDIT button to change values");
     }
 });
+$(".collapse-btn-ico").click(function () {
+    let ref = $(this);
+    setTimeout(function () {
+        ref.toggleClass("fa-angle-down fa-angle-up");
+    }, 150);
+});
