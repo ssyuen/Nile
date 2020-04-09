@@ -1,4 +1,4 @@
-import { InputValidationComplex, PURPOSE } from "/static/admin/inputvalidation.js";
+import { InputValidationComplex, PURPOSE } from "/static/admin/adminInputValidation.js";
 let vc = new InputValidationComplex();
 const A_FNAME = document.getElementById("authorFirstName");
 const A_LNAME = document.getElementById("authorLastName");
