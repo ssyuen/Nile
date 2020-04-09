@@ -36,13 +36,13 @@
                 <form class="form-inline complement" id="searchBar" action="{{ url_for('books_bp.query_books') }}">
                     <div class="container-fluid search-group-parent">
                         <div class="input-group">
-                            <input id="mainSearchSys" class="form-control" type="text" placeholder="Search"
+                            <input id="mainSearch" class="form-control main-search-sys" type="text" placeholder="Search"
                                    aria-label="Search"
                                    style="width: 500px;"
                                    name="search_query">
                             <div class="input-group-append">
                                 <button id="mainSearchSysBtn"
-                                        class="btn blue-gradient btn-rounded m-0 px-4 py-2 z-depth-0 waves-effect mr-3"
+                                        class="btn blue-gradient btn-rounded m-0 px-4 py-2 z-depth-0 waves-effect mr-3 main-search-sys-btn"
                                         type="submit"><i class="fas fa-search" aria-hidden="true"></i></button>
                             </div>
                         </div>

@@ -148,7 +148,7 @@
             <li class="list-inline-item reg-for-free">
                 <a href="/register/" class="href">
                     <button class="btn blue-gradient btn-rounded btn-sm primary waves-effect waves-light sign-btn"
-                            id="signUpBtn">Sign Up
+                            id="footerSignUpBtn">Sign Up
                     </button>
                 </a>
             </li>
@@ -165,7 +165,7 @@
                     <a href="/admin/overview/" class="href">
                 {% endif %}
                 <button class="btn blue-gradient btn-rounded btn-sm primary waves-effect waves-light sign-btn"
-                        id="signUpBtn">My Profile
+                        id="footerMyProfile">My Profile
                 </button>
                 </a>
             </li>
@@ -175,13 +175,13 @@
             <form class="form-inline complement" action="{{ url_for('books_bp.query_books') }}">
                 <div class="container-fluid search-group-parent">
                     <div class="input-group">
-                        <input id="searchFooter" class="form-control" type="text" placeholder="Search"
+                        <input id="searchFooter" class="form-control main-search-sys" type="text" placeholder="Search"
                                aria-label="Search"
                                style="width: 500px;"
                                name="search_query">
                         <div class="input-group-append">
                             <button id="searchFooterBtn"
-                                    class="btn blue-gradient btn-rounded m-0 px-4 py-2 z-depth-0 waves-effect mr-3"
+                                    class="btn blue-gradient m-0 px-4 py-2 z-depth-0 waves-effect mr-3 main-search-sys-btn"
                                     type="submit"><i class="fas fa-search" aria-hidden="true"></i></button>
                         </div>
                     </div>

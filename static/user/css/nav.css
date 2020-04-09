@@ -1,8 +1,8 @@
-#signInBtn, #signUpBtn {
+#signInBtn, #signUpBtn, #footerMyProfile, #footerSignUpBtn {
     font-size: medium;
 }
 
-#mainSearchSysBtn{
+.main-search-sys-btn {
     border-top-right-radius: 5px;
     border-bottom-right-radius: 5px;
 }
@@ -63,7 +63,7 @@
         width: 100%;
     }
 
-    #mainSearchSys {
+    .main-search-sys {
         width: auto !important;
     }
 }
