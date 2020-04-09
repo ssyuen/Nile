@@ -5,7 +5,7 @@
     ASSOCIATED HTML:    reg.html
     REVISIONS:          N/A
  */
-import { CreditCard, InputValidationComplex, PURPOSE } from "./inputvalidation.js";
+import {CreditCard, RegistrationInputValidator, PURPOSE} from "./regValidation.js";
 const FORM = document.getElementById("regForm");
 const F_NAME = document.getElementById("inputFirstName");
 const L_NAME = document.getElementById("inputLastName");
@@ -29,7 +29,7 @@ const CVV = document.getElementById("cvv");
 const BILLING_ST = document.getElementById("billingStreetAddress");
 const BILLING_ZIP = document.getElementById("billingZipcode");
 const BILLING_CITY = document.getElementById("billingCity");
-let vc = new InputValidationComplex();
+let vc = new RegistrationInputValidator();
 let cc = new CreditCard();
 /*
     Possible errors:
@@ -53,7 +53,7 @@ $(FORM).on("submit", function (e) {
                 </p>`);
             }
             $(CCN).addClass("invalid").removeClass("valid");
-            InputValidationComplex.scrollTopOfSelector('.card-title');
+            RegistrationInputValidator.scrollTopOfSelector('.card-title');
             e.preventDefault();
             return false;
         }

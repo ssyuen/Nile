@@ -1,8 +1,8 @@
-import { InputValidationComplex, PURPOSE } from "./inputvalidation.js";
+import { RegistrationInputValidator, PURPOSE } from "./regValidation.js";
 const FORM = document.getElementById("resetPasswordForm");
 const PASS_NEW = document.getElementById("newPassword");
 const PASS_CONF = document.getElementById("confirmNewPassword");
-const vc = new InputValidationComplex();
+const vc = new RegistrationInputValidator();
 FORM.addEventListener("submit", function (e) {
     if (!vc.validateAll(".card-title")) {
         e.preventDefault();

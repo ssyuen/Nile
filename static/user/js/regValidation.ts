@@ -1,12 +1,14 @@
 /*
     TYPE:               SCRIPT
-    FILE NAME:          inputvalidation.ts
+    FILE NAME:          regValidation.ts
     DESCRIPTION:        Generic form registration validation functions
     REVISIONS:          N/A
  */
 
 
-export class InputValidationComplex {
+import {InputValidator} from "../../common/js/inputValidator.js";
+
+export class RegistrationInputValidator extends InputValidator {
 
     static INVALID_PASS_MSS: [string, string] = [`
         <small class="text-danger error-messsage" id="invalidPass">
@@ -59,12 +61,6 @@ export class InputValidationComplex {
         </small>
 `, "#invalidCVV"];
 
-    /*
-    Keeps track of each input element along with its validity.
-    On submit, every value of an input with the 'required' attribute
-    must be true.
-    */
-    curr_validity = new Map<string, boolean>();
 
     public static firstNameConstraint(value: string): boolean {
         return value.length >= 1;
@@ -77,10 +73,6 @@ export class InputValidationComplex {
     public static emailConstraint(value: string): boolean {
         return (/^(([^<>()\[\].,;:\s@"]+(\.[^<>()\[\].,;:\s@"]+)*)|(".+"))@(([^<>()[\].,;:\s@"]+\.)+[^<>()[\].,;:\s@"]{2,})$/i).test(value)
     }
-
-    /*
-        Error HTML injection templates
-     */
 
     public static passwordConstraint(value: string): boolean {
         return ((/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$/)).test(value)
@@ -99,7 +91,7 @@ export class InputValidationComplex {
     }
 
     public static cityConstraint(value: string): boolean {
-        return InputValidationComplex.firstNameConstraint(value); //Same constraint...that's why
+        return RegistrationInputValidator.firstNameConstraint(value); //Same constraint...that's why
     }
 
     public static creditCardConstraint(cc: CreditCard): boolean {
@@ -109,129 +101,57 @@ export class InputValidationComplex {
     public static cvvConstraint(cc: CreditCard): boolean {
         return cc.checkCVV();
     }
-
-    public setValidity(elem: HTMLInputElement, loc: HTMLElement | string, purpose: IPurpose, constr: boolean) {
-        this.curr_validity[elem.id] = this.validator(elem, loc, purpose['template'], constr);
-    }
-
-    public static scrollTopOfSelector(selectorPlace: string): any {
-        $([document.documentElement, document.body]).animate({
-            scrollTop: $(selectorPlace).offset().top
-        }, 500);
-    }
-
-    public validateAll(selectorPlace: string | HTMLElement | any): boolean {
-        let errorHTML: string =
-            `<p class="text-center text-danger" id="somethingWrong">
-                One or more of the fields were incomplete or invalid
-            </p>`;
-
-        for (let key in this.curr_validity) {
-            let value: boolean = this.curr_validity[key];
-            let req: boolean = document.getElementById(key).hasAttribute('required');
-
-            if (req && !value) {
-                if ($('#somethingWrong').length === 0) {
-                    $(selectorPlace).after(errorHTML);
-                }
-                InputValidationComplex.scrollTopOfSelector(selectorPlace);
-                return false;
-            }
-        }
-        return true;
-    }
-
-    /*
-        Generalized validation function
-     */
-    private validator(inputType: HTMLElement,
-                      invalidMessageLocation: string | HTMLElement | any,
-                      invalidMessageType: [string, string],
-                      constraintType: (boolean | RegExpMatchArray)): boolean {
-
-        if (constraintType) {
-            if ($(invalidMessageLocation).next(invalidMessageType[1]).length) {
-                $(invalidMessageLocation).next(invalidMessageType[1]).remove();
-            }
-            if ($(inputType).hasClass('invalid')) {
-                $(inputType).removeClass('invalid');
-            }
-            //Prevents duplicate class additions
-            if (!$(inputType).hasClass('valid')) {
-                $(inputType).addClass("valid");
-            }
-            $(inputType).prop("aria-invalid", "false");
-            return true;
-        } else {
-            if (!$(invalidMessageLocation).next(invalidMessageType[1]).length) {
-                $(invalidMessageLocation).after(invalidMessageType[0]);
-            }
-            if ($(inputType).hasClass('valid')) {
-                $(inputType).removeClass('valid');
-            }
-            if (!$(inputType).hasClass('invalid')) {
-                $(inputType).addClass("invalid");
-            }
-            $(inputType).prop("aria-invalid", "true");
-            return false;
-        }
-    }
-}
-
-export interface IPurpose {
-    template: [string, string],
-    constraint: Function
 }
 
 export const PURPOSE = {
     Firstname: {
-        template: InputValidationComplex.INVALID_F_NAME_MSS,
-        constraint: InputValidationComplex.firstNameConstraint
+        template: RegistrationInputValidator.INVALID_F_NAME_MSS,
+        constraint: RegistrationInputValidator.firstNameConstraint
     },
 
     Lastname: {
-        template: InputValidationComplex.INVALID_L_NAME_MSS,
-        constraint: InputValidationComplex.lastNameConstraint
+        template: RegistrationInputValidator.INVALID_L_NAME_MSS,
+        constraint: RegistrationInputValidator.lastNameConstraint
     },
 
     Email: {
-        template: InputValidationComplex.INVALID_EMAIL_MSS,
-        constraint: InputValidationComplex.emailConstraint
+        template: RegistrationInputValidator.INVALID_EMAIL_MSS,
+        constraint: RegistrationInputValidator.emailConstraint
     },
 
     Password: {
-        template: InputValidationComplex.INVALID_PASS_MSS,
-        constraint: InputValidationComplex.passwordConstraint
+        template: RegistrationInputValidator.INVALID_PASS_MSS,
+        constraint: RegistrationInputValidator.passwordConstraint
     },
 
     PasswordConfirmation: {
-        template: InputValidationComplex.INVALID_PASS_CONF_MSS,
-        constraint: InputValidationComplex.passwordConfConstraint
+        template: RegistrationInputValidator.INVALID_PASS_CONF_MSS,
+        constraint: RegistrationInputValidator.passwordConfConstraint
     },
 
     StreetAddress: {
-        template: InputValidationComplex.INVALID_STREET_MSS,
-        constraint: InputValidationComplex.streetAddressConstraint
+        template: RegistrationInputValidator.INVALID_STREET_MSS,
+        constraint: RegistrationInputValidator.streetAddressConstraint
     },
 
     Zip: {
-        template: InputValidationComplex.INVALID_ZIP_MSS,
-        constraint: InputValidationComplex.zipCodeConstraint
+        template: RegistrationInputValidator.INVALID_ZIP_MSS,
+        constraint: RegistrationInputValidator.zipCodeConstraint
     },
 
     City: {
-        template: InputValidationComplex.INVALID_CITY_MSS,
-        constraint: InputValidationComplex.cityConstraint
+        template: RegistrationInputValidator.INVALID_CITY_MSS,
+        constraint: RegistrationInputValidator.cityConstraint
     },
 
     CCN: {
-        template: InputValidationComplex.INVALID_CCN_MSS,
-        constraint: InputValidationComplex.creditCardConstraint
+        template: RegistrationInputValidator.INVALID_CCN_MSS,
+        constraint: RegistrationInputValidator.creditCardConstraint
     },
 
     CVV: {
-        template: InputValidationComplex.INVALID_CVV_MSS,
-        constraint: InputValidationComplex.cvvConstraint
+        template: RegistrationInputValidator.INVALID_CVV_MSS,
+        constraint: RegistrationInputValidator.cvvConstraint
     }
 };
 

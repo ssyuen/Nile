@@ -8,8 +8,8 @@
 
 import {
     CreditCard,
-    InputValidationComplex, PURPOSE
-} from "./inputvalidation.js";
+    RegistrationInputValidator, PURPOSE
+} from "./regValidation.js";
 
 const FORM: HTMLElement = document.getElementById("regForm");
 const F_NAME: HTMLInputElement = document.getElementById("inputFirstName") as HTMLInputElement;
@@ -39,7 +39,7 @@ const BILLING_ZIP: HTMLInputElement = document.getElementById("billingZipcode") 
 const BILLING_CITY: HTMLInputElement = document.getElementById("billingCity") as HTMLInputElement;
 
 
-let vc = new InputValidationComplex();
+let vc = new RegistrationInputValidator();
 let cc = new CreditCard();
 
 
@@ -70,7 +70,7 @@ $(FORM).on("submit", function (e) {
                 </p>`);
             }
             $(CCN).addClass("invalid").removeClass("valid");
-            InputValidationComplex.scrollTopOfSelector('.card-title');
+            RegistrationInputValidator.scrollTopOfSelector('.card-title');
             e.preventDefault();
             return false;
         }
