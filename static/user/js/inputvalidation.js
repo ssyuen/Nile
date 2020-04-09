@@ -47,7 +47,10 @@ export class InputValidationComplex {
         return cc.checkCVV();
     }
     static titleConstraint(value) {
-        return value.length >= 1;
+        return InputValidationComplex.firstNameConstraint(value);
+    }
+    static isbnConstraint(value) {
+        return (/^[0-9]*[-][0-9]*[-][0-9]*[-][0-9]*[-][0-9]|^\d{13}$/).test(value); // 1234567891021, 123-0-596-52068-7, and 241-1-86197-876-9 valid
     }
     setValidity(elem, loc, purpose, constr) {
         this.curr_validity[elem.id] = this.validator(elem, loc, purpose['template'], constr);
@@ -157,6 +160,16 @@ InputValidationComplex.INVALID_CVV_MSS = [`
           CVV is not valid.
         </small>
 `, "#invalidCVV"];
+InputValidationComplex.INVALID_BOOK_TITLE_MSS = [`
+        <small class="text-danger error-message" id="invalidTitle"">
+          Title needs 1 or more characters.
+        </small>
+`, "#invalidTitle"];
+InputValidationComplex.INVALID_ISBN_MSS = [`
+        <small class="text-danger error-message" id="invalidISBN"">
+            Must have 13 digits and be in the format 1234567891011 or 978-0-596-52068-7.
+        </small>
+`, "#invalidISBN"];
 export const PURPOSE = {
     Firstname: {
         template: InputValidationComplex.INVALID_F_NAME_MSS,
@@ -197,6 +210,14 @@ export const PURPOSE = {
     CVV: {
         template: InputValidationComplex.INVALID_CVV_MSS,
         constraint: InputValidationComplex.cvvConstraint
+    },
+    TITLE: {
+        template: InputValidationComplex.INVALID_BOOK_TITLE_MSS,
+        constraint: InputValidationComplex.titleConstraint
+    },
+    ISBN: {
+        template: InputValidationComplex.INVALID_ISBN_MSS,
+        constraint: InputValidationComplex.isbnConstraint
     }
 };
 export class CreditCard {
