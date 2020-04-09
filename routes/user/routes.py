@@ -253,20 +253,20 @@ def payment_methods():
         flag = request.form.get("form_flag")
         addr_id = request.form.get('billingAddressID')
         pm_id = request.form.get("pm_id")
-        cfn = request.form.get("cardHolderFirstName")
-        cln = request.form.get("cardHolderLastName")
+        cfn = request.form.get("cardHolderFirstName").title()
+        cln = request.form.get("cardHolderLastName").title()
         ct = request.form.get("CCNProvider")
         ccexp = request.form.get("ccexp") + '-01'
-        street1 = request.form.get("billingStreetAddress")
-        street2 = request.form.get("billingApartmentOrSuite")
+        street1 = request.form.get("billingStreetAddress").title()
+        street2 = request.form.get("billingApartmentOrSuite").title()
         zipcode = request.form.get("billingAddressZip")
-        city = request.form.get("billingAddressCity")
+        city = request.form.get("billingAddressCity").title()
         state = request.form.get("billingAddressState")
         country = request.form.get("billingAddressCountry")
 
         if flag == "CREATE_FLAG":
             ccn = FERNET.encrypt(
-                        request.form.get('ccn').encode('utf-8'))
+                request.form.get('ccn').encode('utf-8'))
 
             create_a = """
                 INSERT INTO address(street1, street2, city, zip, state, country, addressTypeID_address_FK) 
@@ -301,10 +301,8 @@ def payment_methods():
             cursor.execute(update_a,(street1,street2,city,zipcode,state,country, addr_id))
             conn.commit()
 
-
         conn.close()
         return redirect(url_for('user_bp.payment_methods'))
-
 
     # GET REQUEST
     else:
@@ -327,11 +325,11 @@ def payment_methods():
         for pay_tup in data:
             pay_dict = {}
             pay_dict['pm_id'] = pay_tup[0]
-            pay_dict['firstname'] = pay_tup[1]
-            pay_dict['lastname'] = pay_tup[2]
+            pay_dict['firstname'] = str(pay_tup[1]).upper()
+            pay_dict['lastname'] = str(pay_tup[2]).upper()
             pay_dict['cardNumber'] = FERNET.decrypt(pay_tup[3].encode('utf-8')).decode('utf-8')[-4:]
             pay_dict['cardType'] = pay_tup[4]
-            pay_dict['expirationDate'] = str(pay_tup[5].year) + '-' + str(pay_tup[5].month)
+            pay_dict['expirationDate'] = str(pay_tup[5].year) + '-' + str(pay_tup[5].month).zfill(2)
             pay_dict['billingAddressID'] = pay_tup[7]
             pay_dict['street1'] = pay_tup[8]
             pay_dict['street2'] = pay_tup[9]
