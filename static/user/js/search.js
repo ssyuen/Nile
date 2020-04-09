@@ -8,6 +8,10 @@ $("#searchBar").submit(function(e){
         url: url,
         type: "POST",
         data: form.serialize(),
-        success: alert('posted')
+        success: function(books){
+            $("#table").append()
+        }
     });
 });
+
+
