@@ -201,10 +201,7 @@ def login(ctx=None):
 @remember_me
 def logout():
     if 'logged_in' in session and session['logged_in']:
-        if 'admin' in session:
-            session['admin'] = False
-        session['logged_in'] = False
-        session['admin'] = False
+        session.clear()
         flash('Logged out successfully.')
         return redirect('/')
     flash('Error logging out.')

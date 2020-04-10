@@ -70,8 +70,8 @@ This is important to make sure you will not have to delete and re-clone the repo
       - [ ] Confirmation link should only reset password once
   - [ ] Testing for correct login functionality (as existing user, wrong password, admin/user navigate to the correct page based on privileges (customer or admin))
   - [ ] Remember me option works (BONUS)
-- [ ] Logout
-  - [ ] Session ended correctly
+- [x] Logout
+  - [x] Session ended correctly
 - [ ] Edit Profile
   - [ ] Edit Profile Form (Completeness and correctness)
     - [ ] Information should be pulled from the database and displayed on form.
