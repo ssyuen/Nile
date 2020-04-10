@@ -144,11 +144,11 @@ def order_history():
 
     # Grab the order histor from the user
     order_history_query = """ SELECT `order`.`id`, `book`.`price`, `book`.`ISBN`, `book`.`title`, `book`.`authorFirstName`, `book`.`authorLastName`, `order`.`dateOrdered`
-                FROM `niledb`.`user`
-                JOIN `niledb`.`order` ON `user`.`id`=`order`.`userID_order_FK`
-                JOIN `niledb`.`order_bod` ON `order`.`id`=`order_bod`.`orderID_obod_FK`
-                JOIN `niledb`.`book_orderdetail` ON `order_bod`.`bodID_obod_FK`=`book_orderdetail`.`id`
-                JOIN `niledb`.`book` ON `book_orderdetail`.`ISBN_bod_FK`=`book`.`ISBN`
+                FROM `user`
+                JOIN `order` ON `user`.`id`=`order`.`userID_order_FK`
+                JOIN `order_bod` ON `order`.`id`=`order_bod`.`orderID_obod_FK`
+                JOIN `book_orderdetail` ON `order_bod`.`bodID_obod_FK`=`book_orderdetail`.`id`
+                JOIN `book` ON `book_orderdetail`.`ISBN_bod_FK`=`book`.`ISBN`
                 WHERE user.email=%s
                 ORDER BY `order`.`dateOrdered` ASC; """
     cursor.execute(order_history_query, (session["email"]))
