@@ -58,6 +58,7 @@
                         <input id="inputFirstname" type="text" class="form-control mt-0"
                                placeholder="First Name" readonly aria-readonly="true"
                                aria-label="First Name" name="inputFirstname"
+                               maxlength="45"
                                value="{{ session['firstName'] }}">
                     </div>
                 </div>
@@ -69,6 +70,7 @@
                     <div class="form-group md-form md-outline mb-0" id="inputLastnameGroup">
                         <input id="inputLastname" type="text" class="form-control" placeholder="Last Name"
                                aria-label="Last Name" name="inputLastname"
+                               maxlength="45"
                                value="{{ session['lastName'] }}" readonly aria-readonly="true">
                     </div>
                 </div>
