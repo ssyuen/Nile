@@ -44,8 +44,46 @@ where the `` `n `` is the newline break.
 
 5. `pipenv install` will install the dependencies (i.e. flask and pandas)
 
-6. Make sure when you are done with development, run `exit` to exit out of the virtual environment. 
+6. Make sure when you are done with development, run `exit` to exit out of the virtual environment.
 This is important to make sure you will not have to delete and re-clone the repository.
+
+### Testing
+
+- [ ] Registration
+  - [ ] Registration Form (Completeness, showing/indicating all mandatory/optional fields)
+  - [ ] Sending the confirmation email
+  - [ ] Test that user data is stored in the database with correct status (Active/Inactive)
+- [ ] Login
+  - [ ] Login Form
+  - [ ] Forget my password (testing that the complete process is correct)
+  - [ ] Testing for correct login functionality (as existing user, wrong password, admin/user navigate to the correct page based on privileges (customer or admin))
+  - [ ] Remember me option works (BONUS)
+- [ ] Logout
+  - [ ] Session ended correctly
+- [ ] Edit Profile
+  - [ ] Edit Profile Form (Completeness and correctness)
+    - [ ] Information should be pulled from the database and displayed on form.
+    - Users may change:
+      - [ ] First and Last Name
+      - [ ] Billing Address
+      - [ ] Password
+      - [ ] Payment Card/Information
+  - [ ] Users should NOT be able to modify the email address
+  - [ ] Information should be saved in the database correctly.
+- [ ] Non-Functional Requirements
+  - [ ] Usability (UI/UX)
+    - [ ] The look and feel of the UI
+    - [ ] Guidance
+    - [ ] Helpful/Positive Prompts
+    - [ ] Error Messages
+    - [ ] Confirmation Messages
+  - [ ] Security Requirements
+    - [ ] User Privileges (based points given during login process)
+    - [ ] Users should be asked to provide their current password if they selected to CHANGE their password
+    - [ ] Password and Payment Method/Information should be in encrypted in the database
+    - [ ] In case of changing profile information, send an email to the user that the profile has been changed (BONUS)
+
+
 
 ## Execution
 
