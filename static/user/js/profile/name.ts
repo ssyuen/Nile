@@ -1,6 +1,7 @@
 import {
     RegistrationInputValidator, PURPOSE
 } from "../regValidation.js";
+import {isDirty} from "./ShippingPaymentCommon";
 
 const FORM: HTMLFormElement = document.getElementById("changeNameForm") as HTMLFormElement;
 const F_NAME: HTMLInputElement = document.getElementById("inputFirstname") as HTMLInputElement;
@@ -16,14 +17,16 @@ const vc = new RegistrationInputValidator();
 
 FORM.addEventListener("submit", function (e) {
 
+    if (!isDirty()) {
+        window.alert("No changes were detected");
+        e.preventDefault();
+        return false;
+    }
 
     if (!vc.validateAll("#nameDetails")) {
         e.preventDefault();
         return;
     }
-
-    //AJAX SUBMIT
-
 });
 
 

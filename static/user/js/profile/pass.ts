@@ -1,6 +1,7 @@
 import {
     RegistrationInputValidator, PURPOSE
 } from "../regValidation.js";
+import {isDirty} from "./ShippingPaymentCommon";
 
 const FORM: HTMLFormElement = document.getElementById("changePassForm") as HTMLFormElement;
 const PASS_CURR: HTMLInputElement = document.getElementById("currentPassword") as HTMLInputElement;
@@ -11,18 +12,16 @@ const vc = new RegistrationInputValidator();
 
 FORM.addEventListener("submit", function (e) {
 
+    if (!isDirty()) {
+        window.alert("No changes were detected");
+        e.preventDefault();
+        return false;
+    }
 
     if (!vc.validateAll("#nameDetails")) {
         e.preventDefault();
         return;
     }
-
-    //AJAX SUBMIT
-    /*
-        Make sure that the current password matched the one on the account, if not, flash an error message underneath
-        the #nameDetails element
-     */
-
 });
 
 

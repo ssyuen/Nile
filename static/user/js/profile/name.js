@@ -1,4 +1,5 @@
 import { RegistrationInputValidator, PURPOSE } from "../regValidation.js";
+import { isDirty } from "./ShippingPaymentCommon";
 const FORM = document.getElementById("changeNameForm");
 const F_NAME = document.getElementById("inputFirstname");
 const L_NAME = document.getElementById("inputLastname");
@@ -7,11 +8,15 @@ let oldLast = L_NAME.value;
 const EDIT = document.getElementById("editBtn");
 const vc = new RegistrationInputValidator();
 FORM.addEventListener("submit", function (e) {
+    if (!isDirty()) {
+        window.alert("No changes were detected");
+        e.preventDefault();
+        return false;
+    }
     if (!vc.validateAll("#nameDetails")) {
         e.preventDefault();
         return;
     }
-    //AJAX SUBMIT
 });
 Array('input', 'focusin').forEach((evt) => {
     F_NAME.addEventListener(evt, function () {
