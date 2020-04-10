@@ -51,20 +51,20 @@ This is important to make sure you will not have to delete and re-clone the repo
 
 - [ ] Registration
   - [ ] Registration Form (Completeness, showing/indicating all mandatory/optional fields)
-    - [ ] Form cannot be submitted with empty required fields
+    - [ ] Form cannot be submitted with empty required fields FRONT END NEEDS TO BE LOOKED INTO BUT NO EFFECT ON BACKEND SO FAR
     - [ ] Input validation on credit card and zipcode
     - [x] Input validation on password and confirm password
-    - [ ] Input validation on email
+    - [x] Input validation on email
     - [ ] If you click on Add Shipping Address, fill out fields in Address, then unclick Add Shipping Address, then shipping address is NOT submitted
       - [ ] Tables in question: address,  user_address
     - [ ] If you click on Add Payment Method, fill out fields in Payment, then unclick Add Payment Method, then payment method and billing address is NOT submitted
       - [ ] Tables in question: payment_method, user_address, address
-  - [ ] Sending the confirmation email
-    - [ ] Confirmation email should only verify the user once, so multiple clicks on verification link should not break application
-  - [ ] Test that user data is stored in the database with correct status (Active/Inactive)
-    - [ ] Tables in question: user, user_address, user_token, address, payment_method
+  - [x] Sending the confirmation email
+    - [x] Confirmation email should only verify the user once, so multiple clicks on verification link should not break application
+  - [x] Test that user data is stored in the database with correct status (Active/Inactive)
+    - [x] Tables in question: user, user_address, user_token, address, payment_method
 - [ ] Login
-  - [ ] Login Form
+  - [x] Login Form
   - [ ] Forget my password (testing that the complete process is correct)
     - [ ] Properly sends confirmation email with reset password link
       - [ ] Confirmation link should only reset password once
@@ -95,8 +95,9 @@ This is important to make sure you will not have to delete and re-clone the repo
           - [x] Wrong password: `Your login details were not found. Please try again.`
         - User tries to access:
           - [x] Login WITHOUT being verified: `You must verifiy your account before being able to login!`
-          - [ ] Admin areas/urls
+          - [x] Admin areas/urls: `You need to be an admin to access that area!`
     - [ ] Confirmation Messages
+      - [x] Registration confirmation page
   - [ ] Security Requirements
     - [ ] User Privileges (based points given during login process)
     - [x] Users should be asked to provide their current password if they selected to CHANGE their password

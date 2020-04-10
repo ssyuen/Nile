@@ -42,7 +42,7 @@ def send_change_conf_email(recipient,recipient_fname,sender='rootatnilebookstore
 @cart_session
 @remember_me
 def checkout():
-    return redirect(url_for('user_bp.checkout'))
+    return render_template('checkout.html')
 
 
 @user_bp.route('/base_profile/', methods=['GET'])
