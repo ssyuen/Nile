@@ -7,7 +7,15 @@ const vc = new RegistrationInputValidator();
 $(FORM).on("submit", function (e) {
     if (!vc.validateAll("#nameDetails")) {
         e.preventDefault();
-        return;
+        return false;
+    }
+    if (PASS_NEW.value === PASS_CURR.value || PASS_CONF.value === PASS_CURR.value) {
+        alert("Your new password cannot be the same as your old one.");
+        PASS_CURR.value = '';
+        PASS_NEW.value = '';
+        PASS_CONF.value = '';
+        e.preventDefault();
+        return false;
     }
 });
 Array('input', 'focusin').forEach((evt) => {
