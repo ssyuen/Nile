@@ -1,8 +1,8 @@
 import {
     GeneralFormValidity,
     getClosestCard,
-    getClosestForm,
-    PostFlags, submitRemoval, submitUpdate
+    getClosestForm, isDirty,
+    PostFlags, submit, submitRemoval, submitUpdate
 } from "./ShippingPaymentCommon.js";
 
 import {CreditCard, RegistrationInputValidator, PURPOSE} from "../regValidation.js";
@@ -23,6 +23,12 @@ $(".remove-pm-btn").click(function (event) {
 $(".update-pm-btn").click(function (event) {
     let form = getClosestForm(event);
     let card = getClosestCard(event);
+
+    if (!isDirty()) {
+        window.alert("No changes were detected");
+        event.preventDefault();
+        return false;
+    }
 
     let addressId = $(form).attr("nile-address-ident");
     let pmID = $(form).attr("nile-pm-ident");
@@ -54,7 +60,9 @@ $(".edit-btn").click(function (event) {
 
     var vc = GeneralFormValidity.get(ident);
 
+
     Array<string>('input', 'focusin').forEach((evt: string) => {
+
         $(form).find(".targetName1").bind(evt, function () {
             console.log(this);
             vc.setValidity(this as HTMLInputElement, this as HTMLElement, PURPOSE.Firstname, PURPOSE.Firstname.constraint((this as HTMLInputElement).value));
@@ -108,12 +116,7 @@ $("#createPaymentMethodBtn").on("click", function (e: Event) {
         return false;
     }
 
-
-    $("#createPMForm").submit(function () {
-        let flag = $("<input>").attr("type", "hidden").attr("name", "form_flag").val(PostFlags.CREATE);
-        let ccProv = $("<input>").attr("type", "hidden").attr("name", "CCNProvider").val(createCreditValidator.getProvider());
-        $(this).append(flag, ccProv);
-    })
+    submit(<HTMLFormElement><any>$("#createPMForm"), {name: "CCNProvider", value: createCreditValidator.getProvider()});
 });
 
 Array<string>('input', 'focusin').forEach((evt: string) => {
