@@ -1,4 +1,4 @@
-import { GeneralFormValidity, getClosestCard, getClosestForm, PostFlags, submitRemoval, submitUpdate } from "./ShippingPaymentCommon.js";
+import { GeneralFormValidity, getClosestCard, getClosestForm, isDirty, submit, submitRemoval, submitUpdate } from "./ShippingPaymentCommon.js";
 import { RegistrationInputValidator, PURPOSE } from "../regValidation.js";
 $(".remove-addr-btn").click(function (event) {
     let form = getClosestForm(event);
@@ -7,6 +7,11 @@ $(".remove-addr-btn").click(function (event) {
 });
 $(".update-addr-btn").click(function (event) {
     let form = getClosestForm(event);
+    if (!isDirty()) {
+        window.alert("No changes were detected");
+        event.preventDefault();
+        return false;
+    }
     let card = getClosestCard(event);
     let addressId = $(form).attr("nile-address-ident");
     let ident = $(form).attr("nile-form-ident");
@@ -17,12 +22,6 @@ $(".update-addr-btn").click(function (event) {
         return false;
     }
     submitUpdate(form, { name: "addressID", value: addressId });
-});
-$("#createShippingAddress").click(function (event) {
-    $("#createShippingAddressForm").submit(function () {
-        var flag = $("<input>").attr("type", "hidden").attr("name", "form_flag").val(PostFlags.CREATE);
-        $(this).append(flag);
-    });
 });
 $(".edit-btn").click(function (event) {
     let form = $(getClosestCard(event)).find("form").first();
@@ -43,5 +42,26 @@ $(".edit-btn").click(function (event) {
         $(form).find(".targetCity").bind(evt, function () {
             vc.setValidity(this, this, PURPOSE.City, PURPOSE.City.constraint(this.value));
         });
+    });
+});
+$("#createShippingAddress").click(function (event) {
+    let sel = ".info-message";
+    if (!createValidator.validateAll(sel)) {
+        event.preventDefault();
+        return false;
+    }
+    submit($("#createShippingAddressForm"));
+});
+let createValidator = new RegistrationInputValidator();
+Array('input', 'focusin').forEach((evt) => {
+    $("#addAddressStreetAddress").bind(evt, function () {
+        createValidator.setValidity(this, this, PURPOSE.StreetAddress, PURPOSE.StreetAddress.constraint(this.value));
+    });
+    //Same situation as above
+    $("#addAddressZip").bind(evt, function () {
+        createValidator.setValidity(this, this, PURPOSE.Zip, PURPOSE.Zip.constraint(this.value));
+    });
+    $("#addAddressCity").bind(evt, function () {
+        createValidator.setValidity(this, this, PURPOSE.City, PURPOSE.City.constraint(this.value));
     });
 });

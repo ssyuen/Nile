@@ -1,8 +1,8 @@
 import {
     GeneralFormValidity,
     getClosestCard,
-    getClosestForm,
-    PostFlags, promptConfirm, submitRemoval, submitUpdate
+    getClosestForm, isDirty,
+    PostFlags, promptConfirm, submit, submitRemoval, submitUpdate
 } from "./ShippingPaymentCommon.js";
 import {RegistrationInputValidator, PURPOSE} from "../regValidation.js";
 
@@ -14,6 +14,13 @@ $(".remove-addr-btn").click(function (event) {
 
 $(".update-addr-btn").click(function (event) {
     let form = getClosestForm(event);
+
+    if (!isDirty()) {
+        window.alert("No changes were detected");
+        event.preventDefault();
+        return false;
+    }
+
     let card = getClosestCard(event);
 
     let addressId = $(form).attr("nile-address-ident");
@@ -29,14 +36,6 @@ $(".update-addr-btn").click(function (event) {
     }
     submitUpdate(form, {name: "addressID", value: addressId});
 });
-
-$("#createShippingAddress").click(function (event) {
-    $("#createShippingAddressForm").submit(function () {
-        var flag = $("<input>").attr("type", "hidden").attr("name", "form_flag").val(PostFlags.CREATE);
-        $(this).append(flag);
-    })
-});
-
 
 $(".edit-btn").click(function (event) {
     let form: HTMLFormElement = <HTMLFormElement><any>$(getClosestCard(event)).find("form").first();
@@ -65,3 +64,32 @@ $(".edit-btn").click(function (event) {
         });
     });
 });
+
+$("#createShippingAddress").click(function (event) {
+    let sel = ".info-message";
+
+    if (!createValidator.validateAll(sel)) {
+        event.preventDefault();
+        return false;
+    }
+    submit(<HTMLFormElement><any>$("#createShippingAddressForm"))
+});
+
+let createValidator = new RegistrationInputValidator();
+
+Array<string>('input', 'focusin').forEach((evt: string) => {
+    $("#addAddressStreetAddress").bind(evt, function () {
+        createValidator.setValidity(this as HTMLInputElement, this as HTMLElement, PURPOSE.StreetAddress, PURPOSE.StreetAddress.constraint((this as HTMLInputElement).value))
+    });
+
+    //Same situation as above
+    $("#addAddressZip").bind(evt, function () {
+        createValidator.setValidity(this as HTMLInputElement, this as HTMLElement, PURPOSE.Zip, PURPOSE.Zip.constraint((this as HTMLInputElement).value))
+    });
+
+    $("#addAddressCity").bind(evt, function () {
+        createValidator.setValidity(this as HTMLInputElement, this as HTMLElement, PURPOSE.City, PURPOSE.City.constraint((this as HTMLInputElement).value))
+    });
+});
+
+
