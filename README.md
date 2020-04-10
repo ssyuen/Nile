@@ -96,6 +96,8 @@ This is important to make sure you will not have to delete and re-clone the repo
         - User tries to access:
           - [x] Login WITHOUT being verified: `You must verifiy your account before being able to login!`
           - [x] Admin areas/urls: `You need to be an admin to access that area!`
+        - Admin tries to access:
+          - [x] User specific areas: `Please login using a non-administrative account to access this feature.`
     - [ ] Confirmation Messages
       - [x] Registration confirmation page
   - [ ] Security Requirements
