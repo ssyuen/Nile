@@ -16,20 +16,6 @@ Array('input', 'focusin').forEach((evt) => {
         vc.setValidity(PASS_CONF, PASS_CONF, PURPOSE.PasswordConfirmation, PURPOSE.PasswordConfirmation.constraint(this.value, PASS_CONF.value));
     });
     PASS_CONF.addEventListener(evt, function () {
-        let loc = "#inputLastnameGroup";
         vc.setValidity(PASS_CONF, PASS_CONF, PURPOSE.PasswordConfirmation, PURPOSE.PasswordConfirmation.constraint(PASS_NEW.value, this.value));
     });
-});
-//Make sure the User saved their Changes!!
-// @ts-ignore
-$("#accountListings").click(function (e) {
-    let exit = true;
-    if (PASS_CURR.value.length) {
-        var conf = confirm("You have unsaved changes. Are you sure you want to continue?");
-        exit = conf;
-    }
-    if (!exit) {
-        e.preventDefault();
-        return false;
-    }
 });
