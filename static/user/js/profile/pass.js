@@ -1,16 +1,10 @@
 import { RegistrationInputValidator, PURPOSE } from "../regValidation.js";
-import { isDirty } from "./ShippingPaymentCommon.js";
 const FORM = document.getElementById("changePassForm");
 const PASS_CURR = document.getElementById("currentPassword");
 const PASS_NEW = document.getElementById("newPassword");
 const PASS_CONF = document.getElementById("confirmNewPassword");
 const vc = new RegistrationInputValidator();
-FORM.addEventListener("submit", function (e) {
-    if (!isDirty()) {
-        window.alert("No changes were detected");
-        e.preventDefault();
-        return false;
-    }
+$(FORM).on("submit", function (e) {
     if (!vc.validateAll("#nameDetails")) {
         e.preventDefault();
         return;

@@ -7,7 +7,7 @@ let oldFirst = F_NAME.value;
 let oldLast = L_NAME.value;
 const EDIT = document.getElementById("editBtn");
 const vc = new RegistrationInputValidator();
-FORM.addEventListener("submit", function (e) {
+$(FORM).on("submit", function (e) {
     if (!isDirty()) {
         window.alert("No changes were detected");
         e.preventDefault();
@@ -20,16 +20,14 @@ FORM.addEventListener("submit", function (e) {
 });
 Array('input', 'focusin').forEach((evt) => {
     F_NAME.addEventListener(evt, function () {
-        if ($(F_NAME).is("[readonly]"))
-            return false;
         let loc = "#inputFirstnameGroup";
         vc.setValidity(this, loc, PURPOSE.Firstname, PURPOSE.Firstname.constraint(this.value));
+        $(F_NAME).attr("required", "true");
     });
     L_NAME.addEventListener(evt, function () {
-        if ($(L_NAME).is("[readonly]"))
-            return false;
         let loc = "#inputLastnameGroup";
         vc.setValidity(this, loc, PURPOSE.Lastname, PURPOSE.Lastname.constraint(this.value));
+        $(L_NAME).attr("required", "false");
     });
 });
 EDIT.addEventListener("click", function () {

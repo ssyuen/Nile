@@ -10,14 +10,7 @@ const PASS_CONF: HTMLInputElement = document.getElementById("confirmNewPassword"
 
 const vc = new RegistrationInputValidator();
 
-FORM.addEventListener("submit", function (e) {
-
-    if (!isDirty()) {
-        window.alert("No changes were detected");
-        e.preventDefault();
-        return false;
-    }
-
+$(FORM).on("submit", function (e) {
     if (!vc.validateAll("#nameDetails")) {
         e.preventDefault();
         return;
