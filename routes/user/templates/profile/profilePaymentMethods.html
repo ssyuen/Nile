@@ -89,6 +89,7 @@
                                                value="{{ info['firstname'] }}"
                                                name="cardHolderFirstName"
                                                style="text-transform: uppercase;"
+                                               maxlength="45"
                                                data-error="First Name must me more than one character">
                                         <label for="cardHolderFirstName{{ loop.index }}">First Name on Card</label>
                                     </div>
@@ -101,6 +102,7 @@
                                                value="{{ info['lastname'] }}"
                                                name="cardHolderLastName"
                                                style="text-transform: uppercase;"
+                                               maxlength="45"
                                                data-error="Last Name must me more than two characters">
                                         <label for="cardHolderLastName{{ loop.index }}">Last Name on Card</label>
                                     </div>
@@ -130,6 +132,7 @@
                                                id="billingStreetAddress{{ loop.index }}"
                                                required
                                                name="billingStreetAddress"
+                                               maxlength="45"
                                                value="{{ info['street1'] }}" readonly
                                                data-error="Street Address cannot be empty">
                                     </div>
@@ -143,6 +146,7 @@
                                         <input type="text" class="form-control targetStreet2"
                                                id="billingApartmentOrSuite{{ loop.index }}"
                                                value="{{ info['street2'] }}" readonly
+                                               maxlength="45"
                                                name="billingApartmentOrSuite" data-success="This field is optional">
                                     </div>
                                 </div>
@@ -154,6 +158,7 @@
                                         <input type="text" class="form-control targetZip"
                                                id="billlingAddressZip{{ loop.index }}"
                                                readonly
+                                               maxlength="10"
                                                name="billingAddressZip" value="{{ info['zip'] }}">
                                     </div>
                                 </div>
@@ -165,6 +170,7 @@
                                         <input type="text" class="form-control targetCity"
                                                id="billingAddressCity{{ loop.index }}"
                                                required readonly
+                                               maxlength="45"
                                                value="{{ info['city'] }}"
                                                name="billingAddressCity">
                                     </div>
@@ -246,6 +252,7 @@
                                 <input type="text" class="form-control" id="createCardHolderFirstName" required
                                        name="cardHolderFirstName"
                                        style="text-transform: uppercase;"
+                                       maxlength="45"
                                        data-error="First Name must me more than one character"/>
                                 <label for="createCardHolderFirstName">First Name on Card</label>
                             </div>
@@ -255,6 +262,7 @@
                                 <input type="text" class="form-control" id="createCardHolderLastName" required
                                        name="cardHolderLastName"
                                        style="text-transform: uppercase;"
+                                       maxlength="45"
                                        data-error="Last Name must me more than two characters">
                                 <label for="createCardHolderLastName">Last Name on Card</label>
                             </div>
@@ -273,6 +281,7 @@
                             <div class="form-group md-form md-outline">
                                 <input type="text" class="form-control" id="createCVV" name="cvv" required
                                        data-error="CVV is not valid.">
+                                maxlength="3"
                                 <label for="createCVV">CVV</label>
                             </div>
                         </div>
@@ -297,6 +306,7 @@
                                 <label for="createBillingStreetAddress">Street Address</label>
                                 <input type="text" class="form-control" id="createBillingStreetAddress" required
                                        name="billingStreetAddress"
+                                       maxlength="45"
                                        data-error="Street Address cannot be empty">
                             </div>
                         </div>
@@ -307,6 +317,7 @@
                                 <label for="createBillingApartmentOrSuite">Apartment or Suite (Optional)</label>
                                 <input type="text" class="form-control valid"
                                        id="createBillingApartmentOrSuite" aria-invalid="false"
+                                       maxlength="45"
                                        name="billingApartmentOrSuite" data-success="This field is optional">
                             </div>
                         </div>
@@ -315,7 +326,7 @@
                         <div class="col">
                             <div class="form-group md-form md-outline">
                                 <label for="createBillingAddressZip">ZIP or Postal code</label>
-                                <input type="text" class="form-control" id="createBillingAddressZip"
+                                <input type="text" class="form-control" id="createBillingAddressZip" maxlength="10"
                                        name="billingAddressZip">
                             </div>
                         </div>
@@ -325,6 +336,7 @@
                             <div class="form-group md-form md-outline">
                                 <label for="createBillingAddressCity">City</label>
                                 <input type="text" class="form-control" id="createBillingAddressCity" required
+                                       maxlength="45"
                                        name="billingAddressCity">
                             </div>
                         </div>

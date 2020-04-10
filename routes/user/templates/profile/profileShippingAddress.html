@@ -72,6 +72,7 @@
                                     <label for="address{{ loop.index }}StreetAddress">Street Address</label>
                                     <input type="text" class="form-control targetStreet1"
                                            id="address{{ loop.index }}StreetAddress"
+                                           maxlength="45"
                                            readonly required name="addressStreetAddress"
                                            value="{{ addr_dict['street1'] }}">
                                 </div>
@@ -84,6 +85,7 @@
                                     <input type="text" class="form-control targetStreet2"
                                            id="address{{ loop.index }}ApartmentOrSuite"
                                            readonly
+                                           maxlength="45"
                                            name="addressApartmentOrSuite"
                                            value="{{ addr_dict['street2'] }}">
                                 </div>
@@ -95,6 +97,7 @@
                                     <label for="addAddress{{ loop.index }}Zip">ZIP or Postal code</label>
                                     <input type="text" class="form-control targetZip" id="addAddress{{ loop.index }}Zip"
                                            readonly
+                                           maxlength="10"
                                            name="addressZip" value="{{ addr_dict['zip'] }}" required>
                                 </div>
                             </div>
@@ -106,6 +109,7 @@
                                     <input type="text" class="form-control targetCity" id="address{{ loop.index }}City"
                                            required
                                            readonly
+                                           maxlength="45"
                                            name="addressCity" value="{{ addr_dict['city'] }}">
                                 </div>
                             </div>
@@ -182,6 +186,7 @@
                             <label for="addAddressStreetAddress">Street Address</label>
                             <input type="text" class="form-control" id="addAddressStreetAddress"
                                    name="addressStreetAddress"
+                                   maxlength="45"
                                    required>
                         </div>
                     </div>
@@ -191,6 +196,7 @@
                         <div class="form-group md-form md-outline">
                             <label for="addAddressApartmentOrSuite">Apartment or Suite</label>
                             <input type="text" class="form-control" id="addAddressApartmentOrSuite"
+                                   maxlength="45"
                                    name="addressApartmentOrSuite">
                         </div>
                     </div>
@@ -200,6 +206,7 @@
                         <div class="form-group md-form md-outline">
                             <label for="addAddressZip">ZIP or Postal code</label>
                             <input type="text" class="form-control" id="addAddressZip"
+                                   maxlength="10"
                                    name="addressZip">
                         </div>
                     </div>
@@ -209,6 +216,7 @@
                         <div class="form-group md-form md-outline">
                             <label for="addAddressCity">City</label>
                             <input type="text" class="form-control" id="addAddressCity" required
+                                   maxlength="45"
                                    name="addressCity">
                         </div>
                     </div>

@@ -62,7 +62,7 @@
                     <div class="form-row">
                         <div class="col-sm-6">
                             <div class="form-group md-form md-outline">
-                                <input type="text" id="inputFirstName" class="form-control"
+                                <input type="text" id="inputFirstName" class="form-control" maxlength="45"
                                        name="inputFirstName" data-error="First Name must me more than one character"
                                        required>
                                 <label for="inputFirstName">First Name</label>
@@ -70,7 +70,7 @@
                         </div>
                         <div class="col-sm-6">
                             <div class="form-group md-form md-outline">
-                                <input type="text" id="inputLastName" class="form-control"
+                                <input type="text" id="inputLastName" class="form-control" maxlength="45"
                                        name="inputLastName" data-error="Last Name must me more than two characters"
                                        required>
                                 <label for="inputLastName">Last Name</label>
@@ -81,7 +81,7 @@
                     <div class="form-row">
                         <div class="col-sm-12">
                             <div class="form-group md-form md-outline">
-                                <input type="email" id="inputEmail" class="form-control"
+                                <input type="email" id="inputEmail" class="form-control" maxlength="255"
                                        name="inputEmail" data-error="Email is invalid" required>
                                 <label for="inputEmail">Email address</label>
                             </div>
@@ -93,7 +93,7 @@
                             <div class="form-group md-form md-outline">
                                 <label for="inputPassword">Password</label>
                                 <input type="password" id="inputPassword" class="form-control"
-                                       name="inputPassword"
+                                       name="inputPassword" maxlength="255"
                                        data-error="Password must be more than 8 or more characters long, contain at least 1 uppercase character, 1 lowercase character, and 1 number."
                                        required>
                                 <i class="fas fa-lock prefix"></i>
@@ -105,7 +105,7 @@
                         <div class="col-sm-12">
                             <div class="form-group md-form md-outline">
                                 <label for="inputConfirmPassword">Confirm Password</label>
-                                <input type="password" id="inputConfirmPassword" class="form-control"
+                                <input type="password" id="inputConfirmPassword" class="form-control" maxlength="255"
                                        name="inputConfirmPassword" data-error="Password's do not match" required>
                                 <i class="fas fa-lock prefix"></i>
                             </div>
@@ -141,7 +141,7 @@
                                 <div class="col-sm-12">
                                     <div class="form-group md-form md-outline">
                                         <input type="text" class="form-control" id="addAddressStreetAddress"
-                                               name="addAddressStreetAddress"
+                                               name="addAddressStreetAddress" maxlength="45"
                                                data-error="Street Address cannot be empty">
                                         <label for="addAddressStreetAddress">Street Address</label>
                                     </div>
@@ -151,7 +151,7 @@
                                 <div class="col">
                                     <div class="form-group md-form md-outline">
                                         <input type="text" class="form-control valid" id="addAddressApartmentOrSuite"
-                                               name="addAddressApartmentOrSuite" aria-invalid="false"
+                                               name="addAddressApartmentOrSuite" aria-invalid="false" maxlength="45"
                                                data-success="This field is optional">
                                         <label for="addAddressApartmentOrSuite">Apartment or Suite (Optional)</label>
                                     </div>
@@ -160,7 +160,7 @@
                             <div class="form-row">
                                 <div class="col">
                                     <div class="form-group md-form md-outline">
-                                        <input type="text" class="form-control" id="addZipcode"
+                                        <input type="text" class="form-control" id="addZipcode" maxlength="10"
                                                name="addZipcode" data-error="ZIP or Postal code is not valid">
                                         <label for="addZipcode">ZIP or Postal code</label>
                                     </div>
@@ -171,7 +171,7 @@
                                 <div class="col-md-6">
                                     <div class="form-group md-form md-outline">
                                         <label for="addAddressCity">City</label>
-                                        <input type="text" class="form-control" id="addAddressCity"
+                                        <input type="text" class="form-control" id="addAddressCity" maxlength="45"
                                                name="addAddressCity">
                                     </div>
                                 </div>
@@ -210,7 +210,7 @@
                                         <div class="form-group md-form md-outline">
                                             <input type="text" class="form-control" id="cardHolderFirstName"
                                                    name="cardHolderFirstName"
-                                                   style="text-transform: uppercase;"
+                                                   style="text-transform: uppercase;" maxlength="45"
                                                    data-error="First Name must me more than one character">
                                             <label for="cardHolderFirstName">First Name on Card</label>
                                         </div>
@@ -219,7 +219,7 @@
                                         <div class="form-group md-form md-outline">
                                             <input type="text" class="form-control" id="cardHolderLastName"
                                                    name="cardHolderLastName"
-                                                   style="text-transform: uppercase;"
+                                                   style="text-transform: uppercase;" maxlength="45"
                                                    data-error="Last Name must me more than two characters">
                                             <label for="cardHolderLastName">Last Name on Card</label>
                                         </div>
@@ -266,7 +266,7 @@
                                         <div class="form-group md-form md-outline">
                                             <label for="billingStreetAddress">Street Address</label>
                                             <input type="text" class="form-control" id="billingStreetAddress"
-                                                   name="billingStreetAddress"
+                                                   name="billingStreetAddress" maxlength="45"
                                                    data-error="Street Address cannot be empty">
                                         </div>
                                     </div>
@@ -275,7 +275,7 @@
                                     <div class="col">
                                         <div class="form-group md-form md-outline">
                                             <label for="billingApartmentOrSuite">Apartment or Suite (Optional)</label>
-                                            <input type="text" class="form-control valid"
+                                            <input type="text" class="form-control valid" maxlength="45"
                                                    id="billingApartmentOrSuite" aria-invalid="false"
                                                    name="billingApartmentOrSuite" data-success="This field is optional">
                                         </div>
@@ -285,7 +285,7 @@
                                     <div class="col">
                                         <div class="form-group md-form md-outline">
                                             <label for="billingZipcode">ZIP or Postal code</label>
-                                            <input type="text" class="form-control" id="billingZipcode"
+                                            <input type="text" class="form-control" id="billingZipcode" maxlength="10"
                                                    name="billingZipcode" data-error="ZIP or Postal code is not valid">
                                         </div>
                                     </div>
@@ -294,7 +294,7 @@
                                     <div class="col-md-6">
                                         <div class="form-group md-form md-outline">
                                             <label for="billingCity">City</label>
-                                            <input type="text" class="form-control" id="billingCity"
+                                            <input type="text" class="form-control" id="billingCity" maxlength="45"
                                                    name="billingCity">
                                         </div>
                                     </div>
