@@ -74,15 +74,15 @@ This is important to make sure you will not have to delete and re-clone the repo
   - [x] Session ended correctly
 - [ ] Edit Profile
   - [ ] Edit Profile Form (Completeness and correctness)
-    - [ ] Information should be pulled from the database and displayed on form.
+    - [x] Information should be pulled from the database and displayed on form.
     - Users may change:
       - [ ] First and Last Name
       - [ ] Billing Address
       - [ ] Password
       - [ ] Payment Card/Information
-  - [ ] Users should NOT be able to modify the email address
-  - [ ] Information should be saved in the database correctly.
-    - [ ] Tables in question: user, payment_method, user_address
+  - [x] Users should NOT be able to modify the email address
+  - [x] Information should be saved in the database correctly.
+    - [x] Tables in question: user, payment_method, user_address
 - [x] Non-Functional Requirements
   - [x] Usability (UI/UX)
     - [x] The look and feel of the UI
