@@ -51,11 +51,23 @@ This is important to make sure you will not have to delete and re-clone the repo
 
 - [ ] Registration
   - [ ] Registration Form (Completeness, showing/indicating all mandatory/optional fields)
+    - [ ] Form cannot be submitted with empty required fields
+    - [ ] Input validation on credit card and zipcode
+    - [ ] Input validation on password and confirm password
+    - [ ] Input validation on email
+    - [ ] If you click on Add Shipping Address, fill out fields in Address, then unclick Add Shipping Address, then shipping address is NOT submitted
+      - [ ] Tables in question: address,  user_address
+    - [ ] If you click on Add Payment Method, fill out fields in Payment, then unclick Add Payment Method, then payment method and billing address is NOT submitted
+      - [ ] Tables in question: payment_method, user_address, address
   - [ ] Sending the confirmation email
+    - [ ] Confirmation email should only verify the user once, so multiple clicks on verification link should not break application
   - [ ] Test that user data is stored in the database with correct status (Active/Inactive)
+    - [ ] Tables in question: user, user_address, user_token, address, payment_method
 - [ ] Login
   - [ ] Login Form
   - [ ] Forget my password (testing that the complete process is correct)
+    - [ ] Properly sends confirmation email with reset password link
+      - [ ] Confirmation link should only reset password once
   - [ ] Testing for correct login functionality (as existing user, wrong password, admin/user navigate to the correct page based on privileges (customer or admin))
   - [ ] Remember me option works (BONUS)
 - [ ] Logout
@@ -70,25 +82,30 @@ This is important to make sure you will not have to delete and re-clone the repo
       - [ ] Payment Card/Information
   - [ ] Users should NOT be able to modify the email address
   - [ ] Information should be saved in the database correctly.
+    - [ ] Tables in question: user, payment_method, user_address
 - [ ] Non-Functional Requirements
   - [ ] Usability (UI/UX)
     - [ ] The look and feel of the UI
     - [ ] Guidance
     - [ ] Helpful/Positive Prompts
     - [ ] Error Messages
+      - List of errors
+        - User tries to login with:
+          - [ ] Wrong email:
+          - [ ] Wrong password
+        - User tries to access:
+          - [ ] Login WITHOUT being verified or registered
+          - [ ] Admin areas/urls
     - [ ] Confirmation Messages
   - [ ] Security Requirements
     - [ ] User Privileges (based points given during login process)
-    - [ ] Users should be asked to provide their current password if they selected to CHANGE their password
-    - [ ] Password and Payment Method/Information should be in encrypted in the database
-    - [ ] In case of changing profile information, send an email to the user that the profile has been changed (BONUS)
-
-
+    - [x] Users should be asked to provide their current password if they selected to CHANGE their password
+    - [x] Password and Payment Method/Information should be in encrypted in the database
+    - [x] In case of changing profile information, send an email to the user that the profile has been changed (BONUS)
 
 ## Execution
 
 - Assuming you are not in the virtual environment, go to the root directory of the project and run `pipenv run server`. This just runs the script without you having to start a virtual environment.
-
 
 - To start the server, make sure you have done `pipenv shell` in the top-level directory of nile, and run `./start.sh`
 - If `DB_USER` and `DB_PASS` are not found in the local machine environment variables, the shell script will prompt you
