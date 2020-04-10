@@ -63,7 +63,7 @@ This is important to make sure you will not have to delete and re-clone the repo
     - [x] Confirmation email should only verify the user once, so multiple clicks on verification link should not break application
   - [x] Test that user data is stored in the database with correct status (Active/Inactive)
     - [x] Tables in question: user, user_address, user_token, address, payment_method
-- [ ] Login
+- [x] Login
   - [x] Login Form
   - [x] Forget my password (testing that the complete process is correct)
     - [x] Properly sends confirmation email with reset password link
@@ -83,12 +83,12 @@ This is important to make sure you will not have to delete and re-clone the repo
   - [ ] Users should NOT be able to modify the email address
   - [ ] Information should be saved in the database correctly.
     - [ ] Tables in question: user, payment_method, user_address
-- [ ] Non-Functional Requirements
-  - [ ] Usability (UI/UX)
-    - [ ] The look and feel of the UI
-    - [ ] Guidance
-    - [ ] Helpful/Positive Prompts
-    - [ ] Error Messages
+- [x] Non-Functional Requirements
+  - [x] Usability (UI/UX)
+    - [x] The look and feel of the UI
+    - [x] Guidance
+    - [x] Helpful/Positive Prompts
+    - [x] Error Messages
       - List of errors
         - User tries to login with:
           - [x] Wrong email: `Your login details were not found. Please try again.`
@@ -98,10 +98,10 @@ This is important to make sure you will not have to delete and re-clone the repo
           - [x] Admin areas/urls: `You need to be an admin to access that area!`
         - Admin tries to access:
           - [x] User specific areas: `Please login using a non-administrative account to access this feature.`
-    - [ ] Confirmation Messages
+    - [x] Confirmation Messages
       - [x] Registration confirmation page
-  - [ ] Security Requirements
-    - [ ] User Privileges (based points given during login process)
+  - [x] Security Requirements
+    - [x] User Privileges (based points given during login process)
     - [x] Users should be asked to provide their current password if they selected to CHANGE their password
     - [x] Password and Payment Method/Information should be in encrypted in the database
     - [x] In case of changing profile information, send an email to the user that the profile has been changed (BONUS)
