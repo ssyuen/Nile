@@ -49,16 +49,16 @@ This is important to make sure you will not have to delete and re-clone the repo
 
 ### Testing
 
-- [ ] Registration
-  - [ ] Registration Form (Completeness, showing/indicating all mandatory/optional fields)
-    - [ ] Form cannot be submitted with empty required fields FRONT END NEEDS TO BE LOOKED INTO BUT NO EFFECT ON BACKEND SO FAR
-    - [ ] Input validation on credit card and zipcode
+- [x] Registration
+  - [x] Registration Form (Completeness, showing/indicating all mandatory/optional fields)
+    - [x] Form cannot be submitted with empty required fields FRONT END NEEDS TO BE LOOKED INTO BUT NO EFFECT ON BACKEND SO FAR
+    - [x] Input validation on credit card and zipcode
     - [x] Input validation on password and confirm password
     - [x] Input validation on email
-    - [ ] If you click on Add Shipping Address, fill out fields in Address, then unclick Add Shipping Address, then shipping address is NOT submitted
-      - [ ] Tables in question: address,  user_address
-    - [ ] If you click on Add Payment Method, fill out fields in Payment, then unclick Add Payment Method, then payment method and billing address is NOT submitted
-      - [ ] Tables in question: payment_method, user_address, address
+    - [x] If you click on Add Shipping Address, fill out fields in Address, then unclick Add Shipping Address, then shipping address is NOT submitted
+      - [x] Tables in question: address,  user_address
+    - [x] If you click on Add Payment Method, fill out fields in Payment, then unclick Add Payment Method, then payment method and billing address is NOT submitted
+      - [x] Tables in question: payment_method, user_address, address
   - [x] Sending the confirmation email
     - [x] Confirmation email should only verify the user once, so multiple clicks on verification link should not break application
   - [x] Test that user data is stored in the database with correct status (Active/Inactive)
@@ -72,14 +72,14 @@ This is important to make sure you will not have to delete and re-clone the repo
   - [x] Remember me option works (BONUS)
 - [x] Logout
   - [x] Session ended correctly
-- [ ] Edit Profile
+- [x] Edit Profile
   - [ ] Edit Profile Form (Completeness and correctness)
     - [x] Information should be pulled from the database and displayed on form.
     - Users may change:
-      - [ ] First and Last Name
-      - [ ] Billing Address
-      - [ ] Password
-      - [ ] Payment Card/Information
+      - [x] First and Last Name
+      - [x] Billing Address
+      - [x] Password
+      - [x] Payment Card/Information
   - [x] Users should NOT be able to modify the email address
   - [x] Information should be saved in the database correctly.
     - [x] Tables in question: user, payment_method, user_address
