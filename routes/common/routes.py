@@ -208,6 +208,7 @@ def login(ctx=None):
 @remember_me
 def logout():
     if 'logged_in' in session and session['logged_in']:
+        session.permanent = False
         session.clear()
         flash('Logged out successfully.')
         return redirect('/')
@@ -468,11 +469,12 @@ def forgot():
         conn.commit()
         conn.close() 
 
-        verification_url = request.url_root[:-1] + url_for('common_bp.reset_pass',verify_token = verification_token)
+        verification_url = 'http://127.0.0.1:5000' + url_for('common_bp.reset_pass',verify_token = verification_token)
+        production_url = 'https://www.nilebookstore.com' + url_for('common_bp.reset_pass',verify_token = verification_token)
 
         message_body = 'Hi ' + name + \
-            f',\n\nPlease click on the following link to reset your password.\n\n{verification_url}\n\nRegards, Nile Bookstore Management'
-        msg = Message(subject='Nile Registration Confirmation', recipients=[
+            f',\n\nPlease click on the following link to reset your password.\n\nDevelopment:{verification_url}\n_________________\n\nProduction:{production_url}\n\nRegards, Nile Bookstore Management'
+        msg = Message(subject='Reset Password', recipients=[
             email, 'rootatnilebookstore@gmail.com'], sender='rootatnilebookstore@gmail.com', body=message_body) 
         mail.send(msg)
 
