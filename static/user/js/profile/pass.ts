@@ -14,8 +14,6 @@ $(FORM).on("submit", function (e) {
         e.preventDefault();
         return;
     }
-    e.preventDefault();
-    return;
 });
 
 
