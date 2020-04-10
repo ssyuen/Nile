@@ -54,21 +54,5 @@ EDIT.addEventListener("click", function () {
 });
 
 
-//Make sure the User saved their Changes!!
-// @ts-ignore
-$("#accountListings").click(function (e: Event) {
-    let exit: boolean = true;
-    if (oldFirst != F_NAME.value || oldLast != L_NAME.value) {
-        let conf = confirm("You have unsaved changes. Are you sure you want to continue?");
-        exit = conf;
-    }
-    if (!exit) {
-        e.preventDefault();
-        return false;
-    }
-});
-
-
-
 
 
