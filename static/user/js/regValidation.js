@@ -5,20 +5,16 @@
     REVISIONS:          N/A
  */
 import {InputValidator} from "../../common/js/inputValidator.js";
-
 export class RegistrationInputValidator extends InputValidator {
     static firstNameConstraint(value) {
         return value.length >= 1;
     }
-
     static lastNameConstraint(value) {
         return value.length >= 2;
     }
-
     static emailConstraint(value) {
         return (/^(([^<>()\[\].,;:\s@"]+(\.[^<>()\[\].,;:\s@"]+)*)|(".+"))@(([^<>()[\].,;:\s@"]+\.)+[^<>()[\].,;:\s@"]{2,})$/i).test(value);
     }
-
     static passwordConstraint(value) {
         return ((/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$/)).test(value);
     }
@@ -31,20 +27,16 @@ export class RegistrationInputValidator extends InputValidator {
     static zipCodeConstraint(value) {
         return (/^\d{5}$|^\d{5}-\d{4}$/).test(value);
     }
-
     static cityConstraint(value) {
         return RegistrationInputValidator.firstNameConstraint(value); //Same constraint...that's why
     }
-
     static creditCardConstraint(cc) {
         return cc.checkNetwork();
     }
-
     static cvvConstraint(cc) {
         return cc.checkCVV();
     }
 }
-
 RegistrationInputValidator.INVALID_PASS_MSS = [`
         <small class="text-danger error-messsage" id="invalidPass">
           Password must be more than 8 or more characters long, contain at least 1 uppercase character, 1 lowercase character, and 1 number.

@@ -5,37 +5,29 @@
     REVISIONS:          N/A
  */
 import {InputValidator} from "../../common/js/inputValidator.js";
-
 export class AdminInputValidator extends InputValidator {
     static firstNameConstraint(value) {
         return value.length >= 1;
     }
-
     static lastNameConstraint(value) {
         return value.length >= 2;
     }
-
     static passwordConstraint(value) {
         return ((/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$/)).test(value);
     }
-
     static passwordConfConstraint(value_pass, value_pass_conf) {
         return value_pass === value_pass_conf;
     }
-
     static titleConstraint(value) {
         return AdminInputValidator.firstNameConstraint(value);
     }
-
     static isbnConstraint(value) {
         return (/^[0-9]*[-][0-9]*[-][0-9]*[-][0-9]*[-][0-9]|^\d{13}$/).test(value); // 1234567891021, 123-0-596-52068-7, and 241-1-86197-876-9 valid
     }
-
     static publisherConstraint(value) {
         return AdminInputValidator.lastNameConstraint(value);
     }
 }
-
 AdminInputValidator.INVALID_PASS_MSS = [`
         <small class="text-danger error-messsage" id="invalidPass">
           Password must be more than 8 or more characters long, contain at least 1 uppercase character, 1 lowercase character, and 1 number.
