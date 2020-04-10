@@ -5,9 +5,9 @@
   https://www.nilebookstore.com
 </p>
 
-## DELIVERABLE 6 EXECUTION INSTRUCTIONS AND REQUIREMENTS
+# DELIVERABLE 6 EXECUTION INSTRUCTIONS AND REQUIREMENTS
 
-### REQUIREMENTS
+## REQUIREMENTS
 
 The following is required to run this project:
 
@@ -15,17 +15,17 @@ The following is required to run this project:
   - Using pip3 (or pip if you default to Python 3.7), install pipenv using this command: `pip3 install pipenv` or `pip install pipenv`.
     - If you have trouble running this or get Permission denied, then try the following: `pip install pipenv -u`
 
-### INSTRUCTIONS
+## INSTRUCTIONS
 
 1. Unzip/decompress the file
 
 2. Go to INTO the directory of the unzipped file.'
 
-3. If you are on windows, run the following command in Powershell to set up the appropriate environment variables: 
-``Set-Content ./test.txt "DB=niledb`nDB_HOST=localhost`nMAIL_SERVER=smtp.gmail.com`nMAIL_PORT=465`nMAIL_USER=rootatnilebookstore@gmail.com`nMAIL_PASS=Testing1``
+3. If you are on windows, run the following command in Powershell to set up the appropriate environment variables:
+``Set-Content ./.env "DB=niledb`nDB_HOST=localhost`nMAIL_SERVER=smtp.gmail.com`nMAIL_PORT=465`nMAIL_USER=rootatnilebookstore@gmail.com`nMAIL_PASS=Testing1``
 where the `` `n `` is the newline break.
 
-4. If you are on mac or some variant of linux, run the following command to set up the appropriate environment variables:   
+4. If you are on mac or some variant of linux, run the following command to set up the appropriate environment variables:
 `printf "DB=niledb\nDB_HOST=localhost\nMAIL_SERVER=smtp.gmail.com\nMAIL_PORT=465\nMAIL_USER=rootatnilebookstore@gmail.com\nMAIL_PASS=Testing1" > .env`
 
 5. If you are on windows, run this to start the server: `pipenv run windows_server`
