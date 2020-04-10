@@ -1,7 +1,7 @@
 import {
     RegistrationInputValidator, PURPOSE
 } from "../regValidation.js";
-import {isDirty} from "./ShippingPaymentCommon";
+import {isDirty} from "./ShippingPaymentCommon.js";
 
 const FORM: HTMLFormElement = document.getElementById("changePassForm") as HTMLFormElement;
 const PASS_CURR: HTMLInputElement = document.getElementById("currentPassword") as HTMLInputElement;

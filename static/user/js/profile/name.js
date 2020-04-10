@@ -1,5 +1,5 @@
 import { RegistrationInputValidator, PURPOSE } from "../regValidation.js";
-import { isDirty } from "./ShippingPaymentCommon";
+import { isDirty } from "./ShippingPaymentCommon.js";
 const FORM = document.getElementById("changeNameForm");
 const F_NAME = document.getElementById("inputFirstname");
 const L_NAME = document.getElementById("inputLastname");

@@ -1,5 +1,5 @@
 import { RegistrationInputValidator, PURPOSE } from "../regValidation.js";
-import { isDirty } from "./ShippingPaymentCommon";
+import { isDirty } from "./ShippingPaymentCommon.js";
 const FORM = document.getElementById("changePassForm");
 const PASS_CURR = document.getElementById("currentPassword");
 const PASS_NEW = document.getElementById("newPassword");
