@@ -11,6 +11,7 @@ export class InputValidator {
     must be true.
     */
     curr_validity = new Map<string, boolean>();
+    private _selectorPlace = undefined;
 
     public static scrollTopOfSelector(selectorPlace: string | HTMLElement | any): any {
         $([document.documentElement, document.body]).animate({
@@ -24,12 +25,14 @@ export class InputValidator {
                 One or more of the fields were incomplete or invalid
             </p>`;
 
+        this._selectorPlace = selectorPlace;
+
         for (let key in this.curr_validity) {
             let value: boolean = this.curr_validity[key];
             let req: boolean = document.getElementById(key).hasAttribute('required');
 
             if (req && !value) {
-                if (!$(selectorPlace).find("#somethingWrong").length) {
+                if (!$(selectorPlace).next("#somethingWrong").length) {
                     $(selectorPlace).after(errorHTML);
                 }
                 InputValidator.scrollTopOfSelector(selectorPlace);
@@ -50,6 +53,10 @@ export class InputValidator {
                       invalidMessageLocation: string | HTMLElement | any,
                       invalidMessageType: [string, string],
                       constraintType: (boolean | RegExpMatchArray)): boolean {
+
+        if (this._selectorPlace != undefined) {
+            $("#somethingWrong").remove();
+        }
 
         if (constraintType) {
             if ($(invalidMessageLocation).next(invalidMessageType[1]).length) {

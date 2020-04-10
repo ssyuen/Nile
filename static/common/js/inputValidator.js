@@ -6,23 +6,23 @@ export class InputValidator {
         must be true.
         */
         this.curr_validity = new Map();
+        this._selectorPlace = undefined;
     }
-
     static scrollTopOfSelector(selectorPlace) {
         $([document.documentElement, document.body]).animate({
             scrollTop: $(selectorPlace).offset().top
         }, 500);
     }
-
     validateAll(selectorPlace) {
         let errorHTML = `<p class="text-center text-danger" id="somethingWrong">
                 One or more of the fields were incomplete or invalid
             </p>`;
+        this._selectorPlace = selectorPlace;
         for (let key in this.curr_validity) {
             let value = this.curr_validity[key];
             let req = document.getElementById(key).hasAttribute('required');
             if (req && !value) {
-                if (!$(selectorPlace).find("#somethingWrong").length) {
+                if (!$(selectorPlace).next("#somethingWrong").length) {
                     $(selectorPlace).after(errorHTML);
                 }
                 InputValidator.scrollTopOfSelector(selectorPlace);
@@ -31,15 +31,16 @@ export class InputValidator {
         }
         return true;
     }
-
     setValidity(elem, loc, purpose, constr) {
         this.curr_validity[elem.id] = this.validator(elem, loc, purpose['template'], constr);
     }
-
     /*
         Generalized validation function
      */
     validator(inputType, invalidMessageLocation, invalidMessageType, constraintType) {
+        if (this._selectorPlace != undefined) {
+            $("#somethingWrong").remove();
+        }
         if (constraintType) {
             if ($(invalidMessageLocation).next(invalidMessageType[1]).length) {
                 $(invalidMessageLocation).next(invalidMessageType[1]).remove();
