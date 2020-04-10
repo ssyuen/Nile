@@ -27,17 +27,20 @@ def login_required(f):
 
     return wrapped_func
 
+
 def user_only(f):
     @wraps(f)
     def wrapped_func(*args, **kws):
         if 'admin' in session and session['admin']:
-            flash('Please login using a non-administrative account to access this feature.')
+            flash(
+                'Please login using a non-administrative account to access this feature.')
             return redirect(url_for('common_bp.landing_page'))
         else:
             return f(*args, **kws)
     return wrapped_func
 
-def send_change_conf_email(recipient,recipient_fname,sender='rootatnilebookstore@gmail.com'):
+
+def send_change_conf_email(recipient, recipient_fname, sender='rootatnilebookstore@gmail.com'):
     current_time = datetime.now()
     message_body = 'Hi ' + recipient_fname + \
         f',\n\nThere have been changes made to your profile on {current_time.month}/{current_time.day}/{current_time.year}, {current_time.hour}:{current_time.minute}:{current_time.second}. If this was not you, please go and change your password.\n\nRegards, Nile Bookstore Management'
@@ -109,7 +112,7 @@ def change_name():
 
         conn.close()
 
-        send_change_conf_email(session['email'],session['firstName'])
+        send_change_conf_email(session['email'], session['firstName'])
 
         flash('Your information has been recorded.')
         return redirect(url_for('user_bp.change_name'))
@@ -124,12 +127,22 @@ def change_pass():
     if request.method == 'POST':
         conn = mysql.connect()
         cursor = conn.cursor()
+        
+        
+        db_pass_query = '''SELECT pass FROM user WHERE email = %s'''
+        cursor.execute(db_pass_query, (session['email']))
+        db_pass = cursor.fetchall()[0][0].encode('utf-8')
+        current_password = request.form.get('currentPassword')
+        if bcrypt.checkpw(current_password.encode('utf-8'),db_pass):
+            flash(
+                'The current password you have entered does not match the password in our system.',category='err')
+            return redirect(url_for('user_bp.change_pass'))
 
         new_password = request.form.get('newPassword')
         confirm_new_password = request.form.get('confirmNewPassword')
 
         if new_password != confirm_new_password:
-            flash('There was an error in trying to record your information.')
+            flash('There was an error in trying to record your information.',category='err')
             return redirect(url_for('user_bp.change_pass'))
         else:
             new_password = bcrypt.hashpw(
@@ -140,9 +153,9 @@ def change_pass():
             conn.commit()
             conn.close()
 
-            send_change_conf_email(session['email'],session['firstName'])
+            send_change_conf_email(session['email'], session['firstName'])
 
-            flash('Your information has been recorded.')
+            flash('Your information has been recorded.',category='success')
             return redirect(url_for('user_bp.change_pass'))
     else:
         return render_template('profile/profileChangePassword.html')
@@ -240,10 +253,10 @@ def shipping_address():
             cursor.execute(update_query, (street_addr, street_addr2,
                                           city, zipcode, state, country, 1, addr_id))
             conn.commit()
-        
-        send_change_conf_email(session['email'],session['firstName'])
+
+        send_change_conf_email(session['email'], session['firstName'])
         return redirect(url_for('user_bp.shipping_address'))
-    
+
     elif request.method == 'GET':
         user_addresses = """
             SELECT UA.userID_ua_FK, A.id, A.street1, A.street2, A.city, A.zip, A.state, A.country
@@ -342,7 +355,7 @@ def payment_methods():
 
         conn.close()
 
-        send_change_conf_email(session['email'],session['firstName'])
+        send_change_conf_email(session['email'], session['firstName'])
 
         return redirect(url_for('user_bp.payment_methods'))
 
