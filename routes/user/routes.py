@@ -133,7 +133,7 @@ def change_pass():
         cursor.execute(db_pass_query, (session['email']))
         db_pass = cursor.fetchall()[0][0].encode('utf-8')
         current_password = request.form.get('currentPassword')
-        if bcrypt.checkpw(current_password.encode('utf-8'),db_pass):
+        if not bcrypt.checkpw(current_password.encode('utf-8'),db_pass):
             flash(
                 'The current password you have entered does not match the password in our system.',category='err')
             return redirect(url_for('user_bp.change_pass'))

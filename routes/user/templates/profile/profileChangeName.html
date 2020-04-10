@@ -60,15 +60,15 @@
                     id="editBtn">Edit
             </button>
         </div>
-        {% with pw_change = get_flashed_messages() %}
-            {% if pw_change %}
-                <p class="flashes text-center" style="color: rgb(37, 179, 132);">
-                    {% for msg in pw_change %}
-                        {{ msg }}
-                    {% endfor %}
-                </p>
-            {% endif %}
-        {% endwith %}
+        {% with name_change = get_flashed_messages() %}
+                        {% if name_change %}
+                            <p class="flashes text-center" style="color: rgb(37, 179, 132);">
+                                {% for msg in name_change %}
+                                    {{ msg }}
+                                {% endfor %}
+                            </p>
+                        {% endif %}
+                    {% endwith %}
         <form id="changeNameForm" class="profile-form" method="POST">
             <i class="fas fa-user prefix"></i>
             <label for="inputFirstname">First Name</label>
@@ -97,15 +97,6 @@
             </div>
             <div class="row mt-4">
                 <div class="col">
-                    {% with name_change = get_flashed_messages() %}
-                        {% if name_change %}
-                            <p class="flashes text-center" style="color: rgb(37, 179, 132);">
-                                {% for msg in name_change %}
-                                    {{ msg }}
-                                {% endfor %}
-                            </p>
-                        {% endif %}
-                    {% endwith %}
                     <!--PLEASE FOR THE LOVE OF GOD CHANGE THIS MARGIN TOP VALUEs-->
                     <button class="btn blue-gradient btn-block" style="margin-top: 30px;" type="submit">Update</button>
                 </div>
