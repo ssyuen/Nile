@@ -1,10 +1,12 @@
-from flask import Blueprint, render_template, request, redirect, flash, session, url_for
+from flask import Blueprint, render_template, request, redirect, flash, session, url_for, jsonify
 from functools import wraps
+import bcrypt
 from server import mysql
 import sys
 import string
 
 from routes.common.routes import remember_me
+from routes.user.routes import send_change_conf_email
 
 admin_bp = Blueprint('admin_bp', __name__,
                      template_folder='templates', static_folder='static')
@@ -27,18 +29,74 @@ def overview():
     return render_template('./adminOverview.html')
 
 
-@admin_bp.route('/change_name/')
+@admin_bp.route('/change_name/',methods=['GET','POST'])
 @admin_required
 @remember_me
 def change_name():
-    return render_template('./adminChangeName.html')
+    if request.method == 'GET':
+        return render_template('adminChangeName.html')
+    else:
+        conn = mysql.connect()
+        cursor = conn.cursor()
+
+        fname = request.form.get('inputFirstname')
+        firstLetter = fname[0].upper()
+        fname = firstLetter + fname[1:].lower()
+
+        lname = request.form.get('inputLastname')
+        firstLetter = lname[0].upper()
+        lname = firstLetter + lname[1:].lower()
+
+        session['firstName'] = fname
+        fname_query = '''
+        UPDATE admin SET firstname = %s WHERE email = %s
+        '''
+        cursor.execute(fname_query, (fname, session['email']))
+        conn.commit()
+
+        session['lastName'] = lname
+        lname_query = '''
+        UPDATE admin SET lastname = %s WHERE email = %s
+        '''
+        cursor.execute(lname_query, (lname, session['email']))
+        conn.commit()
+
+        conn.close()
+
+        send_change_conf_email(session['email'],session['firstName'])
+
+        flash('Your information has been recorded.')
+        return redirect(url_for('admin_bp.change_name'))
 
 
-@admin_bp.route('/change_pass/')
+@admin_bp.route('/change_pass/',methods=['GET','POST'])
 @admin_required
 @remember_me
 def change_pass():
-    return render_template('./adminChangePassword.html')
+    if request.method == 'POST':
+        conn = mysql.connect()
+        cursor = conn.cursor()
+
+        new_password = request.form.get('newPassword')
+        confirm_new_password = request.form.get('confirmNewPassword')
+
+        if new_password != confirm_new_password:
+            return jsonify({'Response': 400})
+        else:
+            new_password = bcrypt.hashpw(
+                new_password.encode('utf-8'), bcrypt.gensalt())
+
+            query = 'UPDATE admin SET pass=%s WHERE email=%s'
+            cursor.execute(query, (new_password, session['email']))
+            conn.commit()
+            conn.close()
+
+            send_change_conf_email(session['email'],session['firstName'])
+
+            flash('Your information has been recorded.')
+            return redirect(url_for('admin_bp.change_pass'))
+    else:
+        return render_template('adminChangePassword.html')
 
 @admin_bp.route('/manage_books/')
 @admin_required
