@@ -65,10 +65,10 @@ This is important to make sure you will not have to delete and re-clone the repo
     - [x] Tables in question: user, user_address, user_token, address, payment_method
 - [ ] Login
   - [x] Login Form
-  - [ ] Forget my password (testing that the complete process is correct)
-    - [ ] Properly sends confirmation email with reset password link
-      - [ ] Confirmation link should only reset password once
-  - [ ] Testing for correct login functionality (as existing user, wrong password, admin/user navigate to the correct page based on privileges (customer or admin))
+  - [x] Forget my password (testing that the complete process is correct)
+    - [x] Properly sends confirmation email with reset password link
+      - [x] Confirmation link should only reset password once
+  - [x] Testing for correct login functionality (as existing user, wrong password, admin/user navigate to the correct page based on privileges (customer or admin))
   - [ ] Remember me option works (BONUS)
 - [x] Logout
   - [x] Session ended correctly
@@ -119,7 +119,7 @@ for it. Read the instructions at the top of the script.
 - [ ] Back-end Development
   - [x] Registration
   - [x] Jinja2 with sessions in all html files
-  - [ ] If web user clicks on checkout, direct to login, redirect to checkout upon successful login
+  - [x] If web user clicks on checkout, direct to login, redirect to checkout upon successful login
   - [x] Install third party libraries (bootstrap, JQuery, JS)
   - [ ] Books
     - [x] Manage Books
