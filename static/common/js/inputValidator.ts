@@ -28,8 +28,7 @@ export class InputValidator {
 
         this._selectorPlace = selectorPlace;
 
-        for (let key in this.curr_validity) {
-            let value: boolean = this.curr_validity[key];
+        for (const [key, value] of this.curr_validity.entries()) {
             let req: boolean = document.getElementById(key).hasAttribute('required');
 
             if (req && !value) {

@@ -18,8 +18,7 @@ export class InputValidator {
                 One or more of the fields were incomplete or invalid
             </p>`;
         this._selectorPlace = selectorPlace;
-        for (let key in this.curr_validity) {
-            let value = this.curr_validity[key];
+        for (const [key, value] of this.curr_validity.entries()) {
             let req = document.getElementById(key).hasAttribute('required');
             if (req && !value) {
                 if (!$(selectorPlace).next("#somethingWrong").length) {
