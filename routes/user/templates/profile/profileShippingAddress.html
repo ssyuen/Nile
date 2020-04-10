@@ -137,12 +137,12 @@
                         </div>
                         <div class="form-row mt-3 w-100">
                             <div class="col-md-9 mb-2">
-                                <button id="updateShippingAddress{{ loop.index }}"
+                                <button id="updateShippingAddress{{ loop.index }}" type="submit"
                                         class="btn blue-gradient btn-block update-addr-btn">Save and Update
                                 </button>
                             </div>
                             <div class="col-md-3 mb-2">
-                                <button id="removeShippingAddress{{ loop.index }}"
+                                <button id="removeShippingAddress{{ loop.index }}" type="submit"
                                         class="btn btn-danger btn-block remove-addr-btn">Remove Address
                                 </button>
                             </div>
@@ -179,6 +179,7 @@
             </div>
         </div>
         <div class="card-body white">
+            <div class="info-message"></div>
             <form method="POST" id="createShippingAddressForm" action="/nileuser/shipping_address/">
                 <div class="form-row">
                     <div class="col">
@@ -242,7 +243,7 @@
                         </select>
                     </div>
                 </div>
-                <button id="createShippingAddress"
+                <button id="createShippingAddress" type="submit"
                         class="btn blue-gradient btn-block mb-2 mt-3">Add an address
                 </button>
             </form>

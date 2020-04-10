@@ -200,12 +200,12 @@
                         </div>
                         <div class="form-row mt-3 w-100">
                             <div class="col-md-9 mb-2">
-                                <button id="updatePaymentMethod{{ loop.index }}"
+                                <button id="updatePaymentMethod{{ loop.index }}" type="submit"
                                         class="btn blue-gradient btn-block update-pm-btn">Save and Update
                                 </button>
                             </div>
                             <div class="col-md-3 mb-2">
-                                <button id="removePaymentMethod{{ loop.index }}"
+                                <button id="removePaymentMethod{{ loop.index }}" type="submit"
                                         class="btn btn-danger btn-block remove-pm-btn">Remove Payment
                                 </button>
                             </div>
@@ -253,7 +253,7 @@
                                        name="cardHolderFirstName"
                                        style="text-transform: uppercase;"
                                        maxlength="45"
-                                       data-error="First Name must me more than one character"/>
+                                       data-error="First Name must me more than one character">
                                 <label for="createCardHolderFirstName">First Name on Card</label>
                             </div>
                         </div>
@@ -363,7 +363,7 @@
                         </div>
                     </div>
                 </div>
-                <button id="createPaymentMethodBtn"
+                <button id="createPaymentMethodBtn" type="submit"
                         class="btn blue-gradient btn-block mb-2 mt-3">Add Payment Method
                 </button>
             </form>
