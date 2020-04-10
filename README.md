@@ -69,7 +69,7 @@ This is important to make sure you will not have to delete and re-clone the repo
     - [x] Properly sends confirmation email with reset password link
       - [x] Confirmation link should only reset password once
   - [x] Testing for correct login functionality (as existing user, wrong password, admin/user navigate to the correct page based on privileges (customer or admin))
-  - [ ] Remember me option works (BONUS)
+  - [x] Remember me option works (BONUS)
 - [x] Logout
   - [x] Session ended correctly
 - [ ] Edit Profile

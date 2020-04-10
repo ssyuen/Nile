@@ -1,6 +1,6 @@
-from flask import Blueprint, render_template, request, jsonify, redirect, flash, session, url_for, g
-from functools import wraps
+from flask import Blueprint, render_template, request, jsonify, redirect, flash, session, url_for, g, make_response
 from flaskext.mysql import pymysql
+from functools import wraps
 import requests as r
 import bcrypt
 import sys
@@ -138,6 +138,10 @@ def login(ctx=None):
                     session['lastName'] = results[3]
                     session['firstName'] = results[2]
                     session['remember_me'] = remember_me
+
+                    if session['remember_me'] != None:
+                        session.permanent = True
+
                     # flash('Welcome, ' + session['firstName'] + '!')
                     ctx = request.args.get('next')
                     return redirect(ctx or url_for('common_bp.landing_page'))
@@ -175,6 +179,9 @@ def login(ctx=None):
                     session['lastName'] = results[3]
                     session['admin'] = False
                     session['remember_me'] = remember_me
+
+                    if session['remember_me'] != None:
+                        session.permanent = True
 
                     ctx = request.args.get('ctx')
                     if ctx is not None:
