@@ -20,6 +20,7 @@ export class InputValidator {
     }
 
     public validateAll(selectorPlace: string | HTMLElement | any): boolean {
+
         let errorHTML: string =
             `<p class="text-center text-danger" id="somethingWrong">
                 One or more of the fields were incomplete or invalid
@@ -43,7 +44,7 @@ export class InputValidator {
     }
 
     public setValidity(elem: HTMLInputElement, loc: HTMLElement | string, purpose: IPurpose, constr: boolean) {
-        this.curr_validity[elem.id] = this.validator(elem, loc, purpose['template'], constr);
+        this.curr_validity.set(elem.id, this.validator(elem, loc, purpose['template'], constr));
     }
 
     /*

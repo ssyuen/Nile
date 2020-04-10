@@ -32,7 +32,7 @@ export class InputValidator {
         return true;
     }
     setValidity(elem, loc, purpose, constr) {
-        this.curr_validity[elem.id] = this.validator(elem, loc, purpose['template'], constr);
+        this.curr_validity.set(elem.id, this.validator(elem, loc, purpose['template'], constr));
     }
     /*
         Generalized validation function
