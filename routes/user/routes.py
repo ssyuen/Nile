@@ -129,7 +129,8 @@ def change_pass():
         confirm_new_password = request.form.get('confirmNewPassword')
 
         if new_password != confirm_new_password:
-            return jsonify({'Response': 400})
+            flash('There was an error in trying to record your information.')
+            return redirect(url_for('user_bp.change_pass'))
         else:
             new_password = bcrypt.hashpw(
                 new_password.encode('utf-8'), bcrypt.gensalt())
