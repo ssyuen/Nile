@@ -5,9 +5,9 @@
   https://www.nilebookstore.com
 </p>
 
-## DELIVERABLE 6 EXECUTION INSTRUCTIONS AND REQUIREMENTS
+# DELIVERABLE 6 EXECUTION INSTRUCTIONS AND REQUIREMENTS
 
-### REQUIREMENTS
+## REQUIREMENTS
 
 The following is required to run this project:
 
@@ -15,17 +15,17 @@ The following is required to run this project:
   - Using pip3 (or pip if you default to Python 3.7), install pipenv using this command: `pip3 install pipenv` or `pip install pipenv`.
     - If you have trouble running this or get Permission denied, then try the following: `pip install pipenv -u`
 
-### INSTRUCTIONS
+## INSTRUCTIONS
 
 1. Unzip/decompress the file
 
 2. Go to INTO the directory of the unzipped file.'
 
-3. If you are on windows, run the following command in Powershell to set up the appropriate environment variables: 
-``Set-Content ./test.txt "DB=niledb`nDB_HOST=localhost`nMAIL_SERVER=smtp.gmail.com`nMAIL_PORT=465`nMAIL_USER=rootatnilebookstore@gmail.com`nMAIL_PASS=Testing1``
+3. If you are on windows, run the following command in Powershell to set up the appropriate environment variables:
+``Set-Content ./.env "DB=niledb`nDB_HOST=localhost`nMAIL_SERVER=smtp.gmail.com`nMAIL_PORT=465`nMAIL_USER=rootatnilebookstore@gmail.com`nMAIL_PASS=Testing1``
 where the `` `n `` is the newline break.
 
-4. If you are on mac or some variant of linux, run the following command to set up the appropriate environment variables:   
+4. If you are on mac or some variant of linux, run the following command to set up the appropriate environment variables:
 `printf "DB=niledb\nDB_HOST=localhost\nMAIL_SERVER=smtp.gmail.com\nMAIL_PORT=465\nMAIL_USER=rootatnilebookstore@gmail.com\nMAIL_PASS=Testing1" > .env`
 
 5. If you are on windows, run this to start the server: `pipenv run windows_server`
@@ -44,13 +44,71 @@ where the `` `n `` is the newline break.
 
 5. `pipenv install` will install the dependencies (i.e. flask and pandas)
 
-6. Make sure when you are done with development, run `exit` to exit out of the virtual environment. 
+6. Make sure when you are done with development, run `exit` to exit out of the virtual environment.
 This is important to make sure you will not have to delete and re-clone the repository.
+
+### Testing
+
+- [ ] Registration
+  - [ ] Registration Form (Completeness, showing/indicating all mandatory/optional fields)
+    - [ ] Form cannot be submitted with empty required fields FRONT END NEEDS TO BE LOOKED INTO BUT NO EFFECT ON BACKEND SO FAR
+    - [ ] Input validation on credit card and zipcode
+    - [x] Input validation on password and confirm password
+    - [x] Input validation on email
+    - [ ] If you click on Add Shipping Address, fill out fields in Address, then unclick Add Shipping Address, then shipping address is NOT submitted
+      - [ ] Tables in question: address,  user_address
+    - [ ] If you click on Add Payment Method, fill out fields in Payment, then unclick Add Payment Method, then payment method and billing address is NOT submitted
+      - [ ] Tables in question: payment_method, user_address, address
+  - [x] Sending the confirmation email
+    - [x] Confirmation email should only verify the user once, so multiple clicks on verification link should not break application
+  - [x] Test that user data is stored in the database with correct status (Active/Inactive)
+    - [x] Tables in question: user, user_address, user_token, address, payment_method
+- [x] Login
+  - [x] Login Form
+  - [x] Forget my password (testing that the complete process is correct)
+    - [x] Properly sends confirmation email with reset password link
+      - [x] Confirmation link should only reset password once
+  - [x] Testing for correct login functionality (as existing user, wrong password, admin/user navigate to the correct page based on privileges (customer or admin))
+  - [x] Remember me option works (BONUS)
+- [x] Logout
+  - [x] Session ended correctly
+- [ ] Edit Profile
+  - [ ] Edit Profile Form (Completeness and correctness)
+    - [x] Information should be pulled from the database and displayed on form.
+    - Users may change:
+      - [ ] First and Last Name
+      - [ ] Billing Address
+      - [ ] Password
+      - [ ] Payment Card/Information
+  - [x] Users should NOT be able to modify the email address
+  - [x] Information should be saved in the database correctly.
+    - [x] Tables in question: user, payment_method, user_address
+- [x] Non-Functional Requirements
+  - [x] Usability (UI/UX)
+    - [x] The look and feel of the UI
+    - [x] Guidance
+    - [x] Helpful/Positive Prompts
+    - [x] Error Messages
+      - List of errors
+        - User tries to login with:
+          - [x] Wrong email: `Your login details were not found. Please try again.`
+          - [x] Wrong password: `Your login details were not found. Please try again.`
+        - User tries to access:
+          - [x] Login WITHOUT being verified: `You must verifiy your account before being able to login!`
+          - [x] Admin areas/urls: `You need to be an admin to access that area!`
+        - Admin tries to access:
+          - [x] User specific areas: `Please login using a non-administrative account to access this feature.`
+    - [x] Confirmation Messages
+      - [x] Registration confirmation page
+  - [x] Security Requirements
+    - [x] User Privileges (based points given during login process)
+    - [x] Users should be asked to provide their current password if they selected to CHANGE their password
+    - [x] Password and Payment Method/Information should be in encrypted in the database
+    - [x] In case of changing profile information, send an email to the user that the profile has been changed (BONUS)
 
 ## Execution
 
 - Assuming you are not in the virtual environment, go to the root directory of the project and run `pipenv run server`. This just runs the script without you having to start a virtual environment.
-
 
 - To start the server, make sure you have done `pipenv shell` in the top-level directory of nile, and run `./start.sh`
 - If `DB_USER` and `DB_PASS` are not found in the local machine environment variables, the shell script will prompt you
@@ -61,7 +119,7 @@ for it. Read the instructions at the top of the script.
 - [ ] Back-end Development
   - [x] Registration
   - [x] Jinja2 with sessions in all html files
-  - [ ] If web user clicks on checkout, direct to login, redirect to checkout upon successful login
+  - [x] If web user clicks on checkout, direct to login, redirect to checkout upon successful login
   - [x] Install third party libraries (bootstrap, JQuery, JS)
   - [ ] Books
     - [x] Manage Books

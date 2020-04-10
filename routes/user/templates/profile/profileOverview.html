@@ -41,7 +41,7 @@
                 <div class="text">
                     Name:
                     <strong>{{ session['firstName'] }} {{ session['lastName'] }}</strong>
-                    <a class="ml-3" href="/change_name/">EDIT</a>
+                    <a class="ml-3" href="{{ url_for('user_bp.change_name') }}">EDIT</a>
                     <br>
                     Email:
                     <strong>{{ session['email'] }}</strong> <br>
@@ -51,7 +51,7 @@
             <i class="fa fa-map-marker text-muted"></i> My Shipping Address:
             <div class="text mb-4" id="myShippingAddress">
                 Tashkent city, Street name, Building 123, House 321
-                <a class="ml-3" href="/shipping_address/">EDIT</a>
+                <a class="ml-3" href="{{ url_for('user_bp.shipping_address') }}">EDIT</a>
             </div>
             <article class="card-group">
                 <div class="card mr-3 bg-light" id="ordersCard">
@@ -104,7 +104,7 @@
                     </figure>
                 </div> <!-- col.// -->
             </div> <!-- row.// -->
-            <a href="/nileuser/order_history/">
+            <a href="{{ url_for('user_bp.order_history') }}">
                 <button class="btn btn-outline-primary waves-effect ml-0">
                     See all orders
                 </button>

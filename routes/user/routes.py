@@ -27,6 +27,15 @@ def login_required(f):
 
     return wrapped_func
 
+def user_only(f):
+    @wraps(f)
+    def wrapped_func(*args, **kws):
+        if 'admin' in session and session['admin']:
+            flash('Please login using a non-administrative account to access this feature.')
+            return redirect(url_for('common_bp.landing_page'))
+        else:
+            return f(*args, **kws)
+    return wrapped_func
 
 def send_change_conf_email(recipient,recipient_fname,sender='rootatnilebookstore@gmail.com'):
     current_time = datetime.now()
@@ -41,14 +50,16 @@ def send_change_conf_email(recipient,recipient_fname,sender='rootatnilebookstore
 @login_required
 @cart_session
 @remember_me
+@user_only
 def checkout():
-    return redirect(url_for('user_bp.checkout'))
+    return render_template('checkout.html')
 
 
 @user_bp.route('/base_profile/', methods=['GET'])
 @login_required
 @cart_session
 @remember_me
+@user_only
 def base_profile():
     return render_template('profile/profileBase.html')
 
@@ -57,6 +68,7 @@ def base_profile():
 @login_required
 @cart_session
 @remember_me
+@user_only
 def overview():
     return render_template('profile/profileOverview.html')
 
@@ -65,6 +77,7 @@ def overview():
 @login_required
 @cart_session
 @remember_me
+@user_only
 def change_name():
     if request.method == 'GET':
         return render_template('profile/profileChangeName.html')
@@ -106,6 +119,7 @@ def change_name():
 @login_required
 @cart_session
 @remember_me
+@user_only
 def change_pass():
     if request.method == 'POST':
         conn = mysql.connect()
@@ -137,6 +151,7 @@ def change_pass():
 @login_required
 @cart_session
 @remember_me
+@user_only
 def order_history():
     # Connect to niledb
     conn = mysql.connect()
@@ -163,6 +178,7 @@ def order_history():
 @login_required
 @cart_session
 @remember_me
+@user_only
 def shipping_address():
     conn = mysql.connect()
     cursor = conn.cursor()
@@ -263,6 +279,7 @@ def shipping_address():
 @login_required
 @cart_session
 @remember_me
+@user_only
 def payment_methods():
     conn = mysql.connect()
     cursor = conn.cursor()

@@ -1,6 +1,6 @@
-from flask import Blueprint, render_template, request, jsonify, redirect, flash, session, url_for, g
-from functools import wraps
+from flask import Blueprint, render_template, request, jsonify, redirect, flash, session, url_for, g, make_response
 from flaskext.mysql import pymysql
+from functools import wraps
 import requests as r
 import bcrypt
 import sys
@@ -138,6 +138,10 @@ def login(ctx=None):
                     session['lastName'] = results[3]
                     session['firstName'] = results[2]
                     session['remember_me'] = remember_me
+
+                    if session['remember_me'] != None:
+                        session.permanent = True
+
                     # flash('Welcome, ' + session['firstName'] + '!')
                     ctx = request.args.get('next')
                     return redirect(ctx or url_for('common_bp.landing_page'))
@@ -176,6 +180,9 @@ def login(ctx=None):
                     session['admin'] = False
                     session['remember_me'] = remember_me
 
+                    if session['remember_me'] != None:
+                        session.permanent = True
+
                     ctx = request.args.get('ctx')
                     if ctx is not None:
                         return redirect(url_for('user_bp.' + ctx))
@@ -201,10 +208,7 @@ def login(ctx=None):
 @remember_me
 def logout():
     if 'logged_in' in session and session['logged_in']:
-        if 'admin' in session:
-            session['admin'] = False
-        session['logged_in'] = False
-        session['admin'] = False
+        session.clear()
         flash('Logged out successfully.')
         return redirect('/')
     flash('Error logging out.')
@@ -489,19 +493,30 @@ def reset_pass(verify_token):
         # extract token from url
         verification_token = request.path[12:]
 
+        user_id_query = '''(SELECT userID_utoken_FK FROM user_token WHERE user_token.token = %s)'''
+        cursor.execute(user_id_query,(verification_token))
+        try:
+            user_id = cursor.fetchall()[0][0]
+        except IndexError:
+            flash('You have already reset your password using this verification link!')
+            if 'logged_in' in session and session['logged_in']:
+                return redirect(url_for('common_bp.landing_page'))
+            else:
+                return redirect(url_for('common_bp.login'))
+
         # extract password from request
         confirmNewPassword = request.form.get('confirmNewPassword')
         confirmNewPassword = bcrypt.hashpw(confirmNewPassword.encode('utf-8'), bcrypt.gensalt())
         
         print(confirmNewPassword)
         # update password in user
-        query = 'UPDATE user SET pass = %s WHERE id = (SELECT id FROM user WHERE email = %s)'
-        cursor.execute(query, (confirmNewPassword,session['email']))
+        query = 'UPDATE user SET pass = %s WHERE user.id = %s'
+        cursor.execute(query, (confirmNewPassword,user_id))
         conn.commit()
 
         # delete user/token pair from user_token
-        query = 'DELETE FROM user_token WHERE userID_utoken_FK = (SELECT userID_utoken_FK FROM user_token WHERE user_token.token = %s) AND token = %s'
-        cursor.execute(query,(verification_token,verification_token))
+        query = 'DELETE FROM user_token WHERE userID_utoken_FK = %s AND token = %s'
+        cursor.execute(query,(user_id,verification_token))
         conn.commit()
 
         conn.close()

@@ -7,7 +7,9 @@
     <script src="/static/user/js/browse.js"></script>
 {% endblock %}
 
-{% with valid_login = get_flashed_messages() %}
+{% block mainTitle %}
+
+    {% with valid_login = get_flashed_messages() %}
     {% if valid_login %}
         <p class="flashes h5 text-center" style="color: red;">
             {% for msg in valid_login %}
@@ -15,9 +17,8 @@
             {% endfor %}
         </p>
     {% endif %}
-{% endwith %}
+    {% endwith %}
 
-{% block mainTitle %}
     <div class="text-left" id="content-header">
         <p class="primary-lg" id="account-holder">Browse Our Selection.</p>
     </div>
