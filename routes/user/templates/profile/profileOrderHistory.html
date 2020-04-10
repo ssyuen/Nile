@@ -3,9 +3,8 @@
 
 {% block head %}
     {{ super() }}
-    <style>
-
-    </style>
+    <link rel="stylesheet" type="text/css" href="/static/mdb/css/addons/datatables.min.css">
+    <script type="text/javascript" src="/static/mdb/js/addons/datatables.min.js"></script>
 {% endblock %}
 
 {% block content %}
@@ -86,4 +85,5 @@
             </table>
         </div>
     </div>
+    <script type="module" src="/static/user/js/profile/orderHistory.js"></script>
 {% endblock %}
