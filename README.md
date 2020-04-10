@@ -53,7 +53,7 @@ This is important to make sure you will not have to delete and re-clone the repo
   - [ ] Registration Form (Completeness, showing/indicating all mandatory/optional fields)
     - [ ] Form cannot be submitted with empty required fields
     - [ ] Input validation on credit card and zipcode
-    - [ ] Input validation on password and confirm password
+    - [x] Input validation on password and confirm password
     - [ ] Input validation on email
     - [ ] If you click on Add Shipping Address, fill out fields in Address, then unclick Add Shipping Address, then shipping address is NOT submitted
       - [ ] Tables in question: address,  user_address
@@ -91,10 +91,10 @@ This is important to make sure you will not have to delete and re-clone the repo
     - [ ] Error Messages
       - List of errors
         - User tries to login with:
-          - [ ] Wrong email:
-          - [ ] Wrong password
+          - [x] Wrong email: `Your login details were not found. Please try again.`
+          - [x] Wrong password: `Your login details were not found. Please try again.`
         - User tries to access:
-          - [ ] Login WITHOUT being verified or registered
+          - [x] Login WITHOUT being verified: `You must verifiy your account before being able to login!`
           - [ ] Admin areas/urls
     - [ ] Confirmation Messages
   - [ ] Security Requirements
