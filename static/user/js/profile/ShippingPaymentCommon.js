@@ -5,7 +5,7 @@ export var PostFlags;
     PostFlags["CREATE"] = "CREATE_FLAG";
 })(PostFlags || (PostFlags = {}));
 export function submitRemoval(form, ...names) {
-    $(form).submit(function (e) {
+    $(form).on("submit", function (e) {
         let ans = confirm("Are you sure you would like to remove this?");
         if (!ans) {
             e.preventDefault();
@@ -20,12 +20,22 @@ export function submitRemoval(form, ...names) {
     });
 }
 export function submitUpdate(form, ...names) {
-    $(form).submit(function (e) {
+    $(form).on("submit", function (e) {
         for (let n of names) {
             let x = $("<input>").attr("type", "hidden").attr("name", n['name']).val(n['value']);
             $(form).append(x);
         }
         let flag = $("<input>").attr("type", "hidden").attr("name", "form_flag").val(PostFlags.EDIT);
+        $(form).append(flag);
+    });
+}
+export function submit(form, ...names) {
+    $(form).on("submit", function (e) {
+        for (let n of names) {
+            let x = $("<input>").attr("type", "hidden").attr("name", n['name']).val(n['value']);
+            $(form).append(x);
+        }
+        let flag = $("<input>").attr("type", "hidden").attr("name", "form_flag").val(PostFlags.CREATE);
         $(form).append(flag);
     });
 }
@@ -55,6 +65,9 @@ $(":input").click(function (event) {
 // });
 /* LETS DO THE INPUT CHANGE DETECTION HERE */
 var _isDirty = false;
+export function isDirty() {
+    return _isDirty;
+}
 $(':input').change(function () {
     _isDirty = true;
 });
