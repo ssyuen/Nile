@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% block base_title %}Book Title Here{% endblock %}
+{% block base_title %}{{ request.args.get('title') }}{% endblock %}
 
 {% block base_head %}
     {{ super() }}
