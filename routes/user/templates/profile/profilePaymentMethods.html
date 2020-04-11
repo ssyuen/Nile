@@ -19,6 +19,15 @@
             margin-top: 0.5rem !important;
         }
 
+        .md-form input:read-only, .card-specific input:read-only {
+            background-color: #e9e9e9 !important;
+            color: #000000;
+        }
+
+        .md-form input:read-only ~ label.active {
+            background: transparent !important;
+        }
+
         @media (max-width: 480px) {
             .edit-btn {
                 float: none !important;
@@ -49,13 +58,16 @@
             <div class="card-image">
                 <div class="text-white mask card-contextual-info">
                     <div class="row">
-                        <div class="col align-self-center">
-                            <div class="first-content p-3">
-                                <h4 class="card-title complement">{{ info['lastname'] }}
-                                    - {{ info['cardType'] }} {{ info['cardNumber'] }}</h4>
+                        <div class="col-8 align-self-center">
+                            <div class="first-content p-3 align-content-center d-inline-flex h-100">
+                                <i class="align-self-center mr-3 d-inline fab fa-3x fa-cc-{{ info['cardType'].lower() }}"
+                                   style="color: #e0e0e0"></i>
+                                <h4 class="complement card-title d-inline align-self-center mb-0">
+                                    {{ info['lastname'] }} - {{ info['cardType'] }} {{ info['cardNumber'] }}
+                                </h4>
                             </div>
                         </div>
-                        <div class="col align-self-center ">
+                        <div class="col-4 align-self-center">
                             <div class="first-content p-3 float-right">
                                 <button class="btn blue-gradient btn-circle btn-md"
                                         data-toggle="collapse"
@@ -64,6 +76,7 @@
                                         aria-controls="target{{ info['cardNumber'] }}{{ info['billingAddressID'] }}"
                                         aria-expanded="false"><i
                                         class="fas fa-angle-down fa-2x collapse-btn-ico"></i>
+
                                 </button>
                             </div>
                         </div>
@@ -136,7 +149,6 @@
                             <div class="form-row">
                                 <div class="col">
                                     <div class="form-group md-form md-outline">
-                                        <label for="billingStreetAddress{{ loop.index }}">Street Address</label>
                                         <input type="text" class="form-control targetStreet1"
                                                id="billingStreetAddress{{ loop.index }}"
                                                required
@@ -144,44 +156,45 @@
                                                maxlength="45"
                                                value="{{ info['street1'] }}" readonly
                                                data-error="Street Address cannot be empty">
+                                        <label for="billingStreetAddress{{ loop.index }}">Street Address</label>
                                     </div>
                                 </div>
                             </div>
                             <div class="form-row">
                                 <div class="col">
                                     <div class="form-group md-form md-outline">
-                                        <label for="billingApartmentOrSuite{{ loop.index }}">Apartment or Suite
-                                            (Optional)</label>
                                         <input type="text" class="form-control targetStreet2"
                                                id="billingApartmentOrSuite{{ loop.index }}"
                                                value="{{ info['street2'] }}" readonly
                                                maxlength="45"
                                                name="billingApartmentOrSuite" data-success="This field is optional">
+                                        <label for="billingApartmentOrSuite{{ loop.index }}">Apartment or Suite
+                                            (Optional)</label>
                                     </div>
                                 </div>
                             </div>
                             <div class="form-row">
                                 <div class="col">
                                     <div class="form-group md-form md-outline">
-                                        <label for="billlingAddressZip{{ loop.index }}">ZIP or Postal code</label>
                                         <input type="text" class="form-control targetZip"
                                                id="billlingAddressZip{{ loop.index }}"
                                                readonly
                                                maxlength="10"
                                                name="billingAddressZip" value="{{ info['zip'] }}">
+                                        <label for="billlingAddressZip{{ loop.index }}">ZIP or Postal code</label>
                                     </div>
                                 </div>
                             </div>
                             <div class="form-row">
                                 <div class="form-group col-md-8">
                                     <div class="form-group md-form md-outline">
-                                        <label for="billingAddressCity{{ loop.index }}">City</label>
                                         <input type="text" class="form-control targetCity"
                                                id="billingAddressCity{{ loop.index }}"
                                                required readonly
                                                maxlength="45"
                                                value="{{ info['city'] }}"
                                                name="billingAddressCity">
+                                        <label for="billingAddressCity{{ loop.index }}">City</label>
                                     </div>
                                 </div>
                                 <div class="form-group col-md-2" style="margin-top: 8px">
