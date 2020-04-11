@@ -75,8 +75,10 @@ export function promptConfirm(e: Event) {
 export const GeneralFormValidity = new Map<string, RegistrationInputValidator>();
 
 $(":input").click(function (event) {
-    if ($(this).attr("readonly") || $(this).attr("readonly")) {
+    if ($(this).attr("readonly") || $(this).attr("disabled")) {
         alert("Click the EDIT button to change values");
+        event.preventDefault();
+        return false;
     }
 });
 

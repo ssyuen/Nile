@@ -56,8 +56,10 @@ export function promptConfirm(e) {
 }
 export const GeneralFormValidity = new Map();
 $(":input").click(function (event) {
-    if ($(this).attr("readonly") || $(this).attr("readonly")) {
+    if ($(this).attr("readonly") || $(this).attr("disabled")) {
         alert("Click the EDIT button to change values");
+        event.preventDefault();
+        return false;
     }
 });
 // $(".collapse-btn-ico").click(function () {
