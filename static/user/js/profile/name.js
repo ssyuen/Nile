@@ -17,22 +17,27 @@ $(FORM).on("submit", function (e) {
         e.preventDefault();
         return;
     }
+    $("#changeNameBtn").attr("disabled", "true");
 });
-Array('input', 'focusin').forEach((evt) => {
-    F_NAME.addEventListener(evt, function () {
-        let loc = "#inputFirstnameGroup";
-        vc.setValidity(this, loc, PURPOSE.Firstname, PURPOSE.Firstname.constraint(this.value));
-        $(F_NAME).attr("required", "true");
+function onlyOnEdit() {
+    Array('input', 'focusin').forEach((evt) => {
+        F_NAME.addEventListener(evt, function () {
+            $(this).attr("required", "true");
+            vc.setValidity(this, this, PURPOSE.Firstname, PURPOSE.Firstname.constraint(this.value));
+        });
+        L_NAME.addEventListener(evt, function () {
+            $(this).attr("required", "false");
+            vc.setValidity(this, this, PURPOSE.Lastname, PURPOSE.Lastname.constraint(this.value));
+        });
     });
-    L_NAME.addEventListener(evt, function () {
-        let loc = "#inputLastnameGroup";
-        vc.setValidity(this, loc, PURPOSE.Lastname, PURPOSE.Lastname.constraint(this.value));
-        $(L_NAME).attr("required", "false");
-    });
-});
+}
 EDIT.addEventListener("click", function () {
     F_NAME.removeAttribute("readonly");
     F_NAME.setAttribute("aria-readonly", "false");
     L_NAME.removeAttribute("readonly");
     L_NAME.setAttribute("aria-readonly", "false");
+    onlyOnEdit(); //Register the event listeners only when edit has been clicked
+});
+$(function () {
+    $(".fa-user").removeClass("active");
 });
