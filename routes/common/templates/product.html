@@ -13,13 +13,18 @@
         .info-heading {
             font-weight: bold;
         }
+
+        #author {
+            font-size: medium;
+            font-weight: bold
+        }
     </style>
 {% endblock %}
 
 {% block mainTitle %}
     <div class="text-left" id="content-header">
-        <p class="primary-lg" id="bookTitle">{{ request.args.get('title') }}</p>
-        <p class="complement-light" id="type">
+        <p class="primary-lg" id="bookTitle">{{ request.args.get('title')|truncate(120, true) }}</p>
+        <p class="complement" id="author">
             <span>Author:&nbsp&nbsp</span>{{ request.args.get('author_name') }}
         </p>
     </div>
@@ -30,7 +35,8 @@
         <div class="row">
             <div class="col-lg-3">
                 <aside>
-                    <img class="responsive w-100" src="{{'/static/images/CoverImages/' + request.args.get('nile_cover_ID') + '.jpg' }}" alt="">
+                    <img class="responsive w-100"
+                         src="{{ '/static/images/CoverImages/' + request.args.get('nile_cover_ID') + '.jpg' }}" alt="">
 
                     <li class="list-group-item mt-3 w-100 bg-dark text-white rounded">
 
@@ -64,6 +70,12 @@
                         <!-- Title -->
                         <h4 class="card-title complement font-weight-bold mb-4">Book Information</h4>
                         <hr>
+
+                        <span class="complement-light info-heading">Title:</span>
+                        <p class="card-text" style="font-size: large">
+                            {{ request.args.get('title') }}
+                        </p>
+
                         <!-- Text -->
                         <span class="complement-light info-heading">Summary:</span>
                         <p class="card-text" style="font-size: large">
@@ -100,11 +112,6 @@
                         <span class="complement-light info-heading">Genre:</span>
                         <p class="card-text">
                             {{ request.args.get('genre') }}
-                        </p>
-
-                        <span class="complement-light info-heading">Reviews:</span>
-                        <p class="card-text">
-                            <small class="text-muted">&#9733; &#9733; &#9733; &#9733; &#9734;</small>
                         </p>
                     </div>
                 </div>
