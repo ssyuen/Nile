@@ -396,9 +396,9 @@ VALUES (2, 'BILLING');
 
 
 INSERT INTO admin (`id`, `email`, `firstName`, `lastName`, `pass`)
-VALUES (3, 'manu@nile.com', 'Manu', 'Puduvalli', '$2b$12$TrQ7pMqXkUFKFihGfBV6Y.bi5KqKOp0kaBrKbBXZ1FUg.huCFNJ2e');
+VALUES (1, 'manu@nile.com', 'Manu', 'Puduvalli', '$2b$12$TrQ7pMqXkUFKFihGfBV6Y.bi5KqKOp0kaBrKbBXZ1FUg.huCFNJ2e');
 INSERT INTO admin (`id`, `email`, `firstName`, `lastName`, `pass`)
-VALUES (3, 'sam@nile.com', 'Sam', 'Yuen', '$2b$12$TrQ7pMqXkUFKFihGfBV6Y.bi5KqKOp0kaBrKbBXZ1FUg.huCFNJ2e');
+VALUES (2, 'sam@nile.com', 'Sam', 'Yuen', '$2b$12$TrQ7pMqXkUFKFihGfBV6Y.bi5KqKOp0kaBrKbBXZ1FUg.huCFNJ2e');
 
 
 
