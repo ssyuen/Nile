@@ -107,33 +107,53 @@ CREATE TABLE IF NOT EXISTS `niledb`.`genre`
 
 
 -- -----------------------------------------------------
+-- Table `niledb`.`product_type`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `niledb`.`product_type`
+(
+    `id`   INT         NOT NULL AUTO_INCREMENT,
+    `type` VARCHAR(50) NOT NULL,
+    PRIMARY KEY (`id`),
+    UNIQUE INDEX `product_type_type_uindex` (`type` ASC) VISIBLE
+)
+    ENGINE = InnoDB
+    AUTO_INCREMENT = 1
+    DEFAULT CHARACTER SET = utf8;
+
+
+-- -----------------------------------------------------
 -- Table `niledb`.`book`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `niledb`.`book`
 (
     `ISBN`              VARCHAR(20)                                                        NOT NULL,
-    `bindingID_book_FK` INT                                                                NULL DEFAULT NULL,
-    `genreID_book_FK`   INT                                                                NULL DEFAULT NULL,
-    `title`             VARCHAR(200) CHARACTER SET 'utf8mb4' COLLATE 'utf8mb4_0900_ai_ci'  NULL DEFAULT NULL,
-    `price`             DOUBLE                                                             NULL DEFAULT NULL,
+    `bindingID_book_FK` INT                                                                NOT NULL,
+    `genreID_book_FK`   INT                                                                NOT NULL,
+    `typeID_book_FK`    INT                                                                NOT NULL,
+    `title`             VARCHAR(200) CHARACTER SET 'utf8mb4' COLLATE 'utf8mb4_0900_ai_ci'  NOT NULL,
+    `price`             DECIMAL(12, 2)                                                     NOT NULL,
     `numPages`          INT                                                                NULL DEFAULT NULL,
     `nile_cover_ID`     VARCHAR(75)                                                        NULL DEFAULT NULL,
     `edition`           VARCHAR(45) CHARACTER SET 'utf8mb4' COLLATE 'utf8mb4_0900_ai_ci'   NULL DEFAULT NULL,
     `publisher`         VARCHAR(255)                                                       NULL DEFAULT NULL,
     `publicationDate`   DATE                                                               NULL DEFAULT NULL,
-    `stock`             INT                                                                NULL DEFAULT NULL,
-    `authorFirstName`   VARCHAR(45) CHARACTER SET 'utf8mb4' COLLATE 'utf8mb4_0900_ai_ci'   NULL DEFAULT NULL,
+    `stock`             INT                                                                NOT NULL,
+    `authorFirstName`   VARCHAR(45) CHARACTER SET 'utf8mb4' COLLATE 'utf8mb4_0900_ai_ci'   NOT NULL,
     `authorLastName`    VARCHAR(45) CHARACTER SET 'utf8mb4' COLLATE 'utf8mb4_0900_ai_ci'   NULL DEFAULT NULL,
     `summary`           VARCHAR(2000) CHARACTER SET 'utf8mb4' COLLATE 'utf8mb4_0900_ai_ci' NULL DEFAULT NULL,
     PRIMARY KEY (`ISBN`),
-    INDEX `bindingID_book_FK_idx` (`bindingID_book_FK` ASC) VISIBLE,
     INDEX `genreID_book_FK_idx` (`genreID_book_FK` ASC) VISIBLE,
+    INDEX `typeID_book_FK_idx` (`typeID_book_FK` ASC) VISIBLE,
+    INDEX `bindingID_book_FK_idx` (`bindingID_book_FK` ASC) VISIBLE,
     CONSTRAINT `bindingID_book_FK`
         FOREIGN KEY (`bindingID_book_FK`)
             REFERENCES `niledb`.`binding` (`id`),
     CONSTRAINT `genreID_book_FK`
         FOREIGN KEY (`genreID_book_FK`)
-            REFERENCES `niledb`.`genre` (`id`)
+            REFERENCES `niledb`.`genre` (`id`),
+    CONSTRAINT `typeID_book_FK`
+        FOREIGN KEY (`typeID_book_FK`)
+            REFERENCES `niledb`.`product_type` (`id`)
 )
     ENGINE = InnoDB
     DEFAULT CHARACTER SET = utf8;
@@ -376,7 +396,9 @@ VALUES (2, 'BILLING');
 
 
 INSERT INTO admin (`id`, `email`, `firstName`, `lastName`, `pass`)
-VALUES (3, 'root@nile.com', 'Manu', 'Puduvalli', '$2b$12$TrQ7pMqXkUFKFihGfBV6Y.bi5KqKOp0kaBrKbBXZ1FUg.huCFNJ2e');
+VALUES (3, 'manu@nile.com', 'Manu', 'Puduvalli', '$2b$12$TrQ7pMqXkUFKFihGfBV6Y.bi5KqKOp0kaBrKbBXZ1FUg.huCFNJ2e');
+INSERT INTO admin (`id`, `email`, `firstName`, `lastName`, `pass`)
+VALUES (3, 'sam@nile.com', 'Sam', 'Yuen', '$2b$12$TrQ7pMqXkUFKFihGfBV6Y.bi5KqKOp0kaBrKbBXZ1FUg.huCFNJ2e');
 
 
 
