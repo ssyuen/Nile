@@ -376,6 +376,60 @@ VALUES (2, 'BILLING');
 
 
 
+INSERT INTO genre (`id`, `genre`)
+VALUES (1, 'Horror');
+INSERT INTO genre (`id`, `genre`)
+VALUES (2, 'Adventure');
+INSERT INTO genre (`id`, `genre`)
+VALUES (3, 'Fantasy');
+INSERT INTO genre (`id`, `genre`)
+VALUES (4, 'Romance');
+INSERT INTO genre (`id`, `genre`)
+VALUES (5, 'Sci-Fi');
+INSERT INTO genre (`id`, `genre`)
+VALUES (6, 'Dystopian');
+INSERT INTO genre (`id`, `genre`)
+VALUES (7, 'Humor');
+INSERT INTO genre (`id`, `genre`)
+VALUES (8, 'Non-fiction');
+INSERT INTO genre (`id`, `genre`)
+VALUES (9, 'Biography');
+INSERT INTO genre (`id`, `genre`)
+VALUES (10, 'Cartoon');
+INSERT INTO genre (`id`, `genre`)
+VALUES (11, 'Graphic Novels');
+INSERT INTO genre (`id`, `genre`)
+VALUES (12, 'Children');
+INSERT INTO genre (`id`, `genre`)
+VALUES (13, 'Anthology');
+
+
+-- Insert binding
+INSERT INTO `binding`(`binding`)
+VALUES ('Textbook');
+INSERT INTO `binding`(`binding`)
+VALUES ('Novel');
+INSERT INTO `binding`(`binding`)
+VALUES ('E-book (Electronic)');
+INSERT INTO `binding`(`binding`)
+VALUES ('Audio CD');
+INSERT INTO `binding`(`binding`)
+VALUES ('Audiobook');
+INSERT INTO `binding`(`binding`)
+VALUES ('Paperback');
+INSERT INTO `binding`(`binding`)
+VALUES ('Hardback');
+
+
+INSERT INTO status (`id`, `status`)
+VALUES (1, 'REGISTERED');
+INSERT INTO status (`id`, `status`)
+VALUES (3, 'SUSPENDED');
+INSERT INTO status (`id`, `status`)
+VALUES (2, 'VERIFIED');
+
+
+
 INSERT INTO admin (`id`, `email`, `firstName`, `lastName`, `pass`)
 VALUES (3, 'root@nile.com', 'Manu', 'Puduvalli', '$2b$12$TrQ7pMqXkUFKFihGfBV6Y.bi5KqKOp0kaBrKbBXZ1FUg.huCFNJ2e');
 
@@ -429,42 +483,4 @@ INSERT INTO book (`ISBN`, `bindingID_book_FK`, `genreID_book_FK`, `title`, `pric
 VALUES ('9781984837158', 7, 12, 'The BFG', 14.99, 224, 'NILE_CI_0007', NULL, 'Puffin Books ', '2019-09-03', 522,
         'Ronald', 'Dahl',
         'The BFG is no ordinary bone-crunching giant. He is far too nice and jumbly. It\'s lucky for Sophie that he is.');
-
-
-
-INSERT INTO genre (`id`, `genre`)
-VALUES (1, 'Horror');
-INSERT INTO genre (`id`, `genre`)
-VALUES (2, 'Adventure');
-INSERT INTO genre (`id`, `genre`)
-VALUES (3, 'Fantasy');
-INSERT INTO genre (`id`, `genre`)
-VALUES (4, 'Romance');
-INSERT INTO genre (`id`, `genre`)
-VALUES (5, 'Sci-Fi');
-INSERT INTO genre (`id`, `genre`)
-VALUES (6, 'Dystopian');
-INSERT INTO genre (`id`, `genre`)
-VALUES (7, 'Humor');
-INSERT INTO genre (`id`, `genre`)
-VALUES (8, 'Non-fiction');
-INSERT INTO genre (`id`, `genre`)
-VALUES (9, 'Biography');
-INSERT INTO genre (`id`, `genre`)
-VALUES (10, 'Cartoon');
-INSERT INTO genre (`id`, `genre`)
-VALUES (11, 'Graphic Novels');
-INSERT INTO genre (`id`, `genre`)
-VALUES (12, 'Children');
-INSERT INTO genre (`id`, `genre`)
-VALUES (13, 'Anthology');
-
-
-INSERT INTO status (`id`, `status`)
-VALUES (1, 'REGISTERED');
-INSERT INTO status (`id`, `status`)
-VALUES (3, 'SUSPENDED');
-INSERT INTO status (`id`, `status`)
-VALUES (2, 'VERIFIED');
-
 
