@@ -12,11 +12,10 @@
 <nav class="navbar navbar-expand-xl navbar-dark bg-dark">
     <a class="navbar-brand primary waves-effect" href="/">
         <img src="/static/images/Misc/Nile Dark Bkgnd Rectangular.png" width="150" class="d-inline-block align top"
-             alt="Nile Logo"
-             id="nileLogo">
+            alt="Nile Logo" id="nileLogo">
     </a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent-333"
-            aria-controls="navbarSupportedContent-333" aria-expanded="false" aria-label="Toggle navigation">
+        aria-controls="navbarSupportedContent-333" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarSupportedContent-333">
@@ -35,15 +34,44 @@
             <li>
                 <form class="form-inline complement" id="searchBar" action="{{ url_for('books_bp.query_books') }}">
                     <div class="container-fluid search-group-parent">
+
                         <div class="input-group">
+                            <!-- <div class="col view-selection-opt">
+                                <select class="custom-select custom-select-lg our-color"
+                                    style="border: 2px solid black;">
+                                    <option value="books-and-ebooks" selected>All</option>
+                                    <option value="genre">Genre</option>
+                                    <option value="binding">Binding</option>
+                                    <option value="audiobooks">Audiobook</option>
+                                    <option value="cd-and-ebook">CD & E-Book</option>
+                                    <option value="coobkook">Cookbook</option>
+                                    <option value="graphic-novel">Graphic Novel</option>
+                                    <option value="guide-informative">Guide/Informative</option>
+                                    <option value="novel">Novel</option>
+                                    <option value="textbook">Textbook</option>
+                                </select>
+                            </div> -->
+                            <div class="dropdown">
+                                <select class="custom-select our-color" style="width: 75px;">
+                                    <option value="books-and-ebooks" selected>All</option>
+                                    <option value="genre">Genre</option>
+                                    <option value="binding">Binding</option>
+                                    <option value="audiobooks">Audiobook</option>
+                                    <option value="cd-and-ebook">CD & E-Book</option>
+                                    <option value="coobkook">Cookbook</option>
+                                    <option value="graphic-novel">Graphic Novel</option>
+                                    <option value="guide-informative">Guide/Informative</option>
+                                    <option value="novel">Novel</option>
+                                    <option value="textbook">Textbook</option>
+                                </select>
+                            </div>
+                            
                             <input id="mainSearch" class="form-control main-search-sys" type="text" placeholder="Search"
-                                   aria-label="Search"
-                                   style="width: 500px;"
-                                   name="search_query">
+                                aria-label="Search" style="width: 500px;" name="search_query">
                             <div class="input-group-append">
                                 <button id="mainSearchSysBtn"
-                                        class="btn blue-gradient btn-rounded m-0 px-4 py-2 z-depth-0 waves-effect mr-3 main-search-sys-btn"
-                                        type="submit"><i class="fas fa-search" aria-hidden="true"></i></button>
+                                    class="btn blue-gradient btn-rounded m-0 px-4 py-2 z-depth-0 waves-effect mr-3 main-search-sys-btn"
+                                    type="submit"><i class="fas fa-search" aria-hidden="true"></i></button>
                             </div>
                         </div>
                     </div>
@@ -52,14 +80,16 @@
         </ul>
         <ul class="navbar-nav ml-auto nav-flex-icons user-centric-btn">
             {% if not session['admin'] %}
-                <li class="nav-item align-self-center">
-                    <div class="widget-header mr-3 mt-1">
-                        <a href="{{ url_for('common_bp.shopping_cart') }}" class="icon icon-sm rounded-circle border text-center">
-                            <i class="fa fa-shopping-cart text-center fa-1x"></i>
-                        </a>
-                        <span class="badge badge-pill badge-danger notify"><span id="cartTotal">{{ session['shopping_cart']|length }}</span></span>
-                    </div>
-                </li>
+            <li class="nav-item align-self-center">
+                <div class="widget-header mr-3 mt-1">
+                    <a href="{{ url_for('common_bp.shopping_cart') }}"
+                        class="icon icon-sm rounded-circle border text-center">
+                        <i class="fa fa-shopping-cart text-center fa-1x"></i>
+                    </a>
+                    <span class="badge badge-pill badge-danger notify"><span
+                            id="cartTotal">{{ session['shopping_cart']|length }}</span></span>
+                </div>
+            </li>
             {% endif %}
 
             <!-- <li class="nav-item dropdown">
@@ -74,40 +104,40 @@
                 </div>
             </li> -->
             {% if session['logged_in'] %}
-                <li class="nav-item dropdown align-self-center">
-                    <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink-333" data-toggle="dropdown"
-                       aria-haspopup="true" aria-expanded="false">
-                        <span class=" complement">Welcome, {{ session['firstName'] }} {% if session['admin'] %}<span
-                                class="badge badge-primary ml-2">Admin</span>{% endif %}</span>
-                    </a>
-                    <div class="dropdown-menu dropdown-menu-right dropdown-default"
-                         aria-labelledby="navbarDropdownMenuLink-333">
-                        {% if not session['admin'] %}
-                            <a class="dropdown-item" href="{{ url_for('user_bp.overview') }}">My Profile</a>
-                        {% else %}
-                            <a class="dropdown-item" href="{{ url_for('admin_bp.overview') }}">My Admin Profile</a>
-                        {% endif %}
-                        <a class="dropdown-item" href="{{ url_for('common_bp.logout') }}">Sign Out</a>
-                    </div>
-                </li>
+            <li class="nav-item dropdown align-self-center">
+                <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink-333" data-toggle="dropdown"
+                    aria-haspopup="true" aria-expanded="false">
+                    <span class=" complement">Welcome, {{ session['firstName'] }} {% if session['admin'] %}<span
+                            class="badge badge-primary ml-2">Admin</span>{% endif %}</span>
+                </a>
+                <div class="dropdown-menu dropdown-menu-right dropdown-default"
+                    aria-labelledby="navbarDropdownMenuLink-333">
+                    {% if not session['admin'] %}
+                    <a class="dropdown-item" href="{{ url_for('user_bp.overview') }}">My Profile</a>
+                    {% else %}
+                    <a class="dropdown-item" href="{{ url_for('admin_bp.overview') }}">My Admin Profile</a>
+                    {% endif %}
+                    <a class="dropdown-item" href="{{ url_for('common_bp.logout') }}">Sign Out</a>
+                </div>
+            </li>
             {% else %}
-                <li class="nav-item">
-                    <a href="{{ url_for('common_bp.login') }}" class="href">
-                        <button class="btn blue-gradient btn-rounded btn-sm primary waves-effect waves-light sign-btn"
-                                id="signInBtn">Sign In
-                        </button>
-                    </a>
-                </li>
+            <li class="nav-item">
+                <a href="{{ url_for('common_bp.login') }}" class="href">
+                    <button class="btn blue-gradient btn-rounded btn-sm primary waves-effect waves-light sign-btn"
+                        id="signInBtn">Sign In
+                    </button>
+                </a>
+            </li>
             {% endif %}
 
             {% if not session['logged_in'] %}
-                <li class="nav-item">
-                    <a href="{{ url_for('common_bp.register') }}" class="href">
-                        <button class="btn aqua-gradient btn-rounded btn-sm primary waves-effect waves-light sign-btn"
-                                id="signUpBtn">Sign Up
-                        </button>
-                    </a>
-                </li>
+            <li class="nav-item">
+                <a href="{{ url_for('common_bp.register') }}" class="href">
+                    <button class="btn aqua-gradient btn-rounded btn-sm primary waves-effect waves-light sign-btn"
+                        id="signUpBtn">Sign Up
+                    </button>
+                </a>
+            </li>
             {% endif %}
         </ul>
     </div>

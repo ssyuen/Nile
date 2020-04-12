@@ -25,11 +25,12 @@ def query_books(search_query=None):
                 price,
                 CONCAT(authorFirstName, ' ', authorLastName) AS author_name,
                 ISBN,
-                summary,
+                publisher,
                 publicationDate,
                 numPages,
                 (SELECT binding FROM binding WHERE binding.id=book.bindingID_book_FK) AS binding,
-                (SELECT genre from genre WHERE genre.id=book.genreID_book_FK) AS genre,
+                (SELECT genre FROM genre WHERE genre.id=book.genreID_book_FK) AS genre,
+                (SELECT type FROM product_type WHERE product_type.id=book.typeID_book_FK) AS type,
                 nile_cover_ID
                 FROM book'''
                 cursor.execute(query)
