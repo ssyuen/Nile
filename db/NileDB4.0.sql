@@ -114,12 +114,12 @@ CREATE TABLE IF NOT EXISTS `niledb`.`book`
     `ISBN`              VARCHAR(20)                                                       NOT NULL,
     `bindingID_book_FK` INT                                                               NULL DEFAULT NULL,
     `genreID_book_FK`   INT                                                               NULL DEFAULT NULL,
-    `title`             VARCHAR(45) CHARACTER SET 'utf8mb4' COLLATE 'utf8mb4_0900_ai_ci'  NULL DEFAULT NULL,
+    `title`             VARCHAR(200) CHARACTER SET 'utf8mb4' COLLATE 'utf8mb4_0900_ai_ci' NULL DEFAULT NULL,
     `price`             DOUBLE                                                            NULL DEFAULT NULL,
     `numPages`          INT                                                               NULL DEFAULT NULL,
-    `image`             LONGBLOB                                                          NULL DEFAULT NULL,
+    `nile_cover_ID`     VARCHAR(75)                                                       NULL DEFAULT NULL,
     `edition`           VARCHAR(45) CHARACTER SET 'utf8mb4' COLLATE 'utf8mb4_0900_ai_ci'  NULL DEFAULT NULL,
-    `publisher`         VARCHAR(45) CHARACTER SET 'utf8mb4' COLLATE 'utf8mb4_0900_ai_ci'  NULL DEFAULT NULL,
+    `publisher`         VARCHAR(255)                                                      NULL DEFAULT NULL,
     `publicationDate`   DATE                                                              NULL DEFAULT NULL,
     `stock`             INT                                                               NULL DEFAULT NULL,
     `authorFirstName`   VARCHAR(45) CHARACTER SET 'utf8mb4' COLLATE 'utf8mb4_0900_ai_ci'  NULL DEFAULT NULL,
@@ -204,12 +204,14 @@ CREATE TABLE IF NOT EXISTS `niledb`.`user`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `niledb`.`payment_method`
 (
-    `id`                     INT         NOT NULL AUTO_INCREMENT,
-    `cardNumber`             INT         NOT NULL,
-    `cardType`               VARCHAR(45) NOT NULL,
-    `expirationDate`         DATE        NOT NULL,
-    `userID_payment_FK`      INT         NOT NULL,
-    `billingAddress_addr_FK` INT         NOT NULL,
+    `id`                     INT          NOT NULL AUTO_INCREMENT,
+    `firstname`              VARCHAR(45)  NOT NULL,
+    `lastname`               VARCHAR(45)  NOT NULL,
+    `cardNumber`             VARCHAR(120) NOT NULL,
+    `cardType`               VARCHAR(45)  NULL DEFAULT NULL,
+    `expirationDate`         DATE         NOT NULL,
+    `userID_payment_FK`      INT          NOT NULL,
+    `billingAddress_addr_FK` INT          NOT NULL,
     PRIMARY KEY (`id`),
     INDEX `Key` (`cardNumber` ASC, `expirationDate` ASC) VISIBLE,
     INDEX `UserId_idx` (`userID_payment_FK` ASC) VISIBLE,
@@ -344,64 +346,125 @@ CREATE TABLE IF NOT EXISTS `niledb`.`user_address`
     ENGINE = InnoDB
     DEFAULT CHARACTER SET = utf8;
 
+
+-- -----------------------------------------------------
+-- Table `niledb`.`user_token`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `niledb`.`user_token`
+(
+    `userID_utoken_FK` INT         NOT NULL,
+    `token`            VARCHAR(50) NOT NULL,
+    PRIMARY KEY (`userID_utoken_FK`, `token`),
+    CONSTRAINT `userID_utoken_FK`
+        FOREIGN KEY (`userID_utoken_FK`)
+            REFERENCES `niledb`.`user` (`id`)
+)
+    ENGINE = InnoDB
+    DEFAULT CHARACTER SET = utf8mb4
+    COLLATE = utf8mb4_0900_ai_ci;
+
+
 SET SQL_MODE = @OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS = @OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS = @OLD_UNIQUE_CHECKS;
 
--- Insert Address Type
-INSERT INTO address_type(`type`)
-VALUES ('SHIPPING');
-INSERT INTO address_type(`type`)
-VALUES ('BILLING');
 
--- Insert Status
-INSERT INTO `status` (`status`)
-VALUES ('UNREGISTERED');
-INSERT INTO `status` (`status`)
-VALUES ('REGISTERED');
-INSERT INTO `status` (`status`)
-VALUES ('SUSPENDED');
+INSERT INTO address_type (`id`, `type`)
+VALUES (1, 'SHIPPING');
+INSERT INTO address_type (`id`, `type`)
+VALUES (2, 'BILLING');
 
--- Insert binding
-INSERT INTO `binding`(`binding`)
-VALUES ('Textbook');
-INSERT INTO `binding`(`binding`)
-VALUES ('Novel');
-INSERT INTO `binding`(`binding`)
-VALUES ('E-book (Electronic)');
-INSERT INTO `binding`(`binding`)
-VALUES ('Audio CD');
-INSERT INTO `binding`(`binding`)
-VALUES ('Audiobook');
-INSERT INTO `binding`(`binding`)
-VALUES ('Paperback');
-INSERT INTO `binding`(`binding`)
-VALUES ('Hardback');
 
--- Insert genre
-INSERT INTO `genre`(`genre`)
-VALUES ('Horror');
-INSERT INTO `genre`(`genre`)
-VALUES ('Adventure');
-INSERT INTO `genre`(`genre`)
-VALUES ('Fantasy');
-INSERT INTO `genre`(`genre`)
-VALUES ('Romance');
-INSERT INTO `genre`(`genre`)
-VALUES ('Sci-Fi');
-INSERT INTO `genre`(`genre`)
-VALUES ('Dystopian');
-INSERT INTO `genre`(`genre`)
-VALUES ('Humor');
-INSERT INTO `genre`(`genre`)
-VALUES ('Non-fiction');
-INSERT INTO `genre`(`genre`)
-VALUES ('Biography');
-INSERT INTO `genre`(`genre`)
-VALUES ('Cartoon');
-INSERT INTO `genre`(`genre`)
-VALUES ('Graphic Novels');
-INSERT INTO `genre`(`genre`)
-VALUES ('Children');
-INSERT INTO `genre`(`genre`)
-VALUES ('Anthology');
+
+INSERT INTO admin (`id`, `email`, `firstName`, `lastName`, `pass`)
+VALUES (3, 'root@nile.com', 'Manu', 'Puduvalli', '$2b$12$TrQ7pMqXkUFKFihGfBV6Y.bi5KqKOp0kaBrKbBXZ1FUg.huCFNJ2e');
+
+
+INSERT INTO book (`ISBN`, `bindingID_book_FK`, `genreID_book_FK`, `title`, `price`, `numPages`, `nile_cover_ID`,
+                  `edition`, `publisher`, `publicationDate`, `stock`, `authorFirstName`, `authorLastName`, `summary`)
+VALUES ('9780062420701', 7, 3, 'To Kill a Mockingbird', 18.74, 336, 'NILE_CI_0010', '50th Anniversary Edition',
+        'Harper', '2015-03-03', 592, 'Harper', 'Lee',
+        'Harper Lee\'s Pulitzer Prize-winning masterwork of honor and injustice in the deep South—and the heroism of one man in the face of blind and violent hatred');
+INSERT INTO book (`ISBN`, `bindingID_book_FK`, `genreID_book_FK`, `title`, `price`, `numPages`, `nile_cover_ID`,
+                  `edition`, `publisher`, `publicationDate`, `stock`, `authorFirstName`, `authorLastName`, `summary`)
+VALUES ('9780066238500', 6, 2, 'The Chronicles of Narnia', 17.99, 768, 'NILE_CI_0003', NULL, 'HarperCollins',
+        '2001-10-01', 567, 'C.S.', 'Lewis',
+        'Epic battles between good and evil, fantastic creatures, betrayals, heroic deeds, and friendships won and lost all come together in this unforgettable world, which has been enchanting readers of all ages for over sixty years.');
+INSERT INTO book (`ISBN`, `bindingID_book_FK`, `genreID_book_FK`, `title`, `price`, `numPages`, `nile_cover_ID`,
+                  `edition`, `publisher`, `publicationDate`, `stock`, `authorFirstName`, `authorLastName`, `summary`)
+VALUES ('9780760737934', 6, 11, 'Amazing Fantasy #15', 9.99, 245, 'NILE_CI_0006', '2nd Impression Edition',
+        'Barnes & Noble', '2003-01-01', 402, 'Stan', 'Lee',
+        'Collects the first appearance of Spider-Man in Amazing Fantasy 15 as well as the next 9 issues in his book. Artwork by Steve Ditko is different than many other marvel works as many of them were drawn by Jack Kirby.');
+INSERT INTO book (`ISBN`, `bindingID_book_FK`, `genreID_book_FK`, `title`, `price`, `numPages`, `nile_cover_ID`,
+                  `edition`, `publisher`, `publicationDate`, `stock`, `authorFirstName`, `authorLastName`, `summary`)
+VALUES ('9780785141570', 6, 11, 'Wolverine Vs. Hulk', 19.99, 144, 'NILE_CI_0008', NULL, 'Marvel Comics', '2017-01-01',
+        344, 'Stan', 'Lee', 'The First apperance of Wolverine. From the famous Incredible Hulk # 181.');
+INSERT INTO book (`ISBN`, `bindingID_book_FK`, `genreID_book_FK`, `title`, `price`, `numPages`, `nile_cover_ID`,
+                  `edition`, `publisher`, `publicationDate`, `stock`, `authorFirstName`, `authorLastName`, `summary`)
+VALUES ('9780786856299', 7, 2, 'The Lightning Thief: Percy Jackson', 11.89, 384, 'NILE_CI_0009', NULL,
+        'Miramax Books/ Hyperion', '2005-06-28', 502, 'Rick', 'Riordan',
+        'Percy Jackson is a good kid, but he can\'t seem to focus on his schoolwork or control his temper. And lately, being away at boarding school is only getting worse-Percy could have sworn his pre-algebra teacher turned into a monster and tried to kill him.');
+INSERT INTO book (`ISBN`, `bindingID_book_FK`, `genreID_book_FK`, `title`, `price`, `numPages`, `nile_cover_ID`,
+                  `edition`, `publisher`, `publicationDate`, `stock`, `authorFirstName`, `authorLastName`, `summary`)
+VALUES ('9781119235538', 6, 8, 'Beginning Programming with Java For Dummies', 18.19, 560, 'NILE_CI_0004', '5th Edition',
+        'For Dummies', '2017-06-24', 347, 'Barry', 'Burd',
+        'Are you new to programming and have decided that Java is your language of choice? Are you a wanna-be programmer looking to learn the hottest lingo around? Look no further! Beginning Programming with Java For Dummies, 5th Edition is the easy-to-follow guide');
+INSERT INTO book (`ISBN`, `bindingID_book_FK`, `genreID_book_FK`, `title`, `price`, `numPages`, `nile_cover_ID`,
+                  `edition`, `publisher`, `publicationDate`, `stock`, `authorFirstName`, `authorLastName`, `summary`)
+VALUES ('9781338299144', 6, 2, 'Harry Potter and the Sorcerer\'s Stone', 6.89, 336, 'NILE_CI_0001', NULL,
+        'Arthur A. Levine Books', '2018-05-26', 500, 'J.K.', 'Rowling',
+        'Harry Potter has never been the star of a Quidditch team, scoring points while riding a broom far above the ground. He knows no spells, has never helped to hatch a dragon, and has never worn a cloak of invisibility.');
+INSERT INTO book (`ISBN`, `bindingID_book_FK`, `genreID_book_FK`, `title`, `price`, `numPages`, `nile_cover_ID`,
+                  `edition`, `publisher`, `publicationDate`, `stock`, `authorFirstName`, `authorLastName`, `summary`)
+VALUES ('9781419729454', 7, 12, 'Diary of a Wimpy Kid', 13.06, 224, 'NILE_CI_0002', 'Cheesiest Edition',
+        'Harry N. Abrams', '2017-08-08', 400, 'Jeff', 'Kinney',
+        'This Special CHEESIEST Edition is a must-have for longtime fans of the series and new readers alike. But before you open this book, you might want to cross your fingers—you wouldn’t want to get the Cheese Touch!');
+INSERT INTO book (`ISBN`, `bindingID_book_FK`, `genreID_book_FK`, `title`, `price`, `numPages`, `nile_cover_ID`,
+                  `edition`, `publisher`, `publicationDate`, `stock`, `authorFirstName`, `authorLastName`, `summary`)
+VALUES ('9781455525256', 7, 8, 'Gordon Ramsay\'s Home Cooking', 22.49, 320, 'NILE_CI_0005', '2013 Edition',
+        'Grand Central Publishing', '2013-04-09', 482, 'Gordon', 'Ramsay',
+        'Based on a new cooking show, this book will give experienced as well as novice cooks the desire, confidence and inspiration to get cooking.');
+INSERT INTO book (`ISBN`, `bindingID_book_FK`, `genreID_book_FK`, `title`, `price`, `numPages`, `nile_cover_ID`,
+                  `edition`, `publisher`, `publicationDate`, `stock`, `authorFirstName`, `authorLastName`, `summary`)
+VALUES ('9781984837158', 7, 12, 'The BFG', 14.99, 224, 'NILE_CI_0007', NULL, 'Puffin Books ', '2019-09-03', 522,
+        'Ronald', 'Dahl',
+        'The BFG is no ordinary bone-crunching giant. He is far too nice and jumbly. It\'s lucky for Sophie that he is.');
+
+
+
+INSERT INTO genre (`id`, `genre`)
+VALUES (1, 'Horror');
+INSERT INTO genre (`id`, `genre`)
+VALUES (2, 'Adventure');
+INSERT INTO genre (`id`, `genre`)
+VALUES (3, 'Fantasy');
+INSERT INTO genre (`id`, `genre`)
+VALUES (4, 'Romance');
+INSERT INTO genre (`id`, `genre`)
+VALUES (5, 'Sci-Fi');
+INSERT INTO genre (`id`, `genre`)
+VALUES (6, 'Dystopian');
+INSERT INTO genre (`id`, `genre`)
+VALUES (7, 'Humor');
+INSERT INTO genre (`id`, `genre`)
+VALUES (8, 'Non-fiction');
+INSERT INTO genre (`id`, `genre`)
+VALUES (9, 'Biography');
+INSERT INTO genre (`id`, `genre`)
+VALUES (10, 'Cartoon');
+INSERT INTO genre (`id`, `genre`)
+VALUES (11, 'Graphic Novels');
+INSERT INTO genre (`id`, `genre`)
+VALUES (12, 'Children');
+INSERT INTO genre (`id`, `genre`)
+VALUES (13, 'Anthology');
+
+
+INSERT INTO status (`id`, `status`)
+VALUES (1, 'REGISTERED');
+INSERT INTO status (`id`, `status`)
+VALUES (3, 'SUSPENDED');
+INSERT INTO status (`id`, `status`)
+VALUES (2, 'VERIFIED');
+
+
