@@ -15,13 +15,13 @@
     <div class="container">
         <div class="row">
             <div class="input-group">
-                <div class="col-sm-9">
+                <div class="col-md-8">
                     <div class="md-form mt-0">
                         <input class="form-control" type="text" placeholder="Enter book ISBN or Title"
                                aria-label="Search">
                     </div>
                 </div>
-                <div class="col">
+                <div class="col-md-4">
                     <div class="input-group-append">
                         <button class="btn blue-gradient btn-block btn-md mr-3" id="searchBtn">Search</button>
                         <button class="btn btn-outline-warning btn-block btn-md waves-effect" id="editBtn">Edit</button>
@@ -29,7 +29,7 @@
                 </div>
             </div>
         </div>
-        <div class="row">
+        <div class="row mt-4">
             <div class="col mb-4">
                 <div class="card gradient-card h-100">
                     <div class="card-image"
@@ -91,52 +91,71 @@
                                 </div>
                             </div>
                             <div class="form-row">
-                                <div class="form-group col">
+                                <div class="form-group col-md-4">
                                     <label for="genre">Genre</label>
                                     <div class="input-group">
-                                        <select name="genre" id="genre" class="form-control" disabled>
-                                            <option selected>Choose...</option>
-                                            <option>Mystery</option>
-                                            <option>Horror</option>
-                                            <option>Adventure</option>
-                                            <option>Fantasy</option>
+                                        <select name="genre" id="genre" class="form-control" required disabled>
+                                            <option value="" disabled selected>Choose...</option>
+                                            <option value="Mystery">Mystery</option>
+                                            <option value="Horror">Horror</option>
+                                            <option value="Adventure">Adventure</option>
+                                            <option value="Fantasy">Fantasy</option>
                                         </select>
                                     </div>
                                 </div>
-                                <div class="form-group col">
+                                <div class="form-group col-md-4">
                                     <label for="numPages">Number of Pages</label>
                                     <input name="numPages" type="number" class="form-control" id="numPages"
                                            placeholder="Number of Pages" readonly>
                                 </div>
-                                <div class="form-group col">
+                                <div class="form-group col-md-4">
                                     <label for="datePublished">Date Published</label>
                                     <input name="datePublished" type="date" class="form-control" id="datePublished"
                                            placeholder="Date Published" required readonly>
                                 </div>
                             </div>
                             <div class="form-row">
-                                <div class="form-group col">
+                                <div class="form-group col-md-4">
                                     <label for="bindingType">Binding Type</label>
                                     <div class="input-group">
-                                        <select name="bindingType" id="bindingType" class="form-control" disabled>
-                                            <option selected>Paperback</option>
-                                            <option>Hardback</option>
+                                        <select name="bindingType" id="bindingType" class="form-control" required
+                                                disabled>
+                                            <option value="" disabled selected>Choose</option>
+                                            <option value="Paperback">Paperback</option>
+                                            <option value="Hardback">Hardback</option>
                                         </select>
                                     </div>
                                 </div>
-                                <div class="form-group col">
+                                <div class="form-group col-md-4">
+                                    <label for="productType">Product Type</label>
+                                    <div class="input-group">
+                                        <select name="productType" id="productType" class="form-control" required
+                                                disabled>
+                                            <option value="" disabled selected>Choose...</option>
+                                            <option value="Textbook">Textbook</option>
+                                            <option value="E-Book">E-Book</option>
+                                            <option value="Audiobook">Audiobook</option>
+                                            <option value="Novel">Novel</option>
+                                            <option value="Graphic Novel">Graphic Novel</option>
+                                            <option value="CD">CD</option>
+                                            <option value="Cookbook">Cookbook</option>
+                                            <option value="Guide/Informative">Guide/Informative</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group col-md-4">
                                     <label for="recvStock">Received Stock</label>
                                     <input name="recvStock" type="number" class="form-control" id="recvStock"
                                            placeholder="Received Stock" required readonly>
                                 </div>
                             </div>
                             <div class="form-row">
-                                <div class="form-group col">
+                                <div class="form-group col-md-6">
                                     <label for="price">Selling Price ($)</label>
                                     <input name="price" step="0.01" type="number" class="form-control" id="price"
                                            placeholder="Selling Price in USD ($)" required readonly>
                                 </div>
-                                <div class="form-group col">
+                                <div class="form-group col-md-6">
                                     <label for="coverID">Nile Image ID (Format: NILE_CI_*)</label>
                                     <input type="text" class="form-control" id="coverID"
                                            name="coverID" aria-describedby="coverID" pattern="NILE_CI_.*\d"
