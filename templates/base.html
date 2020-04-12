@@ -56,21 +56,38 @@
     {% block main %}
     {% endblock %}
 </div>
+<style>
+    .right-border {
+        padding-right: 55px;
+    }
+</style>
 
 <footer class="page-footer font-small bg-dark pt-4">
     <div class="container text-md-left">
         <div class="row">
             <div class="col-md-6 mx-auto pr-0">
-                <div class="text-center">
-                    <h5 class="text-uppercase primary-md font-weight-normal"
+                <div class="text-center right-border">
+                    <h5 class="text-uppercase primary-md"
                         style="letter-spacing: 4px;">Nile</h5>
-                    <hr class="blue darken-3 accent-2 mt-0 d-inline-block text-left mx-auto mb-5" style="width: 100px;">
+                    <hr class="blue darken-3 accent-2 mt-0 d-inline-block text-left mx-auto mb-4" style="width: 100px;">
                 </div>
-                <div class="footer-explanation" style="border-right: 1px solid lightgray; padding-right: 55px; ">
-                    <p>Thanks for visiting our site. <strong>Disclaimer! This site is not real.</strong> It was made
+                <div class="footer-explanation right-border" style="border-right: 1px solid lightgray; ">
+                    <h5 class="text-center complement-roboto-bold">Thanks for visiting our site.</h5>
+                    <p>
+                        <strong>Disclaimer! This site is not real.</strong> It was made
                         to fulfill our term-project requirement for CSCI 4050 - Software Engineering class at The
-                        University
-                        of Georgia. Our talented team includes:<br></p>
+                        University of Georgia.</p>
+                    <p class="legal" style="font-size: smaller"><em>All book information including ISBN,
+                        publisher, and cover images
+                        was taken from
+                        <a id="amazonLink" href="https://www.amazon.com" target="_blank">Amazon.com</a>. We claim no
+                        ownership for any
+                        information. All rights go to their respective owner(s). Any information
+                        on nilebookstore.com inconsistent to its representation on Amazon is purely unintentional,
+                        originating from programming errors or faults in retrieving information by our team.
+                    </em>
+                    </p>
+                    <p class="text-center">Our talented team includes:<br></p>
                     <div class="text-center"><strong>Manu Puduvalli, Samuel Yuen, Vrund Parikh, Lok Kwong,
                         and
                         Glen George</strong>
@@ -88,16 +105,6 @@
                             <li><i class="fas fa-running mr-2 mb-3 fa-lg"></i>Agile + Scrum</li>
                         </ul>
                     </div>
-                    <p class="legal" style="font-size: smaller"><em>All book information including ISBN,
-                        publisher, and cover images
-                        was taken from
-                        <a id="amazonLink" href="https://www.amazon.com" target="_blank">Amazon.com</a>. We claim no
-                        ownership for any
-                        information. All rights go to their respective owner(s). Any information
-                        on nilebookstore.com inconsistent to its representation on Amazon is purely unintentional,
-                        originating from programming errors or faults in retrieving information by our team.
-                    </em>
-                    </p>
                 </div>
             </div>
             <hr class="clearfix w-100 d-md-none">
