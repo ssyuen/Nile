@@ -34,23 +34,7 @@
             <li>
                 <form class="form-inline complement" id="searchBar" action="{{ url_for('books_bp.query_books') }}">
                     <div class="container-fluid search-group-parent">
-
                         <div class="input-group">
-                            <!-- <div class="col view-selection-opt">
-                                <select class="custom-select custom-select-lg our-color"
-                                    style="border: 2px solid black;">
-                                    <option value="books-and-ebooks" selected>All</option>
-                                    <option value="genre">Genre</option>
-                                    <option value="binding">Binding</option>
-                                    <option value="audiobooks">Audiobook</option>
-                                    <option value="cd-and-ebook">CD & E-Book</option>
-                                    <option value="coobkook">Cookbook</option>
-                                    <option value="graphic-novel">Graphic Novel</option>
-                                    <option value="guide-informative">Guide/Informative</option>
-                                    <option value="novel">Novel</option>
-                                    <option value="textbook">Textbook</option>
-                                </select>
-                            </div> -->
                             <div class="dropdown">
                                 <select class="custom-select our-color" style="width: 75px;">
                                     <option value="books-and-ebooks" selected>All</option>
@@ -65,7 +49,6 @@
                                     <option value="textbook">Textbook</option>
                                 </select>
                             </div>
-                            
                             <input id="mainSearch" class="form-control main-search-sys" type="text" placeholder="Search"
                                 aria-label="Search" style="width: 500px;" name="search_query">
                             <div class="input-group-append">
