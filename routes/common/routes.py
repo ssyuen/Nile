@@ -643,6 +643,7 @@ def product(title=None, price=None, author_name=None, ISBN=None, summary=None, p
             conn.commit()
 
         session['shopping_cart'] = old_cart
+        print(session['shopping_cart'])
         return jsonify(session['shopping_cart'])
 
         query = '''INSERT INTO '''
