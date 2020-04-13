@@ -66,10 +66,18 @@ def get_genres_count(cursor):
     return payload
 
 
-def get_bindings_and_types(cursor):
+def get_bindings(cursor):
     cursor.execute('SELECT binding FROM binding')
     results = cursor.fetchall()
-    return [binding[0] for binding in results[:5]], [binding[0] for binding in results[5:]]
+    return [binding[0] for binding in results]
+
+def get_bindings_count(cursor):
+    cursor.execute('SELECT (SELECT binding FROM binding WHERE id=bindingID_book_FK), COUNT(*) AS numBooks FROM book GROUP BY bindingID_book_FK')
+    payload = {}
+    for genre,count in cursor.fetchall():
+        payload[genre] = count
+
+    return payload
 
 @common_bp.route('/about/')
 @cart_session
@@ -110,12 +118,14 @@ def landing_page(search_results=None):
         # STEP 3: In browse.html, iterate through list of books to populate page
         genres = get_genres(cursor)
         genre_counts = get_genres_count(cursor)
-        product_types,bindings = get_bindings_and_types(cursor)
+        bindings = get_bindings(cursor)
+        binding_counts = get_bindings_count(cursor)
 
+        print(bindings)
         
 
         conn.close()
-        return render_template('browse.html', books=books,genres=genres,genre_counts=genre_counts,bindings=bindings,product_types=product_types)
+        return render_template('browse.html', books=books,genres=genres,genre_counts=genre_counts,bindings=bindings,binding_counts=binding_counts)
     else:
         return render_template('browse.html', books=books)
 

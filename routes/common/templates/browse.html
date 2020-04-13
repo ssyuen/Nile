@@ -38,12 +38,12 @@
                     </header>
                     <div class="filter-content collapse show" id="collapse_1">
                         <div class="card-body">
-                            <form class="pb-3" name="isbnForm">
+                            <form class="pb-3" name="isbnForm" action="{{ url_for('books_bp.query_isbn') }}">
                                 <div class="input-group shadow">
-                                    <input type="text" class="form-control" placeholder="Search">
+                                    <input type="text" class="form-control" name="inputISBN" placeholder="Search">
                                     <div class="input-group-append">
                                         <button class="btn blue-gradient m-0 px-3 py-2 z-depth-0 waves-effect"
-                                            type="button"><i class="fa fa-search"></i></button>
+                                            type="submit"><i class="fa fa-search"></i></button>
                                     </div>
                                 </div>
                             </form>
@@ -158,7 +158,7 @@
                             <label class="custom-control custom-checkbox">
                                 <input type="checkbox" checked="" class="custom-control-input">
                                 <div class="custom-control-label"> {{ binding }}
-                                    <b class="badge badge-pill badge-light float-right">120</b></div>
+                                    <b class="badge badge-pill badge-light float-right">{{ binding_counts[binding] }}</b></div>
                             </label>
                             {% endfor %}
                         </div> <!-- card-body.// -->
