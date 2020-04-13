@@ -34,27 +34,32 @@
             <li>
                 <form class="form-inline complement" id="searchBar" action="{{ url_for('books_bp.query_books') }}">
                     <div class="container-fluid search-group-parent">
+
                         <div class="input-group">
-                            <div class="dropdown">
-                                <select class="custom-select our-color" name="searchFilter" style="width: 75px;">
-                                    <option value="all" selected>All</option>
-                                    <option value="genre">Genre</option>
-                                    <option value="binding">Binding</option>
-                                    <option value="productType">Audiobook</option>
-                                    <option value="productType">CD & E-Book</option>
-                                    <option value="productType">Cookbook</option>
-                                    <option value="productType">Graphic Novel</option>
-                                    <option value="productType">Guide/Informative</option>
-                                    <option value="productType">Novel</option>
-                                    <option value="productType">Textbook</option>
-                                </select>
+                            <div class="input-group-prepend">
+                                <label>
+                                    <select class="dropdown custom-select our-color" name="searchFilter"
+                                            style="width: 75px;" id="searchFilter">
+                                        <option value="all" selected>All</option>
+                                        <option value="genre">Genre</option>
+                                        <option value="binding">Binding</option>
+                                        <option value="productType">Audiobook</option>
+                                        <option value="productType">CD & E-Book</option>
+                                        <option value="productType">Cookbook</option>
+                                        <option value="productType">Graphic Novel</option>
+                                        <option value="productType">Guide/Informative</option>
+                                        <option value="productType">Novel</option>
+                                        <option value="productType">Textbook</option>
+                                    </select>
+                                </label>
                             </div>
                             <input id="mainSearch" class="form-control main-search-sys" type="text" placeholder="Search"
-                                aria-label="Search" style="width: 500px;" name="search_query">
+                                   aria-label="Search" style="width: 500px;" name="search_query"
+                                   aria-describedby="inputGroup-sizing-default">
                             <div class="input-group-append">
                                 <button id="mainSearchSysBtn"
-                                    class="btn blue-gradient btn-rounded m-0 px-4 py-2 z-depth-0 waves-effect mr-3 main-search-sys-btn"
-                                    type="submit"><i class="fas fa-search" aria-hidden="true"></i></button>
+                                        class="btn blue-gradient btn-rounded m-0 px-4 py-2 z-depth-0 waves-effect mr-3 main-search-sys-btn"
+                                        type="submit"><i class="fas fa-search" aria-hidden="true"></i></button>
                             </div>
                         </div>
                     </div>
@@ -75,17 +80,6 @@
             </li>
             {% endif %}
 
-            <!-- <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink-333" data-toggle="dropdown"
-                    aria-haspopup="true" aria-expanded="false">
-                    <span class=" complement">Welcome, Manu</span>
-                </a>
-                <div class="dropdown-menu dropdown-menu-right dropdown-default"
-                    aria-labelledby="navbarDropdownMenuLink-333">
-                    <a class="dropdown-item" href="#">My Profile</a>
-                    <a class="dropdown-item" href="#">Order History</a>
-                </div>
-            </li> -->
             {% if session['logged_in'] %}
             <li class="nav-item dropdown align-self-center">
                 <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink-333" data-toggle="dropdown"
@@ -125,5 +119,16 @@
         </ul>
     </div>
 </nav>
+<style>
+    #searchFilter {
+        border-top-right-radius: 0;
+        border-bottom-right-radius: 0;
+        cursor: pointer;
+    }
+
+    #mainSearch {
+        border-bottom-width: 0;
+    }
+</style>
 
 <!-- <script defer src="/static/user/js/search.js"></script> -->
