@@ -45,6 +45,8 @@ def query_books(search_query=None):
                     payload = [dict(zip(header, result)) for result in results]
                     books = [book for book in payload if search_query.lower() in str(book.values()).lower()]
 
+                    print(books)
+
                     genres = get_genres(cursor)
                     bindings,product_types = get_bindings_and_types(cursor)
 
@@ -56,7 +58,6 @@ def query_books(search_query=None):
 
                     return render_template('browse.html',books=books, genres=genres,bindings=bindings,product_types=product_types)
                 elif search_filter == 'productType':
-                    print('here')
                     query = '''SELECT 
                     title,
                     price,
@@ -70,7 +71,7 @@ def query_books(search_query=None):
                     (SELECT type FROM product_type WHERE product_type.id=book.typeID_book_FK) AS type,
                     nile_cover_ID
                     FROM book
-                    WHERE book.typeID_book_FK=(SELECT id FROM product_type=%s)'''
+                    WHERE book.typeID_book_FK=(SELECT id FROM product_type WHERE type=%s)'''
                     cursor.execute(query,(search_query))
                     results = cursor.fetchall()
 
@@ -80,33 +81,8 @@ def query_books(search_query=None):
                     genres = get_genres(cursor)
                     bindings,product_types = get_bindings_and_types(cursor)
                     return render_template('browse.html',books=books, genres=genres,bindings=bindings,product_types=product_types)
-
-                else:
-                    query = '''SELECT 
-                    title,
-                    price,
-                    CONCAT(authorFirstName, ' ', authorLastName) AS author_name,
-                    ISBN,
-                    publisher,
-                    publicationDate,
-                    numPages,
-                    (SELECT binding FROM binding WHERE binding.id=book.bindingID_book_FK) AS binding,
-                    (SELECT genre FROM genre WHERE genre.id=book.genreID_book_FK) AS genre,
-                    (SELECT type FROM product_type WHERE product_type.id=book.typeID_book_FK) AS type,
-                    nile_cover_ID
-                    FROM book
-                    WHERE book.%sID_book_FK=(SELECT id FROM %s=%s)'''
-
-                    cursor.execute(query,(search_filter,search_query,search_query))
-                    results = cursor.fetchall()
-
-                    header = [desc[0] for desc in cursor.description]
-                    books = [dict(zip(header, result)) for result in results]
-
-                    genres = get_genres(cursor)
-                    bindings,product_types = get_bindings_and_types(cursor)
-                    return render_template('browse.html',books=books, genres=genres,bindings=bindings,product_types=product_types)
-            except pymysql.Error:
+            except pymysql.Error as e:
+                print(e)
                 return redirect(url_for('common_bp.landing_page'))
 
         else:
