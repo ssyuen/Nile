@@ -65,7 +65,7 @@
                                 <label class="custom-control custom-checkbox">
                                     <input type="checkbox" checked="" class="custom-control-input">
                                     <div class="custom-control-label d-inline">{{ genre }}
-                                        <b class="badge badge-pill badge-light float-right">120</b></div>
+                                        <b class="badge badge-pill badge-light float-right">{{ genre_counts[genre] }}</b></div>
                                 </label>
                                 {% endfor %}
                             </form>

@@ -60,9 +60,10 @@ def get_genres(cursor):
 def get_genres_count(cursor):
     cursor.execute('SELECT (SELECT genre FROM genre WHERE id=genreID_book_FK), COUNT(*) AS numBooks FROM book GROUP BY genreID_book_FK')
     payload = {}
-    
+    for genre,count in cursor.fetchall():
+        payload[genre] = count
 
-    return 
+    return payload
 
 
 def get_bindings_and_types(cursor):
@@ -111,7 +112,6 @@ def landing_page(search_results=None):
         genre_counts = get_genres_count(cursor)
         product_types,bindings = get_bindings_and_types(cursor)
 
-        print(genre_counts)
         
 
         conn.close()
