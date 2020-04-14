@@ -1,7 +1,6 @@
-$('#searchFilter').on("change", function (event) {
+document.getElementById('searchFilter').addEventListener("change", function (event) {
     calculateOptionWidth(this);
 });
-
 function calculateOptionWidth(opt) {
     let optText = $(opt).find(":selected").text();
     let compStyle = window.getComputedStyle(opt);
@@ -9,7 +8,6 @@ function calculateOptionWidth(opt) {
     let fontMetric = compStyle.fontSize + ' ' + compStyle.fontFamily;
     $(opt).width(getTextWidth(optText, fontMetric) + (icoPad / 2));
 }
-
 function getTextWidth(text, font) {
     // @ts-ignore
     var canvas = getTextWidth.canvas || (getTextWidth.canvas = document.createElement("canvas"));
@@ -18,8 +16,7 @@ function getTextWidth(text, font) {
     var metrics = context.measureText(text);
     return metrics.width;
 }
-
 $(function () {
-    let opt = $("#searchFilterAllOption");
+    let opt = document.getElementById("searchFilterAllOption");
     calculateOptionWidth(opt);
 });

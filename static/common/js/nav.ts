@@ -1,4 +1,4 @@
-$('#searchFilter').on("change", function (event) {
+document.getElementById('searchFilter').addEventListener("change", function (event) {
     calculateOptionWidth(this as HTMLOptionElement);
 });
 
@@ -21,6 +21,6 @@ function getTextWidth(text, font) {
 }
 
 $(function () {
-    let opt = <HTMLOptionElement><any>$("#searchFilterAllOption");
-    calculateOptionWidth(opt);
+    let opt = document.getElementById("searchFilterAllOption");
+    calculateOptionWidth(opt as HTMLOptionElement);
 });
