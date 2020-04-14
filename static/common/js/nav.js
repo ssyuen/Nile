@@ -17,6 +17,6 @@ function getTextWidth(text, font) {
     return metrics.width;
 }
 $(function () {
-    let opt = document.getElementById("searchFilterAllOption");
+    let opt = document.getElementById("searchFilter");
     calculateOptionWidth(opt);
 });

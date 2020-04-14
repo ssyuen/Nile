@@ -21,6 +21,6 @@ function getTextWidth(text, font) {
 }
 
 $(function () {
-    let opt = document.getElementById("searchFilterAllOption");
+    let opt = document.getElementById("searchFilter");
     calculateOptionWidth(opt as HTMLOptionElement);
 });
