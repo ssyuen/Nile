@@ -20,3 +20,7 @@
 .ui-slider-range {
     background: linear-gradient(40deg, #45cafc, #303f9f) !important
 }
+
+.coming-soon {
+    text-transform: uppercase !important;
+}
