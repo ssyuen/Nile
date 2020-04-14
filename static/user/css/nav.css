@@ -17,10 +17,12 @@
     border-top-left-radius: 5px;
     border-bottom-left-radius: 5px;
     cursor: pointer;
+    padding-right: 18px !important;
 }
 
 #mainSearch {
     padding-left: 10px;
+    border-bottom: 0 !important;
 }
 
 

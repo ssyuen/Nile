@@ -121,9 +121,6 @@ def landing_page(search_results=None):
         bindings = get_bindings(cursor)
         binding_counts = get_bindings_count(cursor)
 
-        print(bindings)
-        
-
         conn.close()
         return render_template('browse.html', books=books,genres=genres,genre_counts=genre_counts,bindings=bindings,binding_counts=binding_counts)
     else:

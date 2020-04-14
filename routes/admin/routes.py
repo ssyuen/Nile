@@ -136,7 +136,6 @@ def add_books_form():
         date_published = request.form.get('datePublished').strip()
         recv_stock = request.form.get('recvStock').strip()
         binding_type = request.form.get('bindingType').strip()
-        print(binding_type).strip()
         price = request.form.get('price').strip()
         cover_id = request.form.get('coverID').strip()
         book_summary = request.form.get('bookSummary').strip()
@@ -160,6 +159,8 @@ def add_books_form():
                                publisher, date_published, recv_stock, author_firstname, author_lastname, book_summary))
         conn.commit()
         conn.close()
+
+        return redirect(url_for('admin_bp.add_books_form'))
 
     return render_template('./forms/manage_books_form.html')
 

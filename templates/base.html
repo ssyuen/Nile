@@ -19,13 +19,38 @@
                 .reg-for-free {
                     padding-bottom: 20px;
                 }
+
+                .title-holder {
+                    padding-right: 15px !important;
+                }
+
+                .left-border {
+                    padding-left: 15px !important;
+                }
             }
+
 
             footer .rel-links a:hover {
                 background: linear-gradient(40deg, rgba(69, 202, 252, 0.9), rgba(48, 63, 159, 0.9)) !important;
-                padding: 10px;
+                border: 1.5px solid;
                 border-radius: 5px;
-                -webkit-transition: all .12s ease;
+                -webkit-transition: all .01s ease;
+            }
+
+            footer .rel-links a {
+                padding: 10px;
+            }
+
+            .right-border {
+                padding-right: 55px;
+            }
+
+            .left-border {
+                padding-left: 55px;
+            }
+
+            .main-footer-content {
+                max-width: calc(100vw - 150px) !important;
             }
         </style>
     {% endblock %}
@@ -56,17 +81,11 @@
     {% block main %}
     {% endblock %}
 </div>
-<style>
-    .right-border {
-        padding-right: 55px;
-    }
-</style>
-
 <footer class="page-footer font-small bg-dark pt-4">
-    <div class="container text-md-left">
+    <div class="container text-md-left main-footer-content">
         <div class="row">
             <div class="col-md-6 mx-auto pr-0">
-                <div class="text-center right-border">
+                <div class="text-center right-border title-holder">
                     <h5 class="text-uppercase primary-md"
                         style="letter-spacing: 4px;"><a href="https://www.nilebookstore.com">Nile</a></h5>
                     <hr class="blue darken-3 accent-2 mt-0 d-inline-block text-left mx-auto mb-4" style="width: 100px;">
@@ -108,7 +127,7 @@
                 </div>
             </div>
             <hr class="clearfix w-100 d-md-none">
-            <div class="col-md-6 text-center mx-auto">
+            <div class="col-md-6 text-center mx-auto left-border">
                 <div class="text-center">
                     <h5 class="text-uppercase primary-md font-weight-normal"
                         style="letter-spacing: 3px;">Relevant Links</h5>
@@ -211,8 +230,10 @@
         <a href="https://www.nilebookstore.com/">nilebookstore.com</a>
     </div>
 </footer>
-<style>#amazonLink:hover {
-    color: #028df5;
-}</style>
+<style>
+    #amazonLink:hover {
+        color: #028df5;
+    }
+</style>
 </body>
 </html>
