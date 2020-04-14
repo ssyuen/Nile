@@ -34,6 +34,6 @@ def create_server(config):
         app.register_blueprint(common_routes.common_bp)
         app.register_blueprint(user_routes.user_bp, url_prefix="/nileuser")
         app.register_blueprint(admin_routes.admin_bp, url_prefix="/admin")
-        app.register_blueprint(book_routes.books_bp)
+        app.register_blueprint(book_routes.books_bp,url_prefix="/api/books")
 
     return app

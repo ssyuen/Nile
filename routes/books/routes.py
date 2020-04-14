@@ -2,14 +2,16 @@ from flask import Blueprint, request, render_template, jsonify, redirect, flash,
 from flaskext.mysql import pymysql
 from functools import wraps
 from server import mysql
+import secrets
 
 from routes.common.routes import get_genres, get_bindings, get_genres_count, get_bindings_count
 
 books_bp = Blueprint('books_bp', __name__,
                      template_folder='templates', static_folder='static')
 
+api_url = secrets.token_urlsafe(16)
 
-@books_bp.route('/api/books/isbn/', methods=['GET'])
+@books_bp.route('/'+api_url+'/isbn/', methods=['GET'])
 def query_isbn(search_query=None):
     if request.args is None:
         return redirect(url_for('common_bp.landing_page'))
@@ -53,7 +55,7 @@ def query_isbn(search_query=None):
                 return redirect(url_for('common_bp.landing_page'))
 
 
-@books_bp.route('/api/books/', methods=['GET'])
+@books_bp.route('/'+api_url, methods=['GET'])
 def query_books(search_query=None):
     if request.args is None:
         return redirect(url_for('common_bp.landing_page'))
