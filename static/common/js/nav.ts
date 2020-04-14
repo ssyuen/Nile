@@ -1,11 +1,17 @@
 $('#searchFilter').on("change", function (event) {
-    let font = $(this).find(":selected").css("font");
-    let opt = $(this).find(":selected").text();
-    $(this).width(getTextWidth(opt, font) * 1.5);
+    calculateOptionWidth(this as HTMLOptionElement);
 });
 
+function calculateOptionWidth(opt: HTMLOptionElement) {
+    let optText: string = $(opt).find(":selected").text();
+    let compStyle = window.getComputedStyle(opt);
+    let icoPad = parseFloat(compStyle.paddingRight);
+    let fontMetric: string = compStyle.fontSize + ' ' + compStyle.fontFamily;
+
+    $(opt).width(getTextWidth(optText, fontMetric) + (icoPad / 2));
+}
+
 function getTextWidth(text, font) {
-    // re-use canvas object for better performance
     // @ts-ignore
     var canvas = getTextWidth.canvas || (getTextWidth.canvas = document.createElement("canvas"));
     var context = canvas.getContext("2d");
@@ -13,3 +19,8 @@ function getTextWidth(text, font) {
     var metrics = context.measureText(text);
     return metrics.width;
 }
+
+$(function () {
+    let opt = <HTMLOptionElement><any>$("#searchFilterAllOption");
+    calculateOptionWidth(opt);
+});
