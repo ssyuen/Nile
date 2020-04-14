@@ -67,7 +67,7 @@ export class AdminInputValidator extends InputValidator {
         return AdminInputValidator.firstNameConstraint(value);
     }
     public static isbnConstraint(value: string) {
-        return (/^[0-9]*[-][0-9]*[-][0-9]*[-][0-9]*[-][0-9]|^\d{13}$/).test(value); // 1234567891021, 123-0-596-52068-7, and 241-1-86197-876-9 valid
+        return (/^[0-9]*[-][0-9]*[-][0-9]*[-][0-9]*[-][0-9]|[0-9]*[-][0-9]*[0-9]|^\d{13}$/).test(value); // 1234567891021, 123-0-596-52068-7, and 241-1-86197-876-9 valid
     }
     public static publisherConstraint(value: string) {
         return AdminInputValidator.lastNameConstraint(value)
