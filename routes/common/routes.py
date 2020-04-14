@@ -57,10 +57,27 @@ def get_genres(cursor):
     cursor.execute('SELECT genre FROM genre')
     return [genre[0] for genre in cursor.fetchall()]
 
-def get_bindings_and_types(cursor):
+def get_genres_count(cursor):
+    cursor.execute('SELECT (SELECT genre FROM genre WHERE id=genreID_book_FK), COUNT(*) AS numBooks FROM book GROUP BY genreID_book_FK')
+    payload = {}
+    for genre,count in cursor.fetchall():
+        payload[genre] = count
+
+    return payload
+
+
+def get_bindings(cursor):
     cursor.execute('SELECT binding FROM binding')
     results = cursor.fetchall()
-    return [binding[0] for binding in results[:5]], [binding[0] for binding in results[5:]]
+    return [binding[0] for binding in results]
+
+def get_bindings_count(cursor):
+    cursor.execute('SELECT (SELECT binding FROM binding WHERE id=bindingID_book_FK), COUNT(*) AS numBooks FROM book GROUP BY bindingID_book_FK')
+    payload = {}
+    for genre,count in cursor.fetchall():
+        payload[genre] = count
+
+    return payload
 
 @common_bp.route('/about/')
 @cart_session
@@ -100,12 +117,16 @@ def landing_page(search_results=None):
 
         # STEP 3: In browse.html, iterate through list of books to populate page
         genres = get_genres(cursor)
-        product_types,bindings = get_bindings_and_types(cursor)
-        # print(bindings)
+        genre_counts = get_genres_count(cursor)
+        bindings = get_bindings(cursor)
+        binding_counts = get_bindings_count(cursor)
+
+        print(bindings)
+        
+
         conn.close()
-        return render_template('browse.html', books=books,genres=genres,bindings=bindings,product_types=product_types)
+        return render_template('browse.html', books=books,genres=genres,genre_counts=genre_counts,bindings=bindings,binding_counts=binding_counts)
     else:
-        # books = search_results
         return render_template('browse.html', books=books)
 
 
@@ -622,6 +643,7 @@ def product(title=None, price=None, author_name=None, ISBN=None, summary=None, p
             conn.commit()
 
         session['shopping_cart'] = old_cart
+        print(session['shopping_cart'])
         return jsonify(session['shopping_cart'])
 
         query = '''INSERT INTO '''
