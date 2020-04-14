@@ -5,7 +5,6 @@ $("#addToCartBtn").click(function () {
     else {
         removeFromCart(this);
     }
-    $('#cartTotal').load(document.URL + ' #cartTotal');
 });
 function addToCart(btn) {
     $(btn).removeClass("blue-gradient");
@@ -14,8 +13,10 @@ function addToCart(btn) {
     $.ajax({
         url: '/product/',
         type: 'POST',
-        data: { 'bookISBN': $("#bookISBN").attr("nile-isbn") }
+        data: { 'flag': CART_TYPE.ADD, 'bookISBN': $("#bookISBN").attr("nile-isbn") }
     });
+    let valAsInt = parseInt($("#cartTotal").html());
+    adjustCartTotal(++valAsInt);
     console.log('posted');
 }
 function removeFromCart(btn) {
@@ -25,6 +26,16 @@ function removeFromCart(btn) {
     $.ajax({
         url: '/product/',
         type: 'POST',
-        data: { 'bookISBN': $("#bookISBN").attr("nile-isbn") }
+        data: { 'flag': CART_TYPE.REMOVE, 'bookISBN': $("#bookISBN").attr("nile-isbn") }
     });
+    let valAsInt = parseInt($("#cartTotal").html());
+    adjustCartTotal(--valAsInt);
 }
+function adjustCartTotal(adjustment) {
+    $('#cartTotal').html((adjustment).toString());
+}
+var CART_TYPE;
+(function (CART_TYPE) {
+    CART_TYPE["ADD"] = "ADD";
+    CART_TYPE["REMOVE"] = "REMOVE";
+})(CART_TYPE || (CART_TYPE = {}));
