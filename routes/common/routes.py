@@ -6,7 +6,7 @@ import bcrypt
 import sys
 import secrets
 from flask_mail import Message
-from server import mysql, mail
+from server import mysql, mail, socket
 from datetime import timedelta
 from key import FERNET
 
@@ -235,6 +235,22 @@ def logout():
         return redirect('/')
     flash('Error logging out.')
     return redirect(url_for('common_bp.landing_page'))
+
+@socket.on('connect')
+def connect():
+    print('connect')
+
+@socket.on('disconnect')
+def disconnect():
+    '''
+    REQUIREMENTS:
+    - When a logged-in user who has NOT clicked on REMEMBER ME EXITS --> session disconnects --> add session cart to db
+
+    CONDITIONS:
+    - If the 'shopping_cart' is in session, then loop through ISBNs and add to db
+    - Else, do nothing
+    '''
+    print('disconnect')
 
 def save_cart(cursor):
     '''

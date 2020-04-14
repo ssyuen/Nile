@@ -13,7 +13,6 @@ bcrypt = "*"
 requests = "*"
 flask-mail = "*"
 cryptography = "*"
-flask-socketio = "*"
 
 [scripts]
 server = "./start.sh"
