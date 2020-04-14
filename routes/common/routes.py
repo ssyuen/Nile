@@ -552,12 +552,6 @@ def reset_pass(verify_token):
 def forgot_email_conf():
     return render_template('confirmation/forgot_email_conf.html')
 
-@common_bp.route('/add_to_cart/', methods=['POST'])
-@cart_session
-@remember_me
-def add_to_cart():
-    return ''
-
 
 @common_bp.route('/shoppingcart/')
 @cart_session
@@ -606,12 +600,14 @@ def product(title=None, price=None, author_name=None, ISBN=None, summary=None, p
     # STEP 2: Link sends
     if request.method == 'GET':
         return render_template('product.html', title=title, price=price, author_name=author_name, isbn=ISBN, summary=summary, publicationDate=publicationDate, numPages=numPages, binding=binding, genre=genre, nile_cover_ID=nile_cover_ID)
-    else:
+    elif request.method == 'POST' and 'logged_in' in session and session['logged_in']:
         conn = mysql.connect()
         cursor = conn.cursor()
 
         book_isbn = request.form.get('bookISBN')
         old_cart = session['shopping_cart']
+
+        # if the book is in the cart
         if book_isbn in session['shopping_cart']:
             old_cart.remove(book_isbn)
 
@@ -627,6 +623,8 @@ def product(title=None, price=None, author_name=None, ISBN=None, summary=None, p
             query = '''DELETE FROM book_orderdetail WHERE id = %s'''
             cursor.execute(query, (bod_id))
             conn.commit()
+
+        # if book is not in cart
         else:
             old_cart.append(book_isbn)
 
@@ -645,5 +643,18 @@ def product(title=None, price=None, author_name=None, ISBN=None, summary=None, p
         session['shopping_cart'] = old_cart
         print(session['shopping_cart'])
         return jsonify(session['shopping_cart'])
+    
+    # user is not logged in and adds to cart via POST
+    else:
+        book_isbn = request.form.get('bookISBN')
 
-        query = '''INSERT INTO '''
+        old_cart = session['shopping_cart']
+
+        if book_isbn in session['shopping_cart']:
+            old_cart.remove(book_isbn)
+        else:
+            old_cart.append(book_isbn)
+        
+        session['shopping_cart'] = old_cart
+        
+        return jsonify(session['shopping_cart'])
