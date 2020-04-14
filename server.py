@@ -1,13 +1,11 @@
 from flask import Flask
 from flask_mail import Mail
 from flaskext.mysql import MySQL
-from flask_socketio import SocketIO
 import secrets
 
 
 mysql = MySQL()
 mail = Mail()
-socket = SocketIO()
 
 
 def create_server(config):
@@ -20,7 +18,6 @@ def create_server(config):
         # initialize extensions
         mysql.init_app(app)
         mail=Mail(app)
-        socket = SocketIO(app)
 
         #secret_key generation
         app.secret_key = secrets.token_urlsafe(256)
