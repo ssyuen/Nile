@@ -1,3 +1,4 @@
+SET SQL_SAFE_UPDATES = 0;
 INSERT INTO genre (`genre`)
 VALUES ('Mystery');
 INSERT INTO genre (`genre`)
