@@ -241,11 +241,12 @@
                         <div class="col-lg-3 col-md-6 mb-4">
                             <a
                                     href="{{ url_for('common_bp.product', title=book['title'],price=book['price'],author_name=book['author_name'],isbn=book['ISBN'],summary=book['summary'],publicationDate=book['publicationDate'],numPages=book['numPages'],binding=book['binding'],genre=book['genre'],nile_cover_ID=book['nile_cover_ID']) }}">
-                                <div class="card h-100  text-dark waves-effect" id="hp">
+                                <div class="card h-100 text-dark waves-effect" id="hp">
                                     <div class="p-2 grey lighten-4">
                                         <img class="card-img-top rounded"
                                              src="{{ '/static/images/CoverImages/' + book['nile_cover_ID'] + '.jpg' }}"
-                                             alt="Cover Image of {{ book['title'] }}" width="250">
+                                             alt="Cover Image of {{ book['title'] }}" width="200"
+                                             style="max-height: 350px;">
                                     </div>
                                     <div class="card-body grey lighten-4 d-flex align-items-center">
                                         <div class="titleHolder align-self-middle">
