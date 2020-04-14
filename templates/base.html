@@ -60,10 +60,20 @@
     .right-border {
         padding-right: 55px;
     }
+
+    .left-border {
+        padding-left: 55px;
+    }
+
+    .main-footer-content {
+        max-width: calc(100vw - 150px) !important;
+    }
+
+
 </style>
 
 <footer class="page-footer font-small bg-dark pt-4">
-    <div class="container text-md-left">
+    <div class="container text-md-left main-footer-content">
         <div class="row">
             <div class="col-md-6 mx-auto pr-0">
                 <div class="text-center right-border">
@@ -108,7 +118,7 @@
                 </div>
             </div>
             <hr class="clearfix w-100 d-md-none">
-            <div class="col-md-6 text-center mx-auto">
+            <div class="col-md-6 text-center mx-auto left-border">
                 <div class="text-center">
                     <h5 class="text-uppercase primary-md font-weight-normal"
                         style="letter-spacing: 3px;">Relevant Links</h5>
@@ -211,8 +221,10 @@
         <a href="https://www.nilebookstore.com/">nilebookstore.com</a>
     </div>
 </footer>
-<style>#amazonLink:hover {
-    color: #028df5;
-}</style>
+<style>
+    #amazonLink:hover {
+        color: #028df5;
+    }
+</style>
 </body>
 </html>
