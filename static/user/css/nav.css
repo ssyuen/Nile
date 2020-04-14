@@ -7,11 +7,24 @@
     border-bottom-right-radius: 5px;
 }
 
-.navbar{
+.navbar {
     min-height: 100px;
 }
 
-.widget-header{
+#searchFilter {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+    cursor: pointer;
+}
+
+#mainSearch {
+    padding-left: 10px;
+}
+
+
+.widget-header {
     display: inline-block;
     vertical-align: middle;
     position: relative;
@@ -60,7 +73,7 @@
     }
 
     .search-group-parent > .input-group {
-        width: 100%;
+        width: 100% !important;
     }
 
     .main-search-sys {

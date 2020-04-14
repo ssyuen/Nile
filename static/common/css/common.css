@@ -26,6 +26,16 @@
     font-family: 'Open Sans', sans-serif;
 }
 
+.complement-bold {
+    font-family: 'Open Sans', sans-serif;
+    font-weight: bold;
+}
+
+.complement-roboto-bold {
+    font-family: 'Roboto', sans-serif;
+    font-weight: bold;
+}
+
 .our-color {
     background-color: #f2f2f2;
 }
@@ -108,4 +118,5 @@ body {
     color: white;
     background: linear-gradient(180deg, rgba(241, 106, 102, 1) 0%, rgba(220, 28, 19, 1) 100%);
 }
+
 

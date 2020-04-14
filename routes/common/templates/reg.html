@@ -250,8 +250,8 @@
                                     <div class="col">
                                         <div class="form-group">
                                             <label for="ccexp">Credit Card Expiration Date</label>
-                                            <input type="month" class="form-control datepicker" id="ccexp"
-                                                   name="ccexp">
+                                            <input type="month" class="form-control" id="ccexp"
+                                                   name="ccexp" pattern="[0-9]{4}-[0-9]{2}">
                                         </div>
                                     </div>
                                 </div>
@@ -349,8 +349,13 @@
             let now = new Date();
             let minMonth = ("0" + (now.getMonth() + 1)).slice(-2);
             $("#ccexp").attr("min", `${now.getFullYear()}-${minMonth}`)
-        })
+        });
+
+        window.onbeforeunload = function () {
+            $("#addressToggler, #paymentToggler").prop('checked', false);
+            $(document).scrollTop(0);
+        }
     </script>
-    <script defer src="../../../static/user/js/regform.js" type="module"></script>
+    <script defer src="/static/user/js/regform.js" type="module"></script>
 
 {% endblock %}

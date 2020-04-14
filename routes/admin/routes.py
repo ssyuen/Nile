@@ -131,6 +131,7 @@ def add_books_form():
         edition = request.form.get('edition').strip()
         publisher = request.form.get('publisher').strip()
         genre = request.form.get('genre').strip()
+        p_type = request.form.get('productType').strip()
         num_pages = request.form.get('numPages').strip()
         date_published = request.form.get('datePublished').strip()
         recv_stock = request.form.get('recvStock').strip()
@@ -145,16 +146,17 @@ def add_books_form():
         cursor = conn.cursor()
 
         query = """
-        INSERT INTO book (ISBN, bindingID_book_FK, genreID_book_FK, title, price, numPages, nile_cover_ID,
+        INSERT INTO book (ISBN, bindingID_book_FK, genreID_book_FK, typeID_book_FK, title, price, numPages, nile_cover_ID,
         edition, publisher, publicationDate, stock, authorFirstName, authorLastName, summary)
         VALUES (
         %s,
         (SELECT id FROM binding WHERE binding = %s),
         (SELECT id FROM genre WHERE genre = %s),
+        (SELECT id from product_type where type = %s),
         %s, %s, %s, %s, %s, %s,
         %s, %s, %s, %s, %s)
         """
-        cursor.execute(query, (isbn, binding_type, genre, book_title, price, num_pages, cover_id, edition,
+        cursor.execute(query, (isbn, binding_type, genre, p_type, book_title, price, num_pages, cover_id, edition,
                                publisher, date_published, recv_stock, author_firstname, author_lastname, book_summary))
         conn.commit()
         conn.close()

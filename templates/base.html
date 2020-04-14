@@ -56,21 +56,38 @@
     {% block main %}
     {% endblock %}
 </div>
+<style>
+    .right-border {
+        padding-right: 55px;
+    }
+</style>
 
 <footer class="page-footer font-small bg-dark pt-4">
     <div class="container text-md-left">
         <div class="row">
             <div class="col-md-6 mx-auto pr-0">
-                <div class="text-center">
-                    <h5 class="text-uppercase primary-md font-weight-normal"
-                        style="letter-spacing: 4px;">Nile</h5>
-                    <hr class="blue darken-3 accent-2 mt-0 d-inline-block text-left mx-auto mb-5" style="width: 100px;">
+                <div class="text-center right-border">
+                    <h5 class="text-uppercase primary-md"
+                        style="letter-spacing: 4px;"><a href="https://www.nilebookstore.com">Nile</a></h5>
+                    <hr class="blue darken-3 accent-2 mt-0 d-inline-block text-left mx-auto mb-4" style="width: 100px;">
                 </div>
-                <div class="footer-explanation" style="border-right: 1px solid lightgray; padding-right: 55px; ">
-                    <p>Thanks for visiting our site. <strong>Disclaimer! This site is not real.</strong> It was made
+                <div class="footer-explanation right-border" style="border-right: 1px solid lightgray; ">
+                    <h5 class="text-center complement-roboto-bold">Thanks for visiting our site.</h5>
+                    <p>
+                        <strong>Disclaimer! This site is not real.</strong> It was made
                         to fulfill our term-project requirement for CSCI 4050 - Software Engineering class at The
-                        University
-                        of Georgia. Our talented team include:<br></p>
+                        University of Georgia.</p>
+                    <p class="legal" style="font-size: smaller"><em>All book information including ISBN,
+                        publisher, and cover images
+                        was taken from
+                        <a id="amazonLink" href="https://www.amazon.com" target="_blank">Amazon.com</a>. We claim no
+                        ownership for any
+                        information. All rights go to their respective owner(s). Any information
+                        on nilebookstore.com inconsistent to its representation on Amazon is purely unintentional,
+                        originating from programming errors or faults in retrieving information by our team.
+                    </em>
+                    </p>
+                    <p class="text-center">Our talented team includes:<br></p>
                     <div class="text-center"><strong>Manu Puduvalli, Samuel Yuen, Vrund Parikh, Lok Kwong,
                         and
                         Glen George</strong>
@@ -81,10 +98,11 @@
                         <ul class="list-unstyled d-inline-block text-left">
                             <li><i class="fab fa-bootstrap mr-2 mb-3 fa-lg"></i> Bootstrap Framework</li>
                             <li><i class="fab fa-mdb mr-2 mb-3 fa-lg"></i>MDBootstrap Framework</li>
-                            <li><i class="fab fa-js mr-2 mb-3 fa-lg"></i>Vanilla JavaScript/JQuery</li>
-                            <li><i class="fas fa-database mr-2 mb-3 fa-lg"></i>MySQL</li>
                             <li><i class="fab fa-python mr-2 mb-3 fa-lg"></i>Flask + Python</li>
+                            <li><i class="fas fa-database mr-2 mb-3 fa-lg"></i>MySQL</li>
                             <li><i class="fab fa-microsoft mr-2 mb-3 fa-lg"></i>TypeScript</li>
+                            <li><i class="fab fa-js mr-2 mb-3 fa-lg"></i>Vanilla JavaScript/JQuery</li>
+                            <li><i class="fas fa-running mr-2 mb-3 fa-lg"></i>Agile + Scrum</li>
                         </ul>
                     </div>
                 </div>
@@ -189,39 +207,12 @@
             </form>
         </li>
     </ul>
-    <hr>
-    <ul class="list-unstyled list-inline text-center">
-        <li class="list-inline-item">
-            <a class="btn-floating btn-fb mx-1">
-                <i class="fab fa-facebook-f"> </i>
-            </a>
-        </li>
-        <li class="list-inline-item">
-            <a class="btn-floating btn-tw mx-1">
-                <i class="fab fa-twitter"> </i>
-            </a>
-        </li>
-        <li class="list-inline-item">
-            <a class="btn-floating btn-gplus mx-1">
-                <i class="fab fa-google-plus-g"> </i>
-            </a>
-        </li>
-        <li class="list-inline-item">
-            <a class="btn-floating btn-li mx-1">
-                <i class="fab fa-linkedin-in"> </i>
-            </a>
-        </li>
-        <li class="list-inline-item">
-            <a class="btn-floating btn-dribbble mx-1">
-                <i class="fab fa-dribbble"> </i>
-            </a>
-        </li>
-    </ul>
-
     <div class="footer-copyright text-center py-3">© 2020 Copyright:
         <a href="https://www.nilebookstore.com/">nilebookstore.com</a>
     </div>
 </footer>
-
+<style>#amazonLink:hover {
+    color: #028df5;
+}</style>
 </body>
 </html>
