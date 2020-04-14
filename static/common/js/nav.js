@@ -6,7 +6,7 @@ function calculateOptionWidth(opt) {
     let compStyle = window.getComputedStyle(opt);
     let icoPad = parseFloat(compStyle.paddingRight);
     let fontMetric = compStyle.fontSize + ' ' + compStyle.fontFamily;
-    $(opt).width(getTextWidth(optText, fontMetric) + (icoPad / 2));
+    $(opt).width(Math.floor(getTextWidth(optText, fontMetric) + (icoPad / 2)));
 }
 function getTextWidth(text, font) {
     // @ts-ignore
