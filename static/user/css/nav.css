@@ -17,6 +17,7 @@
     border-top-left-radius: 5px;
     border-bottom-left-radius: 5px;
     cursor: pointer;
+    padding-right: 18px !important;
 }
 
 #mainSearch {
