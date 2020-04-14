@@ -236,6 +236,41 @@ def logout():
     flash('Error logging out.')
     return redirect(url_for('common_bp.landing_page'))
 
+def save_cart(cursor):
+    '''
+    REQUIREMENTS:
+    - When a user logs out, save their session cart to the database
+
+    ERROR CHECKING:
+    - If book is already in database, 
+    '''
+
+    # STEP 1: Given the session cart (represented as a list of book ISBN's), iterate through and each to db
+
+    pass
+
+def get_cart(cursor):
+    '''
+    REQUIREMENTS:
+    - When a user logs in, pull any items in the shopping cart table from db and save into their sesssion['shopping_cart']
+
+    - Eventually when shopping cart PAGE is done, need to be able to update the quantities on that page with
+      values from the database
+    '''
+     
+    query = '''SELECT * FROM shoppingcart WHERE userID_sc_FK=(SELECT id FROM user WHERE email=%s)'''
+    cursor.execute(query,(session['email']))
+
+    # STEP 1: UPDATE SESSION CART BY SAVING ISBN VALUES
+    bod_ids = [uid_bod_pair[1] for uid_bod_pair in cursor.fetchall()]
+
+    isbns = []
+    for bod_id in bod_ids:
+        query = '''SELECT ISBN_bod_FK FROM book_orderdetail WHERE id =%s'''
+        cursor.execute(query,(bod_id))
+        isbns.append(cursor.fetchall()[0][0])
+
+    session['shopping_cart'] = isbns
 
 @common_bp.route('/register/', methods=['POST', 'GET'])
 @cart_session
@@ -600,7 +635,7 @@ def product(title=None, price=None, author_name=None, ISBN=None, summary=None, p
     # STEP 2: Link sends
     if request.method == 'GET':
         return render_template('product.html', title=title, price=price, author_name=author_name, isbn=ISBN, summary=summary, publicationDate=publicationDate, numPages=numPages, binding=binding, genre=genre, nile_cover_ID=nile_cover_ID)
-    elif request.method == 'POST' and 'logged_in' in session and session['logged_in']:
+    else:
         conn = mysql.connect()
         cursor = conn.cursor()
 
@@ -642,19 +677,4 @@ def product(title=None, price=None, author_name=None, ISBN=None, summary=None, p
 
         session['shopping_cart'] = old_cart
         print(session['shopping_cart'])
-        return jsonify(session['shopping_cart'])
-    
-    # user is not logged in and adds to cart via POST
-    else:
-        book_isbn = request.form.get('bookISBN')
-
-        old_cart = session['shopping_cart']
-
-        if book_isbn in session['shopping_cart']:
-            old_cart.remove(book_isbn)
-        else:
-            old_cart.append(book_isbn)
-        
-        session['shopping_cart'] = old_cart
-        
         return jsonify(session['shopping_cart'])
