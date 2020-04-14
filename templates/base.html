@@ -36,6 +36,18 @@
                 border-radius: 5px;
                 -webkit-transition: all .12s ease;
             }
+
+            .right-border {
+                padding-right: 55px;
+            }
+
+            .left-border {
+                padding-left: 55px;
+            }
+
+            .main-footer-content {
+                max-width: calc(100vw - 150px) !important;
+            }
         </style>
     {% endblock %}
 </head>
@@ -65,22 +77,6 @@
     {% block main %}
     {% endblock %}
 </div>
-<style>
-    .right-border {
-        padding-right: 55px;
-    }
-
-    .left-border {
-        padding-left: 55px;
-    }
-
-    .main-footer-content {
-        max-width: calc(100vw - 150px) !important;
-    }
-
-
-</style>
-
 <footer class="page-footer font-small bg-dark pt-4">
     <div class="container text-md-left main-footer-content">
         <div class="row">
