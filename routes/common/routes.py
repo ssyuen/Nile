@@ -7,12 +7,43 @@ import sys
 import secrets
 from flask_mail import Message
 from server import mysql, mail
-from datetime import timedelta
+from datetime import timedelta, datetime
 from key import FERNET
 
 common_bp = Blueprint('common_bp', __name__,
                       template_folder='templates', static_folder='static')
 
+
+def secure_checkout(f):
+    @wraps(f)
+    def wrapped_func(*args, **kws):
+        # UPON SUCCESSFUL CHECKOUT, POP 'checkout_token' FROM SESSION
+        if 'checkout_token' in session:
+            return f(*args, **kws)
+        else:
+            # SHOW ERROR PAGE THAT ONCE YOU SUBMIT AN ORDER YOU ARE NOT ABLE TO GO BACK TO THE CHECKOUT PAGE
+            return redirect(url_for('common_bp.landing_page'))
+    return wrapped_func
+
+
+# PURPOSE OF THIS FUNCTION IS THAT IT WILL REDIRECT TO A PAGE SAYING THAT PAGE HAS EXPIRED
+def secure_link(f):
+    @wraps(f)
+    def wrapped_func(*args, **kws):
+        # IF ELAPSED TIME BETWEEN TOKEN CREATION AND CURRENT TIME IS LESS THAN 5 MINUTES, LINK IS STILL GOOD
+        if (datetime.now() - session['expire']) < timedelta.seconds(300):
+            return f(*args, **kws)
+        else:
+            # SHOW ERROR PAGE THAT ONCE YOU SUBMIT AN ORDER YOU ARE NOT ABLE TO GO BACK TO THE CHECKOUT PAGE
+            return redirect(url_for('common_bp.landing_page'))
+    return wrapped_func
+
+def generate_secure_token(purpose):
+    secure_token = secrets.token_urlsafe(64)
+    if purpose is 'checkout':
+        session['checkout_token'] = secure_token
+    elif purpose is 'expire':
+        session['expire'] = {secure_token:datetime.now()}
 
 def cart_session(f):
     @wraps(f)
@@ -465,6 +496,7 @@ def register():
             conn.commit()
             conn.close()
 
+        generate_secure_token('expire')
         return redirect(url_for('common_bp.register_confirmation', sending_token=secrets.token_urlsafe(256), email=email, user_id=user_id, name=firstName))
 
 
