@@ -49,13 +49,62 @@ def send_change_conf_email(recipient, recipient_fname, sender='rootatnilebooksto
     mail.send(msg)
 
 
-@user_bp.route('/checkout/')
+@user_bp.route('/checkout/',methods=['POST','GET'])
 @login_required
 @cart_session
 @remember_me
 @user_only
 def checkout():
-    return render_template('checkout.html')
+    '''
+    REQUIREMENTS:
+    - Fill out available shipping addresses
+    - Fill out available billing addresses
+    - Fill out cart area with items from the cart
+    - Sucessful checkout ends with confirmation email
+    - AJAX POST on Enter an Address OR when you select an address
+    - AJAX POST on Eneter a Billing Address OR when you select an address
+    - When form is submitted, the credit card must be validated against the one in the db
+    - Applying of PROMO code must be successful VIA POST, else, flash error message while re-rendering a portion of the page
+    '''
+
+    conn = mysql.connect()
+    cursor = conn.cursor()
+
+
+    # BOOKS FROM SHOPPING CART
+    book_payload = {}
+    for isbn, quantity in session['shopping_cart'].items():
+        query = """SELECT nile_cover_ID, title, CONCAT(authorFirstName, ' ', authorLastName) AS author_name, price FROM book WHERE ISBN = %s"""
+        cursor.execute(query, (isbn))
+        results = cursor.fetchall()[0]
+        nile_cover_ID = results[0]
+        title = results[1]
+        author_name = results[2]
+        price = results[3]
+        book_payload[isbn] = {'nile_cover_id': nile_cover_ID, 'title': title,
+                              'author_name': author_name, 'price': price, 'quantity': quantity}
+
+    # SHIPPING ADDRESSES FROM DB
+    shipping_payload = {}
+    shipping_query = '''SELECT * FROM address JOIN user_address ON  user_address.addressID_ua_FK = address.id WHERE addressTypeID_address_FK=1 AND user_address.userID_ua_FK=(SELECT id FROM user WHERE email = %s)'''
+    cursor.execute(shipping_query,(session['email']))
+    results = cursor.fetchall()
+    for shipping_address in results:
+        shipping_payload[shipping_address[0]] = {
+            'street1': shipping_address[1],
+            'street2': shipping_address[2],
+            'city': shipping_address[3],
+            'zip': shipping_address[4],
+            'state' : shipping_address[5],
+            'country': shipping_address[6]
+        }
+    print(f'shipping payload --> {shipping_payload}')
+
+
+    # BILLING ADDRESSES FROM DB
+    billing_payload = {}
+
+    return render_template('checkout.html',book_payload=book_payload)
 
 
 @user_bp.route('/base_profile/', methods=['GET'])
@@ -127,22 +176,22 @@ def change_pass():
     if request.method == 'POST':
         conn = mysql.connect()
         cursor = conn.cursor()
-        
-        
+
         db_pass_query = '''SELECT pass FROM user WHERE email = %s'''
         cursor.execute(db_pass_query, (session['email']))
         db_pass = cursor.fetchall()[0][0].encode('utf-8')
         current_password = request.form.get('currentPassword')
-        if not bcrypt.checkpw(current_password.encode('utf-8'),db_pass):
+        if not bcrypt.checkpw(current_password.encode('utf-8'), db_pass):
             flash(
-                'The current password you have entered does not match the password in our system.',category='err')
+                'The current password you have entered does not match the password in our system.', category='err')
             return redirect(url_for('user_bp.change_pass'))
 
         new_password = request.form.get('newPassword')
         confirm_new_password = request.form.get('confirmNewPassword')
 
         if new_password != confirm_new_password:
-            flash('There was an error in trying to record your information.',category='err')
+            flash(
+                'There was an error in trying to record your information.', category='err')
             return redirect(url_for('user_bp.change_pass'))
         else:
             new_password = bcrypt.hashpw(
@@ -155,7 +204,7 @@ def change_pass():
 
             send_change_conf_email(session['email'], session['firstName'])
 
-            flash('Your information has been recorded.',category='success')
+            flash('Your information has been recorded.', category='success')
             return redirect(url_for('user_bp.change_pass'))
     else:
         return render_template('profile/profileChangePassword.html')

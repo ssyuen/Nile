@@ -638,21 +638,6 @@ def shopping_cart():
     else:
         pass
 
-    # get book info from bod
-    # for bod in results:
-    #     query = '''SELECT
-    #     ISBN,
-    #     title,
-    #     price,
-    #     CONCAT(authorFirstName, ' ', authorLastName) AS author_name,
-    #     quantity
-    #     FROM book,book_orderdetail WHERE ISBN = %s'''
-    #     cursor.execute(query,(str(bod[0])))
-    #     results = cursor.fetchall()
-
-    #     header = [desc[0] for desc in cursor.description]
-    #     book = [dict(zip(header, result)) for result in results]
-    #     book_payload.append(book)
 
 
 
