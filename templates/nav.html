@@ -39,7 +39,7 @@
                         <div class="input-group main-search-sys" style="width: 650px;">
                             <div class="input-group-prepend">
                                 <label for="searchFilter" class="d-none"> </label>
-                                <select class="dropdown custom-select our-color" name="searchFilter"
+                                <select class="dropdown custom-select our-color nav-search-group" name="searchFilter"
                                         style="width: 75px;" id="searchFilter">
                                     <option value="all" selected id="searchFilterAllOption">All</option>
                                     <option value="productType">Audiobook</option>
@@ -51,11 +51,12 @@
                                     <option value="productType">Textbook</option>
                                 </select>
                             </div>
-                            <input id="mainSearch" class="form-control" type="text" placeholder="Search"
+                            <input id="mainSearch" class="form-control nav-search-group" type="text"
+                                   placeholder="Search"
                                    aria-label="Search" name="search_query"
                                    aria-describedby="inputGroup-sizing-default">
                             <div class="input-group-append">
-                                <button id="mainSearchSysBtn"
+                                <button id="mainSearchSysBtn nav-search-group"
                                         class="btn btn-md blue-gradient m-0 px-4 py-2 z-depth-0 waves-effect main-search-sys-btn"
                                         type="submit"><i class="fas fa-search" aria-hidden="true"></i></button>
                             </div>
@@ -66,7 +67,7 @@
         </ul>
         <ul class="navbar-nav ml-auto nav-flex-icons user-centric-btn">
             {% if not session['admin'] %}
-                <li class="nav-item align-self-center">
+                <li class="nav-item align-self-center mr-2">
                     <div class="widget-header mr-3 mt-1">
                         <a href="{{ url_for('common_bp.shopping_cart') }}"
                            class="icon icon-sm rounded-circle border text-center">
