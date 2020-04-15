@@ -213,7 +213,7 @@ def login(ctx=None):
                         session.permanent = True
 
                     # IF USER LOGGED IN WITH ITEMS IN THEIR CART, STORE TO DB
-                    save_cart(mysql,session['shopping_cart'])
+                    save_cart(mysql, session['shopping_cart'])
                     load_cart(mysql)
 
                     ctx = request.args.get('ctx')
@@ -255,7 +255,7 @@ def save_cart(cursor):
     - When a user logs out, save their session cart to the database
 
     ERROR CHECKING:
-    - If book is already in database, 
+    - If book is already in database,
     '''
 
     # STEP 1: Given the session cart (represented as a list of book ISBN's), iterate through and each to db
@@ -352,10 +352,10 @@ def register():
 
         '''
         REGISTRATION CONDITIONS:
-        #1: NO SHIPPING OR PAYMENT METHOD
-        #2: SHIPPING ADDRESS PROVIDED
-        #3: PAYMENT METHOD PROVIDED
-        #4: BOTH SHIPPING AND PAYMENT PROVIDED
+        # 1: NO SHIPPING OR PAYMENT METHOD
+        # 2: SHIPPING ADDRESS PROVIDED
+        # 3: PAYMENT METHOD PROVIDED
+        # 4: BOTH SHIPPING AND PAYMENT PROVIDED
         '''
 
         # INSERTING WITH NO SHIPPING OR PAYMENT METHOD
@@ -656,6 +656,7 @@ def product(title=None, price=None, author_name=None, ISBN=None, summary=None, p
 
     # LOGGED IN AND ADDING/DELETING FROM CART
     elif check_login():
+        print('session cart', session['shopping_cart'])
         conn = mysql.connect()
         cursor = conn.cursor()
 
@@ -683,8 +684,8 @@ def product(title=None, price=None, author_name=None, ISBN=None, summary=None, p
         else:
             old_cart.append(book_isbn)
 
-            query = '''INSERT INTO book_orderdetail (ISBN_bod_FK,quantity) VALUES (%s, %s)'''
-            cursor.execute(query, (book_isbn, str(1)))
+            query = '''INSERT INTO book_orderdetail (userID_bod_FK,ISBN_bod_FK,quantity) VALUES ((SELECT id FROM user WHERE email = %s), %s, %s)'''
+            cursor.execute(query, (session['email'], book_isbn, str(1)))
             conn.commit()
 
             query = '''INSERT INTO shoppingcart (userID_sc_FK, bod_sc_FK) VALUES ((SELECT id FROM user WHERE email = %s), (SELECT id FROM book_orderdetail ORDER BY id DESC LIMIT 1))'''
@@ -720,22 +721,22 @@ def check_login() -> bool:
         return False
 
 
-def save_cart(mysql,cart):
+def save_cart(mysql, cart):
     conn = mysql.connect()
     cursor = conn.cursor()
 
     for book_isbn in cart:
         try:
-            query = '''INSERT INTO book_orderdetail (ISBN_bod_FK,quantity) VALUES (%s, %s)'''
-            cursor.execute(query, (book_isbn, str(1)))
+            query = '''INSERT INTO book_orderdetail (userID_bod_FK,ISBN_bod_FK,quantity) VALUES ((SELECT id FROM user WHERE email = %s), %s, %s)'''
+            cursor.execute(query, (session['email'], book_isbn, str(1)))
             conn.commit()
 
-            print(f'{book_isbn} has been inserted into the db during login')
             query = '''INSERT INTO shoppingcart (userID_sc_FK, bod_sc_FK) VALUES ((SELECT id FROM user WHERE email = %s), (SELECT id FROM book_orderdetail ORDER BY id DESC LIMIT 1))'''
             cursor.execute(query, (session['email']))
-        except pymysql.Error:
+            conn.commit()
+        except pymysql.Error as e:
+            print(e)
             continue
-        conn.commit()
     conn.close()
 
 def load_cart(mysql):
@@ -744,4 +745,9 @@ def load_cart(mysql):
 
     query = '''SELECT * FROM shoppingcart WHERE userID_sc_FK = (SELECT id FROM user WHERE email = %s)'''
     cursor.execute(query,(session['email']))
-    session['shopping_cart'] = cursor.fetchall()
+    books = cursor.fetchall()
+    if len(books) == 0:
+        session['shopping_cart'] = list()
+    else:
+        session['shopping_cart'] = books
+    conn.close()
