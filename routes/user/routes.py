@@ -98,14 +98,24 @@ def checkout():
             'state' : shipping_address[5],
             'country': shipping_address[6]
         }
-    print(f'shipping payload --> {shipping_payload}')
-
 
     # BILLING ADDRESSES FROM DB
     billing_payload = {}
+    billing_query = '''SELECT * FROM address JOIN payment_method ON address.id = payment_method.billingAddress_addr_FK WHERE addressTypeID_address_FK=2 AND payment_method.userID_payment_FK = (SELECT id FROM user WHERE email = %s)'''
+    cursor.execute(billing_query,(session['email']))
+    results = cursor.fetchall()
+    for billing_address in results:
+        billing_payload[billing_address[0]] = {
+            'street1': billing_address[1],
+            'street2': billing_address[2],
+            'city': billing_address[3],
+            'zip': billing_address[4],
+            'state' : billing_address[5],
+            'country': billing_address[6]
+        }
+    print(f'billing payload --> {billing_payload}')
 
-    return render_template('checkout.html',book_payload=book_payload,shipping_payload=shipping_payload)
-
+    return render_template('checkout.html',book_payload=book_payload,shipping_payload=shipping_payload,billing_payload=billing_payload)
 
 @user_bp.route('/base_profile/', methods=['GET'])
 @login_required

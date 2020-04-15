@@ -107,7 +107,9 @@
 
                         <label for="billingAddressSelect">Choose a Billing Address:</label>
                         <select class="custom-select d-block w-100 mb-3" id="billingAddressSelect">
-                            <option>PO BOX 929 Lawrenceville, GA 30048</option>
+                            {% for id,payload in billing_payload.items() %}
+                                <option>{{ payload['street1'] }} {{ payload['street2'] }} {{ payload['city'] }}, {{ payload['state'] }} {{ payload['zip'] }}</option>
+                            {% endfor %}
                         </select>
                         <p>Or <a data-toggle="collapse" data-target="#billingAddressEntry" href=""
                                  id="billingAddressToggler">Enter a Billing Address</a></p>
