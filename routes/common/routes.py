@@ -726,28 +726,36 @@ def save_cart(mysql, cart):
     cursor = conn.cursor()
 
     for book_isbn in cart:
-        try:
-            query = '''INSERT INTO book_orderdetail (userID_bod_FK,ISBN_bod_FK,quantity) VALUES ((SELECT id FROM user WHERE email = %s), %s, %s)'''
-            cursor.execute(query, (session['email'], book_isbn, str(1)))
-            conn.commit()
+        query = '''INSERT IGNORE INTO book_orderdetail (userID_bod_FK,ISBN_bod_FK,quantity) VALUES ((SELECT id FROM user WHERE email = %s), %s, %s)'''
+        cursor.execute(query, (session['email'], book_isbn, str(1)))
+        conn.commit()
 
-            query = '''INSERT INTO shoppingcart (userID_sc_FK, bod_sc_FK) VALUES ((SELECT id FROM user WHERE email = %s), (SELECT id FROM book_orderdetail ORDER BY id DESC LIMIT 1))'''
-            cursor.execute(query, (session['email']))
-            conn.commit()
-        except pymysql.Error as e:
-            print(e)
-            continue
+        print(f'{book_isbn} has been inserted.')
+
+        query = '''INSERT IGNORE INTO shoppingcart (userID_sc_FK, bod_sc_FK) VALUES ((SELECT id FROM user WHERE email = %s), (SELECT id FROM book_orderdetail ORDER BY id DESC LIMIT 1))'''
+        cursor.execute(query, (session['email']))
+        conn.commit()
+    
     conn.close()
+
 
 def load_cart(mysql):
     conn = mysql.connect()
     cursor = conn.cursor()
 
-    query = '''SELECT * FROM shoppingcart WHERE userID_sc_FK = (SELECT id FROM user WHERE email = %s)'''
-    cursor.execute(query,(session['email']))
-    books = cursor.fetchall()
-    if len(books) == 0:
+    bod_id_query = '''SELECT bod_sc_FK FROM shoppingcart WHERE userID_sc_FK = (SELECT id FROM user WHERE email = %s)'''
+    cursor.execute(bod_id_query, (session['email']))
+    bod_ids = cursor.fetchall()
+
+    book_payload = []
+    for bod_id in bod_ids:
+        book_query = '''SELECT ISBN_bod_FK FROM book_orderdetail WHERE id=%s'''
+        cursor.execute(book_query,(bod_id))
+        book = cursor.fetchall()[0][0]
+        book_payload.append(book)
+    print(f'current books: {book_payload}')
+    if len(book_payload) == 0:
         session['shopping_cart'] = list()
     else:
-        session['shopping_cart'] = books
+        session['shopping_cart'] = book_payload
     conn.close()
