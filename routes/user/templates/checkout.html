@@ -31,7 +31,9 @@
                         <p class="complement mb-3" style="font-size: x-large">Shipping Information</p>
                         <label for="shippingAddressSelect">Choose a Shipping Address:</label>
                         <select class="custom-select d-block w-100 mb-3" id="shippingAddressSelect">
-                            <option>PO BOX 626 Lawrenceville, GA 30048</option>
+                            {% for id,payload in shipping_payload.items() %}
+                                <option>{{ payload['street1'] }} {{ payload['street2'] }} {{ payload['city'] }}, {{ payload['state'] }} {{ payload['zip'] }}</option>
+                            {% endfor %}
                         </select>
                         <p>Or <a data-toggle="collapse" data-target="#addressEntry" href="" id="addressToggler">Enter an
                             Address</a></p>
@@ -105,7 +107,9 @@
 
                         <label for="billingAddressSelect">Choose a Billing Address:</label>
                         <select class="custom-select d-block w-100 mb-3" id="billingAddressSelect">
-                            <option>PO BOX 929 Lawrenceville, GA 30048</option>
+                            {% for id,payload in billing_payload.items() %}
+                                <option>{{ payload['street1'] }} {{ payload['street2'] }} {{ payload['city'] }}, {{ payload['state'] }} {{ payload['zip'] }}</option>
+                            {% endfor %}
                         </select>
                         <p>Or <a data-toggle="collapse" data-target="#billingAddressEntry" href=""
                                  id="billingAddressToggler">Enter a Billing Address</a></p>
@@ -250,46 +254,15 @@
                 </h4>
                 <!-- Cart -->
                 <ul class="list-group mb-3 z-depth-1">
-                    <li class="list-group-item d-flex justify-content-between lh-condensed">
-                        <div>
-                            <h6 class="my-0 complement-light">Harry Potter and the Sourcer's Stone</h6>
-                            <small class="text-muted"><i class="checkoutSideBarISBN">ISBN: 9782561365412</i></small>
-                        </div>
-                        <span class="text-muted checkoutSideBarCardPrice complement">$9.99</span>
-                    </li>
-                    <li class="list-group-item d-flex justify-content-between lh-condensed">
-                        <div>
-                            <h6 class="my-0 complement-light">The BFG</h6>
-                            <small class="text-muted"><i class="checkoutSideBarISBN">ISBN: 9780142410387</i></small>
-                        </div>
-                        <span class="text-muted complement checkoutSideBarCardPrice">$9.99</span>
-                    </li>
-                    <li class="list-group-item d-flex justify-content-between lh-condensed">
-                        <div>
-                            <h6 class="my-0 complement-light">Percy Jackson and the Lightning Thief</h6>
-                            <small class="text-muted"><i class="checkoutSideBarISBN">ISBN: 9780145570387</i></small>
-                        </div>
-                        <span class="text-muted complement checkoutSideBarCardPrice">$9.99</span>
-                    </li>
-                    <li class="list-group-item d-flex justify-content-between lh-condensed">
-                        <div>
-                            <h6 class="my-0 complement-light">Shipping Cost</h6>
-                        </div>
-                        <span class="text-danger complement checkoutSideBarCardPrice">$2.50</span>
-                    </li>
-                    <li class="list-group-item d-flex justify-content-between lh-condensed">
-                        <div>
-                            <h6 class="my-0 complement-light">Tax</h6>
-                        </div>
-                        <span class="text-danger complement checkoutSideBarCardPrice">$2.50</span>
-                    </li>
-                    <li class="list-group-item d-flex justify-content-between bg-light">
-                        <div class="text-success">
-                            <h6 class="my-0 complement-light">Promo code</h6>
-                            <small>FIVEOFF</small>
-                        </div>
-                        <span class="text-success complement">-$5</span>
-                    </li>
+                    {% for isbn, payload in book_payload.items() %}
+                        <li class="list-group-item d-flex justify-content-between lh-condensed">
+                            <div>
+                                <h6 class="my-0 complement-light">{{ payload['title'] }}</h6>
+                                <small class="text-muted"><i class="checkoutSideBarISBN">ISBN: {{ isbn }}</i></small>
+                            </div>
+                            <span class="text-muted checkoutSideBarCardPrice complement">${{ payload['price'] }}</span>
+                        </li>
+                    {% endfor %}
                     <li class="list-group-item d-flex justify-content-between">
                         <span class="complement">Total (USD)</span>
                         <strong class="primary-md">$29.97</strong>
