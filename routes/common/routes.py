@@ -614,16 +614,22 @@ def shopping_cart():
     conn = mysql.connect()
     cursor = conn.cursor()
 
-    # user_id_query = 'SELECT id FROM user WHERE email = %s'
-    # cursor.execute(user_id_query, (session['email']))
-    # user_id = cursor.fetchall()[0][0]
+    if request.method == 'GET':
+         # get user's book_orderdetails from shoppingcart
+        query = '''SELECT bod_sc_FK FROM shoppingcart WHERE userID_sc_FK = (SELECT id FROM user WHERE email = %s)'''
+        cursor.execute(query, (session['email']))
+        results = cursor.fetchall()
 
-    # get user's book_orderdetails from shoppingcart
-    # query = '''SELECT bod_sc_FK FROM shoppingcart WHERE userID_sc_FK = %s'''
-    # cursor.execute(query, (user_id))
-    # results = cursor.fetchall()
+        book_payload = []
 
-    book_payload = []
+        conn.close()
+        return render_template('shoppingcart.html', books=book_payload)
+    if check_login():
+        pass
+    else:
+        pass
+
+   
     # get book info from bod
     # for bod in results:
     #     query = '''SELECT
@@ -639,9 +645,10 @@ def shopping_cart():
     #     header = [desc[0] for desc in cursor.description]
     #     book = [dict(zip(header, result)) for result in results]
     #     book_payload.append(book)
-    print(book_payload)
 
-    return render_template('shoppingcart.html', books=book_payload)
+
+    
+    
 
 
 @common_bp.route('/product/', methods=['GET', 'POST'])
@@ -652,7 +659,10 @@ def product(title=None, price=None, author_name=None, ISBN=None, summary=None, p
 
     # STEP 2: Link sends
     if request.method == 'GET':
-        return render_template('product.html', title=title, price=price, author_name=author_name, isbn=ISBN, summary=summary, publicationDate=publicationDate, numPages=numPages, binding=binding, genre=genre, nile_cover_ID=nile_cover_ID)
+        book_in_cart = False
+        if request.args.get('ISBN') in session['shopping_cart']:
+            book_in_cart = True
+        return render_template('product.html', title=title, price=price, author_name=author_name, isbn=ISBN, summary=summary, publicationDate=publicationDate, numPages=numPages, binding=binding, genre=genre, nile_cover_ID=nile_cover_ID, book_in_cart=book_in_cart)
 
     # LOGGED IN AND ADDING/DELETING FROM CART
     elif check_login():
