@@ -104,7 +104,7 @@ def checkout():
     # BILLING ADDRESSES FROM DB
     billing_payload = {}
 
-    return render_template('checkout.html',book_payload=book_payload)
+    return render_template('checkout.html',book_payload=book_payload,shipping_payload=shipping_payload)
 
 
 @user_bp.route('/base_profile/', methods=['GET'])

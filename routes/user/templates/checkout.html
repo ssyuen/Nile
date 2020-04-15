@@ -31,7 +31,9 @@
                         <p class="complement mb-3" style="font-size: x-large">Shipping Information</p>
                         <label for="shippingAddressSelect">Choose a Shipping Address:</label>
                         <select class="custom-select d-block w-100 mb-3" id="shippingAddressSelect">
-                            <option>PO BOX 626 Lawrenceville, GA 30048</option>
+                            {% for id,payload in shipping_payload.items() %}
+                                <option>{{ payload['street1'] }} {{ payload['street2'] }} {{ payload['city'] }}, {{ payload['state'] }} {{ payload['zip'] }}</option>
+                            {% endfor %}
                         </select>
                         <p>Or <a data-toggle="collapse" data-target="#addressEntry" href="" id="addressToggler">Enter an
                             Address</a></p>
