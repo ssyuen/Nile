@@ -141,9 +141,9 @@ for it. Read the instructions at the top of the script.
     - [x] Remove address
   - [x] Add Address
   - [x] Search Bar
-  - [ ] Shopping Cart
-    - [ ] Fill Shopping Cart with user's items from database
-    - [ ] Items should be tracked in users table with under items column
+  - [x] Shopping Cart
+    - [x] Fill Shopping Cart with user's items from database
+    - [x] Items should be tracked in users table with under items column
   - [x] Password Security
     - [x] Password hashing before entered into database
   - [x] Sign Out
@@ -159,10 +159,10 @@ for it. Read the instructions at the top of the script.
     - [x] Change active on Browse to unactive when About is clicked on
     - [x] Password & Confirm Password Restrictions
     - [ ] Shopping Cart
-      - [ ] Cart Pricing needs to reflect price in cart
+      - [x] Cart Pricing needs to reflect price in cart
       - [ ] Increasing quantity of an item should dynamically increase Cart Pricing
       - [ ] Remove Item from cart
-      - [ ] Number above Shopping Cart icon needs to adjust to the number of items in the cart dyanmically
+      - [x] Number above Shopping Cart icon needs to adjust to the number of items in the cart dyanmically
     - [x] User Profile edit buttons (change from readonly state)
   - [ ] Custom Error pages
     - [ ] 404
