@@ -1,0 +1,50 @@
+{% extends "profile/profileBase.html" %}
+{% block title %}Manage Subscriptions{% endblock %}
+
+{% block head %}
+{{ super() }}
+<style>
+    @media (max-width: 576px) {
+        #ordersCard {
+            margin-right: 0 !important;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+
+<article class="card mb-3">
+
+    <div class="card-image">
+        <!--Content-->
+        <div class="text-white d-flex h-100 mask card-contextual-info">
+            <div class="container-fluid give">
+                <div class="row py-3 pr-3">
+                    <div class="col-10">
+                        <div class="first-content">
+                            <h3 class="card-title complement">Subscriptions</h3>
+                        </div>
+                    </div>
+                    <div class="col-2 align-self-center">
+                        <div class="second-content" style="float: right;">
+                            <i class="fas fa-user-circle fa-3x"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card-body">
+        <div class="custom-control custom-checkbox">
+            <input type="checkbox" class="custom-control-input" id="emailSubscription" checked>
+            <label class="custom-control-label" for="emailSubscription">Check to subscribe for email notifications about
+                changes to your profile.</label>
+        </div>
+    </div>
+    
+
+</article> <!-- card.// -->
+<script type="module" src="/static/user/js/profile/subscription.js"></script>
+{% endblock %}
