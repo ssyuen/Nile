@@ -184,3 +184,25 @@ def add_promo_form():
 @remember_me
 def edit_users_form():
     return render_template('./forms/edit_users_form.html')
+
+@admin_bp.route('/subscriptions/',methods=['POST','GET'])
+@login_required
+@cart_session
+@remember_me
+@user_only
+def manage_subscriptions():
+
+    if request.method == 'GET':
+        return render_template('profile/profileSubscriptions.html')
+    else:
+        conn = mysql.connect()
+        cursor = conn.cursor()
+
+        flag = request.form.get("flag")
+
+        if flag == 'SUBSCRIBE':
+            conn.close()
+            return 200
+        elif flag == 'UNSUBSCRIBE':
+            conn.close()
+            return 200
