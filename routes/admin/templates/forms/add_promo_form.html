@@ -39,35 +39,36 @@
                     </div>
                     <!-- Content -->
                     <div class="card-body white">
-                        <form>
+                        <form method="POST">
                             <div class="form-row">
                                 <div class="form-group col-md-10">
                                     <label for="promoName">Promo Name</label>
-                                    <input type="text" class="form-control" id="promoName"
-                                           placeholder="Promotion Name" required>
+                                    <input type="text" class="form-control" id="promoName" name="promoName"
+                                           placeholder="Promotion Name" required maxlength="50">
                                 </div>
                                 <div class="form-group col-md-2">
                                     <label for="promoCode">Promo Code</label>
-                                    <input type="text" class="form-control" id="promoCode"
-                                           placeholder="Promotion Code" required>
+                                    <input type="text" class="form-control" id="promoCode" name="promoCode"
+                                           placeholder="Promotion Code" required maxlength="45">
                                 </div>
                             </div>
                             <div class="form-row">
                                 <div class="form-group col-md-8">
                                     <label for="promoAmt">Promo Amount Percentage</label>
-                                    <input type="number" class="form-control" id="promoAmt"
+                                    <input type="number" class="form-control" id="promoAmt" name="promoAmt"
                                            placeholder="Promotion Amount" required>
                                 </div>
                                 <div class="form-group col-md-4">
                                     <label for="promoExpiry">Promo Expiration Date</label>
-                                    <input type="date" class="form-control" id="promoExpiry" required>
+                                    <input type="date" class="form-control" id="promoExpiry" name="promoExpiry"
+                                           required>
                                 </div>
                             </div>
                             <div class="form-row">
                                 <div class="form-group col">
-                                    <label for="exampleFormControlTextarea3">Promotion Notes</label>
-                                    <textarea class="form-control" id="exampleFormControlTextarea3" rows="4"
-                                              placeholder="Notes"></textarea>
+                                    <label for="promoNotes">Promotion Notes</label>
+                                    <textarea class="form-control" id="promoNotes" name="promoNotes" rows="4"
+                                              placeholder="Notes" maxlength="500"></textarea>
                                 </div>
                             </div>
                             <button type="submit" id="updateBtn" class="btn blue-gradient btn-block">Create New
