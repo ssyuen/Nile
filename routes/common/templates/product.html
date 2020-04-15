@@ -51,12 +51,23 @@
                     </li>
 
                     {% if not session['admin'] %}
-                        <div class="mt-3">
-                            <button id="addToCartBtn" class="btn blue-gradient btn-block w-250">
-                                <span>Add To Cart</span>
-                                <i class="fa fa-shopping-cart"></i>
-                            </button>
-                        </div>
+                        
+                        {% if request.args.get('isbn') not in session['shopping_cart'] %}
+                            <div class="mt-3">
+                                <button id="addToCartBtn" class="btn blue-gradient btn-block w-250">
+                                    <span>Add To Cart</span>
+                                    <i class="fa fa-shopping-cart"></i>
+                                </button>
+                            </div>
+                        {% else %}
+                            <div class="mt-3">
+                                <button id="addToCartBtn" class="btn-outline-success btn btn-block w-250">
+                                    <span>Added to Cart</span>
+                                    <i class="fa fa-shopping-cart"></i>
+                                </button>
+                            </div>
+                        {% endif %}
+                        
                     {% endif %}
 
                 </aside>

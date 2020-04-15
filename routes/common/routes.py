@@ -20,7 +20,7 @@ def cart_session(f):
         if 'shopping_cart' in session:
             return f(*args, **kws)
         else:
-            session['shopping_cart'] = list()
+            session['shopping_cart'] = dict()
             return f(*args, **kws)
 
     return wrapped_func
@@ -282,9 +282,10 @@ def get_cart(cursor):
     for bod_id in bod_ids:
         query = '''SELECT ISBN_bod_FK FROM book_orderdetail WHERE id =%s'''
         cursor.execute(query, (bod_id))
-        isbns.append(cursor.fetchall()[0][0])
+        session['shopping_cart'][cursor.fetchall()[0][0]] = 1
+        # isbns.append(cursor.fetchall()[0][0])
 
-    session['shopping_cart'] = isbns
+    # session['shopping_cart'] = isbns
 
 
 @common_bp.route('/register/', methods=['POST', 'GET'])
@@ -607,23 +608,36 @@ def forgot_email_conf():
     return render_template('confirmation/forgot_email_conf.html')
 
 
-@common_bp.route('/shoppingcart/')
+@common_bp.route('/shoppingcart/', methods=['GET', 'POST'])
 @cart_session
 @remember_me
 def shopping_cart():
     conn = mysql.connect()
     cursor = conn.cursor()
+    # USER VISITS SHOPPING CART
+    if request.method == 'GET':
+        book_payload = {}
+        for isbn, quantity in session['shopping_cart'].items():
+            query = """SELECT nile_cover_ID, title, CONCAT(authorFirstName, ' ', authorLastName) AS author_name, price FROM book WHERE ISBN = %s"""
+            cursor.execute(query, (isbn))
+            results = cursor.fetchall()[0]
+            nile_cover_ID = results[0]
+            title = results[1]
+            author_name = results[2]
+            price = results[3]
+            book_payload[isbn] = {'nile_cover_id': nile_cover_ID, 'title': title,
+                                  'author_name': author_name, 'price': price, 'quantity': quantity}
 
-    # user_id_query = 'SELECT id FROM user WHERE email = %s'
-    # cursor.execute(user_id_query, (session['email']))
-    # user_id = cursor.fetchall()[0][0]
+        return render_template('shoppingcart.html', book_payload=book_payload)
 
-    # get user's book_orderdetails from shoppingcart
-    # query = '''SELECT bod_sc_FK FROM shoppingcart WHERE userID_sc_FK = %s'''
-    # cursor.execute(query, (user_id))
-    # results = cursor.fetchall()
+    # LOGGED IN USER EDITS QUANTITY ON SHOPPING CART PAGE
+    elif check_login():
+        pass
 
-    book_payload = []
+    # NON LOGGED IN USER EDITS QUANTITY ON SHOPPING CART PAGE
+    else:
+        pass
+
     # get book info from bod
     # for bod in results:
     #     query = '''SELECT
@@ -639,9 +653,7 @@ def shopping_cart():
     #     header = [desc[0] for desc in cursor.description]
     #     book = [dict(zip(header, result)) for result in results]
     #     book_payload.append(book)
-    print(book_payload)
 
-    return render_template('shoppingcart.html', books=book_payload)
 
 
 @common_bp.route('/product/', methods=['GET', 'POST'])
@@ -656,7 +668,6 @@ def product(title=None, price=None, author_name=None, ISBN=None, summary=None, p
 
     # LOGGED IN AND ADDING/DELETING FROM CART
     elif check_login():
-        print('session cart', session['shopping_cart'])
         conn = mysql.connect()
         cursor = conn.cursor()
 
@@ -665,7 +676,8 @@ def product(title=None, price=None, author_name=None, ISBN=None, summary=None, p
 
         # IF BOOK IN CART
         if book_isbn in session['shopping_cart']:
-            old_cart.remove(book_isbn)
+            # old_cart.remove(book_isbn)
+            old_cart.pop(book_isbn)
 
             bod_id_query = '''SELECT bod_sc_FK FROM shoppingcart WHERE userID_sc_FK = (SELECT id FROM user WHERE email = %s) AND bod_sc_FK = (SELECT id FROM book_orderdetail WHERE ISBN_bod_FK = %s) '''
             cursor.execute(bod_id_query, (session['email'], book_isbn))
@@ -682,7 +694,8 @@ def product(title=None, price=None, author_name=None, ISBN=None, summary=None, p
 
         # IF BOOK NOT IN CART
         else:
-            old_cart.append(book_isbn)
+            # old_cart.append(book_isbn)
+            old_cart[book_isbn] = 1
 
             query = '''INSERT INTO book_orderdetail (userID_bod_FK,ISBN_bod_FK,quantity) VALUES ((SELECT id FROM user WHERE email = %s), %s, %s)'''
             cursor.execute(query, (session['email'], book_isbn, str(1)))
@@ -703,11 +716,13 @@ def product(title=None, price=None, author_name=None, ISBN=None, summary=None, p
 
         # REMOVING FROM CART
         if book_isbn in session['shopping_cart']:
-            old_cart.remove(book_isbn)
+            # old_cart.remove(book_isbn)
+            old_cart.pop(book_isbn)
 
         # ADDING TO CART
         else:
-            old_cart.append(book_isbn)
+            # old_cart.append(book_isbn)
+            old_cart[book_isbn] = 1
 
         session['shopping_cart'] = old_cart
         print(session['shopping_cart'])
@@ -724,10 +739,9 @@ def check_login() -> bool:
 def save_cart(mysql, cart):
     conn = mysql.connect()
     cursor = conn.cursor()
-
-    for book_isbn in cart:
+    for book_isbn, quantity in cart.items():
         query = '''INSERT IGNORE INTO book_orderdetail (userID_bod_FK,ISBN_bod_FK,quantity) VALUES ((SELECT id FROM user WHERE email = %s), %s, %s)'''
-        cursor.execute(query, (session['email'], book_isbn, str(1)))
+        cursor.execute(query, (session['email'], book_isbn, str(quantity)))
         conn.commit()
 
         print(f'{book_isbn} has been inserted.')
@@ -735,7 +749,7 @@ def save_cart(mysql, cart):
         query = '''INSERT IGNORE INTO shoppingcart (userID_sc_FK, bod_sc_FK) VALUES ((SELECT id FROM user WHERE email = %s), (SELECT id FROM book_orderdetail ORDER BY id DESC LIMIT 1))'''
         cursor.execute(query, (session['email']))
         conn.commit()
-    
+
     conn.close()
 
 
@@ -747,15 +761,21 @@ def load_cart(mysql):
     cursor.execute(bod_id_query, (session['email']))
     bod_ids = cursor.fetchall()
 
-    book_payload = []
+    book_payload = {}
     for bod_id in bod_ids:
-        book_query = '''SELECT ISBN_bod_FK FROM book_orderdetail WHERE id=%s'''
-        cursor.execute(book_query,(bod_id))
-        book = cursor.fetchall()[0][0]
-        book_payload.append(book)
+        book_query = '''SELECT ISBN_bod_FK,quantity FROM book_orderdetail WHERE id=%s'''
+        cursor.execute(book_query, (bod_id))
+        results = cursor.fetchall()
+        print(f'results:{results}')
+        book = results[0][0]
+        quantity = results[0][1]
+        print(f'book: {book}')
+        print(f'quantity: {quantity}')
+        # book_payload.append(book)
+        book_payload[book] = int(quantity)
     print(f'current books: {book_payload}')
     if len(book_payload) == 0:
-        session['shopping_cart'] = list()
+        session['shopping_cart'] = {}
     else:
         session['shopping_cart'] = book_payload
     conn.close()
