@@ -30,11 +30,13 @@
                     <form class="card-body">
                         <p class="complement mb-3" style="font-size: x-large">Shipping Information</p>
                         <label for="shippingAddressSelect">Choose a Shipping Address:</label>
-                        <select class="custom-select d-block w-100 mb-3" id="shippingAddressSelect">
-                            {% for id,payload in shipping_payload.items() %}
-                                <option>{{ payload['street1'] }} {{ payload['street2'] }} {{ payload['city'] }}, {{ payload['state'] }} {{ payload['zip'] }}</option>
-                            {% endfor %}
-                        </select>
+                        {% if shipping_payload|length != 0%}
+                            <select class="custom-select d-block w-100 mb-3" id="shippingAddressSelect">
+                                {% for id,payload in shipping_payload.items() %}
+                                    <option>{{ payload['street1'] }} {{ payload['street2'] }} {{ payload['city'] }}, {{ payload['state'] }} {{ payload['zip'] }}</option>
+                                {% endfor %}
+                            </select>
+                        {% endif %}
                         <p>Or <a data-toggle="collapse" data-target="#addressEntry" href="" id="addressToggler">Enter an
                             Address</a></p>
 
@@ -106,11 +108,13 @@
                         <hr>
 
                         <label for="billingAddressSelect">Choose a Billing Address:</label>
-                        <select class="custom-select d-block w-100 mb-3" id="billingAddressSelect">
-                            {% for id,payload in billing_payload.items() %}
-                                <option>{{ payload['street1'] }} {{ payload['street2'] }} {{ payload['city'] }}, {{ payload['state'] }} {{ payload['zip'] }}</option>
-                            {% endfor %}
-                        </select>
+                        {% if billing_payload|length != 0%}
+                            <select class="custom-select d-block w-100 mb-3" id="billingAddressSelect">
+                                {% for id,payload in billing_payload.items() %}
+                                    <option>{{ payload['street1'] }} {{ payload['street2'] }} {{ payload['city'] }}, {{ payload['state'] }} {{ payload['zip'] }}</option>
+                                {% endfor %}
+                            </select>
+                        {% endif %}
                         <p>Or <a data-toggle="collapse" data-target="#billingAddressEntry" href=""
                                  id="billingAddressToggler">Enter a Billing Address</a></p>
 
