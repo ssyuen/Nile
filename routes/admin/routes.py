@@ -186,7 +186,6 @@ def edit_users_form():
     return render_template('./forms/edit_users_form.html')
 
 @admin_bp.route('/subscriptions/',methods=['POST','GET'])
-@login_required
 @cart_session
 @remember_me
 @user_only
