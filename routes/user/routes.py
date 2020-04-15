@@ -412,4 +412,14 @@ def manage_subscriptions():
     else:
         conn = mysql.connect()
         cursor = conn.cursor()
-            
+
+        flag = request.form.get("flag")
+
+        if flag == 'SUBSCRIBE':
+            conn.close()
+            return 200
+        elif flag == 'UNSUBSCRIBE':
+            conn.close()
+            return 200
+
+
