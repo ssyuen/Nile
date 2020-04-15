@@ -272,34 +272,68 @@
         </div>
     </div>
     <script>
-        $(document).ready(function () {
-            var shownRows = 12;
+  $(document).ready(function () {
+            var shownRows = 4;
             var rowsTotal = $("#table > div").length; // selects all div elements where parent is id = table
-            var pageNumbers = rowsTotal / shownRows;
+            var pageNumbers = Math.ceil(rowsTotal / shownRows);
 
-            var html = "<ul class='pagination justify-content-center'> <li class='page-item'> <a class='page-link' href='#'' aria-label='Previous'> <span aria-hidden='true'>&laquo;</span> <span class='sr-only'>Previous</span> </a> </li>";
+            var html = "<ul class='pagination justify-content-center'> <li class='page-item'> <a class='page-link' aria-label='Previous'> <span aria-hidden='true'>&laquo;</span> <span class='sr-only'>Previous</span> </a> </li>";
             for (i = 0; i < pageNumbers; i++) {
                 var paginationNum = i + 1; // 1 2 3 4 ... etc
-                html += "<li class='page-item'> <a class='page-link waves-effect waves-effect' href='#' rel='" + i + "'>" + paginationNum + "</a> </li>";
+                html += "<li class='page-item' id='pageNums'> <a class='page-link waves-effect waves-effect' rel='" + i + "'>" + paginationNum + "</a> </li>";
             }
-            html += "<li class='page-item'> <a class='page-link' href='#'' aria-label='Next'> <span aria-hidden='true'>&raquo;</span> <span class='sr-only'>Next</span> </a> </li> </ul>";
+            html += "<li class='page-item'> <a class='page-link' aria-label='Next'> <span aria-hidden='true'>&raquo;</span> <span class='sr-only'>Next</span> </a> </li> </ul>";
 
             $("#bar").append(html);
 
             $("#table > div").hide();
             $("#table > div").slice(0, shownRows).show();
 
-            $('#bar a:first').addClass('active'); // The current active page of books to be shown
-            $('#bar a').bind('click', function () { // Upon clicking change the active page of books to next
-                $('#bar a').removeClass('active');
+            $('#pageNums a:first').addClass('active'); // The current active page of books to be shown (1)
+            $('#pageNums a').bind('click', function () { // Upon clicking change the active page of books to next
+                $('#pageNums a').removeClass('active');
                 $(this).addClass('active');
+                console.log(this);
                 var currentPage = $(this).attr('rel');
                 var startItem = currentPage * shownRows;
                 var endItem = startItem + shownRows;
                 $('#table > div').css('opacity', '0.0').hide().slice(startItem, endItem).css('display', 'table-row').animate({opacity: 1}, 300);
             });
-        });
+    
+            $("[aria-label=Previous]").bind('click', function () { // Upon clicking change the active page of books to next
+                var currentPage = $("a.active").attr("rel"); // Find current rel -> subtract 1
+                console.log(currentPage);
+                if (currentPage == 0) {
+                    return;
+                }
+                else {
+                    currentPage--;
+                }
+                $('#pageNums a').removeClass('active'); // dark magic
+                $('a[rel=' + currentPage +']').addClass('active')
 
+                var startItem = currentPage * shownRows;
+                var endItem = startItem + shownRows;
+                $('#table > div').css('opacity', '0.0').hide().slice(startItem, endItem).css('display', 'table-row').animate({opacity: 1}, 300);
+            });
+
+            $("[aria-label=Next]").click(function() {
+                var currentPage = $("a.active").attr("rel"); // Find current rel -> add 1
+                console.log(currentPage);
+                if (currentPage == pageNumbers - 1) {
+                    return;
+                }
+                else {
+                    currentPage++;
+                }
+                $('#pageNums a').removeClass('active'); // Black magic below
+                $('a[rel=' + currentPage +']').addClass('active')
+                var startItem = currentPage * shownRows;
+                var endItem = startItem + shownRows;
+                $('#table > div').css('opacity', '0.0').hide().slice(startItem, endItem).css('display', 'table-row').animate({opacity: 1}, 300);
+            });
+
+        });
         $(document).ready(function () {
             $("#searchButton").on("click", function () {
                 // Retrieve the input field text
