@@ -275,7 +275,7 @@
   $(document).ready(function () {
             var shownRows = 4;
             var rowsTotal = $("#table > div").length; // selects all div elements where parent is id = table
-            var pageNumbers = rowsTotal / shownRows;
+            var pageNumbers = Math.ceil(rowsTotal / shownRows);
 
             var html = "<ul class='pagination justify-content-center'> <li class='page-item'> <a class='page-link' aria-label='Previous'> <span aria-hidden='true'>&laquo;</span> <span class='sr-only'>Previous</span> </a> </li>";
             for (i = 0; i < pageNumbers; i++) {
@@ -320,7 +320,7 @@
             $("[aria-label=Next]").click(function() {
                 var currentPage = $("a.active").attr("rel"); // Find current rel -> add 1
                 console.log(currentPage);
-                if (currentPage == pageNumbers) {
+                if (currentPage == pageNumbers - 1) {
                     return;
                 }
                 else {
