@@ -608,29 +608,36 @@ def forgot_email_conf():
     return render_template('confirmation/forgot_email_conf.html')
 
 
-@common_bp.route('/shoppingcart/')
+@common_bp.route('/shoppingcart/', methods=['GET', 'POST'])
 @cart_session
 @remember_me
 def shopping_cart():
     conn = mysql.connect()
     cursor = conn.cursor()
-
+    # USER VISITS SHOPPING CART
     if request.method == 'GET':
-         # get user's book_orderdetails from shoppingcart
-        query = '''SELECT bod_sc_FK FROM shoppingcart WHERE userID_sc_FK = (SELECT id FROM user WHERE email = %s)'''
-        cursor.execute(query, (session['email']))
-        results = cursor.fetchall()
+        book_payload = {}
+        for isbn, quantity in session['shopping_cart'].items():
+            query = """SELECT nile_cover_ID, title, CONCAT(authorFirstName, ' ', authorLastName) AS author_name, price FROM book WHERE ISBN = %s"""
+            cursor.execute(query, (isbn))
+            results = cursor.fetchall()[0]
+            nile_cover_ID = results[0]
+            title = results[1]
+            author_name = results[2]
+            price = results[3]
+            book_payload[isbn] = {'nile_cover_id': nile_cover_ID, 'title': title,
+                                  'author_name': author_name, 'price': price, 'quantity': quantity}
 
-        book_payload = []
+        return render_template('shoppingcart.html', book_payload=book_payload)
 
-        conn.close()
-        return render_template('shoppingcart.html', books=book_payload)
-    if check_login():
+    # LOGGED IN USER EDITS QUANTITY ON SHOPPING CART PAGE
+    elif check_login():
         pass
+
+    # NON LOGGED IN USER EDITS QUANTITY ON SHOPPING CART PAGE
     else:
         pass
 
-   
     # get book info from bod
     # for bod in results:
     #     query = '''SELECT
@@ -647,9 +654,6 @@ def shopping_cart():
     #     book = [dict(zip(header, result)) for result in results]
     #     book_payload.append(book)
 
-
-    
-    
 
 
 @common_bp.route('/product/', methods=['GET', 'POST'])
@@ -735,9 +739,7 @@ def check_login() -> bool:
 def save_cart(mysql, cart):
     conn = mysql.connect()
     cursor = conn.cursor()
-
-
-    for book_isbn,quantity in cart.items():
+    for book_isbn, quantity in cart.items():
         query = '''INSERT IGNORE INTO book_orderdetail (userID_bod_FK,ISBN_bod_FK,quantity) VALUES ((SELECT id FROM user WHERE email = %s), %s, %s)'''
         cursor.execute(query, (session['email'], book_isbn, str(quantity)))
         conn.commit()
@@ -747,7 +749,7 @@ def save_cart(mysql, cart):
         query = '''INSERT IGNORE INTO shoppingcart (userID_sc_FK, bod_sc_FK) VALUES ((SELECT id FROM user WHERE email = %s), (SELECT id FROM book_orderdetail ORDER BY id DESC LIMIT 1))'''
         cursor.execute(query, (session['email']))
         conn.commit()
-    
+
     conn.close()
 
 
@@ -762,7 +764,7 @@ def load_cart(mysql):
     book_payload = {}
     for bod_id in bod_ids:
         book_query = '''SELECT ISBN_bod_FK,quantity FROM book_orderdetail WHERE id=%s'''
-        cursor.execute(book_query,(bod_id))
+        cursor.execute(book_query, (bod_id))
         results = cursor.fetchall()
         print(f'results:{results}')
         book = results[0][0]
