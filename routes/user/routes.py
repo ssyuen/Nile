@@ -476,17 +476,32 @@ def manage_subscriptions():
 
     if request.method == 'GET':
         return render_template('profile/profileSubscriptions.html')
-    else:
+    elif request.method == 'POST':
         conn = mysql.connect()
         cursor = conn.cursor()
 
         flag = request.form.get("flag")
 
+        # USER IS SUBSCRIBING
         if flag == 'SUBSCRIBE':
+            query = 'UPDATE user SET isSubscribed = %s WHERE email = %s'
+            cursor.execute(query,(1,session['email']))
+            
+            print('subscribed')
+
+            conn.commit()
             conn.close()
-            return 200
+            return jsonify({'response':200})
+
+        # USER IS UNSUBSCRIBING
         elif flag == 'UNSUBSCRIBE':
+            query = 'UPDATE user SET isSubscribed = %s WHERE email = %s'
+            cursor.execute(query,(0,session['email']))
+
+            print('unsubscribed')
+
+            conn.commit()
             conn.close()
-            return 200
+            return jsonify({'response':200})
 
 

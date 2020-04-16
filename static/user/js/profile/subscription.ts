@@ -14,7 +14,7 @@ $(emailSubscription).change(function() {
         flag = email.UNSUBSCRIBE
     }
     $.ajax({
-        url: '/subscriptions/',
+        url: '/nileuser/subscriptions/',
         type: 'POST',
         data: {'flag': flag}
     });
