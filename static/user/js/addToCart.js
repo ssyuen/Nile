@@ -1,3 +1,4 @@
+import { adjustCartTotal } from "./cartUtil";
 $("#addToCartBtn").click(function () {
     if ($(this).hasClass("blue-gradient")) {
         addToCart(this);
@@ -30,9 +31,6 @@ function removeFromCart(btn) {
     });
     let valAsInt = parseInt($("#cartTotal").html());
     adjustCartTotal(--valAsInt);
-}
-function adjustCartTotal(adjustment) {
-    $('#cartTotal').html((adjustment).toString());
 }
 var CART_TYPE;
 (function (CART_TYPE) {

@@ -23,7 +23,8 @@
  * The ONLY TIME that we update the quantity in the DB is when the user
  * clicks checkout
  */
-import { CountUp } from '../../jsplugin/countUp.min.js';
+import {CountUp} from '../../jsplugin/countUp.min.js';
+import {adjustCartTotal} from "./cartUtil.js";
 const NILE_ISBN_ATTR = "nile-isbn";
 const NILE_BUY_PR_ATTR = "buying-price";
 const DURATION_SEC = 0.5; //ANIMATION DURATION IN SECONDS
@@ -127,6 +128,8 @@ $('.table-shopping-cart').on('click', 'button', function () {
         type: 'POST',
         data: {'bookISBN': isbn}
     });
+    let valAsInt = parseInt($("#cartTotal").html());
+    adjustCartTotal(--valAsInt);
 });
 function isCartEmpty() {
     if ($('.table-shopping-cart > tbody > tr').length === 0) {
