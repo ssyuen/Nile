@@ -39,18 +39,36 @@
                 <div class="card">
                     <form class="card-body">
                         <p class="complement mb-3" style="font-size: x-large">Shipping Information</p>
-                        <label for="shippingAddressSelect" id="shippingAddressSelectLabel">Choose a Shipping
-                            Address:</label>
+
+                        <div class="custom-control custom-radio">
+                            <input type="radio" class="custom-control-input" id="chooseShippingToggle"
+                                   name="shippingToggleGroup" checked>
+                            <label class="custom-control-label mb-2" for="chooseShippingToggle"
+                                   id="chooseShippingToggleLabel">Choose a Shipping
+                                Address</label>
+                            <a data-toggle="collapse" data-target="#addressEntry" href="" id="addressToggler">View</a>
+                        </div>
+
+
+                        <label for="shippingAddressSelect" class="d-none"></label>
                         {% if shipping_payload|length != 0 %}
                             <select class="custom-select d-block w-100 mb-3" id="shippingAddressSelect">
                                 {% for id,payload in shipping_payload.items() %}
                                     <option>{{ payload['street1'] }} {{ payload['street2'] }} {{ payload['city'] }}, {{ payload['state'] }} {{ payload['zip'] }}</option>
                                 {% endfor %}
                             </select>
-                            <p>Or <a data-toggle="collapse" data-target="#addressEntry" href="" id="addressToggler">Enter
-                                an
-                                Address</a></p>
+
+                            <div class="custom-control custom-radio">
+                                <input type="radio" class="custom-control-input" id="enterAddressToggle"
+                                       name="shippingToggleGroup">
+                                <label class="custom-control-label mb-2" for="enterAddressToggle">New Shipping
+                                    Address</label>
+                                <a data-toggle="collapse" class="d-none" data-target="#addressEntry" href=""
+                                   id="newAddressTogglerHidden">View</a>
+                            </div>
                         {% endif %}
+
+
 
                         <div id="addressEntry" class="collapse">
                             <div class="card-specific">
@@ -121,16 +139,35 @@
 
                         <hr>
 
-                        <label for="paymentMethodSelect" id="paymentMethodSelectLabel">Choose a Payment
-                            Method:</label>
+
+                        <div class="custom-control custom-radio">
+                            <input type="radio" class="custom-control-input" id="choosePaymentMethodToggle"
+                                   name="paymentToggleGroup" checked>
+                            <label class="custom-control-label mb-2" for="choosePaymentMethodToggle"
+                                   id="choosePaymentMethodToggleLabel">Choose a Payment
+                                Method</label>
+                            <a data-toggle="collapse" data-target="#paymentMethodEntry" href=""
+                               id="paymentMethodToggler">View</a>
+                        </div>
+
+
                         {% if billing_payload|length != 0 %}
+                            <label for="paymentMethodSelect" class="d-none"></label>
                             <select class="custom-select d-block w-100 mb-3" id="paymentMethodSelect">
                                 {% for id,payload in billing_payload.items() %}
                                     <option>{{ payload['street1'] }} {{ payload['street2'] }} {{ payload['city'] }}, {{ payload['state'] }} {{ payload['zip'] }}</option>
                                 {% endfor %}
                             </select>
-                            <p>Or <a data-toggle="collapse" data-target="#paymentMethodEntry" href=""
-                                     id="paymentMethodToggler">Enter a Payment Method</a></p>
+
+
+                            <div class="custom-control custom-radio">
+                                <input type="radio" class="custom-control-input" id="enterPaymentMethodToggle"
+                                       name="paymentToggleGroup">
+                                <label class="custom-control-label mb-2" for="enterPaymentMethodToggle">New Payment
+                                    Method</label>
+                                <a data-toggle="collapse" class="d-none" data-target="#paymentMethodEntry" href=""
+                                   id="newPMTogglerHidden">View</a>
+                            </div>
                         {% endif %}
 
                         <div id="paymentMethodEntry" class="collapse">
@@ -159,26 +196,6 @@
                                                    maxlength="45"
                                                    data-error="Last Name must me more than two characters">
                                             <label for="checkoutCardHolderLastName">Last Name on Card</label>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="form-row">
-                                    <div class="col-sm-10">
-                                        <div class="form-group md-form md-outline">
-                                            <label for="checkoutCCN">Credit Card Number</label>
-                                            <input type="text" class="form-control" id="checkoutCCN" name="ccn"
-                                                   required
-                                                   credit-provider=""
-                                                   data-error="Credit Card is not valid.">
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-2">
-                                        <div class="form-group md-form md-outline">
-                                            <input type="text" class="form-control" id="checkoutCVV" name="cvv"
-                                                   required
-                                                   maxlength="3"
-                                                   data-error="CVV is not valid.">
-                                            <label for="checkoutCVV">CVV</label>
                                         </div>
                                     </div>
                                 </div>

@@ -3,12 +3,21 @@ import {CountUp} from '../../jsplugin/countUp.min.js';
 $(function () {
     if (!$("#paymentMethodSelect").length) {
         $("#paymentMethodEntry").addClass("show");
-        $("#paymentMethodSelectLabel").text("Enter a Payment Method");
+        $("#choosePaymentMethodToggleLabel").text("Enter a Payment Method")
+            .removeClass("custom-control-label")
+            .closest(".custom-control")
+            .removeClass("custom-control");
+        $("#paymentMethodToggler").hide();
     }
 
     if (!$("#shippingAddressSelect").length) {
         $("#addressEntry").addClass("show");
-        $("#shippingAddressSelectLabel").text("Enter a Shipping Address");
+        $("#chooseShippingToggleLabel").text("Enter a Shipping Address")
+            .removeClass("custom-control-label")
+            .closest(".custom-control")
+            .removeClass("custom-control");
+        $("#addressToggler").hide();
+
     }
 
     let total: number = 0;
@@ -26,3 +35,14 @@ $(function () {
         console.error(ctr.error);
     }
 });
+
+
+$("#enterAddressToggle, #chooseShippingToggle").on("click", function () {
+    $("#newAddressTogglerHidden").trigger("click");
+});
+
+
+$("#enterPaymentMethodToggle, #choosePaymentMethodToggle").on("click", function () {
+    $("#newPMTogglerHidden").trigger("click");
+});
+
