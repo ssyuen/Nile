@@ -121,19 +121,19 @@
 
                         <hr>
 
-                        <label for="billingAddressSelect" id="billingAddressSelectLabel">Choose a Billing
-                            Address:</label>
+                        <label for="paymentMethodSelect" id="paymentMethodSelectLabel">Choose a Payment
+                            Method:</label>
                         {% if billing_payload|length != 0 %}
-                            <select class="custom-select d-block w-100 mb-3" id="billingAddressSelect">
+                            <select class="custom-select d-block w-100 mb-3" id="paymentMethodSelect">
                                 {% for id,payload in billing_payload.items() %}
                                     <option>{{ payload['street1'] }} {{ payload['street2'] }} {{ payload['city'] }}, {{ payload['state'] }} {{ payload['zip'] }}</option>
                                 {% endfor %}
                             </select>
-                            <p>Or <a data-toggle="collapse" data-target="#billingAddressEntry" href=""
-                                     id="billingAddressToggler">Enter a Billing Address</a></p>
+                            <p>Or <a data-toggle="collapse" data-target="#paymentMethodEntry" href=""
+                                     id="paymentMethodToggler">Enter a Payment Method</a></p>
                         {% endif %}
 
-                        <div id="billingAddressEntry" class="collapse">
+                        <div id="paymentMethodEntry" class="collapse">
                             <small>
                                 <p class="text-muted font-italic">Card Information</p>
                             </small>

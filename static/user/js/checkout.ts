@@ -1,9 +1,9 @@
 import {CountUp} from '../../jsplugin/countUp.min.js';
 
 $(function () {
-    if (!$("#billingAddressSelect").length) {
-        $("#billingAddressEntry").addClass("show");
-        $("#billingAddressSelectLabel").text("Enter a Billing Address");
+    if (!$("#paymentMethodSelect").length) {
+        $("#paymentMethodEntry").addClass("show");
+        $("#paymentMethodSelectLabel").text("Enter a Payment Method");
     }
 
     if (!$("#shippingAddressSelect").length) {
