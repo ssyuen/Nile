@@ -67,6 +67,13 @@ $("select.form-control").change(evt => {
     let x: HTMLInputElement = (evt.target) as HTMLInputElement;
     updateIndividual(x);
     setTimeout(updateTotal, DURATION_M_SEC);
+    let isbn = $(evt.target).attr("nile-isbn");
+
+    $.ajax({
+        url: '/shoppingcart/',
+        type: 'POST',
+        data: {'bookISBN': isbn, 'newQuantity': $(evt.target).val()}
+    });
 });
 
 function updateIndividual(sel: HTMLInputElement): any {
@@ -129,9 +136,13 @@ $('.table-shopping-cart').on('click', 'button', function () {
     $(this).closest('tr').remove();
     setTimeout(updateTotal, DURATION_M_SEC);
     isCartEmpty();
-    /*
-         REMOVE FROM DATABASE SCRIPT CALL
-     */
+    let isbn = $(this).attr("nile-isbn");
+
+    $.ajax({
+        url: '/shoppingcart/',
+        type: 'POST',
+        data: {'bookISBN': isbn}
+    });
 });
 
 function isCartEmpty(): boolean {
@@ -149,7 +160,4 @@ $("#checkoutBtn").on("click", (evt) => {
         alert("You're Cart is empty");
         evt.preventDefault();
     }
-    /*
-        ADD TO DATABASE SCRIPT CALL
-     */
 });
