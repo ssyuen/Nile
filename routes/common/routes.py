@@ -662,6 +662,8 @@ def forgot_email_conf():
 def shopping_cart():
     conn = mysql.connect()
     cursor = conn.cursor()
+
+    old_cart = session['shopping_cart']
     # USER VISITS SHOPPING CART
     if request.method == 'GET':
         book_payload = {}
@@ -676,16 +678,58 @@ def shopping_cart():
             book_payload[isbn] = {'nile_cover_id': nile_cover_ID, 'title': title,
                                   'author_name': author_name, 'price': price, 'quantity': quantity}
 
+        print(book_payload)
         return render_template('shoppingcart.html', book_payload=book_payload)
 
     # LOGGED IN USER EDITS QUANTITY ON SHOPPING CART PAGE
-    elif check_login():
-        pass
+    elif request.method == 'POST' and check_login():
+        book_isbn = request.form.get('bookISBN')
+        quant_flag = request.form.get('newQuantity')
+        print(f'quant flag: {quant_flag}')
+
+        bod_id_query = '''SELECT bod_sc_FK FROM shoppingcart WHERE userID_sc_FK = (SELECT id FROM user WHERE email = %s) AND bod_sc_FK = (SELECT id FROM book_orderdetail WHERE ISBN_bod_FK = %s) '''
+        cursor.execute(bod_id_query, (session['email'], book_isbn))
+        bod_id = cursor.fetchall()[0][0]
+
+        # REMOVE FROM CART
+        if quant_flag is None:
+            old_cart.pop(book_isbn)
+            session['shopping_cart']=old_cart
+            query = '''DELETE FROM shoppingcart WHERE userID_sc_FK = (SELECT id FROM user WHERE email = %s) AND bod_sc_FK = (SELECT id FROM book_orderdetail WHERE ISBN_bod_FK = %s)'''
+            cursor.execute(query, (session['email'], book_isbn))
+            conn.commit()
+
+            # remove from book_orderdetail next
+            query = '''DELETE FROM book_orderdetail WHERE id = %s'''
+            cursor.execute(query, (bod_id))
+            conn.commit()
+
+        # EDIT THE QUANTITY
+        else:
+            old_cart[book_isbn] = int(quant_flag)
+            session['shopping_cart']=old_cart
+            quant_query = 'UPDATE book_orderdetail SET quantity = %s WHERE id = %s'
+            cursor.execute(quant_query, (quant_flag,bod_id))
+            print(session['shopping_cart'])
+        
+        return jsonify({'response':200})
+
 
     # NON LOGGED IN USER EDITS QUANTITY ON SHOPPING CART PAGE
     else:
-        pass
+        book_isbn = request.form.get('bookISBN')
+        quant_flag = request.form.get('newQuantity')
+        print(f'quant flag: {type(quant_flag)}')
 
+        if quant_flag is None:
+            old_cart.pop(book_isbn)
+            session['shopping_cart']=old_cart
+            print(session['shopping_cart'])
+        else:
+            old_cart[book_isbn] = int(quant_flag)
+            session['shopping_cart']=old_cart
+            print(session['shopping_cart'])
+        return jsonify({'response':200})
 
 
 
@@ -707,7 +751,7 @@ def product(title=None, price=None, author_name=None, ISBN=None, summary=None, p
         book_isbn = request.form.get('bookISBN')
         old_cart = session['shopping_cart']
 
-        # IF BOOK IN CART
+        # IF BOOK IN CART, REMOVE
         if book_isbn in session['shopping_cart']:
             # old_cart.remove(book_isbn)
             old_cart.pop(book_isbn)
@@ -725,7 +769,7 @@ def product(title=None, price=None, author_name=None, ISBN=None, summary=None, p
             cursor.execute(query, (bod_id))
             conn.commit()
 
-        # IF BOOK NOT IN CART
+        # IF BOOK NOT IN CART, ADD
         else:
             # old_cart.append(book_isbn)
             old_cart[book_isbn] = 1
