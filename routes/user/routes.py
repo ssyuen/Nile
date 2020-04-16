@@ -101,7 +101,7 @@ def checkout():
 
     # BILLING ADDRESSES FROM DB
     billing_payload = {}
-    billing_query = '''SELECT * FROM address JOIN payment_method ON address.id = payment_method.billingAddress_addr_FK WHERE addressTypeID_address_FK=2 AND payment_method.userID_payment_FK = (SELECT id FROM user WHERE email = %s)'''
+    billing_query = '''SELECT * FROM address JOIN payment_method ON address.id = payment_method.billingAddress_addr_FK JOIN user_paymentmethod ON user_paymentmethod.paymentID_pm_FK=payment_method.id WHERE addressTypeID_address_FK=2 AND user_paymentmethod.userID_pm_FK = (SELECT id FROM user WHERE email = %s)'''
     cursor.execute(billing_query,(session['email']))
     results = cursor.fetchall()
     for billing_address in results:

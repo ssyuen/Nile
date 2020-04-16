@@ -439,8 +439,7 @@ def register():
                 cursor.execute(query, (user_id, shipping_id))
 
                 # payment_payload depends on user and billing FKs
-                payment_payload = (card_first_name, card_last_name, ccn, ccn_provider, ccexp,
-                                   user_id, billing_id)
+                payment_payload = (card_first_name, card_last_name, ccn, ccn_provider, ccexp, billing_id)
                 query = 'INSERT INTO payment_method (firstname,lastname,cardNumber, cardType, expirationDate, billingAddress_addr_FK) VALUES (%s,%s,%s, %s, %s, %s)'
                 cursor.execute(query, payment_payload)
 
