@@ -1,0 +1,2 @@
+ALTER TABLE admin
+    ADD isSubscribed BIT DEFAULT 1 NOT NULL;
