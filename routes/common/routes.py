@@ -683,6 +683,7 @@ def shopping_cart():
 
     # LOGGED IN USER EDITS QUANTITY ON SHOPPING CART PAGE
     elif request.method == 'POST' and check_login():
+        print('user is logged in')
         book_isbn = request.form.get('bookISBN')
         quant_flag = request.form.get('newQuantity')
         print(f'quant flag: {quant_flag}')
@@ -697,12 +698,10 @@ def shopping_cart():
             session['shopping_cart']=old_cart
             query = '''DELETE FROM shoppingcart WHERE userID_sc_FK = (SELECT id FROM user WHERE email = %s) AND bod_sc_FK = (SELECT id FROM book_orderdetail WHERE ISBN_bod_FK = %s)'''
             cursor.execute(query, (session['email'], book_isbn))
-            conn.commit()
 
             # remove from book_orderdetail next
             query = '''DELETE FROM book_orderdetail WHERE id = %s'''
             cursor.execute(query, (bod_id))
-            conn.commit()
 
         # EDIT THE QUANTITY
         else:
@@ -712,6 +711,8 @@ def shopping_cart():
             cursor.execute(quant_query, (quant_flag,bod_id))
             print(session['shopping_cart'])
         
+        conn.commit()
+        conn.close()
         return jsonify({'response':200})
 
 
@@ -729,6 +730,7 @@ def shopping_cart():
             old_cart[book_isbn] = int(quant_flag)
             session['shopping_cart']=old_cart
             print(session['shopping_cart'])
+
         return jsonify({'response':200})
 
 
