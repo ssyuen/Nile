@@ -10,6 +10,14 @@
 
         {% include 'common_links.html' %}
         <style>
+            @media (max-width: 1920px) {
+                .main-content-container > .container, #titleGroup1 {
+                    max-width: 1420px;
+                    padding-right: 10px;
+                    padding-left: 10px;
+                }
+            }
+
             @media (max-width: 992px) {
                 .footer-explanation {
                     border: none !important;
@@ -52,6 +60,8 @@
             .main-footer-content {
                 max-width: calc(100vw - 150px) !important;
             }
+
+
         </style>
     {% endblock %}
 </head>
@@ -65,7 +75,7 @@
 
 {% block show_title %}
     {% if titleable %}
-        <div class="container">
+        <div class="container" id="titleGroup1">
             <div class="row">
                 <div class="col mb-4">
                     {% block mainTitle %}
