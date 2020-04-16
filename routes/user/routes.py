@@ -71,6 +71,8 @@ def checkout():
     conn = mysql.connect()
     cursor = conn.cursor()
 
+    total_quantity = 0
+
     # BOOKS FROM SHOPPING CART
     book_payload = {}
     for isbn, quantity in session['shopping_cart'].items():
@@ -81,9 +83,11 @@ def checkout():
         title = results[1]
         author_name = results[2]
         price = results[3]
+        total_quantity += quantity
         book_payload[isbn] = {'nile_cover_id': nile_cover_ID, 'title': title,
-                              'author_name': author_name, 'price': price, 'quantity': quantity}
+                              'author_name': author_name, 'price': price*quantity, 'quantity': quantity}
 
+    
     # SHIPPING ADDRESSES FROM DB
     shipping_payload = {}
     shipping_query = '''SELECT * FROM address JOIN user_address ON  user_address.addressID_ua_FK = address.id WHERE addressTypeID_address_FK=1 AND user_address.userID_ua_FK=(SELECT id FROM user WHERE email = %s)'''
@@ -129,7 +133,7 @@ def checkout():
     print(f'billing payload --> {payment_payload}')
 
     return render_template('checkout.html', book_payload=book_payload, shipping_payload=shipping_payload,
-                           billing_payload=payment_payload)
+                           billing_payload=payment_payload,total_quantity=total_quantity)
 
 @user_bp.route('/base_profile/', methods=['GET'])
 @login_required
