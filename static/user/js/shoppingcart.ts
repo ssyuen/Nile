@@ -29,6 +29,7 @@
 
 
 import {CountUp} from '../../jsplugin/countUp.min.js';
+import {adjustCartTotal} from "./cartUtil.js";
 
 const NILE_ISBN_ATTR: string = "nile-isbn";
 const NILE_BUY_PR_ATTR: string = "buying-price";
@@ -143,6 +144,9 @@ $('.table-shopping-cart').on('click', 'button', function () {
         type: 'POST',
         data: {'bookISBN': isbn}
     });
+
+    let valAsInt: number = parseInt($("#cartTotal").html());
+    adjustCartTotal(--valAsInt);
 });
 
 function isCartEmpty(): boolean {
