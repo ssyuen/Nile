@@ -37,19 +37,20 @@ def user_only(f):
             return redirect(url_for('common_bp.landing_page'))
         else:
             return f(*args, **kws)
+
     return wrapped_func
 
 
 def send_change_conf_email(recipient, recipient_fname, sender='rootatnilebookstore@gmail.com'):
     current_time = datetime.now()
     message_body = 'Hi ' + recipient_fname + \
-        f',\n\nThere have been changes made to your profile on {current_time.month}/{current_time.day}/{current_time.year}, {current_time.hour}:{current_time.minute}:{current_time.second}. If this was not you, please go and change your password.\n\nRegards, Nile Bookstore Management'
+                   f',\n\nThere have been changes made to your profile on {current_time.month}/{current_time.day}/{current_time.year}, {current_time.hour}:{current_time.minute}:{current_time.second}. If this was not you, please go and change your password.\n\nRegards, Nile Bookstore Management'
     msg = Message(subject='Nile Profile Change', recipients=[
         recipient, 'rootatnilebookstore@gmail.com'], sender='rootatnilebookstore@gmail.com', body=message_body)
     mail.send(msg)
 
 
-@user_bp.route('/checkout/',methods=['POST','GET'])
+@user_bp.route('/checkout/', methods=['POST', 'GET'])
 @login_required
 @cart_session
 @remember_me
@@ -70,7 +71,6 @@ def checkout():
     conn = mysql.connect()
     cursor = conn.cursor()
 
-
     # BOOKS FROM SHOPPING CART
     book_payload = {}
     for isbn, quantity in session['shopping_cart'].items():
@@ -87,7 +87,7 @@ def checkout():
     # SHIPPING ADDRESSES FROM DB
     shipping_payload = {}
     shipping_query = '''SELECT * FROM address JOIN user_address ON  user_address.addressID_ua_FK = address.id WHERE addressTypeID_address_FK=1 AND user_address.userID_ua_FK=(SELECT id FROM user WHERE email = %s)'''
-    cursor.execute(shipping_query,(session['email']))
+    cursor.execute(shipping_query, (session['email']))
     results = cursor.fetchall()
     for shipping_address in results:
         shipping_payload[shipping_address[0]] = {
@@ -95,27 +95,40 @@ def checkout():
             'street2': shipping_address[2],
             'city': shipping_address[3],
             'zip': shipping_address[4],
-            'state' : shipping_address[5],
+            'state': shipping_address[5],
             'country': shipping_address[6]
         }
 
     # BILLING ADDRESSES FROM DB
-    billing_payload = {}
-    billing_query = '''SELECT * FROM address JOIN payment_method ON address.id = payment_method.billingAddress_addr_FK JOIN user_paymentmethod ON user_paymentmethod.paymentID_pm_FK=payment_method.id WHERE addressTypeID_address_FK=2 AND user_paymentmethod.userID_pm_FK = (SELECT id FROM user WHERE email = %s)'''
-    cursor.execute(billing_query,(session['email']))
-    results = cursor.fetchall()
-    for billing_address in results:
-        billing_payload[billing_address[0]] = {
-            'street1': billing_address[1],
-            'street2': billing_address[2],
-            'city': billing_address[3],
-            'zip': billing_address[4],
-            'state' : billing_address[5],
-            'country': billing_address[6]
-        }
-    print(f'billing payload --> {billing_payload}')
+    payment_payload = {}
 
-    return render_template('checkout.html',book_payload=book_payload,shipping_payload=shipping_payload,billing_payload=billing_payload)
+    payment_query = '''
+    SELECT pm.id, street1, street2, city, zip, state, country, firstName, lastName, cardNumber, cardType
+    FROM user_paymentmethod upm
+    JOIN payment_method pm ON upm.paymentID_pm_FK = pm.id
+    JOIN address a ON pm.billingAddress_addr_FK = a.id
+    WHERE upm.userID_pm_FK = (SELECT id FROM user WHERE email = %s)'''
+
+    cursor.execute(payment_query, (session['email']))
+    results = cursor.fetchall()
+    for i in results:
+        payment_payload[i[0]] = {
+            'street1': i[1],
+            'street2': i[2],
+            'city': i[3],
+            'zip': i[4],
+            'state': i[5],
+            'country': i[6],
+            'card_fname': i[7].upper(),
+            'card_lname': i[8].upper(),
+            'card_number': FERNET.decrypt(
+                i[9].encode('utf-8')).decode('utf-8')[-4:],
+            'card_type': i[10],
+        }
+    print(f'billing payload --> {payment_payload}')
+
+    return render_template('checkout.html', book_payload=book_payload, shipping_payload=shipping_payload,
+                           billing_payload=payment_payload)
 
 @user_bp.route('/base_profile/', methods=['GET'])
 @login_required
@@ -374,8 +387,7 @@ def payment_methods():
                 INSERT INTO address(street1, street2, city, zip, state, country, addressTypeID_address_FK) 
                 VALUES(%s, %s, %s, %s, %s, %s, %s)"""
             cursor.execute(create_shipping_address, (street1, street2,
-                                      city, zipcode, state, country, 2))
-
+                                                     city, zipcode, state, country, 2))
 
             create_pm = """
                 INSERT INTO payment_method(firstname, lastname, cardNumber, cardType, expirationDate, billingAddress_addr_FK)
@@ -419,7 +431,6 @@ def payment_methods():
             update_a = '''UPDATE address SET street1 = %s, street2 = %s, city = %s, zip = %s, state = %s, country = %s WHERE id = %s'''
             cursor.execute(update_a, (street1, street2, city,
                                       zipcode, state, country, addr_id))
-
 
         conn.commit()
         conn.close()
@@ -467,13 +478,13 @@ def payment_methods():
 
         return render_template('profile/profilePaymentMethods.html', data=payment_sendable)
 
-@user_bp.route('/subscriptions/',methods=['POST','GET'])
+
+@user_bp.route('/subscriptions/', methods=['POST', 'GET'])
 @login_required
 @cart_session
 @remember_me
 @user_only
 def manage_subscriptions():
-
     if request.method == 'GET':
         return render_template('profile/profileSubscriptions.html')
     elif request.method == 'POST':
@@ -485,23 +496,21 @@ def manage_subscriptions():
         # USER IS SUBSCRIBING
         if flag == 'SUBSCRIBE':
             query = 'UPDATE user SET isSubscribed = %s WHERE email = %s'
-            cursor.execute(query,(1,session['email']))
-            
+            cursor.execute(query, (1, session['email']))
+
             print('subscribed')
 
             conn.commit()
             conn.close()
-            return jsonify({'response':200})
+            return jsonify({'response': 200})
 
         # USER IS UNSUBSCRIBING
         elif flag == 'UNSUBSCRIBE':
             query = 'UPDATE user SET isSubscribed = %s WHERE email = %s'
-            cursor.execute(query,(0,session['email']))
+            cursor.execute(query, (0, session['email']))
 
             print('unsubscribed')
 
             conn.commit()
             conn.close()
-            return jsonify({'response':200})
-
-
+            return jsonify({'response': 200})
