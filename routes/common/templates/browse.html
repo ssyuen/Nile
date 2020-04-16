@@ -3,6 +3,13 @@
 
 {% block base_head %}
     {{ super() }}
+    <style>
+        @media (min-width: 1200px) {
+            .card-img-top {
+                max-height: 350px;
+            }
+        }
+    </style>
     <link rel="stylesheet" type="text/css" href="/static/user/css/browse.css">
     <script src="/static/user/js/browse.js"></script>
 {% endblock %}
@@ -245,8 +252,7 @@
                                     <div class="p-2 grey lighten-4">
                                         <img class="card-img-top rounded"
                                              src="{{ '/static/images/CoverImages/' + book['nile_cover_ID'] + '.jpg' }}"
-                                             alt="Cover Image of {{ book['title'] }}" width="200"
-                                             style="max-height: 350px;">
+                                             alt="Cover Image of {{ book['title'] }}" width="200">
                                     </div>
                                     <div class="card-body grey lighten-4 d-flex align-items-center">
                                         <div class="titleHolder align-self-middle">
@@ -272,7 +278,7 @@
         </div>
     </div>
     <script>
-  $(document).ready(function () {
+        $(document).ready(function () {
             var shownRows = 12;
             var rowsTotal = $("#table > div").length; // selects all div elements where parent is id = table
             var pageNumbers = Math.ceil(rowsTotal / shownRows);
@@ -299,35 +305,33 @@
                 var endItem = startItem + shownRows;
                 $('#table > div').css('opacity', '0.0').hide().slice(startItem, endItem).css('display', 'table-row').animate({opacity: 1}, 300);
             });
-    
+
             $("[aria-label=Previous]").bind('click', function () { // Upon clicking change the active page of books to next
                 var currentPage = $("a.active").attr("rel"); // Find current rel -> subtract 1
                 console.log(currentPage);
                 if (currentPage == 0) {
                     return;
-                }
-                else {
+                } else {
                     currentPage--;
                 }
                 $('#pageNums a').removeClass('active'); // dark magic
-                $('a[rel=' + currentPage +']').addClass('active')
+                $('a[rel=' + currentPage + ']').addClass('active');
 
                 var startItem = currentPage * shownRows;
                 var endItem = startItem + shownRows;
                 $('#table > div').css('opacity', '0.0').hide().slice(startItem, endItem).css('display', 'table-row').animate({opacity: 1}, 300);
             });
 
-            $("[aria-label=Next]").click(function() {
+            $("[aria-label=Next]").click(function () {
                 var currentPage = $("a.active").attr("rel"); // Find current rel -> add 1
                 console.log(currentPage);
                 if (currentPage == pageNumbers - 1) {
                     return;
-                }
-                else {
+                } else {
                     currentPage++;
                 }
                 $('#pageNums a').removeClass('active'); // Black magic below
-                $('a[rel=' + currentPage +']').addClass('active')
+                $('a[rel=' + currentPage + ']').addClass('active');
                 var startItem = currentPage * shownRows;
                 var endItem = startItem + shownRows;
                 $('#table > div').css('opacity', '0.0').hide().slice(startItem, endItem).css('display', 'table-row').animate({opacity: 1}, 300);
