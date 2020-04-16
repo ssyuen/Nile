@@ -287,7 +287,6 @@ def shipping_address():
             )
             """
             cursor.execute(query2, (session['email']))
-            conn.commit()
 
         elif flag == "REMOVE_FLAG":
             remove_query = '''
@@ -305,8 +304,8 @@ def shipping_address():
             '''
             cursor.execute(update_query, (street_addr, street_addr2,
                                           city, zipcode, state, country, 1, addr_id))
-            conn.commit()
 
+        conn.commit()
         send_change_conf_email(session['email'], session['firstName'])
         return redirect(url_for('user_bp.shipping_address'))
 
@@ -377,14 +376,6 @@ def payment_methods():
             cursor.execute(create_shipping_address, (street1, street2,
                                       city, zipcode, state, country, 2))
 
-            create_shipping_association = """
-            INSERT INTO user_address (userID_ua_FK, addressID_ua_FK)
-            VALUES (
-                (SELECT id FROM user WHERE email = %s),
-                (SELECT id FROM address ORDER BY id DESC LIMIT 1)
-            )
-            """
-            cursor.execute(create_shipping_association, (session['email']))
 
             create_pm = """
                 INSERT INTO payment_method(firstname, lastname, cardNumber, cardType, expirationDate, billingAddress_addr_FK)
@@ -432,7 +423,6 @@ def payment_methods():
 
         conn.commit()
         conn.close()
-
 
         send_change_conf_email(session['email'], session['firstName'])
         return redirect(url_for('user_bp.payment_methods'))
