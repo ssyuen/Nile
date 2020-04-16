@@ -297,12 +297,6 @@ def shipping_address():
             '''
             cursor.execute(remove_query, (session['email'], addr_id))
 
-            remove_query = '''
-            DELETE FROM address WHERE id = %s
-            '''
-            cursor.execute(remove_query, (addr_id))
-            conn.commit()
-
         elif flag == "EDIT_FLAG":
 
             update_query = '''
@@ -377,30 +371,54 @@ def payment_methods():
             ccn = FERNET.encrypt(
                 request.form.get('ccn').encode('utf-8'))
 
-            create_a = """
+            create_shipping_address = """
                 INSERT INTO address(street1, street2, city, zip, state, country, addressTypeID_address_FK) 
                 VALUES(%s, %s, %s, %s, %s, %s, %s)"""
-            cursor.execute(create_a, (street1, street2,
+            cursor.execute(create_shipping_address, (street1, street2,
                                       city, zipcode, state, country, 2))
 
+            create_shipping_association = """
+            INSERT INTO user_address (userID_ua_FK, addressID_ua_FK)
+            VALUES (
+                (SELECT id FROM user WHERE email = %s),
+                (SELECT id FROM address ORDER BY id DESC LIMIT 1)
+            )
+            """
+            cursor.execute(create_shipping_association, (session['email']))
+
             create_pm = """
-                INSERT INTO payment_method(firstname, lastname, cardNumber, cardType, expirationDate, userID_payment_FK, billingAddress_addr_FK)
+                INSERT INTO payment_method(firstname, lastname, cardNumber, cardType, expirationDate, billingAddress_addr_FK)
                 VALUES (%s, %s, %s, %s, %s, 
-                (SELECT id FROM user WHERE email = %s), 
                 (SELECT id FROM address ORDER BY id DESC LIMIT 1)
                 )
             """
             cursor.execute(create_pm, (cfn, cln, ccn,
-                                       ct, ccexp, session['email']))
-            conn.commit()
+                                       ct, ccexp))
+
+            create_pm_association = """
+            INSERT INTO user_paymentmethod (userID_pm_FK, paymentID_pm_FK)
+            VALUES (
+                (SELECT id FROM user WHERE email = %s),
+                (SELECT id FROM payment_method ORDER BY id DESC LIMIT 1)
+            )
+            """
+            cursor.execute(create_pm_association, (session['email']))
 
         elif flag == "REMOVE_FLAG":
-            remove_pm = """DELETE FROM payment_method WHERE id = %s"""
-            cursor.execute(remove_pm, (pm_id))
 
-            remove_a = """DELETE FROM address WHERE id = %s"""
-            cursor.execute(remove_a, (addr_id))
-            conn.commit()
+            remove_query = '''
+            DELETE FROM user_paymentmethod
+            WHERE userID_pm_FK = (SELECT id FROM user WHERE email = %s)
+                AND paymentID_pm_FK = %s
+            '''
+            cursor.execute(remove_query, (session['email'], pm_id))
+
+            remove_query = '''
+            DELETE FROM user_address
+            WHERE userID_ua_FK = (SELECT id FROM user WHERE email = %s)
+                AND addressID_ua_FK = %s
+            '''
+            cursor.execute(remove_query, (session['email'], addr_id))
 
         elif flag == "EDIT_FLAG":
 
@@ -410,26 +428,26 @@ def payment_methods():
             update_a = '''UPDATE address SET street1 = %s, street2 = %s, city = %s, zip = %s, state = %s, country = %s WHERE id = %s'''
             cursor.execute(update_a, (street1, street2, city,
                                       zipcode, state, country, addr_id))
-            conn.commit()
 
+
+        conn.commit()
         conn.close()
 
-        send_change_conf_email(session['email'], session['firstName'])
 
+        send_change_conf_email(session['email'], session['firstName'])
         return redirect(url_for('user_bp.payment_methods'))
 
     # GET REQUEST
     else:
 
         user_payments = """
-            SELECT PM.id, PM.firstname, PM.lastname, PM.cardNumber, PM.cardType, PM.expirationDate, PM.billingAddress_addr_FK, A.id,
+            SELECT UPM.paymentID_pm_FK, PM.firstname, PM.lastname, PM.cardNumber, PM.cardType, PM.expirationDate, PM.billingAddress_addr_FK, A.id,
                     A.street1, A.street2, A.zip, A.city, A.state, A.country
-            FROM payment_method PM
+            FROM user_paymentmethod UPM 
+                    INNER JOIN payment_method PM ON UPM.paymentID_pm_FK=PM.id
                     INNER JOIN address A ON PM.billingAddress_addr_FK = A.id
-            WHERE userID_payment_FK = (SELECT id FROM user WHERE email = %s)
-            ORDER BY addressTypeID_address_FK;
-            
-            
+            WHERE userID_pm_FK = (SELECT id FROM user WHERE email = %s)
+            ORDER BY addressTypeID_address_FK;            
             """
         cursor.execute(user_payments, (session['email']))
         data = cursor.fetchall()

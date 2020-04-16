@@ -441,8 +441,17 @@ def register():
                 # payment_payload depends on user and billing FKs
                 payment_payload = (card_first_name, card_last_name, ccn, ccn_provider, ccexp,
                                    user_id, billing_id)
-                query = 'INSERT INTO payment_method (firstname,lastname,cardNumber, cardType, expirationDate, userID_payment_FK, billingAddress_addr_FK) VALUES (%s,%s,%s, %s, %s, %s, %s)'
+                query = 'INSERT INTO payment_method (firstname,lastname,cardNumber, cardType, expirationDate, billingAddress_addr_FK) VALUES (%s,%s,%s, %s, %s, %s)'
                 cursor.execute(query, payment_payload)
+
+                # EXTRACTING PAYMENT METHOD ID
+                payment_id_query = 'SELECT id FROM payment_method ORDER BY id DESC LIMIT 1'
+                cursor.execute(payment_id_query)
+                payment_id = cursor.fetchall()[0][0]
+
+                # INSERTING USER ID AND PAYMENT METHOD ID INTO user_paymentmethod association table
+                query = 'INSERT INTO user_paymentmethod (userID_pm_FK, paymentID_pm_FK) VALUES (%s, %s)'
+                cursor.execute(query, (user_id, payment_id))
 
             # INSERTING BILLING ADDRESS (PAYMENT INFO ONLY)
             elif None in shipping_payload and None not in billing_payload:
@@ -469,9 +478,17 @@ def register():
                 query = 'INSERT INTO payment_method (firstname,lastname,cardNumber, cardType, expirationDate, userID_payment_FK, billingAddress_addr_FK) VALUES (%s,%s,%s, %s, %s, %s, %s)'
                 cursor.execute(query, payment_payload)
 
+                # EXTRACTING PAYMENT METHOD ID
+                payment_id_query = 'SELECT id FROM payment_method ORDER BY id DESC LIMIT 1'
+                cursor.execute(payment_id_query)
+                payment_id = cursor.fetchall()[0][0]
+
+                # INSERTING USER ID AND PAYMENT METHOD ID INTO user_paymentmethod association table
+                query = 'INSERT INTO user_paymentmethod (userID_pm_FK, paymentID_pm_FK) VALUES (%s, %s)'
+                cursor.execute(query, (user_id, payment_id))
+
             # INSERTING SHIPPING ADDRESS (SHIPPING ADDRESS ONLY)
             elif None in billing_payload and None not in shipping_payload:
-                print('inserting only shipping address')
                 query = 'INSERT INTO `address`(street1, street2, city, zip, state, country, addressTypeID_address_FK) VALUES(%s, %s, %s, %s, %s, %s, %s)'
                 cursor.execute(query, shipping_payload)
 
