@@ -1,3 +1,5 @@
+import {adjustCartTotal} from "./cartUtil";
+
 $("#addToCartBtn").click(function () {
     if ($(this).hasClass("blue-gradient")) {
         addToCart(this as HTMLButtonElement);
@@ -38,10 +40,6 @@ function removeFromCart(btn: HTMLButtonElement) {
     adjustCartTotal(--valAsInt);
 }
 
-
-function adjustCartTotal(adjustment: number) {
-    $('#cartTotal').html((adjustment).toString());
-}
 
 enum CART_TYPE {
     ADD = "ADD",
