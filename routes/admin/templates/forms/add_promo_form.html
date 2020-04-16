@@ -39,14 +39,14 @@
                     </div>
                     <!-- Content -->
                     <div class="card-body white">
-                        <form method="POST">
+                        <form id="promoForm" method="POST">
                             <div class="form-row">
-                                <div class="form-group col-md-10">
+                                <div class="form-group col-md-8">
                                     <label for="promoName">Promo Name</label>
                                     <input type="text" class="form-control" id="promoName" name="promoName"
                                            placeholder="Promotion Name" required maxlength="50">
                                 </div>
-                                <div class="form-group col-md-2">
+                                <div class="form-group col-md-4">
                                     <label for="promoCode">Promo Code</label>
                                     <input type="text" class="form-control" id="promoCode" name="promoCode"
                                            placeholder="Promotion Code" required maxlength="45">
@@ -60,8 +60,7 @@
                                 </div>
                                 <div class="form-group col-md-4">
                                     <label for="promoExpiry">Promo Expiration Date</label>
-                                    <input type="date" class="form-control" id="promoExpiry" name="promoExpiry"
-                                           required>
+                                    <input type="date" class="form-control" id="promoExpiry" name="promoExpiry" required>
                                 </div>
                             </div>
                             <div class="form-row">
@@ -83,18 +82,7 @@
         </div>
         <!--Grid row-->
     </div>
-    <script>
-        $(function () {
-            /*
-                Here we can set the minimum date for the expiry
-             */
-            let now = new Date();
-            let month = ("0" + (now.getMonth() + 1)).slice(-2);
-            let date = ("0" + now.getDate()).slice(-2);
-            $("#promoExpiry").attr("min", `${now.getFullYear()}-${month}-${date}`);
 
-            /* Lets put a 25 year promotion cap */
-            $("#promoExpiry").attr("max", `${now.getFullYear() + 25}-${month}-${date}`)
-        })
-    </script>
+    <script type="module" src="/static/admin/js/forms/promo.js"></script>
+
 {% endblock main %}

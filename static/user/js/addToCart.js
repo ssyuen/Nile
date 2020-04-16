@@ -1,4 +1,4 @@
-import { adjustCartTotal } from "./cartUtil";
+import { adjustCartTotal } from "./cartUtil.js";
 $("#addToCartBtn").click(function () {
     if ($(this).hasClass("blue-gradient")) {
         addToCart(this);

@@ -4,7 +4,7 @@ $("#editBtn").click(function () {
     $("#manageBooksForm input, #manageBooksForm select, #manageBooksForm textarea").removeAttr("readonly disabled");
 });
 
-let vc = new AdminInputValidator(5);
+let vc = new AdminInputValidator();
 const A_FNAME = document.getElementById("authorFirstName");
 const A_LNAME = document.getElementById("authorLastName");
 const BOOK_TITLE = document.getElementById("bookTitle");
