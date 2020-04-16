@@ -79,6 +79,9 @@
 
 
                         <div id="addressEntry" class="collapse">
+                            <small>
+                                <p class="text-muted font-italic">Shipping Information</p>
+                            </small>
                             <div class="card-specific">
                                 <div class="form-row">
                                     <div class="col">
@@ -394,6 +397,26 @@
                                                    maxlength="45"
                                                    data-error="Last Name must me more than two characters">
                                             <label for="newCardHolderLastName">Last Name on Card</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="col-sm-10">
+                                        <div class="form-group md-form md-outline">
+                                            <label for="newCCN">Credit Card Number</label>
+                                            <input type="text" class="form-control" id="newCCN" name="ccn"
+                                                   required
+                                                   credit-provider=""
+                                                   data-error="Credit Card is not valid.">
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-2">
+                                        <div class="form-group md-form md-outline">
+                                            <input type="text" class="form-control" id="newCVV" name="cvv"
+                                                   required
+                                                   maxlength="3"
+                                                   data-error="CVV is not valid.">
+                                            <label for="newCVV">CVV</label>
                                         </div>
                                     </div>
                                 </div>
