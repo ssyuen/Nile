@@ -172,10 +172,31 @@ def edit_promo_form():
     return render_template('./forms/edit_promo_form.html')
 
 
-@admin_bp.route('/manage_promotions/apromof/')
+@admin_bp.route('/manage_promotions/apromof/', methods=['GET', 'POST'])
 @admin_required
 @remember_me
 def add_promo_form():
+    if request.method == 'POST':
+        promo_name = request.form.get('promoName')
+        promo_code = request.form.get('promoCode')
+        promo_amt = float(request.form.get('promoAmt')) / 100
+        promo_start = request.form.get('promoStart')
+        promo_expiry = request.form.get('promoExpiry')
+        promo_notes = request.form.get('promoNotes')
+
+        conn = mysql.connect()
+        cursor = conn.cursor()
+
+        query = """
+                INSERT INTO promotion (name, code, discount, startDate, endDate, notes)
+                VALUES (%s, %s, %s, %s, %s, %s)
+                """
+        cursor.execute(query, (promo_name, promo_code, promo_amt, promo_start, promo_expiry, promo_notes))
+        conn.commit()
+        conn.close()
+
+        return redirect(url_for('admin_bp.add_promo_form'))
+
     return render_template('./forms/add_promo_form.html')
 
 
