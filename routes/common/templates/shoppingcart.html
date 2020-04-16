@@ -37,45 +37,65 @@
                         <tbody>
 
                             <!-- JINJA CODE HERE -->
-                            
+
                             {% for isbn, payload in book_payload.items() %}
-                                <tr>
-                                    <td>
-                                        <div class="row">
-                                            <div class="col col-sm-4">
-                                                <div>
-                                                    <img src="{{ '/static/images/CoverImages/' + payload['nile_cover_id'] + '.jpg' }}" width="95">
-                                                </div>
-                                            </div>
-                                            <div class="col">
-                                                <a href="#" class="primary-sm text-dark">{{ payload['title'] }}</a>
-                                                <p class="small text-muted">ISBN: {{ isbn }}, Author: {{ payload['author_name'] }}</p>
+                            <tr>
+                                <td>
+                                    <div class="row">
+                                        <div class="col col-sm-4">
+                                            <div>
+                                                <img src="{{ '/static/images/CoverImages/' + payload['nile_cover_id'] + '.jpg' }}"
+                                                    width="95">
                                             </div>
                                         </div>
-                                    </td>
-                                    <td>
-                                        <select class="form-control" nile-isbn="{{ isbn }}" buying-price="{{ payload['price'] }}">
-                                            <option value="1">1</option>
+                                        <div class="col">
+                                            <a href="#" class="primary-sm text-dark">{{ payload['title'] }}</a>
+                                            <p class="small text-muted">ISBN: {{ isbn }}, Author:
+                                                {{ payload['author_name'] }}</p>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <select class="form-control" nile-isbn="{{ isbn }}"
+                                        buying-price="{{ payload['price'] }}">
+                                        {% if payload['quantity'] == 1 %}
+                                            <option value="1" selected>1</option>
                                             <option value="2">2</option>
                                             <option value="3">3</option>
                                             <option value="4">4</option>
-                                        </select>
-                                    </td>
-                                    <td class="price-data">
-                                        <div class="price-wrap primary-sm">
-                                            <div class="d-inline-flex">$
-                                                <div class="quant-price ml-1" id="xcvt">{{ payload['price'] }}</div>
-                                            </div>
-                                        </div> <!-- price-wrap .// -->
-                                        <p class="text-muted"><i>${{ payload['price'] }} each</i></p>
-                                    </td>
-                                    <td class="text-right">
-                                        <button class="btn btn-danger btn-rounded-complement waves-effect remove-btn"
-                                                nile-isbn="{{ isbn }}">
-                                            Remove
-                                        </button>
-                                    </td>
-                                </tr>
+                                        {% elif payload['quantity'] == 2 %}
+                                            <option value="1">1</option>
+                                            <option value="2" selected>2</option>
+                                            <option value="3">3</option>
+                                            <option value="4">4</option>
+                                        {% elif payload['quantity'] == 3 %}
+                                            <option value="1">1</option>
+                                            <option value="2">2</option>
+                                            <option value="3" selected>3</option>
+                                            <option value="4">4</option>
+                                        {% else %}
+                                            <option value="1">1</option>
+                                            <option value="2">2</option>
+                                            <option value="3">3</option>
+                                            <option value="4" selected>4</option>
+                                        {% endif %}
+                                    </select>
+                                </td>
+                                <td class="price-data">
+                                    <div class="price-wrap primary-sm">
+                                        <div class="d-inline-flex">$
+                                            <div class="quant-price ml-1" id="xcvt">{{ payload['price'] }}</div>
+                                        </div>
+                                    </div> <!-- price-wrap .// -->
+                                    <p class="text-muted"><i>${{ payload['price'] }} each</i></p>
+                                </td>
+                                <td class="text-right">
+                                    <button class="btn btn-danger btn-rounded-complement waves-effect remove-btn"
+                                        nile-isbn="{{ isbn }}">
+                                        Remove
+                                    </button>
+                                </td>
+                            </tr>
                             {% endfor %}
 
                         </tbody>
@@ -124,5 +144,5 @@
 
 </div> <!-- container .//  -->
 
-    <script type="module" src="/static/user/js/shoppingcart.js"></script>
+<script src="/static/user/js/shoppingcart.js" type="module"></script>
 {% endblock %}
