@@ -103,7 +103,7 @@ def checkout():
     payment_payload = {}
 
     payment_query = '''
-    SELECT pm.id, street1, street2, city, zip, state, country, firstName, lastName, cardNumber, cardType
+    SELECT pm.id, street1, street2, city, zip, state, country, firstName, lastName, cardNumber, cardType, expirationDate
     FROM user_paymentmethod upm
     JOIN payment_method pm ON upm.paymentID_pm_FK = pm.id
     JOIN address a ON pm.billingAddress_addr_FK = a.id
@@ -124,6 +124,7 @@ def checkout():
             'card_number': FERNET.decrypt(
                 i[9].encode('utf-8')).decode('utf-8')[-4:],
             'card_type': i[10],
+            'card_expiry': str(i[11].year) + '-' + str(i[11].month).zfill(2)
         }
     print(f'billing payload --> {payment_payload}')
 
