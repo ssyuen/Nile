@@ -50,9 +50,9 @@
                                 <thead class="text-muted">
                                 <tr class="small text-uppercase">
                                     <th scope="col">Product</th>
-                                    <th scope="col" width="120">Quantity</th>
-                                    <th scope="col" width="120">Price</th>
-                                    <th scope="col" class="text-right" width="200"></th>
+                                    <th scope="col">Quantity</th>
+                                    <th scope="col">Price</th>
+                                    <th scope="col" class="text-right"></th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -63,14 +63,15 @@
                                     <tr>
                                         <td>
                                             <div class="row">
-                                                <div class="col col-sm-4">
+                                                <div class="col-lg-6">
                                                     <div>
                                                         <img src="{{ '/static/images/CoverImages/' + payload['nile_cover_id'] + '.jpg' }}"
                                                              width="95" alt="Image of {{ isbn }}">
                                                     </div>
                                                 </div>
-                                                <div class="col">
-                                                    <a href="#" class="primary-sm text-dark">{{ payload['title'] }}</a>
+                                                <div class="col-lg-6">
+                                                    <a href="#" class="primary text-dark"
+                                                       style="font-size:1.5em;">{{ payload['title'] }}</a>
                                                     <p class="small text-muted">ISBN: {{ isbn }}, Author:
                                                         {{ payload['author_name'] }}</p>
                                                 </div>
