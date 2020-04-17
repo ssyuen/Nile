@@ -84,7 +84,7 @@
                         </p>
                     {% endif %}
                 {% endwith %}
-                <form method="POST" action="">
+                <form method="POST" action="" id="loginForm">
                     <div class="form-group md-form md-outline">
                         <label for="userEmail">Enter Email</label>
                         <input type="email" class="form-control" id="userEmail" aria-describedby="emailHelp"
@@ -97,7 +97,7 @@
                         <input type="password" class="form-control" id="userPassword"
                                name="userPassword">
                     </div>
-                    <button type="submit" class="btn blue-gradient btn-lg btn-block">Login</button>
+                    <button type="submit" class="btn blue-gradient btn-lg btn-block" id="loginBtn">Login</button>
                     <div class="custom-control custom-checkbox mt-3">
                         <input type="checkbox" class="custom-control-input" id="rememberMe" name="rememberMe">
                         <label class="custom-control-label complement-light" for="rememberMe">Keep me logged in</label>
@@ -148,4 +148,5 @@
             }
         });
     </script>
+    <script src="/static/user/js/login.js"></script>
 {% endblock %}
