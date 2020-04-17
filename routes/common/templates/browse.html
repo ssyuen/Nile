@@ -238,8 +238,6 @@
                     </div>
                 </div>
             </header>
-
-            <nav class="bar" aria-label="Page navigation example"></nav>
             <div class="row" id="table">
                 {% for book in books %}
                 <div class="col-lg-3 col-md-6 mb-4">
@@ -292,9 +290,9 @@
         $("#table > div").hide();
         $("#table > div").slice(0, shownRows).show();
 
-        $('.bar a:first').addClass('active'); // The current active page of books to be shown (1)
-        $('.bar a').bind('click', function () { // Upon clicking change the active page of books to next
-            $('.bar a').removeClass('active');
+        $('#pageNums a:first').addClass('active'); // The current active page of books to be shown (1)
+        $('#pageNums a').bind('click', function () { // Upon clicking change the active page of books to next
+            $('#pageNums a').removeClass('active');
             $(this).addClass('active');
             console.log(this);
             var currentPage = $(this).attr('rel');
@@ -317,6 +315,7 @@
             var startItem = currentPage * shownRows;
             var endItem = startItem + shownRows;
             $('#table > div').css('opacity', '0.0').hide().slice(startItem, endItem).css('display', 'table-row').animate({ opacity: 1 }, 300);
+            $("body").scrollTop(0);
         });
 
         $("[aria-label=Next]").click(function () {
@@ -332,6 +331,7 @@
             var startItem = currentPage * shownRows;
             var endItem = startItem + shownRows;
             $('#table > div').css('opacity', '0.0').hide().slice(startItem, endItem).css('display', 'table-row').animate({ opacity: 1 }, 300);
+            $("body").scrollTop(0);
         });
 
     });
