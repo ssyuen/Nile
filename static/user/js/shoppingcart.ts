@@ -151,9 +151,12 @@ $('.table-shopping-cart').on('click', 'button', function () {
 });
 
 function isCartEmpty(): boolean {
-    if ($('.table-shopping-cart > tbody > tr').length === 0) {
+    if ($('.table-shopping-cart > tbody > tr').length === 0 ||
+        $('.dataTables_empty').length) {
         $("#checkoutBtn").addClass("d-none");
         $("#cartEmptyCard").removeClass("d-none");
+        $("#cartCard").addClass("d-none");
+        $("#searchCart").prop("disabled", true);
         return true;
     }
     return false;
