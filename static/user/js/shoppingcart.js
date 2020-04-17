@@ -23,8 +23,8 @@
  * The ONLY TIME that we update the quantity in the DB is when the user
  * clicks checkout
  */
-import {CountUp} from '../../jsplugin/countUp.min.js';
-import {adjustCartTotal} from "./cartUtil.js";
+import { CountUp } from '../../jsplugin/countUp.min.js';
+import { adjustCartTotal } from "./cartUtil.js";
 const NILE_ISBN_ATTR = "nile-isbn";
 const NILE_BUY_PR_ATTR = "buying-price";
 const DURATION_SEC = 0.5; //ANIMATION DURATION IN SECONDS
@@ -61,7 +61,7 @@ $("select.form-control").change(evt => {
     $.ajax({
         url: '/shoppingcart/',
         type: 'POST',
-        data: {'bookISBN': isbn, 'newQuantity': $(evt.target).val()}
+        data: { 'bookISBN': isbn, 'newQuantity': $(evt.target).val() }
     });
 });
 function updateIndividual(sel) {
@@ -123,10 +123,11 @@ $('.table-shopping-cart').on('click', 'button', function () {
     setTimeout(updateTotal, DURATION_M_SEC);
     isCartEmpty();
     let isbn = $(this).attr("nile-isbn");
+    window.sessionStorage.removeItem(isbn);
     $.ajax({
         url: '/shoppingcart/',
         type: 'POST',
-        data: {'bookISBN': isbn}
+        data: { 'bookISBN': isbn }
     });
     let valAsInt = parseInt($("#cartTotal").html());
     adjustCartTotal(--valAsInt);
