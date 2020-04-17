@@ -315,7 +315,7 @@
             var startItem = currentPage * shownRows;
             var endItem = startItem + shownRows;
             $('#table > div').css('opacity', '0.0').hide().slice(startItem, endItem).css('display', 'table-row').animate({ opacity: 1 }, 300);
-            $("body").scrollTop(0);
+            $(window).scrollTop(0);
         });
 
         $("[aria-label=Next]").click(function () {
@@ -331,7 +331,7 @@
             var startItem = currentPage * shownRows;
             var endItem = startItem + shownRows;
             $('#table > div').css('opacity', '0.0').hide().slice(startItem, endItem).css('display', 'table-row').animate({ opacity: 1 }, 300);
-            $("body").scrollTop(0);
+            $(window).scrollTop(0);
         });
 
     });
