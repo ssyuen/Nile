@@ -8,6 +8,9 @@ class DevelopmentConfig:
     # SERVER RELOAD ON CODE CHANGE
     DEBUG = True
 
+    TEMPLATES_AUTO_RELOAD = True
+
+
     #MySQL setup
     MYSQL_DATABASE_USER = os.environ['DB_USER']
     MYSQL_DATABASE_PASSWORD = os.environ['DB_PASS']
