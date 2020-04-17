@@ -24,3 +24,10 @@
 .coming-soon {
     text-transform: uppercase !important;
 }
+
+.pagination .page-item .page-link.active {
+    background-color: #0275d8 !important;
+    color: white !important;
+    border-radius: 5px;
+    font-weight: bold;
+}
