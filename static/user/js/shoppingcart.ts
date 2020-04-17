@@ -138,6 +138,7 @@ $('.table-shopping-cart').on('click', 'button', function () {
     setTimeout(updateTotal, DURATION_M_SEC);
     isCartEmpty();
     let isbn = $(this).attr("nile-isbn");
+    window.sessionStorage.removeItem(isbn);
 
     $.ajax({
         url: '/shoppingcart/',

@@ -7,8 +7,10 @@ console.log("Hey there fellow developer.\nHope you have a great day!");
 // AJAX FOR GENRE CHECKBOXES
 let gc = document.getElementById("genreContainer");
 $(gc).change(function () {
-    let genresChecked = $("input[nileGenre]:checked");
-    console.log(genresChecked);
+    let genresChecked = $(".genre:checkbox:checked");
+    for (let genre in genresChecked) {
+        console.log(genre);
+    }
     // $.ajax({
     //     url:"/",
     //     type: "POST",
