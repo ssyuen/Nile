@@ -358,13 +358,13 @@
         $(document).ready(function () {
             $("#searchButton").on("click", function () {
                 // Retrieve the input field text
-                var querry = $("#searchInput").val().toLowerCase();
-                console.log(querry);
+                var query = $("#searchInput").val().toLowerCase();
+                console.log(query);
 
                 // Loop through TITLE, AUTHOR, ISBN, GENRE
                 $("#table > div").each(function () {
                     // If the list item does not contain the text phrase fade it out
-                    if ($(this).text().search(new RegExp(querry, "gi")) < 0) {
+                    if ($(this).text().search(new RegExp(query, "gi")) < 0) {
                         $(this).fadeOut();
                         // Show the list item if the phrase matches
                     } else {
@@ -374,4 +374,5 @@
             });
         });
     </script>
+
 {% endblock %}
