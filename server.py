@@ -13,6 +13,7 @@ def create_server(config):
 
     # update app config from file config.py
     app.config.from_object('config.DevelopmentConfig')
+    app.jinja_env.cache = {}
 
     with app.app_context():
         # initialize extensions
