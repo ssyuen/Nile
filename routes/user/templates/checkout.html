@@ -527,9 +527,13 @@
                             <div>
                                 <h6 class="my-0 complement-light">{{ payload['title'] }}<small> x{{ payload['quantity'] }}</small></h6>
                                 <small class="text-muted"><i class="checkoutSideBarISBN">ISBN: {{ isbn }}</i></small>
+                                <h6 class="my-0 completement-light">
+                                    <small class="text-muted"><i>${{ payload['price'] }} each</i></small>
+                                </h6>
+                                
                             </div>
                             <span class="text-muted complement">$<span
-                                    class="sidebar-item-price pl-0">{{ payload['price'] }}</span></span>
+                                    class="sidebar-item-price pl-0">{{ payload['total_price'] }}</span></span>
                         </li>
                     {% endfor %}
                     <li class="list-group-item d-flex justify-content-between">

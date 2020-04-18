@@ -85,7 +85,7 @@ def checkout():
         price = results[3]
         total_quantity += quantity
         book_payload[isbn] = {'nile_cover_id': nile_cover_ID, 'title': title,
-                              'author_name': author_name, 'price': price*quantity, 'quantity': quantity}
+                              'author_name': author_name, 'price':price,'total_price': price*quantity, 'quantity': quantity}
 
     
     # SHIPPING ADDRESSES FROM DB
