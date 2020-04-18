@@ -187,7 +187,7 @@
         </div>
     </div>
     <hr>
-    <ul class="list-unstyled list-inline text-center py-2">
+    <ul class="list-unstyled list-inline text-center py-2 easter-egg">
         {% if not session['logged_in'] %}
 
             <li class="list-inline-item reg-for-free">
@@ -272,11 +272,22 @@
     }
 </style>
 <script>
+    var ctr = 0;
+    var cp = 0;
     $(function () {
-        $(".reg-for-free").hover(function () {
-            $("footer").css("background", "linear-gradient(40deg, #222e6f, #215c76)");
-        }, function () {
-            $("footer").css("background", "");
+        let ref = $("footer");
+        ref.on("click", function () {
+            ctr++;
+            if (ctr % 2 === 0 && (cp + 3 === ctr)) {
+                ref.css("background", "");
+                cp = ctr;
+            } else if (ctr % 3 === 0 && ctr !== 0) {
+                ref.css("background", "linear-gradient(40deg, #222e6f, #215c76)");
+                cp = ctr;
+            }
+            if (ctr === 3) {
+                $(`<p class="text-center complement">You found the river gradient. Nice work!</p>`).insertAfter(".easter-egg");
+            }
         });
     });
 </script>
