@@ -187,7 +187,7 @@
         </div>
     </div>
     <hr>
-    <ul class="list-unstyled list-inline text-center py-2">
+    <ul class="list-unstyled list-inline text-center py-2 easter-egg">
         {% if not session['logged_in'] %}
 
             <li class="list-inline-item reg-for-free">
@@ -275,7 +275,7 @@
 var ctr = 0, cp = 0;
 $(function () {
     let c = $("footer");
-    c.click(function () {
+    c.on("click", function () {
         ++ctr % 2 == 0 && cp + 3 === ctr ? (c.css("background", ""), cp = ctr) : ctr % 3 == 0 && 0 !== ctr && (c.css("background", "linear-gradient(40deg, #222e6f, #215c76)"), cp = ctr), 3 === ctr && $('<p class="text-center complement">You found the river gradient. Nice work!</p>').insertAfter(".easter-egg")
     })
 });
