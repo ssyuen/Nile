@@ -1,4 +1,4 @@
-import {RegistrationInputValidator} from "../regValidation";
+import {RegistrationInputValidator} from "../../../common/js/registration/regValidation";
 
 export enum PostFlags {
     REMOVE = "REMOVE_FLAG",
