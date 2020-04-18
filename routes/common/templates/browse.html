@@ -3,15 +3,14 @@
 
 {% block base_head %}
 {{ super() }}
-<style>
-    @media (min-width: 1200px) {
-        .card-img-top {
-            max-height: 350px;
+    <style>
+        @media (min-width: 1200px) {
+            .card-img-top {
+                max-height: 350px;
+            }
         }
-    }
-</style>
-<link rel="stylesheet" type="text/css" href="/static/user/css/browse.css">
-<script src="/static/user/js/browse.js"></script>
+    </style>
+    <link rel="stylesheet" type="text/css" href="/static/common/css/browse.css">
 {% endblock %}
 
 {% block mainTitle %}
@@ -355,5 +354,5 @@
     });
 </script>
 
-<script type="module" src="/static/user/js/browse.js"></script>
+    <script type="module" src="/static/common/js/browse/browse.js"></script>
 {% endblock %}
