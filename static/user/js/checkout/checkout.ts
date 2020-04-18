@@ -188,8 +188,10 @@ function proceedCheckoutSubmit() {
     } else if (entPMRad.is(":checked")) {
         paymentPayload = serializedToObject(newPMEntry.find("input, select"));
     }
+
     replaceBtn(CHECKOUT_BTN);
     let final: Object = $.extend(shipPayload, paymentPayload);
+
     console.log(final);
     post(FORM.action, "POST", final);
 }

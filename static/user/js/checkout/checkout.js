@@ -93,7 +93,6 @@ pmToggler.on("click", function () {
         pmRad.trigger("click");
     }
 });
-
 function switchToggler(toggler) {
     if ($(toggler).text() === "View") {
         $(toggler).text("Close View");
@@ -153,7 +152,6 @@ function fillPMForm(select) {
     $("#paymentMethodEntry #checkoutBillingAddressState").val($(option).attr("nile-billing-state"));
     $("#paymentMethodEntry #checkoutBillingAddressCountry").val($(option).attr("nile-billing-country"));
 }
-
 function proceedCheckoutSubmit() {
     let shipOpt = $("#shippingAddressSelect").find(":selected");
     let payOpt = $("#paymentMethodSelect").find(":selected");
@@ -173,7 +171,6 @@ function proceedCheckoutSubmit() {
     console.log(final);
     post(FORM.action, "POST", final);
 }
-
 $(CHECKOUT_BTN).on("click", function () {
     proceedCheckoutSubmit();
 });
