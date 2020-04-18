@@ -71,6 +71,7 @@ def checkout():
     conn = mysql.connect()
     cursor = conn.cursor()
 
+
     total_quantity = 0
 
     # BOOKS FROM SHOPPING CART

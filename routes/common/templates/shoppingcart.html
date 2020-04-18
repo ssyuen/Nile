@@ -2,196 +2,199 @@
 {% block base_title %}My Cart{% endblock %}
 
 {% block base_head %}
-    {{ super() }}
-    <style>
-        @media (max-width: 768px) {
-            #cartPricingWrapper {
-                padding-top: 20px;
-            }
+{{ super() }}
+<style>
+    @media (max-width: 768px) {
+        #cartPricingWrapper {
+            padding-top: 20px;
         }
+    }
 
-        .md-form.md-outline label[for=searchCart].active {
-            background: #f2f2f2 !important;
-        }
+    .md-form.md-outline label[for=searchCart].active {
+        background: #f2f2f2 !important;
+    }
 
-        #searchCart {
-            color: black;
-            border: 1px solid #636465;
-            background-color: rgba(200, 200, 200, 0.04);
-        }
-
-
-    </style>
-    <link rel="stylesheet" type="text/css" href="/static/common/css/cart.css">
+    #searchCart {
+        color: black;
+        border: 1px solid #636465;
+        background-color: rgba(200, 200, 200, 0.04);
+    }
+</style>
+<link rel="stylesheet" type="text/css" href="/static/common/css/cart.css">
 {% endblock %}
 
 {% block mainTitle %}
-    <div class="text-left" id="content-header">
-        <p class="primary-lg" id="account-holder">My Shopping Cart.</p>
-    </div>
+<div class="text-left" id="content-header">
+    <p class="primary-lg" id="account-holder">My Shopping Cart.</p>
+</div>
 {% endblock %}
 
 {% block main %}
-    <div class="container">
-        <div class="row mb-2 mt-0" id="preMainRow">
-            <div class="col-md-9">
-                <div class="form-group md-outline md-form mt-0">
-                    <input type="text" id="searchCart" class="form-control">
-                    <label for="searchCart" style="">Search your Cart by author, title, ISBN, or price</label>
-                </div>
+<div class="container">
+    <div class="row mb-2 mt-0" id="preMainRow">
+        <div class="col-md-9">
+            <div class="form-group md-outline md-form mt-0">
+                <input type="text" id="searchCart" class="form-control">
+                <label for="searchCart" style="">Search your Cart by author, title, ISBN, or price</label>
             </div>
         </div>
-        <div class="row">
-            <main class="col-md-9">
-                <div class="card" id="cartCard">
-                    <div class="card-body">
-                        <div class="table-responsive-lg">
-                            <table class="table table-borderless table-shopping-cart" id="shoppingCart">
-                                <thead class="text-muted">
+    </div>
+    <div class="row">
+        <main class="col-md-9">
+            <div class="card" id="cartCard">
+                <div class="card-body">
+                    <div class="table-responsive-lg">
+                        <table class="table table-borderless table-shopping-cart" id="shoppingCart">
+                            <thead class="text-muted">
                                 <tr class="small text-uppercase">
                                     <th scope="col">Product</th>
                                     <th scope="col">Quantity</th>
                                     <th scope="col">Price</th>
                                     <th scope="col" class="text-right"></th>
                                 </tr>
-                                </thead>
-                                <tbody>
+                            </thead>
+                            <tbody>
 
                                 <!-- JINJA CODE HERE -->
 
                                 {% for isbn, payload in book_payload.items() %}
-                                    <tr>
-                                        <td>
-                                            <div class="row">
-                                                <div class="col-lg-6">
-                                                    <div>
-                                                        <img src="{{ '/static/images/CoverImages/' + payload['nile_cover_id'] + '.jpg' }}"
-                                                             width="95" alt="Image of {{ isbn }}">
-                                                    </div>
-                                                </div>
-                                                <div class="col-lg-6">
-                                                    <a href="#" class="primary text-dark"
-                                                       style="font-size:1.5em;">{{ payload['title'] }}</a>
-                                                    <p class="small text-muted">ISBN: {{ isbn }}, Author:
-                                                        {{ payload['author_name'] }}</p>
+                                <tr>
+                                    <td>
+                                        <div class="row">
+                                            <div class="col-lg-6">
+                                                <div>
+                                                    <img src="{{ '/static/images/CoverImages/' + payload['nile_cover_id'] + '.jpg' }}"
+                                                        width="95" alt="Image of {{ isbn }}">
                                                 </div>
                                             </div>
-                                        </td>
-                                        <td>
-                                            <label for="quantitySelector" class="d-none"> </label>
-                                            <select class="form-control" nile-isbn="{{ isbn }}" id="quantitySelector"
-                                                    buying-price="{{ payload['price'] }}">
-                                                <option value="1"
-                                                        {% if payload['quantity']|int == 1 %}selected="selected" {% endif %}>
-                                                    1
-                                                </option>
-                                                <option value="2">2</option>
-                                                <option value="3">3</option>
-                                                <option value="4">4</option>
-                                            </select>
-                                        </td>
-                                        <td class="price-data">
-                                            <div class="price-wrap primary-sm">
-                                                <div class="d-inline-flex">$
-                                                    <div class="quant-price" style="margin-left: 1px;"
-                                                         id="xcvt">{{ payload['price'] }}</div>
-                                                </div>
-                                            </div> <!-- price-wrap .// -->
-                                            <p class="text-muted"><i>${{ payload['price'] }} each</i></p>
-                                        </td>
-                                        <td class="text-right">
-                                            <button class="btn btn-outline-danger btn-rounded-complement waves-effect remove-btn"
-                                                    nile-isbn="{{ isbn }}">
-                                                Remove
-                                            </button>
-                                        </td>
-                                    </tr>
+                                            <div class="col-lg-6">
+                                                <a href="#" class="primary text-dark"
+                                                    style="font-size:1.5em;">{{ payload['title'] }}</a>
+                                                <p class="small text-muted">ISBN: {{ isbn }}, Author:
+                                                    {{ payload['author_name'] }}</p>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <label for="quantitySelector" class="d-none"> </label>
+                                        <select class="form-control" nile-isbn="{{ isbn }}" id="quantitySelector"
+                                            buying-price="{{ payload['price'] }}">
+                                            <option value="1" {% if payload['quantity']|int == 1 %}selected="selected"
+                                                {% endif %}>
+                                                1
+                                            </option>
+                                            <option value="2" {% if payload['quantity']|int == 2 %}selected="selected"
+                                                {% endif %}>2</option>
+                                            <option value="3" {% if payload['quantity']|int == 3 %}selected="selected"
+                                                {% endif %}>3</option>
+                                            <option value="4" {% if payload['quantity']|int == 4 %}selected="selected"
+                                                {% endif %}>4</option>
+                                        </select>
+                                    </td>
+                                    <td class="price-data">
+                                        <div class="price-wrap primary-sm">
+                                            <div class="d-inline-flex">$
+                                                <div class="quant-price" style="margin-left: 1px;" id="xcvt">
+                                                    {{ payload['price'] }}</div>
+                                            </div>
+                                        </div> <!-- price-wrap .// -->
+                                        <p class="text-muted"><i>${{ payload['price'] }} each</i></p>
+                                    </td>
+                                    <td class="text-right">
+                                        <button
+                                            class="btn btn-outline-danger btn-rounded-complement waves-effect remove-btn"
+                                            nile-isbn="{{ isbn }}">
+                                            Remove
+                                        </button>
+                                    </td>
+                                </tr>
                                 {% endfor %}
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-
-                    <div class="card-footer border-top">
-                        <a href="/" class="waves-effect w-100 shadow">
-                            <button class="btn btn-outline-primary btn-block w-100 waves-effect z-depth-0"
-                                    id="continueShoppingBtn">
-                                <i class="fa fa-chevron-left"></i>
-                                Continue Shopping
-                            </button>
-                        </a>
-                    </div>
-                </div> <!-- card.// -->
-                <div class="card mt-5 d-none" id="cartEmptyCard">
-                    <div class="card-body border-top primary-md align-self-center">
-                        <p>Your cart is empty</p>
-                    </div>
-                    <div class="card-footer border-top">
-                        <a href="/" class="waves-effect w-100 shadow">
-                            <button class="btn btn-outline-primary btn-block w-100 waves-effect z-depth-0"
-                                    id="continueShoppingBtn">
-                                <i class="fa fa-chevron-left"></i>
-                                Continue Shopping
-                            </button>
-                        </a>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
 
-            </main> <!-- col.// -->
-            <aside class="col-md-3" id="cartPricingWrapper">
-                <h4 class="d-flex justify-content-between align-items-center mb-3">
-                    <span class="text-muted">Cart Pricing</span>
-                </h4>
-                <li class="list-group-item justify-content-between shadow">
-                    <p class="primary-sm">Total (USD):</p>
-
-                    <div class="price-wrap primary-md" id="totalPriceWrapContainer">
-                        <div class="d-inline-flex">$
-                            <div class="quant-price ml-1" id="totalPrice">0.00</div>
-                        </div>
-                    </div>
-                    <p class="text-muted"><i>Excludes Shipping, Tax, and Discounts</i></p>
-                </li>
-                <div class="w-100 pt-3">
-                    <a href="{{ url_for('user_bp.checkout' ) }}" class="waves-effect w-100 shadow" id="checkoutBtn">
-                        <button class="btn blue-gradient btn-block w-100">Checkout
-                            <i class="fa fa-chevron-right"></i>
+                <div class="card-footer border-top">
+                    <a href="/" class="waves-effect w-100 shadow">
+                        <button class="btn btn-outline-primary btn-block w-100 waves-effect z-depth-0"
+                            id="continueShoppingBtn">
+                            <i class="fa fa-chevron-left"></i>
+                            Continue Shopping
                         </button>
                     </a>
                 </div>
-            </aside> <!-- col.// -->
-        </div>
+            </div> <!-- card.// -->
+            <div class="card mt-5 d-none" id="cartEmptyCard">
+                <div class="card-body border-top primary-md align-self-center">
+                    <p>Your cart is empty</p>
+                </div>
+                <div class="card-footer border-top">
+                    <a href="/" class="waves-effect w-100 shadow">
+                        <button class="btn btn-outline-primary btn-block w-100 waves-effect z-depth-0"
+                            id="continueShoppingBtn">
+                            <i class="fa fa-chevron-left"></i>
+                            Continue Shopping
+                        </button>
+                    </a>
+                </div>
+            </div>
 
-    </div> <!-- container .//  -->
+        </main> <!-- col.// -->
+        <aside class="col-md-3" id="cartPricingWrapper">
+            <h4 class="d-flex justify-content-between align-items-center mb-3">
+                <span class="text-muted">Cart Pricing</span>
+            </h4>
+            <li class="list-group-item justify-content-between shadow">
+                <p class="primary-sm">Total (USD):</p>
 
-    <script src="/static/common/js/cart/shoppingcart.js" type="module"></script>
-    <script src="/static/mdb/js/addons/datatables.min.js"></script>
+                <div class="price-wrap primary-md" id="totalPriceWrapContainer">
+                    <div class="d-inline-flex">$
+                        <div class="quant-price ml-1" id="totalPrice">0.00</div>
+                    </div>
+                </div>
+                <p class="text-muted"><i>Excludes Shipping, Tax, and Discounts</i></p>
+            </li>
+            <div class="w-100 pt-3">
+                <a href="{{ url_for('user_bp.checkout' ) }}" class="waves-effect w-100 shadow" id="checkoutBtn">
+                    <button class="btn blue-gradient btn-block w-100">Checkout
+                        <i class="fa fa-chevron-right"></i>
+                    </button>
+                </a>
+            </div>
+        </aside> <!-- col.// -->
+    </div>
 
-    <script>
-        $(document).ready(function () {
-            var dataTable = $('#shoppingCart').DataTable({
-                "bLengthChange": false,
-                "bFilter": true,
-                "bInfo": false,
-                "bAutoWidth": false,
-                "pageLength": 5,
-                "dom": '<"top"flp<"clear">>rt<"bottom"ifp<"clear">>'
+</div> <!-- container .//  -->
 
-            });
+<script src="/static/common/js/cart/shoppingcart.js" type="module"></script>
+<script src="/static/mdb/js/addons/datatables.min.js"></script>
 
-            $("#searchCart").on("keyup", function () {
-                dataTable.search(this.value).draw();
-            });
-            $(".dataTables_filter").hide();
+<script>
+    $(document).ready(function () {
+        var dataTable = $('#shoppingCart').DataTable({
+            "bLengthChange": false,
+            "bFilter": true,
+            "bInfo": false,
+            "bAutoWidth": false,
+            "pageLength": 5,
+            "dom": '<"top"flp<"clear">>rt<"bottom"ifp<"clear">>'
+
         });
-    </script>
-    <style>
-        div.top, div.bottom {
-            text-align: right !important;
-        }
 
-        .dataTables_paginate {
-            display: inline-block;
-        }
-    </style>
+        $("#searchCart").on("keyup", function () {
+            dataTable.search(this.value).draw();
+        });
+        $(".dataTables_filter").hide();
+    });
+</script>
+<style>
+    div.top,
+    div.bottom {
+        text-align: right !important;
+    }
+
+    .dataTables_paginate {
+        display: inline-block;
+    }
+</style>
 {% endblock %}
