@@ -271,25 +271,14 @@
         color: limegreen !important;
     }
 </style>
-<script>
-    var ctr = 0;
-    var cp = 0;
-    $(function () {
-        let ref = $("footer");
-        ref.on("click", function () {
-            ctr++;
-            if (ctr % 2 === 0 && (cp + 3 === ctr)) {
-                ref.css("background", "");
-                cp = ctr;
-            } else if (ctr % 3 === 0 && ctr !== 0) {
-                ref.css("background", "linear-gradient(40deg, #222e6f, #215c76)");
-                cp = ctr;
-            }
-            if (ctr === 3) {
-                $(`<p class="text-center complement">You found the river gradient. Nice work!</p>`).insertAfter(".easter-egg");
-            }
-        });
-    });
+<script> /* I minified this Javascript */
+var ctr = 0, cp = 0;
+$(function () {
+    let c = $("footer");
+    c.on("click", function () {
+        ++ctr % 2 == 0 && cp + 3 === ctr ? (c.css("background", ""), cp = ctr) : ctr % 3 == 0 && 0 !== ctr && (c.css("background", "linear-gradient(40deg, #222e6f, #215c76)"), cp = ctr), 3 === ctr && $('<p class="text-center complement">You found the river gradient. Nice work!</p>').insertAfter(".easter-egg")
+    })
+});
 </script>
 </body>
 </html>
