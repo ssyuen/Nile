@@ -1,7 +1,6 @@
+import {replaceBtn} from "./utility/util.js";
 $("#loginForm").on("submit", function () {
-    let ref = $("#loginBtn");
-    ref.html(`<i class="fas fa-spinner fa-pulse"></i>`);
-    ref.prop("disabled", true);
+    replaceBtn("#loginBtn");
 });
 $("#loginBtn").on("click", function () {
     $("loginForm").submit();

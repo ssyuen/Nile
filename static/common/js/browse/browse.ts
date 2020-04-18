@@ -6,11 +6,11 @@ console.log("██║ ╚████║██║███████╗██
 console.log("Hey there fellow developer.\nHope you have a great day!");
 
 // AJAX FOR GENRE CHECKBOXES
-let gc: HTMLInputElement = document.getElementById("genreContainer") as HTMLInputElement
+let gc: HTMLInputElement = document.getElementById("genreContainer") as HTMLInputElement;
 $(gc).change(function(){
-    let genresChecked = $(".genre:checkbox:checked")
+    let genresChecked = $(".genre:checkbox:checked");
     for (let genre in genresChecked) {
-        console.log(genre)
+        console.log(genre);
     }
     
     // $.ajax({

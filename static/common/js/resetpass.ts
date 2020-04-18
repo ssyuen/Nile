@@ -1,6 +1,6 @@
 import {
     RegistrationInputValidator, PURPOSE
-} from "./regValidation.js";
+} from "./registration/regValidation.js";
 
 const FORM: HTMLFormElement = document.getElementById("resetPasswordForm") as HTMLFormElement;
 const PASS_NEW: HTMLInputElement = document.getElementById("newPassword") as HTMLInputElement;

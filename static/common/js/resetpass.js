@@ -1,4 +1,4 @@
-import { RegistrationInputValidator, PURPOSE } from "./regValidation.js";
+import {RegistrationInputValidator, PURPOSE} from "./registration/regValidation.js";
 const FORM = document.getElementById("resetPasswordForm");
 const PASS_NEW = document.getElementById("newPassword");
 const PASS_CONF = document.getElementById("confirmNewPassword");
@@ -6,7 +6,7 @@ const vc = new RegistrationInputValidator();
 FORM.addEventListener("submit", function (e) {
     if (!vc.validateAll(".card-title")) {
         e.preventDefault();
-        return;
+
     }
 });
 Array('input', 'focusin').forEach((evt) => {

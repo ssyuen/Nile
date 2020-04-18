@@ -1,4 +1,10 @@
-import { CountUp } from '../../jsplugin/countUp.min.js';
+import {CountUp} from '../../../jsplugin/countUp.min.js';
+import {post, serializedToObject} from "./checkoutUtil.js";
+import {replaceBtn} from "../../../common/js/utility/util.js";
+
+const FORM: HTMLFormElement = <HTMLFormElement><any>$("#dummyForm");
+const CHECKOUT_BTN: HTMLButtonElement = <HTMLButtonElement><any>$("#checkoutBtn");
+
 $(function () {
     if (!$("#paymentMethodSelect").length) {
         $("#paymentMethodEntry").addClass("show");
@@ -8,6 +14,7 @@ $(function () {
             .removeClass("custom-control");
         $("#paymentMethodToggler").hide();
     }
+
     if (!$("#shippingAddressSelect").length) {
         $("#addressEntry").addClass("show");
         $("#chooseShippingToggleLabel").text("Enter a Shipping Address")
@@ -15,9 +22,11 @@ $(function () {
             .closest(".custom-control")
             .removeClass("custom-control");
         $("#addressToggler").hide();
+
     }
-    let total = 0;
-    let items = $(".sidebar-item-price").each(function (index, elem) {
+
+    let total: number = 0;
+    let items = $(".sidebar-item-price").each(function (index: number, elem: HTMLSpanElement) {
         total += parseFloat(elem.innerHTML);
     });
     let ctr = new CountUp("checkoutTotalPrice", total, {
@@ -27,62 +36,103 @@ $(function () {
     });
     if (!ctr.error) {
         ctr.start();
-    }
-    else {
+    } else {
         console.error(ctr.error);
     }
+
     $(".checkout-select").each(function () {
         $(this).children().first().attr("selected", "selected");
     });
 });
-/* For the Shipping Address */
-$("#enterAddressToggle").on("click", function () {
-    $("#newAddressEntry").collapse("show");
-    $("#addressEntry").collapse("hide");
+
+//* For the Shipping Address */
+var shipRad = $("#chooseShippingToggle");
+var shipToggler = $("#addressToggler");
+var entShipRad = $("#enterAddressToggle");
+var addrEntry = $("#addressEntry");
+var newAddrEntry = $("#newAddressEntry");
+
+entShipRad.on("click", function () {
+    $(this).attr("checked", "checked");
+    shipRad.removeAttr("checked");
+    shipToggler.text("View");
+    (<any>newAddrEntry).collapse("show");
+    (<any>newAddrEntry).collapse("hide");
 });
-$("#chooseShippingToggle").on("click", function () {
-    let ref = $("#newAddressEntry");
-    if (ref.hasClass("show")) {
-        ref.collapse("hide");
+
+shipRad.on("click", function () {
+    $(this).attr("checked", "checked");
+    entShipRad.removeAttr("checked");
+    if (newAddrEntry.hasClass("show")) {
+        (<any>newAddrEntry).collapse("hide");
     }
-    $("#addressEntry").collapse("hide");
+    (<any>addrEntry).collapse("hide");
 });
-$("#addressToggler").on("click", function () {
-    if ($("#newAddressEntry").hasClass("show")) {
-        $("#chooseShippingToggle").trigger("click");
+
+shipToggler.on("click", function () {
+    switchToggler(this);
+    if (newAddrEntry.hasClass("show")) {
+        shipRad.trigger("click");
     }
 });
+
+var pmRad = $("#choosePaymentMethodToggle");
+var pmToggler = $("#paymentMethodToggler");
+var entPMRad = $("#enterPaymentMethodToggle");
+var pmEntry = $("#paymentMethodEntry");
+var newPMEntry = $("#newPaymentMethodEntry");
 /* For the Payment Method */
-$("#enterPaymentMethodToggle").on("click", function () {
-    $("#newPaymentMethodEntry").collapse("show");
-    $("#paymentMethodEntry").collapse("hide");
+
+entPMRad.on("click", function () {
+    $(this).attr("checked", "checked");
+    pmRad.removeAttr("checked");
+    pmToggler.text("View");
+    (<any>newPMEntry).collapse("show");
+    (<any>pmEntry).collapse("hide");
 });
-$("#choosePaymentMethodToggle").on("click", function () {
-    let ref = $("#newPaymentMethodEntry");
-    if (ref.hasClass("show")) {
-        ref.collapse("hide");
+
+pmRad.on("click", function () {
+    $(this).attr("checked", "checked");
+    $("#enterPaymentMethodToggle").removeAttr("checked");
+    if (newPMEntry.hasClass("show")) {
+        (<any>newPMEntry).collapse("hide");
     }
-    $("#paymentMethodEntry").collapse("hide");
+    (<any>pmEntry).collapse("hide");
 });
-$("#paymentMethodToggler").on("click", function () {
-    if ($("#newPaymentMethodEntry").hasClass("show")) {
-        $("#choosePaymentMethodToggle").trigger("click");
+
+pmToggler.on("click", function () {
+    switchToggler(this);
+    if (newPMEntry.hasClass("show")) {
+        pmRad.trigger("click");
     }
 });
+
+function switchToggler(toggler: HTMLElement | string | any) {
+    if ($(toggler).text() === "View") {
+        $(toggler).text("Close View");
+    } else {
+        $(toggler).text("View");
+    }
+}
+
 $(function () {
-    let ref = $("#shippingAddressSelect");
-    fillShippingForm(ref);
+    let ref = <any>$("#shippingAddressSelect");
+    fillShippingForm(ref as HTMLSelectElement);
+
     ref.on("change", function () {
         fillShippingForm(this);
     });
-    let ref2 = $("#paymentMethodSelect");
-    fillPMForm(ref2);
+
+    let ref2 = <any>$("#paymentMethodSelect");
+    fillPMForm(ref2 as HTMLSelectElement);
+
     ref2.on("change", function () {
         fillPMForm(this);
     });
 });
-function fillShippingForm(select) {
-    let option = $(select).find(":selected");
+
+function fillShippingForm(select: HTMLSelectElement) {
+    let option: HTMLOptionElement = <HTMLOptionElement><any>$(select).find(":selected");
     $("#addressEntry #checkoutAddressStreetAddress").attr("value", $(option).attr("nile-shipping-street1"));
     $("#addressEntry label[for=checkoutAddressStreetAddress]").addClass("active");
     let street2 = $(option).attr("nile-shipping-street2");
@@ -97,8 +147,8 @@ function fillShippingForm(select) {
     $("#addressEntry #checkoutAddressState").val($(option).attr("nile-shipping-state"));
     $("#addressEntry #checkoutAddressCountry").val($(option).attr("nile-shipping-country"));
 }
-function fillPMForm(select) {
-    let option = $(select).find(":selected");
+function fillPMForm(select: HTMLSelectElement) {
+    let option: HTMLOptionElement = <HTMLOptionElement><any>$(select).find(":selected");
     /****** CARD INFORMATION ******/
     $("#paymentMethodEntry #checkoutCardHolderFirstName").attr("value", $(option).attr("nile-card-fname"));
     $("#paymentMethodEntry label[for=checkoutCardHolderFirstName]").addClass("active");
@@ -121,5 +171,31 @@ function fillPMForm(select) {
     $("#paymentMethodEntry #checkoutBillingAddressState").val($(option).attr("nile-billing-state"));
     $("#paymentMethodEntry #checkoutBillingAddressCountry").val($(option).attr("nile-billing-country"));
 }
-$("#checkoutForm").on("submit", function () {
+
+function proceedCheckoutSubmit() {
+    let shipOpt: HTMLOptionElement = <HTMLOptionElement><any>$("#shippingAddressSelect").find(":selected");
+    let payOpt: HTMLOptionElement = <HTMLOptionElement><any>$("#paymentMethodSelect").find(":selected");
+
+    let shipPayload = {}, paymentPayload = {};
+
+    if (shipRad.is(":checked")) {
+        shipPayload["SHIPPING_IDENT"] = $(shipOpt).attr("nile-shipping-ident");
+    } else if (entShipRad.is(":checked")) {
+        shipPayload = serializedToObject(newAddrEntry.find("input, select"));
+    }
+    if (pmRad.is(":checked")) {
+        paymentPayload["PAYMENT_IDENT"] = $(payOpt).attr("nile-pm-ident");
+    } else if (entPMRad.is(":checked")) {
+        paymentPayload = serializedToObject(newPMEntry.find("input, select"));
+    }
+    replaceBtn(CHECKOUT_BTN);
+    let final: Object = $.extend(shipPayload, paymentPayload);
+    console.log(final);
+    post(FORM.action, "POST", final);
+}
+
+$(CHECKOUT_BTN).on("click", function () {
+    proceedCheckoutSubmit();
 });
+
+
