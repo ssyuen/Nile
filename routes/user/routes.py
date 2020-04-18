@@ -71,70 +71,167 @@ def checkout():
     conn = mysql.connect()
     cursor = conn.cursor()
 
+    if request.method == 'POST':
+        '''
+        POST-REQUIREMENTS
 
-    total_quantity = 0
+            # 1: User is not able to go back to the checkout area
 
-    # BOOKS FROM SHOPPING CART
-    book_payload = {}
-    for isbn, quantity in session['shopping_cart'].items():
-        query = """SELECT nile_cover_ID, title, CONCAT(authorFirstName, ' ', authorLastName) AS author_name, price FROM book WHERE ISBN = %s"""
-        cursor.execute(query, (isbn))
-        results = cursor.fetchall()[0]
-        nile_cover_ID = results[0]
-        title = results[1]
-        author_name = results[2]
-        price = results[3]
-        total_quantity += quantity
-        book_payload[isbn] = {'nile_cover_id': nile_cover_ID, 'title': title,
-                              'author_name': author_name, 'price':price,'total_price': price*quantity, 'quantity': quantity}
+        POSSIBLE CASES
 
-    
-    # SHIPPING ADDRESSES FROM DB
-    shipping_payload = {}
-    shipping_query = '''SELECT * FROM address JOIN user_address ON  user_address.addressID_ua_FK = address.id WHERE addressTypeID_address_FK=1 AND user_address.userID_ua_FK=(SELECT id FROM user WHERE email = %s)'''
-    cursor.execute(shipping_query, (session['email']))
-    results = cursor.fetchall()
-    for shipping_address in results:
-        shipping_payload[shipping_address[0]] = {
-            'street1': shipping_address[1],
-            'street2': shipping_address[2],
-            'city': shipping_address[3],
-            'zip': shipping_address[4],
-            'state': shipping_address[5],
-            'country': shipping_address[6]
-        }
+            # 1: User enters a new shipping address, then insert into address table
+            # 2: User enters a new payment method, then new billing address must be inserted into address table first, then new payment method into payment_method table
+            # 3: User enters a new shipping address and chooses to remember (save) new address, then insert into address table, then insert into user_address table
+            # 4: User enters a new payment method and chooses to remember (save) new payment method, then insert into address table, then payment_method table, then paymentmethod_user table
+            # 5: User uses a saved address, then insert the address id into the order table
+            # 6: User uses a saved payment_method, then insert the payment_method id into the order table
 
-    # BILLING ADDRESSES FROM DB
-    payment_payload = {}
+        AVAILABLE FLAGS
 
-    payment_query = '''
-    SELECT pm.id, street1, street2, city, zip, state, country, firstName, lastName, cardNumber, cardType, expirationDate
-    FROM user_paymentmethod upm
-    JOIN payment_method pm ON upm.paymentID_pm_FK = pm.id
-    JOIN address a ON pm.billingAddress_addr_FK = a.id
-    WHERE upm.userID_pm_FK = (SELECT id FROM user WHERE email = %s)'''
+            SHIPPING_IDENT --> SAVED ADDRESS
+            PAYMENT_IDENT --> SAVED PAYMENT METHOD
+            REMEMBER_SHIPPING --> INSERT NEW SHIPPING METHOD INTO USER_ADDRESS
+            REMEMBER_BILLING --> INSERT NEW PAYMENT METHOD INTO USER_PAYMENTMETHOD
 
-    cursor.execute(payment_query, (session['email']))
-    results = cursor.fetchall()
-    for i in results:
-        payment_payload[i[0]] = {
-            'street1': i[1],
-            'street2': i[2],
-            'city': i[3],
-            'zip': i[4],
-            'state': i[5],
-            'country': i[6],
-            'card_fname': i[7].upper(),
-            'card_lname': i[8].upper(),
-            'card_number': FERNET.decrypt(
-                i[9].encode('utf-8')).decode('utf-8')[-4:],
-            'card_type': i[10],
-            'card_expiry': str(i[11].year) + '-' + str(i[11].month).zfill(2)
-        }
-    print(f'billing payload --> {payment_payload}')
+        NEW SHIPPING FORM NAMES:
 
-    return render_template('checkout.html', book_payload=book_payload, shipping_payload=shipping_payload,
-                           billing_payload=payment_payload,total_quantity=total_quantity)
+            addressStreetAddress
+            addressApartmentOrSuite
+            addressZip
+            addressCity
+            addressState
+            addressCountry
+
+        NEW PAYMENT FORM NAMES:
+
+            checkoutCardHolderFirstName
+            checkoutCardHolderLastName
+            ccn
+            ccexp
+            billingStreetAddress
+            billingApartmentOrSuite
+            billingAddressZip
+            billingAddressCity
+            billingAddressCountry
+        '''
+        # STEP 1: RETRIEVE FORM VALUES
+        print(request.form)
+
+        # USER CHOOSES SAVED OPTIONS
+        SHIPPING_IDENT = request.form.get('SHIPPING_IDENT')
+        PAYMENT_IDENT = request.form.get('PAYMENT_IDENT')
+
+        # USER CHOOSES NEW SHIPPING
+        addressStreetAddress = request.form.get('addressStreetAddress')
+        addressApartmentOrSuite = request.form.get('addressApartmentOrSuite')
+        addressZip = request.form.get('addressZip')
+        addressCity = request.form.get('addressCity')
+        addressState = request.form.get('addressState')
+        addressCountry = request.form.get('addressCountry')
+
+        shipping_payload = (addressStreetAddress,addressApartmentOrSuite,addressZip,addressCity,addressState,addressCountry,str(1))
+
+        # USER CHOOSES NEW PAYMENT
+        checkoutCardHolderFirstName = request.form.get('checkoutCardHolderFirstName')
+        checkoutCardHolderLastName = request.form.get('checkoutCardHolderLastName')
+        ccn = request.form.get('ccn')
+        ccexp = request.form.get('ccexp')
+        billingStreetAddress = request.form.get('billingStreetAddres')
+        billingApartmentOrSuite = request.form.get('billingApartmentOrSuite')
+        billingAddressZip = request.form.get('billingAddressZip')
+        billingAddressCity = request.form.get('billingAddressCity')
+        billingAddressCountry = request.form.get('billingAddressCountry')
+        
+        # PAYMENT PAYLOAD CREATED AFTER BILLING_PAYLOAD HAS BEEN INSERTED
+        billing_payload = (billingStreetAddress,billingApartmentOrSuite,billingAddressZip,billingAddressCity,billingAddressCountry,str(2))
+
+        # NEW SHIPPING AND PAYMENT METHODS
+        if SHIPPING_IDENT and PAYMENT_IDENT not in request.form:
+            pass
+
+        # SAVED SHIPPING ADDRESS, NEW PAYMENT METHOD
+        elif SHIPPING_IDENT in request.form:
+            pass
+        
+        # SAVED PAYMENT METHOD, NEW SHIPPING ADDRESS
+        elif PAYMENT_IDENT in request.form:
+            pass
+
+        # USING BOTH SAVED SHIPPING AND PAYMENT
+        else:
+            pass
+        # STEP 2: INSERT INTO TABLES ACCORDING TO CASE ENDING WITH INSERTING INTO ORDER
+
+        # STEP 3: INSERT INTO order_bod TABLE
+
+        # STEP 4: INSERT INTO order_bod TABLE (associates an order with the appropriate book_orderdetail)
+
+        # STEP 5: AFTER SUCCESSFUL CHECKOUT, DELETE FROM SHOPPINGCART TABLE AND REDIRECT TO CHECKOUT CONFIRMATION PAGE/ROUTE
+
+    elif request.method == 'GET':
+        total_quantity = 0
+
+        # BOOKS FROM SHOPPING CART
+        book_payload = {}
+        for isbn, quantity in session['shopping_cart'].items():
+            query = """SELECT nile_cover_ID, title, CONCAT(authorFirstName, ' ', authorLastName) AS author_name, price FROM book WHERE ISBN = %s"""
+            cursor.execute(query, (isbn))
+            results = cursor.fetchall()[0]
+            nile_cover_ID = results[0]
+            title = results[1]
+            author_name = results[2]
+            price = results[3]
+            total_quantity += quantity
+            book_payload[isbn] = {'nile_cover_id': nile_cover_ID, 'title': title,
+                                  'author_name': author_name, 'price': price, 'total_price': price*quantity, 'quantity': quantity}
+
+        # SHIPPING ADDRESSES FROM DB
+        shipping_payload = {}
+        shipping_query = '''SELECT * FROM address JOIN user_address ON  user_address.addressID_ua_FK = address.id WHERE addressTypeID_address_FK=1 AND user_address.userID_ua_FK=(SELECT id FROM user WHERE email = %s)'''
+        cursor.execute(shipping_query, (session['email']))
+        results = cursor.fetchall()
+        for shipping_address in results:
+            shipping_payload[shipping_address[0]] = {
+                'street1': shipping_address[1],
+                'street2': shipping_address[2],
+                'city': shipping_address[3],
+                'zip': shipping_address[4],
+                'state': shipping_address[5],
+                'country': shipping_address[6]
+            }
+
+        # BILLING ADDRESSES FROM DB
+        payment_payload = {}
+
+        payment_query = '''
+        SELECT pm.id, street1, street2, city, zip, state, country, firstName, lastName, cardNumber, cardType, expirationDate
+        FROM user_paymentmethod upm
+        JOIN payment_method pm ON upm.paymentID_pm_FK = pm.id
+        JOIN address a ON pm.billingAddress_addr_FK = a.id
+        WHERE upm.userID_pm_FK = (SELECT id FROM user WHERE email = %s)'''
+
+        cursor.execute(payment_query, (session['email']))
+        results = cursor.fetchall()
+        for i in results:
+            payment_payload[i[0]] = {
+                'street1': i[1],
+                'street2': i[2],
+                'city': i[3],
+                'zip': i[4],
+                'state': i[5],
+                'country': i[6],
+                'card_fname': i[7].upper(),
+                'card_lname': i[8].upper(),
+                'card_number': FERNET.decrypt(
+                    i[9].encode('utf-8')).decode('utf-8')[-4:],
+                'card_type': i[10],
+                'card_expiry': str(i[11].year) + '-' + str(i[11].month).zfill(2)
+            }
+        print(f'billing payload --> {payment_payload}')
+
+        return render_template('checkout.html', book_payload=book_payload, shipping_payload=shipping_payload,
+                               billing_payload=payment_payload, total_quantity=total_quantity)
+
 
 @user_bp.route('/base_profile/', methods=['GET'])
 @login_required
