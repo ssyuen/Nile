@@ -1,4 +1,4 @@
-import { RegistrationInputValidator, PURPOSE } from "../regValidation.js";
+import { RegistrationInputValidator, PURPOSE } from "../../../common/js/registration/regValidation.js";
 const FORM = document.getElementById("changePassForm");
 const PASS_CURR = document.getElementById("currentPassword");
 const PASS_NEW = document.getElementById("newPassword");

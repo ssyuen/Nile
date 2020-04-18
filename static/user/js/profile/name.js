@@ -1,4 +1,4 @@
-import { RegistrationInputValidator, PURPOSE } from "../regValidation.js";
+import { RegistrationInputValidator, PURPOSE } from "../../../common/js/registration/regValidation.js";
 import { isDirty } from "./ShippingPaymentCommon.js";
 const FORM = document.getElementById("changeNameForm");
 const F_NAME = document.getElementById("inputFirstname");

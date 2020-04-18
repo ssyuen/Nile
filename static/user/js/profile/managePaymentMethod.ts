@@ -5,7 +5,7 @@ import {
     PostFlags, submit, submitRemoval, submitUpdate
 } from "./ShippingPaymentCommon.js";
 
-import {CreditCard, RegistrationInputValidator, PURPOSE} from "../regValidation.js";
+import {CreditCard, RegistrationInputValidator, PURPOSE} from "../../../common/js/registration/regValidation.js";
 
 $(".remove-pm-btn").click(function (event) {
 

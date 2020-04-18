@@ -1,6 +1,6 @@
 import {
     RegistrationInputValidator, PURPOSE
-} from "../regValidation.js";
+} from "../../../common/js/registration/regValidation.js";
 import {isDirty} from "./ShippingPaymentCommon.js";
 
 const FORM: HTMLFormElement = document.getElementById("changeNameForm") as HTMLFormElement;

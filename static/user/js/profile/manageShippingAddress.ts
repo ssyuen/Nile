@@ -4,7 +4,7 @@ import {
     getClosestForm, isDirty,
     PostFlags, promptConfirm, submit, submitRemoval, submitUpdate
 } from "./ShippingPaymentCommon.js";
-import {RegistrationInputValidator, PURPOSE} from "../regValidation.js";
+import {RegistrationInputValidator, PURPOSE} from "../../../common/js/registration/regValidation.js";
 
 $(".remove-addr-btn").click(function (event) {
     let form = getClosestForm(event);
