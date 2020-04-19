@@ -356,6 +356,8 @@ def email_confirmation(verify_token):
     conn.commit()
     conn.close()
 
+    session.pop('register_token')
+
     return render_template('confirmation/email_conf.html')
 
 
@@ -431,7 +433,6 @@ def reset_pass(verify_token):
         confirmNewPassword = bcrypt.hashpw(
             confirmNewPassword.encode('utf-8'), bcrypt.gensalt())
 
-        print(confirmNewPassword)
         # update password in user
         query = 'UPDATE user SET pass = %s WHERE user.id = %s'
         cursor.execute(query, (confirmNewPassword, user_id))
@@ -441,8 +442,9 @@ def reset_pass(verify_token):
         query = 'DELETE FROM user_token WHERE userID_utoken_FK = %s AND token = %s'
         cursor.execute(query, (user_id, verification_token))
         conn.commit()
-
         conn.close()
+
+        session.pop('forgot_token')
 
         return redirect(url_for('common_bp.login'))
 
