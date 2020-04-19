@@ -11,28 +11,10 @@ from key import FERNET
 from datetime import datetime
 
 from routes.common.util import remember_me, cart_session, login_required
-from routes.user.util import user_only
+from routes.user.util import *
 
 user_bp = Blueprint('user_bp', __name__,
                     template_folder='templates', static_folder='static')
-
-
-SALES_TAX  = {'GA':.04, 'CA':.0725}
-
-# MULTIPLY THIS BY THE TOTAL AMOUNT OF BOOKS
-SHIPPING_PRICE = 4.00
-def calculate_shipping(quantity):
-    return SHIPPING_PRICE + .5 * quantity
-
-
-def send_change_conf_email(recipient, recipient_fname, sender='rootatnilebookstore@gmail.com'):
-    current_time = datetime.now()
-    message_body = 'Hi ' + recipient_fname + \
-                   f',\n\nThere have been changes made to your profile on {current_time.month}/{current_time.day}/{current_time.year}, {current_time.hour}:{current_time.minute}:{current_time.second}. If this was not you, please go and change your password.\n\nRegards, Nile Bookstore Management'
-    msg = Message(subject='Nile Profile Change', recipients=[
-        recipient, 'rootatnilebookstore@gmail.com'], sender='rootatnilebookstore@gmail.com', body=message_body)
-    mail.send(msg)
-
 
 @user_bp.route('/checkout/', methods=['POST', 'GET'])
 @login_required(session)

@@ -4,6 +4,12 @@ from datetime import datetime
 from flask_mail import Message
 from server import mail
 
+
+SALES_TAX  = {'GA':.04, 'CA':.0725}
+
+# MULTIPLY THIS BY THE TOTAL AMOUNT OF BOOKS
+SHIPPING_PRICE = 4.00
+
 def user_only(session):
     def dec(f):
         @wraps(f)
@@ -25,3 +31,6 @@ def send_change_conf_email(recipient, recipient_fname, sender='rootatnilebooksto
     msg = Message(subject='Nile Profile Change', recipients=[
         recipient, 'rootatnilebookstore@gmail.com'], sender='rootatnilebookstore@gmail.com', body=message_body)
     mail.send(msg)
+
+def calculate_shipping(quantity):
+    return SHIPPING_PRICE + .5 * quantity
