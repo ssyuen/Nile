@@ -40,6 +40,15 @@
                             your password.</i>
                         </small>
                     </div>
+                    {% with valid_email = get_flashed_messages() %}
+                        {% if valid_email %}
+                        <p class="flashes text-center" style="color: red;">
+                            {% for msg in valid_email %}
+                                {{ msg }}
+                            {% endfor %}
+                        </p>
+                        {% endif %}
+                    {% endwith %}
                     <button type="submit" class="btn blue-gradient btn-lg btn-block" id="submitBtn">Submit</button>
                 </form>
 
