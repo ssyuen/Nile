@@ -29,20 +29,37 @@ $(() => {
         setTimeout(updateTotal, DURATION_M_SEC);
     }
 });
-$(".quantity").on("input", function (evt) {
-    let check = parseInt($(evt.target).val());
+
+function validate(evt) {
+    let sel = evt.target;
+    let check = parseInt($(sel).val());
     if (check <= 0 || check > 80 || isNaN(check) || check === null || check === undefined) {
         evt.preventDefault();
         return false;
     }
-    let x = (evt.target);
+    return true;
+}
+
+$(".quantity").on("focusout", function (evt) {
+    let sel = evt.target;
+    if (!validate(evt)) {
+        $(sel).val(1);
+        updateIndividual(sel);
+    }
+});
+$(".quantity").on("input", function (evt) {
+    let sel = evt.target;
+    if (!validate(evt)) {
+        return false;
+    }
+    let x = (sel);
     updateIndividual(x);
     setTimeout(updateTotal, DURATION_M_SEC);
-    let isbn = $(evt.target).attr("nile-isbn");
+    let isbn = $(sel).attr("nile-isbn");
     $.ajax({
         url: '/shoppingcart/',
         type: 'POST',
-        data: {'bookISBN': isbn, 'newQuantity': $(evt.target).val()}
+        data: {'bookISBN': isbn, 'newQuantity': $(sel).val()}
     });
 });
 
@@ -66,8 +83,7 @@ function updateIndividual(inp) {
         };
         if (quantity === 1) {
             SESSION[isbn] = new CountUp(priceElem, origPrice, options);
-        }
-        else {
+        } else {
             SESSION[isbn] = new CountUp(priceElem, origPrice * quantity, options);
         }
         startAnimation(SESSION[isbn]);
@@ -86,7 +102,6 @@ function calcTotal() {
     }
     return total;
 }
-
 function startAnimation(ctr, callback) {
     if (!ctr.error) {
         ctr.start(callback);
@@ -94,11 +109,9 @@ function startAnimation(ctr, callback) {
         console.error(ctr.error);
     }
 }
-
 function getPrice(inputElement) {
     return $(inputElement).parent().parent().next().find('div.quant-price')[0];
 }
-
 $('.remove-btn').on('click', function () {
     $(this).closest('tr').remove();
     setTimeout(updateTotal, DURATION_M_SEC);
@@ -126,7 +139,6 @@ $(".minus").on("click", function (evt) {
         $(closestQuant).attr("value", increment).trigger("input");
     }
 });
-
 function isCartEmpty() {
     if ($('.table-shopping-cart > tbody > tr').length === 0 ||
         $('.dataTables_empty').length) {
