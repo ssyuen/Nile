@@ -85,12 +85,12 @@ def remember_me(f):
     return wrapped_func
 
 
-def get_genres(cursor):
+def get_genres(cursor,close=False):
     cursor.execute('SELECT genre FROM genre')
     return [genre[0] for genre in cursor.fetchall()]
 
 
-def get_genres_count(cursor):
+def get_genres_count(cursor,close=False):
     cursor.execute(
         'SELECT (SELECT genre FROM genre WHERE id=genreID_book_FK), COUNT(*) AS numBooks FROM book GROUP BY genreID_book_FK')
     payload = {}
@@ -100,13 +100,13 @@ def get_genres_count(cursor):
     return payload
 
 
-def get_bindings(cursor):
+def get_bindings(cursor,close=False):
     cursor.execute('SELECT binding FROM binding')
     results = cursor.fetchall()
     return [binding[0] for binding in results]
 
 
-def get_bindings_count(cursor):
+def get_bindings_count(cursor,close):
     cursor.execute(
         'SELECT (SELECT binding FROM binding WHERE id=bindingID_book_FK), COUNT(*) AS numBooks FROM book GROUP BY bindingID_book_FK')
     payload = {}
@@ -318,6 +318,32 @@ def get_cart(cursor):
 
     # session['shopping_cart'] = isbns
 
+def insert_address(cursor,payload):
+    cursor.execute('INSERT INTO address (street1,street2,city,zip,state,country,addressTypeID_address_FK) VALUES (%s, %s, %s, %s, %s, %s, %s)',payload)
+
+def get_address_id(cursor):
+    cursor.execute('SELECT id FROM address ORDER BY id DESC LIMIT 1')
+    return cursor.fetchall()[0][0]
+
+def insert_user(cursor,payload):
+    cursor.execute('INSERT INTO user (email,statusID_user_FK,pass, firstname, lastname) VALUES (%s, %s, %s, %s, %s)',payload)
+
+def get_user_id(cursor,email):
+    cursor.execute('SELECT id FROM user WHERE email = %s',email)
+    return cursor.fetchall()[0][0]
+
+def insert_useraddress(cursor,payload):
+    cursor.execute('INSERT INTO user_address (userID_ua_FK, addressID_ua_FK) VALUES (%s, %s)')
+
+def insert_userpayment(cursor,payload):
+    cursor.execute('INSERT INTO user_paymentmethod (userID_pm_FK, paymentID_pm_FK) VALUES (%s, %s)')
+
+def insert_payment(cursor,payload):
+    cursor.execute('INSERT INTO payment_method (firstname,lastname,cardNumber, cardType, expirationDate, billingAddress_addr_FK) VALUES (%s,%s,%s, %s, %s, %s)')
+
+def get_payment_id(cursor):
+    cursor.execute('SELECT id FROM payment_method ORDER BY id DESC LIMIT 1')
+    return cursor.fetchall()[0][0]
 
 @common_bp.route('/register/', methods=['POST', 'GET'])
 @cart_session
@@ -382,24 +408,11 @@ def register():
         conn = mysql.connect()
         cursor = conn.cursor()
 
-        '''
-        REGISTRATION CONDITIONS:
-        # 1: NO SHIPPING OR PAYMENT METHOD
-        # 2: SHIPPING ADDRESS PROVIDED
-        # 3: PAYMENT METHOD PROVIDED
-        # 4: BOTH SHIPPING AND PAYMENT PROVIDED
-        '''
-
         # INSERTING WITH NO SHIPPING OR PAYMENT METHOD
         if None in shipping_payload and None in billing_payload:
-            query = 'INSERT INTO user (email,statusID_user_FK,pass, firstname, lastname) VALUES (%s, %s, %s, %s, %s)'
             try:
-                cursor.execute(query, user_payload)
+                insert_user(cursor,user_payload)
                 conn.commit()
-
-                user_id_query = 'SELECT id FROM user ORDER BY id DESC LIMIT 1'
-                cursor.execute(user_id_query)
-                user_id = cursor.fetchall()[0][0]
                 conn.close()
             except(pymysql.err.IntegrityError):
                 flash('An account with this email already exists.')
@@ -408,106 +421,49 @@ def register():
         else:  # insert with shipping and billing address
             # INSERTING SHIPPING ADDRESS AND PAYMENT INFO
             if None not in shipping_payload and None not in billing_payload:
-                query = 'INSERT INTO `address`(street1, street2, city, zip, state, country, addressTypeID_address_FK) VALUES(%s, %s, %s, %s, %s, %s, %s)'
-                cursor.execute(query, shipping_payload)
+                insert_address(cursor,shipping_payload)
+                shipping_id = get_address_id(cursor)
 
-                # EXTRACTING SHIPPING ADDRESS
-                shipping_id_query = 'SELECT id FROM address ORDER BY id DESC LIMIT 1'
-                cursor.execute(shipping_id_query)
-                shipping_id = cursor.fetchall()[0][0]
+                insert_address(cursor,billing_payload)
+                billing_id = get_address_id(cursor)
 
-                # INSERTING BILLING ADDRESS
-                query = 'INSERT INTO address (street1,street2,city,zip,state,country,addressTypeID_address_FK) VALUES (%s, %s, %s, %s, %s, %s, %s)'
-                cursor.execute(query, billing_payload)
-
-                # EXTRACTING BILLING ADDRESS ID
-                billing_id_query = 'SELECT id FROM address ORDER BY id DESC LIMIT 1'
-                cursor.execute(billing_id_query)
-                billing_id = cursor.fetchall()[0][0]
-
-                # INSERTING USER
-                query = 'INSERT INTO user (email, statusID_user_FK,pass, firstname, lastname) VALUES (%s, %s, %s, %s, %s)'
-                cursor.execute(query, user_payload)
-
-                # EXTRACTING USER ID
-                user_id_query = 'SELECT id FROM user ORDER BY id DESC LIMIT 1'
-                cursor.execute(user_id_query)
-                user_id = cursor.fetchall()[0][0]
+                insert_user(cursor,user_payload)
+                user_id = get_user_id(cursor)
 
                 # INSERTING USER ID AND SHIPPING ADDRESS ID INTO user_address association table
-                query = 'INSERT INTO user_address (userID_ua_FK, addressID_ua_FK) VALUES (%s, %s)'
-                cursor.execute(query, (user_id, shipping_id))
+                insert_useraddress(cursor,(user_id,shipping_id))
 
                 # payment_payload depends on user and billing FKs
                 payment_payload = (card_first_name, card_last_name, ccn, ccn_provider, ccexp, billing_id)
-                query = 'INSERT INTO payment_method (firstname,lastname,cardNumber, cardType, expirationDate, billingAddress_addr_FK) VALUES (%s,%s,%s, %s, %s, %s)'
-                cursor.execute(query, payment_payload)
-
-                # EXTRACTING PAYMENT METHOD ID
-                payment_id_query = 'SELECT id FROM payment_method ORDER BY id DESC LIMIT 1'
-                cursor.execute(payment_id_query)
-                payment_id = cursor.fetchall()[0][0]
-
-                # INSERTING USER ID AND PAYMENT METHOD ID INTO user_paymentmethod association table
-                query = 'INSERT INTO user_paymentmethod (userID_pm_FK, paymentID_pm_FK) VALUES (%s, %s)'
-                cursor.execute(query, (user_id, payment_id))
+                insert_payment(cursor,payment_payload)
+                payment_id = get_payment_id(cursor)
+                insert_userpayment(cursor,(user_id, payment_id))
 
             # INSERTING BILLING ADDRESS (PAYMENT INFO ONLY)
             elif None in shipping_payload and None not in billing_payload:
-                query = 'INSERT INTO address (street1,street2,city,zip,state,country,addressTypeID_address_FK) VALUES (%s, %s, %s, %s, %s, %s, %s)'
-                cursor.execute(query, billing_payload)
+                query = insert_address(cursor,billing_payload)
+                billing_id_query = get_address_id(cursor)
 
-                # EXTRACTING BILLING ADDRESS ID
-                billing_id_query = 'SELECT id FROM address ORDER BY id DESC LIMIT 1'
-                cursor.execute(billing_id_query)
-                billing_id = cursor.fetchall()[0][0]
-
-                # INSERTING USER
-                query = 'INSERT INTO user (email, statusID_user_FK,pass, firstname, lastname) VALUES (%s, %s, %s, %s, %s)'
-                cursor.execute(query, user_payload)
-
-                # EXTRACTING USER ID
-                user_id_query = 'SELECT id FROM user ORDER BY id DESC LIMIT 1'
-                cursor.execute(user_id_query)
-                user_id = cursor.fetchall()[0][0]
+                insert_user(cursor,user_payload)
+                user_id = get_user_id(cursor)
 
                 # payment_payload depends on user and billing FKs
                 payment_payload = (card_first_name, card_last_name, ccn, ccn_provider, ccexp,
                                    user_id, billing_id)
-                query = 'INSERT INTO payment_method (firstname,lastname,cardNumber, cardType, expirationDate, userID_payment_FK, billingAddress_addr_FK) VALUES (%s,%s,%s, %s, %s, %s, %s)'
-                cursor.execute(query, payment_payload)
-
-                # EXTRACTING PAYMENT METHOD ID
-                payment_id_query = 'SELECT id FROM payment_method ORDER BY id DESC LIMIT 1'
-                cursor.execute(payment_id_query)
-                payment_id = cursor.fetchall()[0][0]
-
-                # INSERTING USER ID AND PAYMENT METHOD ID INTO user_paymentmethod association table
-                query = 'INSERT INTO user_paymentmethod (userID_pm_FK, paymentID_pm_FK) VALUES (%s, %s)'
-                cursor.execute(query, (user_id, payment_id))
+                insert_payment(cursor,payment_payload)
+                payment_id = get_payment_id(cursor)
+                insert_userpayment(cursor,(user_id, payment_id))
 
             # INSERTING SHIPPING ADDRESS (SHIPPING ADDRESS ONLY)
             elif None in billing_payload and None not in shipping_payload:
-                query = 'INSERT INTO `address`(street1, street2, city, zip, state, country, addressTypeID_address_FK) VALUES(%s, %s, %s, %s, %s, %s, %s)'
-                cursor.execute(query, shipping_payload)
+                query = insert_address(cursor,shipping_payload)
+                shipping_id = get_address_id(cursor)
 
-                # EXTRACTING SHIPPING ADDRESS
-                shipping_id_query = 'SELECT id FROM address ORDER BY id DESC LIMIT 1'
-                cursor.execute(shipping_id_query)
-                shipping_id = cursor.fetchall()[0][0]
-
-                # INSERTING USER
-                query = 'INSERT INTO user (email, statusID_user_FK,pass, firstname, lastname) VALUES (%s, %s, %s, %s, %s)'
-                cursor.execute(query, user_payload)
-
-                # EXTRACTING USER ID
-                user_id_query = 'SELECT id FROM user ORDER BY id DESC LIMIT 1'
-                cursor.execute(user_id_query)
-                user_id = cursor.fetchall()[0][0]
+                insert_user(cursor,user_payload)
+                user_id = get_user_id(cursor)
 
                 # INSERTING USER ID AND SHIPPING ADDRESS ID INTO user_address association table
-                query = 'INSERT INTO user_address (userID_ua_FK, addressID_ua_FK) VALUES (%s, %s)'
-                cursor.execute(query, (user_id, shipping_id))
+                insert_useraddress(cursor,(user_id,shipping_id))
 
             conn.commit()
             conn.close()
@@ -759,7 +715,6 @@ def product(title=None, price=None, author_name=None, ISBN=None, summary=None, p
 
         # IF BOOK IN CART, REMOVE
         if book_isbn in session['shopping_cart']:
-            # old_cart.remove(book_isbn)
             old_cart.pop(book_isbn)
 
             bod_id_query = '''SELECT bod_sc_FK FROM shoppingcart WHERE userID_sc_FK = (SELECT id FROM user WHERE email = %s) AND bod_sc_FK = (SELECT id FROM book_orderdetail WHERE ISBN_bod_FK = %s) '''
@@ -777,7 +732,6 @@ def product(title=None, price=None, author_name=None, ISBN=None, summary=None, p
 
         # IF BOOK NOT IN CART, ADD
         else:
-            # old_cart.append(book_isbn)
             old_cart[book_isbn] = 1
 
             query = '''INSERT INTO book_orderdetail (userID_bod_FK,ISBN_bod_FK,quantity) VALUES ((SELECT id FROM user WHERE email = %s), %s, %s)'''
@@ -799,12 +753,10 @@ def product(title=None, price=None, author_name=None, ISBN=None, summary=None, p
 
         # REMOVING FROM CART
         if book_isbn in session['shopping_cart']:
-            # old_cart.remove(book_isbn)
             old_cart.pop(book_isbn)
 
         # ADDING TO CART
         else:
-            # old_cart.append(book_isbn)
             old_cart[book_isbn] = 1
 
         session['shopping_cart'] = old_cart
@@ -827,8 +779,6 @@ def save_cart(mysql, cart):
         cursor.execute(query, (session['email'], book_isbn, str(quantity)))
         conn.commit()
 
-        print(f'{book_isbn} has been inserted.')
-
         query = '''INSERT IGNORE INTO shoppingcart (userID_sc_FK, bod_sc_FK) VALUES ((SELECT id FROM user WHERE email = %s), (SELECT id FROM book_orderdetail ORDER BY id DESC LIMIT 1))'''
         cursor.execute(query, (session['email']))
         conn.commit()
@@ -849,14 +799,9 @@ def load_cart(mysql):
         book_query = '''SELECT ISBN_bod_FK,quantity FROM book_orderdetail WHERE id=%s'''
         cursor.execute(book_query, (bod_id))
         results = cursor.fetchall()
-        print(f'results:{results}')
         book = results[0][0]
         quantity = results[0][1]
-        print(f'book: {book}')
-        print(f'quantity: {quantity}')
-        # book_payload.append(book)
         book_payload[book] = int(quantity)
-    print(f'current books: {book_payload}')
     if len(book_payload) == 0:
         session['shopping_cart'] = {}
     else:

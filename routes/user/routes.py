@@ -128,6 +128,11 @@ def checkout():
         # USER CHOOSES SAVED OPTIONS
         SHIPPING_IDENT = request.form.get('SHIPPING_IDENT')
         PAYMENT_IDENT = request.form.get('PAYMENT_IDENT')
+        
+        # USER CHOOSES TO SAVE NEW SHIPPING/PAYMENT
+        REMEMBER_SHIPPING = request.form.get('REMEMBER_SHIPPING')
+        REMEMBER_BILLING = request.form.get('REMEMBER_BILLING')
+        
 
         # USER CHOOSES NEW SHIPPING
         addressStreetAddress = request.form.get('addressStreetAddress')
@@ -143,11 +148,13 @@ def checkout():
         checkoutCardHolderFirstName = request.form.get('checkoutCardHolderFirstName')
         checkoutCardHolderLastName = request.form.get('checkoutCardHolderLastName')
         ccn = request.form.get('ccn')
+        ct = request.form.get("CCNProvider")
         ccexp = request.form.get('ccexp')
         billingStreetAddress = request.form.get('billingStreetAddres')
         billingApartmentOrSuite = request.form.get('billingApartmentOrSuite')
         billingAddressZip = request.form.get('billingAddressZip')
         billingAddressCity = request.form.get('billingAddressCity')
+        billingAddressState = request.form.get('billingAddressState')
         billingAddressCountry = request.form.get('billingAddressCountry')
         
         # PAYMENT PAYLOAD CREATED AFTER BILLING_PAYLOAD HAS BEEN INSERTED
@@ -155,6 +162,19 @@ def checkout():
 
         # NEW SHIPPING AND PAYMENT METHODS
         if SHIPPING_IDENT and PAYMENT_IDENT not in request.form:
+            shipping_query = '''INSERT INTO address (street1,street2,zip,city,state,country,addressTypeID_address_FK) VALUES (%s,%s,%s,%s,%s,%s,%s)'''
+            if REMEMBER_SHIPPING is not None:
+                cursor.execute(shipping_query,shipping_payload)
+                user_address_query = '''INSERT INTO user_address (userID_ua_FK,addressID_ua_FK) VALUES ((SELECT id FROM user WHERE email = %s), %s)'''
+            
+            billing_query = '''INSERT INTO address (street1, street2, zip, city, state,couuntry, addressTypeID_address_FK) VALUES (%s,%s,%s,%s,%s,%s,%s) '''
+            if REMEMBER_BILLING is not None:
+                cursor.execute(billing_query,billing_payload)
+            
+            payment_payload = (checkoutCardHolderFirstName,checkoutCardHolderLastName,ccn,ct,ccexp)
+            payment_query = '''INSERT INTO payment_method (firstname,lastname,cardNumber,cardType,expirationDate,billingAddress_addr_FK) VALUES (%s,%s,%s,%s,%s,%s)'''
+            
+
             pass
 
         # SAVED SHIPPING ADDRESS, NEW PAYMENT METHOD
