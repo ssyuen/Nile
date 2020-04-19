@@ -6,6 +6,8 @@
     REVISIONS:          N/A
  */
 import {CreditCard, RegistrationInputValidator, PURPOSE} from "./regValidation.js";
+import {replaceBtn} from "../utility/util.js";
+
 const FORM = document.getElementById("regForm");
 const F_NAME = document.getElementById("inputFirstName");
 const L_NAME = document.getElementById("inputLastName");
@@ -58,7 +60,7 @@ $(FORM).on("submit", function (e) {
             return false;
         }
     }
-    $("#registerBtn").prop("disabled", true);
+    replaceBtn("#registerBtn");
     if (!addressCheck) {
         $('#addressInfo input').val('');
         $('#addressInfo select').empty();

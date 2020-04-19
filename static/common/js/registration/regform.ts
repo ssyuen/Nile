@@ -10,6 +10,7 @@ import {
     CreditCard,
     RegistrationInputValidator, PURPOSE
 } from "./regValidation.js";
+import {replaceBtn} from "../utility/util.js";
 
 const FORM: HTMLElement = document.getElementById("regForm");
 const F_NAME: HTMLInputElement = document.getElementById("inputFirstName") as HTMLInputElement;
@@ -76,7 +77,7 @@ $(FORM).on("submit", function (e) {
         }
     }
 
-    $("#registerBtn").prop("disabled", true);
+    replaceBtn("#registerBtn");
     if (!addressCheck) {
         $('#addressInfo input').val('');
         $('#addressInfo select').empty();
