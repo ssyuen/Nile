@@ -307,7 +307,7 @@ def register():
         return redirect(url_for('common_bp.register_confirmation', sending_token=secrets.token_urlsafe(256), email=email, user_id=user_id, name=firstName))
 
 
-@common_bp.route('/conf/register_confirmation/<sending_token>++<email>+<user_id>+<name>', methods=['GET'])
+@common_bp.route('/conf/register_confirmation/<sending_token>+<email>+<user_id>+<name>', methods=['GET'])
 @cart_session(session)
 @remember_me(session)
 def register_confirmation(sending_token, email=None, user_id=None, name=None):

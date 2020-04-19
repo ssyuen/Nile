@@ -36,6 +36,11 @@ def get_bindings_count(cursor, close=False):
 
 
 def generate_secure_token(session,purpose):
+    '''
+    session - backend session for an indiviudal user
+
+    purpose - the purpose of the token. if 'checkout', then token is to secure checkout page to ensure after successful checkout, the page cannot be revisited, else 'expire', register_conf/forget password should timeout after a certain amount of time
+    '''
     secure_token = secrets.token_urlsafe(64)
     if purpose is 'checkout':
         session['checkout_token'] = secure_token
@@ -44,6 +49,11 @@ def generate_secure_token(session,purpose):
 
 
 def insert_address(cursor, payload):
+    '''
+    cursor - cursor object from conn
+
+    payload - (street1,street2,city,zip,state,country,addressTypeID_address_FK)
+    '''
     cursor.execute(
         'INSERT INTO address (street1,street2,city,zip,state,country,addressTypeID_address_FK) VALUES (%s, %s, %s, %s, %s, %s, %s)', payload)
 
@@ -54,6 +64,11 @@ def get_address_id(cursor):
 
 
 def insert_user(cursor, payload):
+    '''
+    cursor - cursor object from conn
+
+    payload - (email,statusID_user_FK,pass, firstname, lastname)
+    '''
     cursor.execute(
         'INSERT INTO user (email,statusID_user_FK,pass, firstname, lastname) VALUES (%s, %s, %s, %s, %s)', payload)
 
@@ -63,17 +78,37 @@ def get_user_id(cursor, email):
     return cursor.fetchall()[0][0]
 
 
-def insert_useraddress(cursor, payload):
-    cursor.execute(
-        'INSERT INTO user_address (userID_ua_FK, addressID_ua_FK) VALUES (%s, %s)')
+def insert_useraddress(cursor, payload,email=None):
+    '''
+    cursor - cursor object from conn
+
+    email - user email
+
+    payload - (userID_ua_FK, addressID_ua_FK)
+    '''
+    if email is not None:
+        cursor.execute( 'INSERT INTO user_address (userID_ua_FK, addressID_ua_FK) VALUES ((SELECT id FROM user WHERE email=%s), %s)',(email,payload[0]))
+    else:
+        cursor.execute(
+            'INSERT INTO user_address (userID_ua_FK, addressID_ua_FK) VALUES (%s, %s)',payload)
 
 
 def insert_userpayment(cursor, payload):
+    '''
+    cursor - cursor object from conn
+
+    payload - (userID_pm_FK, paymentID_pm_FK)
+    '''
     cursor.execute(
         'INSERT INTO user_paymentmethod (userID_pm_FK, paymentID_pm_FK) VALUES (%s, %s)')
 
 
 def insert_payment(cursor, payload):
+    '''
+    cursor - cursor object from conn
+
+    payload - (firstname,lastname,cardNumber, cardType, expirationDate, billingAddress_addr_FK)
+    '''
     cursor.execute(
         'INSERT INTO payment_method (firstname,lastname,cardNumber, cardType, expirationDate, billingAddress_addr_FK) VALUES (%s,%s,%s, %s, %s, %s)')
 
@@ -82,12 +117,18 @@ def get_payment_id(cursor):
     cursor.execute('SELECT id FROM payment_method ORDER BY id DESC LIMIT 1')
     return cursor.fetchall()[0][0]
 
+def get_book_orderdetails(cursor,user_id):
+    cursor.execute('SELECT * FROM book_orderdetail WHERE userID_bod_FK=%s',user_id)
+    return cursor.fetchall()
 
 def check_login(session) -> bool:
     if 'logged_in' in session and session['logged_in']:
         return True
     else:
         return False
+
+def get_first_name(cursor,email):
+    cursor.execute('SELECT firstname FROM user WHERE email=%s',email))
 
 
 def save_cart(mysql, session):
@@ -172,20 +213,6 @@ def cart_session(session):
                 session['shopping_cart'] = dict()
                 return f(*args, **kws)
 
-        return wrapped_func
-    return dec
-
-
-def secure_checkout(session):
-    def dec(f):
-        @wraps(f)
-        def wrapped_func(*args, **kws):
-            # UPON SUCCESSFUL CHECKOUT, POP 'checkout_token' FROM SESSION
-            if 'checkout_token' in session:
-                return f(*args, **kws)
-            else:
-                # SHOW ERROR PAGE THAT ONCE YOU SUBMIT AN ORDER YOU ARE NOT ABLE TO GO BACK TO THE CHECKOUT PAGE
-                return redirect(url_for('common_bp.landing_page'))
         return wrapped_func
     return dec
 

@@ -4,11 +4,10 @@ from datetime import datetime
 from flask_mail import Message
 from server import mail
 
-
 SALES_TAX  = {'GA':.04, 'CA':.0725}
 
 # MULTIPLY THIS BY THE TOTAL AMOUNT OF BOOKS
-SHIPPING_PRICE = 4.00
+SHIPPING_PRICE = float("{:.2f}".format(4.00))
 
 def user_only(session):
     def dec(f):
@@ -33,4 +32,52 @@ def send_change_conf_email(recipient, recipient_fname, sender='rootatnilebooksto
     mail.send(msg)
 
 def calculate_shipping(quantity):
-    return SHIPPING_PRICE + .5 * quantity
+    return float("{:.2f}".format(SHIPPING_PRICE + .5 * quantity))
+
+def insert_order(cursor,payload):
+    '''
+    cursor - cursor object from conn
+
+    payload - (userID_order_FK,paymentID_order_FK,total,salesTax,shippingPrice,dateOrdered,promotionID,confirmationNumber,shippingAddrID_order_FK)
+    '''
+    order_query = '''INSERT INTO order (userID_order_FK,paymentID_order_FK,total,salesTax,shippingPrice,dateOrdered,promotionID,confirmationNumber,shippingAddrID_order_FK)
+            VALUES (
+            (SELECT id FROM user WHERE email = %s),
+            %s,
+            %s,
+            %s,
+            %s,
+            %s,
+            %s,
+            %s,
+            %s)
+            '''
+    cursor.execute(order_query,payload)
+
+def get_order_id(cursor):
+    cursor.execute('SELECT id FROM order ORDER BY id DESC LIMIT 1')
+    return cursor.fetchall()[0][0]
+
+def insert_orderbod(cursor,payload):
+    '''
+    cursor - cursor object from conn
+
+    payload - (orderID_obod_FK, bodID_obod_FK)
+    '''
+    cursor.execute('INSERT INTO order_bod (orderID_obod_FK, bodID_obod_FK) VALUES (%s, %s)',payload)
+
+def delete_shopping_cart(cursor,user_id):
+    cursor.execute('DELETE FROM shoppingcart WHERE userID_sc_FK=%s',user_id)
+
+def secure_checkout(session):
+    def dec(f):
+        @wraps(f)
+        def wrapped_func(*args, **kws):
+            # UPON SUCCESSFUL CHECKOUT, POP 'checkout_token' FROM SESSION
+            if 'checkout_token' in session:
+                return f(*args, **kws)
+            else:
+                # SHOW ERROR PAGE THAT ONCE YOU SUBMIT AN ORDER YOU ARE NOT ABLE TO GO BACK TO THE CHECKOUT PAGE
+                return redirect(url_for('common_bp.landing_page'))
+        return wrapped_func
+    return dec

@@ -10,7 +10,7 @@ from server import mysql, mail
 from key import FERNET
 from datetime import datetime
 
-from routes.common.util import remember_me, cart_session, login_required
+from routes.common.util import remember_me, cart_session, login_required,insert_address,insert_payment,insert_useraddress,insert_userpayment,get_address_id,insert_userpayment,get_user_id,get_payment_id,insert_payment,get_book_orderdetails,get_first_name,generate_secure_token
 from routes.user.util import *
 
 user_bp = Blueprint('user_bp', __name__,
@@ -18,6 +18,7 @@ user_bp = Blueprint('user_bp', __name__,
 
 @user_bp.route('/checkout/', methods=['POST', 'GET'])
 @login_required(session)
+@secure_checkout(session)
 @cart_session(session)
 @remember_me(session)
 @user_only(session)
@@ -43,42 +44,6 @@ def checkout():
 
             # 1: User is not able to go back to the checkout area
 
-        POSSIBLE CASES
-
-            # 1: User enters a new shipping address, then insert into address table
-            # 2: User enters a new payment method, then new billing address must be inserted into address table first, then new payment method into payment_method table
-            # 3: User enters a new shipping address and chooses to remember (save) new address, then insert into address table, then insert into user_address table
-            # 4: User enters a new payment method and chooses to remember (save) new payment method, then insert into address table, then payment_method table, then paymentmethod_user table
-            # 5: User uses a saved address, then insert the address id into the order table
-            # 6: User uses a saved payment_method, then insert the payment_method id into the order table
-
-        AVAILABLE FLAGS
-
-            SHIPPING_IDENT --> SAVED ADDRESS
-            PAYMENT_IDENT --> SAVED PAYMENT METHOD
-            REMEMBER_SHIPPING --> INSERT NEW SHIPPING METHOD INTO USER_ADDRESS
-            REMEMBER_BILLING --> INSERT NEW PAYMENT METHOD INTO USER_PAYMENTMETHOD
-
-        NEW SHIPPING FORM NAMES:
-
-            addressStreetAddress
-            addressApartmentOrSuite
-            addressZip
-            addressCity
-            addressState
-            addressCountry
-
-        NEW PAYMENT FORM NAMES:
-
-            checkoutCardHolderFirstName
-            checkoutCardHolderLastName
-            ccn
-            ccexp
-            billingStreetAddress
-            billingApartmentOrSuite
-            billingAddressZip
-            billingAddressCity
-            billingAddressCountry
         '''
         # STEP 1: RETRIEVE FORM VALUES
         print(request.form)
@@ -118,55 +83,75 @@ def checkout():
         # PAYMENT PAYLOAD CREATED AFTER BILLING_PAYLOAD HAS BEEN INSERTED
         billing_payload = (billingStreetAddress,billingApartmentOrSuite,billingAddressZip,billingAddressCity,billingAddressCountry,str(2))
 
+
+        user_id = get_user_id(cursor,session['email'])
+
         # NEW SHIPPING AND PAYMENT METHODS
         if SHIPPING_IDENT and PAYMENT_IDENT not in request.form:
-            shipping_query = '''INSERT INTO address (street1,street2,zip,city,state,country,addressTypeID_address_FK) VALUES (%s,%s,%s,%s,%s,%s,%s)'''
+            insert_address(cursor,shipping_payload)
+            shipping_id = get_address_id(cursor)
             if REMEMBER_SHIPPING is not None:
-                cursor.execute(shipping_query,shipping_payload)
-                user_address_query = '''INSERT INTO user_address (userID_ua_FK,addressID_ua_FK) VALUES ((SELECT id FROM user WHERE email = %s), %s)'''
+                insert_useraddress(cursor,payload=shipping_id,email=session['email'])
             
-            billing_query = '''INSERT INTO address (street1, street2, zip, city, state,couuntry, addressTypeID_address_FK) VALUES (%s,%s,%s,%s,%s,%s,%s) '''
-            if REMEMBER_BILLING is not None:
-                cursor.execute(billing_query,billing_payload)
-            
-            payment_payload = (checkoutCardHolderFirstName,checkoutCardHolderLastName,ccn,ct,ccexp)
-            payment_query = '''INSERT INTO payment_method (firstname,lastname,cardNumber,cardType,expirationDate,billingAddress_addr_FK) VALUES (%s,%s,%s,%s,%s,%s)'''
-            
+            insert_address(cursor,billing_payload)
+            billing_id = get_address_id(cursor)
 
-            pass
+            payment_payload = (checkoutCardHolderFirstName,checkoutCardHolderLastName,ccn,ct,ccexp,billing_id)
+            insert_payment(cursor,payment_payload)
+            payment_id = get_payment_id(cursor)
+            if REMEMBER_BILLING is not None:
+                insert_userpayment(cursor,(user_id,payment_id))
 
         # SAVED SHIPPING ADDRESS, NEW PAYMENT METHOD
         elif SHIPPING_IDENT in request.form:
-            pass
+            shipping_id = SHIPPING_IDENT
+
+            insert_address(cursor,billing_payload)
+            billing_id = get_address_id(cursor)
+
+            payment_payload = (checkoutCardHolderFirstName,checkoutCardHolderLastName,ccn,ct,ccexp,billing_id)
+            insert_payment(cursor,payment_payload)
+            payment_id = get_payment_id(cursor)
+            if REMEMBER_BILLING is not None:
+                insert_userpayment(cursor,(user_id,payment_id))
         
         # SAVED PAYMENT METHOD, NEW SHIPPING ADDRESS
         elif PAYMENT_IDENT in request.form:
-            pass
+            payment_id = PAYMENT_IDENT
+
+            insert_address(cursor,shipping_payload)
+            shipping_id = get_address_id(cursor)
+            if REMEMBER_SHIPPING is not None:
+                insert_useraddress(cursor,payload=shipping_id,email=session['email'])
 
         # USING BOTH SAVED SHIPPING AND PAYMENT
         else:
-            order_query = '''INSERT INTO order (userID_order_FK,paymentID_order_FK,total,salesTax,shippingPrice,dateOrdered,promotionID,confirmationNumber,shippingAddrID_order_FK)
-            VALUES (
-            (SELECT id FROM user WHERE email = %s),
-            %s,
-            %s,
-            %s,
-            %s,
-            %s,
-            %s,
-            %s,
-            %s)
-            '''
-            pass
+            payment_id = PAYMENT_IDENT
+            shipping_id = SHIPPING_IDENT
+        
         # STEP 2: INSERT INTO TABLES ACCORDING TO CASE ENDING WITH INSERTING INTO ORDER
+        order_payload = (user_id,payment_id)
+        insert_order(cursor,order_payload)
+        order_id = get_order_id(cursor)
 
         # STEP 3: INSERT INTO order_bod TABLE
+        book_orderdetails = get_book_orderdetails(cursor,user_id)
+        for bod in book_orderdetails:
+            insert_orderbod(cursor,(order_id,bod[0]))
 
-        # STEP 4: INSERT INTO order_bod TABLE (associates an order with the appropriate book_orderdetail)
+        # STEP 4: AFTER SUCCESSFUL CHECKOUT, DELETE FROM SHOPPINGCART TABLE AND REDIRECT TO CHECKOUT CONFIRMATION PAGE/ROUTE
+        delete_shopping_cart(cursor,user_id)
 
-        # STEP 5: AFTER SUCCESSFUL CHECKOUT, DELETE FROM SHOPPINGCART TABLE AND REDIRECT TO CHECKOUT CONFIRMATION PAGE/ROUTE
+        conn.commit()
+        conn.close()
+
+        session.pop('checkout_token')
+        return redirect(url_for('user_bp.order_conf',conf_token=secrets.token_urlsafe(256), email=session['email'], user_id=user_id, name=get_first_name(cursor,session['email'])))
 
     elif request.method == 'GET':
+
+        generate_secure_token(session,'checkout')
+
         total_quantity = 0
         grand_total = 0
         # BOOKS FROM SHOPPING CART
@@ -227,11 +212,11 @@ def checkout():
                 'card_type': i[10],
                 'card_expiry': str(i[11].year) + '-' + str(i[11].month).zfill(2)
             }
-        print(f'billing payload --> {payment_payload}')
 
+        shipping_price = "{:.2f}".format(calculate_shipping(quantity=total_quantity))
         return render_template('checkout.html', book_payload=book_payload, shipping_payload=shipping_payload,
-                               billing_payload=payment_payload, total_quantity=total_quantity,grand_total=grand_total,
-                               shipping_price=calculate_shipping(quantity=total_quantity))
+                               billing_payload=payment_payload, total_quantity=total_quantity,grand_total=float(grand_total) + float(shipping_price),
+                               shipping_price=shipping_price)
 
 
 @user_bp.route('/base_profile/', methods=['GET'])
@@ -618,3 +603,11 @@ def manage_subscriptions():
             conn.commit()
             conn.close()
             return jsonify({'response': 200})
+
+@user_bp.route('/order_conf/<conf_token>+<email>+<user_id>+<name>', methods=['GET'])
+@login_required(session)
+@cart_session(session)
+@remember_me(session)
+@user_only(session)
+def order_conf(conf_token, email=None, user_id=None, name=None):
+    return jsonify({'response':200})
