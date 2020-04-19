@@ -580,7 +580,11 @@ def forgot():
         email = request.form.get('forgotEmailInput')
         name_query = '''SELECT firstname FROM user WHERE email = %s'''
         cursor.execute(name_query, (email))
-        name = cursor.fetchall()[0][0]
+        results = cursor.fetchall()
+        if len(results) == 0:
+            flash('That email address does not exist within our system!')
+            return redirect(url_for('common_bp.forgot'))
+        name = results[0][0]
 
         verification_token = secrets.token_urlsafe(16)
 

@@ -16,6 +16,14 @@ user_bp = Blueprint('user_bp', __name__,
                     template_folder='templates', static_folder='static')
 
 
+SALES_TAX  = {'GA':.04, 'CA':.0725}
+
+# MULTIPLY THIS BY THE TOTAL AMOUNT OF BOOKS
+SHIPPING_PRICE = 4.00
+def calculate_shipping(quantity):
+    return SHIPPING_PRICE + .5 * quantity
+
+
 def login_required(f):
     @wraps(f)
     def wrapped_func(*args, **kws):
@@ -159,6 +167,18 @@ def checkout():
 
         # USING BOTH SAVED SHIPPING AND PAYMENT
         else:
+            order_query = '''INSERT INTO order (userID_order_FK,paymentID_order_FK,total,salesTax,shippingPrice,dateOrdered,promotionID,confirmationNumber,shippingAddrID_order_FK)
+            VALUES (
+            (SELECT id FROM user WHERE email = %s),
+            %s,
+            %s,
+            %s,
+            %s,
+            %s,
+            %s,
+            %s,
+            %s)
+            '''
             pass
         # STEP 2: INSERT INTO TABLES ACCORDING TO CASE ENDING WITH INSERTING INTO ORDER
 
@@ -170,7 +190,7 @@ def checkout():
 
     elif request.method == 'GET':
         total_quantity = 0
-
+        grand_total = 0
         # BOOKS FROM SHOPPING CART
         book_payload = {}
         for isbn, quantity in session['shopping_cart'].items():
@@ -181,9 +201,11 @@ def checkout():
             title = results[1]
             author_name = results[2]
             price = results[3]
+            total_price = price * quantity
+            grand_total += total_price
             total_quantity += quantity
             book_payload[isbn] = {'nile_cover_id': nile_cover_ID, 'title': title,
-                                  'author_name': author_name, 'price': price, 'total_price': price*quantity, 'quantity': quantity}
+                                  'author_name': author_name, 'price': price, 'total_price': total_price, 'quantity': quantity}
 
         # SHIPPING ADDRESSES FROM DB
         shipping_payload = {}
@@ -230,7 +252,8 @@ def checkout():
         print(f'billing payload --> {payment_payload}')
 
         return render_template('checkout.html', book_payload=book_payload, shipping_payload=shipping_payload,
-                               billing_payload=payment_payload, total_quantity=total_quantity)
+                               billing_payload=payment_payload, total_quantity=total_quantity,grand_total=grand_total,
+                               shipping_price=calculate_shipping(quantity=total_quantity))
 
 
 @user_bp.route('/base_profile/', methods=['GET'])
