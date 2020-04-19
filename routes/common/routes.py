@@ -136,6 +136,7 @@ def login(ctx=None):
                     session['lastName'] = results[3]
                     session['admin'] = False
                     session['remember_me'] = remember_me
+                    generate_secure_token(session,'checkout')
 
                     if session['remember_me'] != None:
                         session.permanent = True

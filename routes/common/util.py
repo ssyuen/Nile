@@ -128,7 +128,7 @@ def check_login(session) -> bool:
         return False
 
 def get_first_name(cursor,email):
-    cursor.execute('SELECT firstname FROM user WHERE email=%s',email))
+    cursor.execute('SELECT firstname FROM user WHERE email=%s',email)
 
 
 def save_cart(mysql, session):

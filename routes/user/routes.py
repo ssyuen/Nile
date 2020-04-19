@@ -150,8 +150,6 @@ def checkout():
 
     elif request.method == 'GET':
 
-        generate_secure_token(session,'checkout')
-
         total_quantity = 0
         grand_total = 0
         # BOOKS FROM SHOPPING CART
@@ -218,6 +216,13 @@ def checkout():
                                billing_payload=payment_payload, total_quantity=total_quantity,grand_total=float(grand_total) + float(shipping_price),
                                shipping_price=shipping_price)
 
+@user_bp.route('/base_profile/', methods=['POST'])
+@login_required(session)
+@cart_session(session)
+@remember_me(session)
+@user_only(session)
+def verify_promo():
+    return jsonify({'response':200})
 
 @user_bp.route('/base_profile/', methods=['GET'])
 @login_required(session)
