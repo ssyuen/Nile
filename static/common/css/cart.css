@@ -28,3 +28,36 @@
 table {
     border-collapse: collapse;
 }
+
+
+.minus, .plus {
+    border-radius: 5px;
+    border-width: 1.3px !important;
+}
+
+
+.number-input input[type=number]::-webkit-inner-spin-button,
+.number-input input[type=number]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+}
+
+.number-input {
+    margin-bottom: 3rem;
+}
+
+.number-input input[type=number] {
+    text-align: center;
+    margin: 6px;
+}
+
+.number-input.number-input input[type=number] {
+    border: 1px solid #ced4da;
+    font-size: 1rem;
+    border-radius: 5px;
+}
+
+#theDiv {
+    width: auto;
+    overflow: hidden;
+    white-space: nowrap;
+}
