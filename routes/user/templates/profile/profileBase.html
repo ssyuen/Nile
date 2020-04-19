@@ -45,26 +45,32 @@
         <div class="row">
             <nav class="col-lg-3">
                 <ul class="list-group complement-light" id="accountListings">
-                    <a class="list-group-item waves-effect" id="accountOverview" href="/nileuser/overview/">
+                    <a class="list-group-item waves-effect" id="accountOverview"
+                       href="{{ url_for('user_bp.overview') }}">
                         Account Overview
                     </a>
-                    <a class="list-group-item waves-effect" id="changeMyName" href="/nileuser/change_name/">
+                    <a class="list-group-item waves-effect" id="changeMyName"
+                       href="{{ url_for('user_bp.change_name') }}">
                         Change My Name
                     </a>
-                    <a class="list-group-item waves-effect" id="changeMyPass" href="/nileuser/change_pass/">
+                    <a class="list-group-item waves-effect" id="changeMyPass"
+                       href="{{ url_for('user_bp.change_pass') }}">
                         Change My Password
                     </a>
-                    <a class="list-group-item waves-effect" id="orderHist" href="/nileuser/order_history/">
+                    <a class="list-group-item waves-effect" id="orderHist"
+                       href="{{ url_for('user_bp.order_history') }}">
                         Order History
                     </a>
-                    <a class="list-group-item waves-effect" id="manageAddress" href="/nileuser/shipping_address">
+                    <a class="list-group-item waves-effect" id="manageAddress"
+                       href="{{ url_for('user_bp.shipping_address') }}">
                         Manage Shipping Address
                     </a>
-                    <a class="list-group-item waves-effect" id="managePaymentInfo" href="/nileuser/payment_methods/">
+                    <a class="list-group-item waves-effect" id="managePaymentInfo"
+                       href="{{ url_for('user_bp.payment_methods') }}">
                         Manage Payment Methods
                     </a>
-                    <a class="list-group-item waves-effect" id="manageSubscriptions" href="/nileuser/subscriptions/">
-                        Manage Subscriptions
+                    <a class="list-group-item waves-effect" id="settings" href="{{ url_for('user_bp.settings') }}">
+                        Account Settings
                     </a>
                 </ul>
             </nav> <!-- col.// -->
@@ -92,8 +98,8 @@
                 $("#managePaymentInfo").addClass("active");
             } else if (x.includes("/returns/")) {
                 $("#returnRefund").addClass("active");
-            } else if (x.includes("/subscriptions/")) {
-                $("#manageSubscriptions").addClass("active");
+            } else if (x.includes("/settings/")) {
+                $("#settings").addClass("active");
             }
         });
     </script>
