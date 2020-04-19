@@ -136,7 +136,7 @@ def login(ctx=None):
                     session['lastName'] = results[3]
                     session['admin'] = False
                     session['remember_me'] = remember_me
-                    generate_secure_token(session,'checkout')
+                    generate_secure_token(session,'checkout_token')
 
                     if session['remember_me'] != None:
                         session.permanent = True
@@ -300,15 +300,15 @@ def register():
 
             
 
-        generate_secure_token(session,'expire')
+        generate_secure_token(session,'register_token')
 
-        print(user_id)
         conn.commit()
         conn.close()
         return redirect(url_for('common_bp.register_confirmation', sending_token=secrets.token_urlsafe(256), email=email, user_id=user_id, name=firstName))
 
 
 @common_bp.route('/conf/register_confirmation/<sending_token>+<email>+<user_id>+<name>', methods=['GET'])
+@secure_link(session,'register_token')
 @cart_session(session)
 @remember_me(session)
 def register_confirmation(sending_token, email=None, user_id=None, name=None):
@@ -396,17 +396,19 @@ def forgot():
             email, 'rootatnilebookstore@gmail.com'], sender='rootatnilebookstore@gmail.com', body=message_body)
         mail.send(msg)
 
+
+        generate_secure_token(session,'forgot_token')
         return redirect(url_for('common_bp.forgot_email_conf'))
 
 
 @common_bp.route('/reset_pass/<verify_token>', methods=['POST', 'GET'])
+@secure_link(session,'forgot_token')
 @cart_session(session)
 @remember_me(session)
 def reset_pass(verify_token):
     if request.method == 'GET':
         return render_template('confirmation/reset_pass_conf.html')
     elif request.method == 'POST':
-        print('post sent')
         conn = mysql.connect()
         cursor = conn.cursor()
 

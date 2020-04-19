@@ -42,10 +42,27 @@ def generate_secure_token(session,purpose):
     purpose - the purpose of the token. if 'checkout', then token is to secure checkout page to ensure after successful checkout, the page cannot be revisited, else 'expire', register_conf/forget password should timeout after a certain amount of time
     '''
     secure_token = secrets.token_urlsafe(64)
-    if purpose is 'checkout':
-        session['checkout_token'] = secure_token
-    elif purpose is 'expire':
-        session['expire'] = {secure_token: datetime.now()}
+    if purpose is 'checkout_token':
+        session[purpose] = secure_token
+    elif purpose is 'register_token':
+        session[purpose] = {secure_token: datetime.now()}
+    elif purpose is 'forgot_token':
+        session[purpose] = {secure_token: datetime.now()}
+        
+def secure_link(session,purpose):
+    def dec(f):
+        @wraps(f)
+        def wrapped_func(*args, **kws):
+            # if any of these if-else-ifs are entered, that means the link is still good
+            if (purpose == 'register' or 'forgot'):
+                if (datetime.now() - session[purpose]) < timedelta.seconds(300):
+                    return f(*args, **kws)
+            else:
+                # THIS SHOULD REDIRECT TO EXPIRED PAGE LINK
+                return redirect(url_for('common_bp.landing_page'))
+
+        return wrapped_func
+    return dec
 
 
 def insert_address(cursor, payload):
@@ -217,16 +234,3 @@ def cart_session(session):
     return dec
 
 
-# PURPOSE OF THIS FUNCTION IS THAT IT WILL REDIRECT TO A PAGE SAYING THAT PAGE HAS EXPIRED
-def secure_link(session):
-    def dec(f):
-        @wraps(f)
-        def wrapped_func(*args, **kws):
-            # IF ELAPSED TIME BETWEEN TOKEN CREATION AND CURRENT TIME IS LESS THAN 5 MINUTES, LINK IS STILL GOOD
-            if (datetime.now() - session['expire']) < timedelta.seconds(300):
-                return f(*args, **kws)
-            else:
-                # SHOW ERROR PAGE THAT ONCE YOU SUBMIT AN ORDER YOU ARE NOT ABLE TO GO BACK TO THE CHECKOUT PAGE
-                return redirect(url_for('common_bp.landing_page'))
-        return wrapped_func
-    return dec
