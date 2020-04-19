@@ -5,26 +5,9 @@
     ASSOCIATED HTML:    reg.html
     REVISIONS:          3rd - As of 3/20/2020
  */
-// POC
-// const SESSION = {
-//     "9789667234578": new CountUp(target: "xcvu", 20.99, options),
-//     "9789651234578": new CountUp(target: "xcvv", 20.99, options)
-// };
-//
-//
-// session['9789667234578'].start();
-// session['9789651234578'].start();
-/*
- * I used window.sessionStorage to store information about quantity.
- * This allows the browser session to remember the quantity of each product
- * rather than send a get request every time we go to the addToCart page.
- * To view the application storage, open the browser dev tools, and go
- * to the Application tab. Under storage, go to session storage.
- * The ONLY TIME that we update the quantity in the DB is when the user
- * clicks checkout
- */
 import {CountUp} from '../../../jsplugin/countUp.min.js';
 import {adjustCartTotal} from "./cartUtil.js";
+
 const NILE_ISBN_ATTR = "nile-isbn";
 const NILE_BUY_PR_ATTR = "buying-price";
 const DURATION_SEC = 0.5; //ANIMATION DURATION IN SECONDS
@@ -39,21 +22,19 @@ SESSION['totalCounter'] = new CountUp("totalPrice", 0, {
 SESSION['totalCounter'].start();
 $(() => {
     if (!isCartEmpty()) {
-        let allSelect = $("select.form-control");
-        for (let sel of allSelect) {
-            let isbn = sel.getAttribute(NILE_ISBN_ATTR);
-            if (isbn in window.sessionStorage) {
-                $(sel).children(`option[value=${window.sessionStorage[isbn]}]`).attr('selected', 'selected');
-                updateIndividual(sel);
-            }
-            else {
-                window.sessionStorage[isbn] = '1';
-            }
+        let allQuant = $(".quantity");
+        for (let inp of allQuant) {
+            updateIndividual(inp);
         }
         setTimeout(updateTotal, DURATION_M_SEC);
     }
 });
-$("select.form-control").change(evt => {
+$(".quantity").on("input", function (evt) {
+    let check = parseInt($(evt.target).val());
+    if (check <= 0 || check > 80 || isNaN(check) || check === null || check === undefined) {
+        evt.preventDefault();
+        return false;
+    }
     let x = (evt.target);
     updateIndividual(x);
     setTimeout(updateTotal, DURATION_M_SEC);
@@ -61,24 +42,23 @@ $("select.form-control").change(evt => {
     $.ajax({
         url: '/shoppingcart/',
         type: 'POST',
-        data: { 'bookISBN': isbn, 'newQuantity': $(evt.target).val() }
+        data: {'bookISBN': isbn, 'newQuantity': $(evt.target).val()}
     });
 });
-function updateIndividual(sel) {
-    let origPrice = parseFloat(sel.getAttribute(NILE_BUY_PR_ATTR));
-    let isbn = sel.getAttribute(NILE_ISBN_ATTR);
-    let quantity = parseInt(sel.value);
-    let priceElem = getPrice(sel);
+
+function updateIndividual(inp) {
+    let origPrice = parseFloat(inp.getAttribute(NILE_BUY_PR_ATTR));
+    let isbn = inp.getAttribute(NILE_ISBN_ATTR);
+    let quantity = parseInt(inp.value);
+    let priceElem = getPrice(inp);
     if (isbn in SESSION) {
         let counter = SESSION[isbn];
         if (quantity === 1) {
             counter.update(origPrice);
-        }
-        else {
+        } else {
             counter.update(origPrice * quantity);
         }
-    }
-    else {
+    } else {
         const options = {
             decimalPlaces: 2,
             duration: DURATION_SEC,
@@ -92,14 +72,13 @@ function updateIndividual(sel) {
         }
         startAnimation(SESSION[isbn]);
     }
-    window.sessionStorage.setItem(isbn, quantity.toString());
 }
 function updateTotal() {
     let inst = SESSION['totalCounter'];
     inst.update(calcTotal());
 }
 function calcTotal() {
-    let allSelect = $("select.form-control");
+    let allSelect = $(".quantity");
     let total = 0.00;
     for (let val of allSelect) {
         let priceOfBook = parseFloat(getPrice(val).innerHTML);
@@ -107,31 +86,47 @@ function calcTotal() {
     }
     return total;
 }
+
 function startAnimation(ctr, callback) {
     if (!ctr.error) {
         ctr.start(callback);
-    }
-    else {
+    } else {
         console.error(ctr.error);
     }
 }
-function getPrice(selectElement) {
-    return $(selectElement).parent().next().find('div.quant-price')[0];
+
+function getPrice(inputElement) {
+    return $(inputElement).parent().parent().next().find('div.quant-price')[0];
 }
-$('.table-shopping-cart').on('click', 'button', function () {
+
+$('.remove-btn').on('click', function () {
     $(this).closest('tr').remove();
     setTimeout(updateTotal, DURATION_M_SEC);
     isCartEmpty();
     let isbn = $(this).attr("nile-isbn");
-    window.sessionStorage.removeItem(isbn);
     $.ajax({
         url: '/shoppingcart/',
         type: 'POST',
-        data: { 'bookISBN': isbn }
+        data: {'bookISBN': isbn}
     });
     let valAsInt = parseInt($("#cartTotal").html());
     adjustCartTotal(--valAsInt);
 });
+$(".plus").on("click", function (evt) {
+    let closestQuant = $(this).prev(".quantity");
+    let increment = parseInt($(closestQuant).val()) + 1;
+    if (increment > 0 && increment <= 80) {
+        $(closestQuant).attr("value", increment).trigger("input");
+    }
+});
+$(".minus").on("click", function (evt) {
+    let closestQuant = $(this).next(".quantity");
+    let increment = parseInt($(closestQuant).val()) - 1;
+    if (increment > 0 && increment <= 80) {
+        $(closestQuant).attr("value", increment).trigger("input");
+    }
+});
+
 function isCartEmpty() {
     if ($('.table-shopping-cart > tbody > tr').length === 0 ||
         $('.dataTables_empty').length) {
