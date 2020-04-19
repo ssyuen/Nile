@@ -146,6 +146,7 @@ def checkout():
         conn.close()
 
         session.pop('checkout_token')
+        generate_secure_token(session,'checkout_token')
         return redirect(url_for('user_bp.order_conf',conf_token=secrets.token_urlsafe(256), email=session['email'], user_id=user_id, name=get_first_name(cursor,session['email'])))
 
     elif request.method == 'GET':
