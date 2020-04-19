@@ -168,6 +168,8 @@ def landing_page(search_results=None):
 @cart_session
 @remember_me
 def login(ctx=None):
+    if check_login():
+        return redirect(url_for('common_bp.landing_page'))
     if request.method == 'POST':
         userEmail = request.form.get('userEmail')
         password = request.form.get('userPassword')
