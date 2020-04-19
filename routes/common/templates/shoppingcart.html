@@ -50,7 +50,7 @@
                                 <thead class="text-muted">
                                 <tr class="small text-uppercase">
                                     <th scope="col">Product</th>
-                                    <th scope="col">Quantity</th>
+                                    <th scope="col">Quantity (Max: 80)</th>
                                     <th scope="col">Price</th>
                                     <th scope="col" class="text-right"></th>
                                 </tr>
@@ -63,13 +63,11 @@
                                     <tr>
                                         <td>
                                             <div class="row">
-                                                <div class="col-lg-6">
-                                                    <div>
-                                                        <img src="{{ '/static/images/CoverImages/' + payload['nile_cover_id'] + '.jpg' }}"
-                                                             width="95" alt="Image of {{ isbn }}">
-                                                    </div>
+                                                <div class="col-xl-5">
+                                                    <img src="{{ '/static/images/CoverImages/' + payload['nile_cover_id'] + '.jpg' }}"
+                                                         width="95" alt="Image of {{ isbn }}">
                                                 </div>
-                                                <div class="col-lg-6">
+                                                <div class="col-xl-7">
                                                     <a href="#" class="primary text-dark"
                                                        style="font-size:1.5em;">{{ payload['title'] }}</a>
                                                     <p class="small text-muted">ISBN: {{ isbn }}, Author:
@@ -77,30 +75,34 @@
                                                 </div>
                                             </div>
                                         </td>
-                                        <td>
-                                            <label for="quantitySelector" class="d-none"> </label>
-                                            <select class="form-control" nile-isbn="{{ isbn }}" id="quantitySelector"
-                                                    buying-price="{{ payload['price'] }}">
-                                                <option value="1"
-                                                        {% if payload['quantity']|int == 1 %}selected="selected" {% endif %}>
-                                                    1
-                                                </option>
-                                                <option value="2">2</option>
-                                                <option value="3">3</option>
-                                                <option value="4">4</option>
-                                            </select>
+                                        <td class="">
+                                            <div class="def-number-input number-input safari_only d-inline-block justify-content-center"
+                                                 id="theDiv">
+                                                <button type="button"
+                                                        class="btn btn-sm btn-outline-grey minus waves-effect waves-ripple">
+                                                    <i class="fas fa-minus fa-lg"></i>
+                                                </button>
+                                                <input class="quantity" min="1" max="80" name="quantity"
+                                                       value="{{ payload['quantity'] }}" type="number"
+                                                       nile-isbn="{{ isbn }}"
+                                                       buying-price="{{ payload['price'] }}">
+                                                <button type="button"
+                                                        class="btn btn-sm btn-outline-grey plus waves-effect waves-ripple">
+                                                    <i class="fas fa-plus fa-lg"></i>
+                                                </button>
+                                            </div>
                                         </td>
                                         <td class="price-data">
                                             <div class="price-wrap primary-sm">
                                                 <div class="d-inline-flex">$
-                                                    <div class="quant-price" style="margin-left: 1px;"
+                                                    <div class="quant-price" style="width: 3em;"
                                                          id="xcvt">{{ payload['price'] }}</div>
                                                 </div>
                                             </div> <!-- price-wrap .// -->
                                             <p class="text-muted"><i>${{ payload['price'] }} each</i></p>
                                         </td>
                                         <td class="text-right">
-                                            <button class="btn btn-outline-danger btn-rounded-complement waves-effect remove-btn"
+                                            <button class="btn btn-outline-danger rounded btn-md waves-effect remove-btn"
                                                     nile-isbn="{{ isbn }}">
                                                 Remove
                                             </button>
@@ -176,7 +178,6 @@
                 "bAutoWidth": false,
                 "pageLength": 5,
                 "dom": '<"top"flp<"clear">>rt<"bottom"ifp<"clear">>'
-
             });
 
             $("#searchCart").on("keyup", function () {
