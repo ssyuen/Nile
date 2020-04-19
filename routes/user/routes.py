@@ -10,7 +10,8 @@ from server import mysql, mail
 from key import FERNET
 from datetime import datetime
 
-from routes.common.routes import cart_session, remember_me
+from routes.common.util import remember_me, cart_session, login_required
+from routes.user.util import user_only
 
 user_bp = Blueprint('user_bp', __name__,
                     template_folder='templates', static_folder='static')
@@ -24,31 +25,6 @@ def calculate_shipping(quantity):
     return SHIPPING_PRICE + .5 * quantity
 
 
-def login_required(f):
-    @wraps(f)
-    def wrapped_func(*args, **kws):
-        if 'logged_in' in session and session['logged_in']:
-            return f(*args, **kws)
-        else:
-            flash('You need to login to access this area!')
-            return redirect(url_for('common_bp.login', ctx=f.__name__))
-
-    return wrapped_func
-
-
-def user_only(f):
-    @wraps(f)
-    def wrapped_func(*args, **kws):
-        if 'admin' in session and session['admin']:
-            flash(
-                'Please login using a non-administrative account to access this feature.')
-            return redirect(url_for('common_bp.landing_page'))
-        else:
-            return f(*args, **kws)
-
-    return wrapped_func
-
-
 def send_change_conf_email(recipient, recipient_fname, sender='rootatnilebookstore@gmail.com'):
     current_time = datetime.now()
     message_body = 'Hi ' + recipient_fname + \
@@ -59,10 +35,10 @@ def send_change_conf_email(recipient, recipient_fname, sender='rootatnilebooksto
 
 
 @user_bp.route('/checkout/', methods=['POST', 'GET'])
-@login_required
-@cart_session
-@remember_me
-@user_only
+@login_required(session)
+@cart_session(session)
+@remember_me(session)
+@user_only(session)
 def checkout():
     '''
     REQUIREMENTS:
@@ -277,28 +253,28 @@ def checkout():
 
 
 @user_bp.route('/base_profile/', methods=['GET'])
-@login_required
-@cart_session
-@remember_me
-@user_only
+@login_required(session)
+@cart_session(session)
+@remember_me(session)
+@user_only(session)
 def base_profile():
     return render_template('profile/profileBase.html')
 
 
 @user_bp.route('/overview/', methods=['GET'])
-@login_required
-@cart_session
-@remember_me
-@user_only
+@login_required(session)
+@cart_session(session)
+@remember_me(session)
+@user_only(session)
 def overview():
     return render_template('profile/profileOverview.html')
 
 
 @user_bp.route('/change_name/', methods=['GET', 'POST'])
-@login_required
-@cart_session
-@remember_me
-@user_only
+@login_required(session)
+@cart_session(session)
+@remember_me(session)
+@user_only(session)
 def change_name():
     if request.method == 'GET':
         return render_template('profile/profileChangeName.html')
@@ -337,10 +313,10 @@ def change_name():
 
 
 @user_bp.route('/change_pass/', methods=['GET', 'POST'])
-@login_required
-@cart_session
-@remember_me
-@user_only
+@login_required(session)
+@cart_session(session)
+@remember_me(session)
+@user_only(session)
 def change_pass():
     if request.method == 'POST':
         conn = mysql.connect()
@@ -380,10 +356,10 @@ def change_pass():
 
 
 @user_bp.route('/order_history/', methods=['GET'])
-@login_required
-@cart_session
-@remember_me
-@user_only
+@login_required(session)
+@cart_session(session)
+@remember_me(session)
+@user_only(session)
 def order_history():
     # Connect to niledb
     conn = mysql.connect()
@@ -407,10 +383,10 @@ def order_history():
 
 
 @user_bp.route('/shipping_address/', methods=['GET', 'POST'])
-@login_required
-@cart_session
-@remember_me
-@user_only
+@login_required(session)
+@cart_session(session)
+@remember_me(session)
+@user_only(session)
 def shipping_address():
     conn = mysql.connect()
     cursor = conn.cursor()
@@ -501,10 +477,10 @@ def shipping_address():
 
 
 @user_bp.route('/payment_methods/', methods=['GET', 'POST'])
-@login_required
-@cart_session
-@remember_me
-@user_only
+@login_required(session)
+@cart_session(session)
+@remember_me(session)
+@user_only(session)
 def payment_methods():
     conn = mysql.connect()
     cursor = conn.cursor()
@@ -626,10 +602,10 @@ def payment_methods():
 
 
 @user_bp.route('/subscriptions/', methods=['POST', 'GET'])
-@login_required
-@cart_session
-@remember_me
-@user_only
+@login_required(session)
+@cart_session(session)
+@remember_me(session)
+@user_only(session)
 def manage_subscriptions():
     if request.method == 'GET':
         return render_template('profile/profileSubscriptions.html')

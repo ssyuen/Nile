@@ -1,131 +1,26 @@
-from flask import Blueprint, render_template, request, jsonify, redirect, flash, session, url_for, g, make_response
+from flask import Blueprint, render_template, request, jsonify, redirect, flash, session, url_for
 from flaskext.mysql import pymysql
-from functools import wraps
-import requests as r
 import bcrypt
 import sys
 import secrets
 from flask_mail import Message
 from server import mysql, mail
-from datetime import timedelta, datetime
 from key import FERNET
+from routes.common.util import *
 
 common_bp = Blueprint('common_bp', __name__,
                       template_folder='templates', static_folder='static')
 
-
-def secure_checkout(f):
-    @wraps(f)
-    def wrapped_func(*args, **kws):
-        # UPON SUCCESSFUL CHECKOUT, POP 'checkout_token' FROM SESSION
-        if 'checkout_token' in session:
-            return f(*args, **kws)
-        else:
-            # SHOW ERROR PAGE THAT ONCE YOU SUBMIT AN ORDER YOU ARE NOT ABLE TO GO BACK TO THE CHECKOUT PAGE
-            return redirect(url_for('common_bp.landing_page'))
-    return wrapped_func
-
-
-# PURPOSE OF THIS FUNCTION IS THAT IT WILL REDIRECT TO A PAGE SAYING THAT PAGE HAS EXPIRED
-def secure_link(f):
-    @wraps(f)
-    def wrapped_func(*args, **kws):
-        # IF ELAPSED TIME BETWEEN TOKEN CREATION AND CURRENT TIME IS LESS THAN 5 MINUTES, LINK IS STILL GOOD
-        if (datetime.now() - session['expire']) < timedelta.seconds(300):
-            return f(*args, **kws)
-        else:
-            # SHOW ERROR PAGE THAT ONCE YOU SUBMIT AN ORDER YOU ARE NOT ABLE TO GO BACK TO THE CHECKOUT PAGE
-            return redirect(url_for('common_bp.landing_page'))
-    return wrapped_func
-
-def generate_secure_token(purpose):
-    secure_token = secrets.token_urlsafe(64)
-    if purpose is 'checkout':
-        session['checkout_token'] = secure_token
-    elif purpose is 'expire':
-        session['expire'] = {secure_token:datetime.now()}
-
-def cart_session(f):
-    @wraps(f)
-    def wrapped_func(*args, **kws):
-        if 'shopping_cart' in session:
-            return f(*args, **kws)
-        else:
-            session['shopping_cart'] = dict()
-            return f(*args, **kws)
-
-    return wrapped_func
-
-
-def login_required(f):
-    @wraps(f)
-    def wrapped_func(*args, **kws):
-        if check_login():
-            return f(*args, **kws)
-        else:
-            flash('You need to login to access this area!')
-            return redirect(url_for('common_bp.login', ctx=f.__name__))
-
-    return wrapped_func
-
-
-def remember_me(f):
-    @wraps(f)
-    def wrapped_func(*args, **kws):
-        try:
-            if session['remember_me']:
-                g.PERMANENT_SESSION_LIFETIME = timedelta(days=7)
-                return f(*args, **kws)
-        except KeyError:
-            session['remember_me'] = False
-            return f(*args, **kws)
-        else:
-            return f(*args, **kws)
-
-    return wrapped_func
-
-
-def get_genres(cursor,close=False):
-    cursor.execute('SELECT genre FROM genre')
-    return [genre[0] for genre in cursor.fetchall()]
-
-
-def get_genres_count(cursor,close=False):
-    cursor.execute(
-        'SELECT (SELECT genre FROM genre WHERE id=genreID_book_FK), COUNT(*) AS numBooks FROM book GROUP BY genreID_book_FK')
-    payload = {}
-    for genre, count in cursor.fetchall():
-        payload[genre] = count
-
-    return payload
-
-
-def get_bindings(cursor,close=False):
-    cursor.execute('SELECT binding FROM binding')
-    results = cursor.fetchall()
-    return [binding[0] for binding in results]
-
-
-def get_bindings_count(cursor,close):
-    cursor.execute(
-        'SELECT (SELECT binding FROM binding WHERE id=bindingID_book_FK), COUNT(*) AS numBooks FROM book GROUP BY bindingID_book_FK')
-    payload = {}
-    for genre, count in cursor.fetchall():
-        payload[genre] = count
-
-    return payload
-
-
 @common_bp.route('/about/')
-@cart_session
-@remember_me
+@cart_session(session)
+@remember_me(session)
 def about():
     return render_template('about.html')
 
 
 @common_bp.route('/')
-@cart_session
-@remember_me
+@cart_session(session)
+@remember_me(session)
 def landing_page(search_results=None):
     # print(session['shopping_cart'])
     # STEP 1: Make call to database to return all books, need ISBN for query in /product/?isbn=<isbn>
@@ -165,10 +60,10 @@ def landing_page(search_results=None):
 
 
 @common_bp.route('/login/', methods=['POST', 'GET'])
-@cart_session
-@remember_me
+@cart_session(session)
+@remember_me(session)
 def login(ctx=None):
-    if check_login():
+    if check_login(session):
         return redirect(url_for('common_bp.landing_page'))
     if request.method == 'POST':
         userEmail = request.form.get('userEmail')
@@ -246,8 +141,8 @@ def login(ctx=None):
                         session.permanent = True
 
                     # IF USER LOGGED IN WITH ITEMS IN THEIR CART, STORE TO DB
-                    save_cart(mysql, session['shopping_cart'])
-                    load_cart(mysql)
+                    save_cart(mysql, session)
+                    load_cart(mysql, session)
 
                     ctx = request.args.get('ctx')
                     if ctx is not None:
@@ -270,10 +165,10 @@ def login(ctx=None):
 
 
 @common_bp.route('/logout/', methods=['GET'])
-@cart_session
-@remember_me
+@cart_session(session)
+@remember_me(session)
 def logout():
-    if check_login():
+    if check_login(session):
         session.permanent = False
         session.clear()
         flash('Logged out successfully.')
@@ -282,74 +177,9 @@ def logout():
     return redirect(url_for('common_bp.landing_page'))
 
 
-def save_cart(cursor):
-    '''
-    REQUIREMENTS:
-    - When a user logs out, save their session cart to the database
-
-    ERROR CHECKING:
-    - If book is already in database,
-    '''
-
-    # STEP 1: Given the session cart (represented as a list of book ISBN's), iterate through and each to db
-
-    pass
-
-
-def get_cart(cursor):
-    '''
-    REQUIREMENTS:
-    - When a user logs in, pull any items in the shopping cart table from db and save into their sesssion['shopping_cart']
-
-    - Eventually when shopping cart PAGE is done, need to be able to update the quantities on that page with
-      values from the database
-    '''
-
-    query = '''SELECT * FROM shoppingcart WHERE userID_sc_FK=(SELECT id FROM user WHERE email=%s)'''
-    cursor.execute(query, (session['email']))
-
-    # STEP 1: UPDATE SESSION CART BY SAVING ISBN VALUES
-    bod_ids = [uid_bod_pair[1] for uid_bod_pair in cursor.fetchall()]
-
-    isbns = []
-    for bod_id in bod_ids:
-        query = '''SELECT ISBN_bod_FK FROM book_orderdetail WHERE id =%s'''
-        cursor.execute(query, (bod_id))
-        session['shopping_cart'][cursor.fetchall()[0][0]] = 1
-        # isbns.append(cursor.fetchall()[0][0])
-
-    # session['shopping_cart'] = isbns
-
-def insert_address(cursor,payload):
-    cursor.execute('INSERT INTO address (street1,street2,city,zip,state,country,addressTypeID_address_FK) VALUES (%s, %s, %s, %s, %s, %s, %s)',payload)
-
-def get_address_id(cursor):
-    cursor.execute('SELECT id FROM address ORDER BY id DESC LIMIT 1')
-    return cursor.fetchall()[0][0]
-
-def insert_user(cursor,payload):
-    cursor.execute('INSERT INTO user (email,statusID_user_FK,pass, firstname, lastname) VALUES (%s, %s, %s, %s, %s)',payload)
-
-def get_user_id(cursor,email):
-    cursor.execute('SELECT id FROM user WHERE email = %s',email)
-    return cursor.fetchall()[0][0]
-
-def insert_useraddress(cursor,payload):
-    cursor.execute('INSERT INTO user_address (userID_ua_FK, addressID_ua_FK) VALUES (%s, %s)')
-
-def insert_userpayment(cursor,payload):
-    cursor.execute('INSERT INTO user_paymentmethod (userID_pm_FK, paymentID_pm_FK) VALUES (%s, %s)')
-
-def insert_payment(cursor,payload):
-    cursor.execute('INSERT INTO payment_method (firstname,lastname,cardNumber, cardType, expirationDate, billingAddress_addr_FK) VALUES (%s,%s,%s, %s, %s, %s)')
-
-def get_payment_id(cursor):
-    cursor.execute('SELECT id FROM payment_method ORDER BY id DESC LIMIT 1')
-    return cursor.fetchall()[0][0]
-
 @common_bp.route('/register/', methods=['POST', 'GET'])
-@cart_session
-@remember_me
+@cart_session(session)
+@remember_me(session)
 def register():
     if request.method == 'GET':
         return render_template('reg.html')
@@ -414,10 +244,10 @@ def register():
         if None in shipping_payload and None in billing_payload:
             try:
                 insert_user(cursor,user_payload)
-                conn.commit()
-                conn.close()
+                user_id = get_user_id(cursor,email)
             except(pymysql.err.IntegrityError):
                 flash('An account with this email already exists.')
+                conn.close()
                 return redirect(url_for('common_bp.register'))
 
         else:  # insert with shipping and billing address
@@ -467,16 +297,19 @@ def register():
                 # INSERTING USER ID AND SHIPPING ADDRESS ID INTO user_address association table
                 insert_useraddress(cursor,(user_id,shipping_id))
 
-            conn.commit()
-            conn.close()
+            
 
-        generate_secure_token('expire')
+        generate_secure_token(session,'expire')
+
+        print(user_id)
+        conn.commit()
+        conn.close()
         return redirect(url_for('common_bp.register_confirmation', sending_token=secrets.token_urlsafe(256), email=email, user_id=user_id, name=firstName))
 
 
 @common_bp.route('/conf/register_confirmation/<sending_token>++<email>+<user_id>+<name>', methods=['GET'])
-@cart_session
-@remember_me
+@cart_session(session)
+@remember_me(session)
 def register_confirmation(sending_token, email=None, user_id=None, name=None):
     try:
         conn = mysql.connect()
@@ -506,8 +339,8 @@ def register_confirmation(sending_token, email=None, user_id=None, name=None):
 
 
 @common_bp.route('/conf/email_confirmation/<verify_token>', methods=['GET'])
-@cart_session
-@remember_me
+@cart_session(session)
+@remember_me(session)
 def email_confirmation(verify_token):
     # system needs to send an email with url back to a page
     conn = mysql.connect()
@@ -526,8 +359,8 @@ def email_confirmation(verify_token):
 
 
 @common_bp.route('/forgot/', methods=['POST', 'GET'])
-@cart_session
-@remember_me
+@cart_session(session)
+@remember_me(session)
 def forgot():
     if request.method == 'GET':
         return render_template('./forgot.html')
@@ -566,8 +399,8 @@ def forgot():
 
 
 @common_bp.route('/reset_pass/<verify_token>', methods=['POST', 'GET'])
-@cart_session
-@remember_me
+@cart_session(session)
+@remember_me(session)
 def reset_pass(verify_token):
     if request.method == 'GET':
         return render_template('confirmation/reset_pass_conf.html')
@@ -585,7 +418,7 @@ def reset_pass(verify_token):
             user_id = cursor.fetchall()[0][0]
         except IndexError:
             flash('You have already reset your password using this verification link!')
-            if check_login():
+            if check_login(session):
                 return redirect(url_for('common_bp.landing_page'))
             else:
                 return redirect(url_for('common_bp.login'))
@@ -612,15 +445,15 @@ def reset_pass(verify_token):
 
 
 @common_bp.route('/forgot_email_conf/')
-@cart_session
-@remember_me
+@cart_session(session)
+@remember_me(session)
 def forgot_email_conf():
     return render_template('confirmation/forgot_email_conf.html')
 
 
 @common_bp.route('/shoppingcart/', methods=['GET', 'POST'])
-@cart_session
-@remember_me
+@cart_session(session)
+@remember_me(session)
 def shopping_cart():
     conn = mysql.connect()
     cursor = conn.cursor()
@@ -640,15 +473,12 @@ def shopping_cart():
             book_payload[isbn] = {'nile_cover_id': nile_cover_ID, 'title': title,
                                   'author_name': author_name, 'price': price, 'quantity': quantity}
 
-        print(book_payload)
         return render_template('shoppingcart.html', book_payload=book_payload)
 
     # LOGGED IN USER EDITS QUANTITY ON SHOPPING CART PAGE
-    elif request.method == 'POST' and check_login():
-        print('user is logged in')
+    elif request.method == 'POST' and check_login(session):
         book_isbn = request.form.get('bookISBN')
         quant_flag = request.form.get('newQuantity')
-        print(f'quant flag: {quant_flag}')
 
         bod_id_query = '''SELECT bod_sc_FK FROM shoppingcart WHERE userID_sc_FK = (SELECT id FROM user WHERE email = %s) AND bod_sc_FK = (SELECT id FROM book_orderdetail WHERE ISBN_bod_FK = %s) '''
         cursor.execute(bod_id_query, (session['email'], book_isbn))
@@ -671,8 +501,7 @@ def shopping_cart():
             session['shopping_cart']=old_cart
             quant_query = 'UPDATE book_orderdetail SET quantity = %s WHERE id = %s'
             cursor.execute(quant_query, (quant_flag,bod_id))
-            print(session['shopping_cart'])
-        
+
         conn.commit()
         conn.close()
         return jsonify({'response':200})
@@ -682,24 +511,21 @@ def shopping_cart():
     else:
         book_isbn = request.form.get('bookISBN')
         quant_flag = request.form.get('newQuantity')
-        print(f'quant flag: {type(quant_flag)}')
 
         if quant_flag is None:
             old_cart.pop(book_isbn)
             session['shopping_cart']=old_cart
-            print(session['shopping_cart'])
         else:
             old_cart[book_isbn] = int(quant_flag)
             session['shopping_cart']=old_cart
-            print(session['shopping_cart'])
 
         return jsonify({'response':200})
 
 
 
 @common_bp.route('/product/', methods=['GET', 'POST'])
-@cart_session
-@remember_me
+@cart_session(session)
+@remember_me(session)
 def product(title=None, price=None, author_name=None, ISBN=None, summary=None, publicationDate=None, numPages=None, binding=None, genre=None, nile_cover_ID=None):
     # STEP 1: User clicks on a book from browse.html
 
@@ -708,7 +534,7 @@ def product(title=None, price=None, author_name=None, ISBN=None, summary=None, p
         return render_template('product.html', title=title, price=price, author_name=author_name, isbn=ISBN, summary=summary, publicationDate=publicationDate, numPages=numPages, binding=binding, genre=genre, nile_cover_ID=nile_cover_ID)
 
     # LOGGED IN AND ADDING/DELETING FROM CART
-    elif check_login():
+    elif check_login(session):
         conn = mysql.connect()
         cursor = conn.cursor()
 
@@ -745,7 +571,6 @@ def product(title=None, price=None, author_name=None, ISBN=None, summary=None, p
             conn.commit()
 
         session['shopping_cart'] = old_cart
-        print(session['shopping_cart'])
         return jsonify(session['shopping_cart'])
 
     # NOT LOGGED IN BUT ADDING/DELETING
@@ -762,50 +587,4 @@ def product(title=None, price=None, author_name=None, ISBN=None, summary=None, p
             old_cart[book_isbn] = 1
 
         session['shopping_cart'] = old_cart
-        print(session['shopping_cart'])
         return jsonify(session['shopping_cart'])
-
-
-def check_login() -> bool:
-    if 'logged_in' in session and session['logged_in']:
-        return True
-    else:
-        return False
-
-
-def save_cart(mysql, cart):
-    conn = mysql.connect()
-    cursor = conn.cursor()
-    for book_isbn, quantity in cart.items():
-        query = '''INSERT IGNORE INTO book_orderdetail (userID_bod_FK,ISBN_bod_FK,quantity) VALUES ((SELECT id FROM user WHERE email = %s), %s, %s)'''
-        cursor.execute(query, (session['email'], book_isbn, str(quantity)))
-        conn.commit()
-
-        query = '''INSERT IGNORE INTO shoppingcart (userID_sc_FK, bod_sc_FK) VALUES ((SELECT id FROM user WHERE email = %s), (SELECT id FROM book_orderdetail ORDER BY id DESC LIMIT 1))'''
-        cursor.execute(query, (session['email']))
-        conn.commit()
-
-    conn.close()
-
-
-def load_cart(mysql):
-    conn = mysql.connect()
-    cursor = conn.cursor()
-
-    bod_id_query = '''SELECT bod_sc_FK FROM shoppingcart WHERE userID_sc_FK = (SELECT id FROM user WHERE email = %s)'''
-    cursor.execute(bod_id_query, (session['email']))
-    bod_ids = cursor.fetchall()
-
-    book_payload = {}
-    for bod_id in bod_ids:
-        book_query = '''SELECT ISBN_bod_FK,quantity FROM book_orderdetail WHERE id=%s'''
-        cursor.execute(book_query, (bod_id))
-        results = cursor.fetchall()
-        book = results[0][0]
-        quantity = results[0][1]
-        book_payload[book] = int(quantity)
-    if len(book_payload) == 0:
-        session['shopping_cart'] = {}
-    else:
-        session['shopping_cart'] = book_payload
-    conn.close()
