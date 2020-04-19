@@ -29,7 +29,6 @@ $(() => {
         setTimeout(updateTotal, DURATION_M_SEC);
     }
 });
-
 function validate(evt) {
     let sel = evt.target;
     let check = parseInt($(sel).val());
@@ -39,12 +38,12 @@ function validate(evt) {
     }
     return true;
 }
-
 $(".quantity").on("focusout", function (evt) {
     let sel = evt.target;
     if (!validate(evt)) {
         $(sel).val(1);
         updateIndividual(sel);
+        setTimeout(updateTotal, DURATION_M_SEC);
     }
 });
 $(".quantity").on("input", function (evt) {
@@ -62,7 +61,6 @@ $(".quantity").on("input", function (evt) {
         data: {'bookISBN': isbn, 'newQuantity': $(sel).val()}
     });
 });
-
 function updateIndividual(inp) {
     let origPrice = parseFloat(inp.getAttribute(NILE_BUY_PR_ATTR));
     let isbn = inp.getAttribute(NILE_ISBN_ATTR);

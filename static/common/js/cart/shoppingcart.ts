@@ -50,7 +50,8 @@ $(".quantity").on("focusout", function (evt: Event) {
     let sel = evt.target;
     if (!validate(evt)) {
         $(sel).val(1);
-        updateIndividual(sel as HTMLInputElement)
+        updateIndividual(sel as HTMLInputElement);
+        setTimeout(updateTotal, DURATION_M_SEC);
     }
 });
 
