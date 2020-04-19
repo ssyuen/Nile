@@ -36,39 +36,22 @@ $(() => {
     }
 });
 
-function validate(evt: Event) {
-    let sel = evt.target;
-    let check = parseInt(<string>$(sel).val());
+
+$(".quantity").on("input", function (evt: Event) {
+    let check = parseInt(<string>$(evt.target).val());
     if (check <= 0 || check > 80 || isNaN(check) || check === null || check === undefined) {
         evt.preventDefault();
         return false;
     }
-    return true
-}
-
-$(".quantity").on("focusout", function (evt: Event) {
-    let sel = evt.target;
-    if (!validate(evt)) {
-        $(sel).val(1);
-        updateIndividual(sel as HTMLInputElement);
-        setTimeout(updateTotal, DURATION_M_SEC);
-    }
-});
-
-$(".quantity").on("input", function (evt: Event) {
-    let sel = evt.target;
-    if (!validate(evt)) {
-        return false;
-    }
-    let x: HTMLInputElement = (sel) as HTMLInputElement;
+    let x: HTMLInputElement = (evt.target) as HTMLInputElement;
     updateIndividual(x);
     setTimeout(updateTotal, DURATION_M_SEC);
-    let isbn = $(sel).attr("nile-isbn");
+    let isbn = $(evt.target).attr("nile-isbn");
 
     $.ajax({
         url: '/shoppingcart/',
         type: 'POST',
-        data: {'bookISBN': isbn, 'newQuantity': $(sel).val()}
+        data: {'bookISBN': isbn, 'newQuantity': $(evt.target).val()}
     });
 });
 

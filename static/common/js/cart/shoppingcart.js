@@ -29,36 +29,20 @@ $(() => {
         setTimeout(updateTotal, DURATION_M_SEC);
     }
 });
-function validate(evt) {
-    let sel = evt.target;
-    let check = parseInt($(sel).val());
+$(".quantity").on("input", function (evt) {
+    let check = parseInt($(evt.target).val());
     if (check <= 0 || check > 80 || isNaN(check) || check === null || check === undefined) {
         evt.preventDefault();
         return false;
     }
-    return true;
-}
-$(".quantity").on("focusout", function (evt) {
-    let sel = evt.target;
-    if (!validate(evt)) {
-        $(sel).val(1);
-        updateIndividual(sel);
-        setTimeout(updateTotal, DURATION_M_SEC);
-    }
-});
-$(".quantity").on("input", function (evt) {
-    let sel = evt.target;
-    if (!validate(evt)) {
-        return false;
-    }
-    let x = (sel);
+    let x = (evt.target);
     updateIndividual(x);
     setTimeout(updateTotal, DURATION_M_SEC);
-    let isbn = $(sel).attr("nile-isbn");
+    let isbn = $(evt.target).attr("nile-isbn");
     $.ajax({
         url: '/shoppingcart/',
         type: 'POST',
-        data: {'bookISBN': isbn, 'newQuantity': $(sel).val()}
+        data: {'bookISBN': isbn, 'newQuantity': $(evt.target).val()}
     });
 });
 function updateIndividual(inp) {
