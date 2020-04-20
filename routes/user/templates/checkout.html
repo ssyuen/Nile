@@ -554,6 +554,7 @@
                         </li>
                     {% endfor %}
                     <li class="list-group-item d-flex justify-content-between">
+<<<<<<< HEAD
                         <span class="complement">Shipping Cost</span>
                         <strong class="text-danger">+ $<span class="sidebar-item-price pl-0"
                                                              id="shippingTotal">{{ "%.2f"|format(shipping_price) }}</span></strong>
@@ -561,6 +562,10 @@
                     <li class="list-group-item d-flex justify-content-between">
                         <span class="complement">Sales Tax</span>
                         <strong class="text-danger">+ $<span id="salesTax"></span></strong>
+=======
+                        <span class="complement-bold">Shipping Cost (USD)</span>
+                        <strong class="primary-md">$<span>{{ shipping_price }}</span></strong>
+>>>>>>> backendCheckoutFeatures
                     </li>
                     <li class="list-group-item d-flex justify-content-between">
                         <span class="complement-bold">GRAND TOTAL (USD)</span>
