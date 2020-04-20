@@ -5,33 +5,24 @@ from server import mysql
 import sys
 import string
 
-from routes.common.routes import remember_me
+from routes.common.util import remember_me, cart_session
 from routes.user.routes import send_change_conf_email
+from routes.admin.util import admin_required
 
 admin_bp = Blueprint('admin_bp', __name__,
                      template_folder='templates', static_folder='static')
 
 
-def admin_required(f):
-    @wraps(f)
-    def wrapped_func(*args, **kws):
-        if 'admin' in session and session['admin']:
-            return f(*args, **kws)
-        else:
-            flash('You need to be an admin to access that area!')
-            return redirect(url_for('common_bp.landing_page'))
-    return wrapped_func
-
 @admin_bp.route('/overview/')
-@admin_required
-@remember_me
+@admin_required(session)
+@remember_me(session)
 def overview():
     return render_template('./adminOverview.html')
 
 
 @admin_bp.route('/change_name/',methods=['GET','POST'])
-@admin_required
-@remember_me
+@admin_required(session)
+@remember_me(session)
 def change_name():
     if request.method == 'GET':
         return render_template('adminChangeName.html')
@@ -70,8 +61,8 @@ def change_name():
 
 
 @admin_bp.route('/change_pass/',methods=['GET','POST'])
-@admin_required
-@remember_me
+@admin_required(session)
+@remember_me(session)
 def change_pass():
     if request.method == 'POST':
         conn = mysql.connect()
@@ -99,29 +90,29 @@ def change_pass():
         return render_template('adminChangePassword.html')
 
 @admin_bp.route('/manage_books/')
-@admin_required
-@remember_me
+@admin_required(session)
+@remember_me(session)
 def manage_books():
     return render_template('./adminManageBooks.html')
 
 
 @admin_bp.route('/manage_promotions/')
-@admin_required
-@remember_me
+@admin_required(session)
+@remember_me(session)
 def manage_promotions():
     return render_template('./adminManagePromotions.html')
 
 
 @admin_bp.route('/manage_users/')
-@admin_required
-@remember_me
+@admin_required(session)
+@remember_me(session)
 def manage_users():
     return render_template('./adminManageUsers.html')
 
 
 @admin_bp.route('/manage_books/mbooksf/', methods=['GET', 'POST'])
-@admin_required
-@remember_me
+@admin_required(session)
+@remember_me(session)
 def add_books_form():
     if request.method == 'POST':
         book_title = string.capwords(request.form.get('bookTitle')).strip()
@@ -166,15 +157,15 @@ def add_books_form():
 
 
 @admin_bp.route('/manage_promotions/epromof/')
-@admin_required
-@remember_me
+@admin_required(session)
+@remember_me(session)
 def edit_promo_form():
     return render_template('./forms/edit_promo_form.html')
 
 
 @admin_bp.route('/manage_promotions/apromof/', methods=['GET', 'POST'])
-@admin_required
-@remember_me
+@admin_required(session)
+@remember_me(session)
 def add_promo_form():
     if request.method == 'POST':
         promo_name = request.form.get('promoName')
@@ -201,14 +192,14 @@ def add_promo_form():
 
 
 @admin_bp.route('/manage_users/eusrf/')
-@admin_required
-@remember_me
+@admin_required(session)
+@remember_me(session)
 def edit_users_form():
     return render_template('./forms/edit_users_form.html')
 
 @admin_bp.route('/subscriptions/',methods=['POST','GET'])
-@remember_me
-@admin_required
+@remember_me(session)
+@admin_required(session)
 def manage_subscriptions():
 
     if request.method == 'GET':
