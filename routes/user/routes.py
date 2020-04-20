@@ -153,7 +153,7 @@ def checkout():
     elif request.method == 'GET':
 
         total_quantity = 0
-        grand_total = 0
+        book_total = 0
         # BOOKS FROM SHOPPING CART
         book_payload = {}
         for isbn, quantity in session['shopping_cart'].items():
@@ -165,7 +165,7 @@ def checkout():
             author_name = results[2]
             price = results[3]
             total_price = price * quantity
-            grand_total += total_price
+            book_total += total_price
             total_quantity += quantity
             book_payload[isbn] = {'nile_cover_id': nile_cover_ID, 'title': title,
                                   'author_name': author_name, 'price': price, 'total_price': total_price, 'quantity': quantity}
@@ -214,17 +214,11 @@ def checkout():
             }
 
         shipping_price = calculate_shipping(quantity=total_quantity)
+        print(f'grand total --> {book_total}')
         return render_template('checkout.html', book_payload=book_payload, shipping_payload=shipping_payload,
-                               billing_payload=payment_payload, total_quantity=total_quantity,grand_total=float(grand_total) + float(shipping_price),
+                               billing_payload=payment_payload, total_quantity=total_quantity,book_total=book_total,
                                shipping_price=shipping_price)
 
-
-# @user_bp.route('/base_profile/', methods=['POST'])
-# @login_required(session)
-# @secure_link(session,'order_token')
-# @cart_session(session)
-# @remember_me(session)
-# @user_only(session)
 
 @user_bp.route('/base_profile/', methods=['POST'])
 @login_required(session)
