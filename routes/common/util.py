@@ -57,7 +57,8 @@ def secure_link(session,purpose):
         def wrapped_func(*args, **kws):
             # if any of these if-else-ifs are entered, that means the link is still good
             if (purpose == 'register_token' or 'forgot_token' or 'order_token'):
-                if (datetime.now() - session[purpose]) < timedelta.seconds(300):
+                session_time = [st for st in session[purpose].values()]
+                if (datetime.now() - session_time) < timedelta.seconds(300):
                     return f(*args, **kws)
             else:
                 # THIS SHOULD REDIRECT TO EXPIRED PAGE LINK
