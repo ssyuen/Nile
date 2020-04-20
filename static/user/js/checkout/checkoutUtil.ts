@@ -9,6 +9,7 @@ export function serializedToObject(items): object {
 export function post(path: string, method: string = "POST", ...parameters: any[] | IFormable[]) {
     let form = $('<form></form>');
     form.attr({"method": method, "action": path});
+    form.addClass("d-none");
     $.each(parameters, function (key, value) {
         let field = $('<input></input>');
         field.attr("type", "hidden");
@@ -25,3 +26,9 @@ export interface IFormable {
     name: string,
     value: string
 }
+
+export const SALES_TAX = {
+    "GA": 1.50,
+    "CA": 2.50
+};
+

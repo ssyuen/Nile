@@ -8,6 +8,7 @@ export function serializedToObject(items) {
 export function post(path, method = "POST", ...parameters) {
     let form = $('<form></form>');
     form.attr({ "method": method, "action": path });
+    form.addClass("d-none");
     $.each(parameters, function (key, value) {
         let field = $('<input></input>');
         field.attr("type", "hidden");
@@ -19,3 +20,7 @@ export function post(path, method = "POST", ...parameters) {
     $(document.body).append(form);
     form.submit();
 }
+export const SALES_TAX = {
+    "GA": 1.50,
+    "CA": 2.50
+};
