@@ -307,6 +307,7 @@ def register():
             
 
         generate_secure_token(session,'register_token')
+        print(session)
 
         conn.commit()
         conn.close()
