@@ -27,14 +27,21 @@ export class RegistrationInputValidator extends InputValidator {
     static zipCodeConstraint(value) {
         return (/^\d{5}$|^\d{5}-\d{4}$/).test(value);
     }
+
     static cityConstraint(value) {
         return RegistrationInputValidator.firstNameConstraint(value); //Same constraint...that's why
     }
+
     static creditCardConstraint(cc) {
         return cc.checkNetwork();
     }
+
     static cvvConstraint(cc) {
         return cc.checkCVV();
+    }
+
+    static selectConstraint(sel) {
+        return $(sel).find(":selected").val() !== "";
     }
 }
 RegistrationInputValidator.INVALID_PASS_MSS = [`
@@ -87,6 +94,16 @@ RegistrationInputValidator.INVALID_CVV_MSS = [`
           CVV is not valid.
         </small>
 `, "#invalidCVV"];
+RegistrationInputValidator.INVALID_STATE_MSS = [`
+        <small class="text-danger error-message" id="invalidState"">
+          Select a State.
+        </small>
+`, "#invalidState"];
+RegistrationInputValidator.INVALID_COUNTRY_MSS = [`
+        <small class="text-danger error-message" id="invalidCountry"">
+          Select a Country.
+        </small>
+`, "#invalidCountry"];
 export const PURPOSE = {
     Firstname: {
         template: RegistrationInputValidator.INVALID_F_NAME_MSS,
@@ -127,6 +144,14 @@ export const PURPOSE = {
     CVV: {
         template: RegistrationInputValidator.INVALID_CVV_MSS,
         constraint: RegistrationInputValidator.cvvConstraint
+    },
+    State: {
+        template: RegistrationInputValidator.INVALID_STATE_MSS,
+        constraint: RegistrationInputValidator.selectConstraint
+    },
+    Country: {
+        template: RegistrationInputValidator.INVALID_COUNTRY_MSS,
+        constraint: RegistrationInputValidator.selectConstraint
     }
 };
 export class CreditCard {

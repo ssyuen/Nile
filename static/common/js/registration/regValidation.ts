@@ -61,6 +61,17 @@ export class RegistrationInputValidator extends InputValidator {
         </small>
 `, "#invalidCVV"];
 
+    static INVALID_STATE_MSS: [string, string] = [`
+        <small class="text-danger error-message" id="invalidState"">
+          Select a State.
+        </small>
+`, "#invalidState"];
+
+    static INVALID_COUNTRY_MSS: [string, string] = [`
+        <small class="text-danger error-message" id="invalidCountry"">
+          Select a Country.
+        </small>
+`, "#invalidCountry"];
 
     public static firstNameConstraint(value: string): boolean {
         return value.length >= 1;
@@ -100,6 +111,10 @@ export class RegistrationInputValidator extends InputValidator {
 
     public static cvvConstraint(cc: CreditCard): boolean {
         return cc.checkCVV();
+    }
+
+    public static selectConstraint(sel: HTMLSelectElement): boolean {
+        return $(sel).find(":selected").val() !== "";
     }
 }
 
@@ -152,6 +167,16 @@ export const PURPOSE = {
     CVV: {
         template: RegistrationInputValidator.INVALID_CVV_MSS,
         constraint: RegistrationInputValidator.cvvConstraint
+    },
+
+    State: {
+        template: RegistrationInputValidator.INVALID_STATE_MSS,
+        constraint: RegistrationInputValidator.selectConstraint
+    },
+
+    Country: {
+        template: RegistrationInputValidator.INVALID_COUNTRY_MSS,
+        constraint: RegistrationInputValidator.selectConstraint
     }
 };
 
