@@ -133,15 +133,15 @@ function forceEntry(formEntry: JQuery, toggleLabel: JQuery, toggler: JQuery, tog
 
 
 function updateSalesTax(sel: JQuery, withOption = true): number {
-    let stateTax: number;
+    let salesTax: number;
 
     if (withOption == true) {
-        SALES_TAX[sel.find(":selected").attr("nile-shipping-state")]
+        salesTax = SALES_TAX[sel.find(":selected").attr("nile-shipping-state")]
     } else {
-        SALES_TAX[sel.find(":selected").val() as string];
+        salesTax = SALES_TAX[sel.find(":selected").val() as string];
     }
-    salesTaxCounter.update(stateTax);
-    return stateTax;
+    salesTaxCounter.update(salesTax);
+    return salesTax;
 }
 
 
