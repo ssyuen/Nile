@@ -213,7 +213,7 @@ def checkout():
                 'card_expiry': str(i[11].year) + '-' + str(i[11].month).zfill(2)
             }
 
-        shipping_price = "{:.2f}".format(calculate_shipping(quantity=total_quantity))
+        shipping_price = calculate_shipping(quantity=total_quantity)
         return render_template('checkout.html', book_payload=book_payload, shipping_payload=shipping_payload,
                                billing_payload=payment_payload, total_quantity=total_quantity,grand_total=float(grand_total) + float(shipping_price),
                                shipping_price=shipping_price)
