@@ -28,6 +28,24 @@ const pmEntry = $("#paymentMethodEntry");
 const newPMEntry = $("#newPaymentMethodEntry");
 const paymentSelect = $("#paymentMethodSelect");
 const shippingSelect = $("#shippingAddressSelect");
+if (paymentSelect.length) {
+    stopAllInput(pmEntry);
+    fillPMForm(paymentSelect);
+    selectFirstOption(shippingSelect);
+    paymentSelect.on("change", function () {
+        fillPMForm($(this));
+    });
+}
+if (shippingSelect.length) {
+    stopAllInput($(addrEntry));
+    fillShippingForm(shippingSelect);
+    selectFirstOption(shippingSelect);
+    shippingSelect.on("change", function () {
+        fillShippingForm($(this));
+        let num = updateSalesTax($(this));
+        updateTotal(num);
+    });
+}
 let counter;
 let salesTaxCounter;
 console.log("CountUp Sales Tax END VALUE: " + 0.00 + "Expected: 0.00");
@@ -58,22 +76,11 @@ counter = new CountUp(CHECKOUT_TOTAL_PRICE.attr('id'), total + salestax, {
     startVal: 0.00
 });
 startCounter(counter);
-if (paymentSelect.length) {
-    stopAllInput(pmEntry);
-    fillPMForm(paymentSelect);
-    paymentSelect.on("change", function () {
-        fillPMForm($(this));
-    });
+
+function selectFirstOption(sel) {
+    sel.find("option:first").attr('selected', 'selected');
 }
-if (shippingSelect.length) {
-    stopAllInput($(addrEntry));
-    fillShippingForm(shippingSelect);
-    shippingSelect.on("change", function () {
-        fillShippingForm($(this));
-        let num = updateSalesTax($(this));
-        updateTotal(num);
-    });
-}
+
 function stopAllInput(entry) {
     $(entry).find('select').prop("disabled", true);
     $(entry).find('input').prop("readonly", true);
@@ -103,14 +110,11 @@ function forceEntry(formEntry, toggleLabel, toggler, toggleText, inputType) {
     }
 }
 function updateSalesTax(sel, withOption = true) {
-    let salesTax;
-    if (withOption == true) {
-        salesTax = SALES_TAX[sel.find(":selected").attr("nile-shipping-state")];
-    } else {
-        salesTax = SALES_TAX[sel.find(":selected").val()];
-    }
-    salesTaxCounter.update(salesTax);
-    return salesTax;
+    let stateTax = (withOption === true ?
+        SALES_TAX[sel.find(":selected").attr("nile-shipping-state")] :
+        SALES_TAX[sel.find(":selected").val()]);
+    salesTaxCounter.update(stateTax);
+    return stateTax;
 }
 function switchToggler(toggler) {
     if ($(toggler).text() === "View") {
