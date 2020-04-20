@@ -60,7 +60,6 @@ if (shippingSelect.length) {
 let counter: CountUp;
 let salesTaxCounter: CountUp;
 
-console.log("CountUp Sales Tax END VALUE: " + 0.00 + "Expected: 0.00");
 salesTaxCounter = new CountUp('salesTax', 0.00, {
     decimalPlaces: 2,
     duration: COUNTER_DURATION,
@@ -76,8 +75,6 @@ if (!shippingSelect.length) {
     salestax = updateSalesTax(shippingSelect);
 }
 
-console.log("Sales Tax Amt: " + salestax);
-
 if (!paymentSelect.length) {
     forceEntry(newPMEntry, choosePMToggleLabel, pmToggler, "Enter a Payment Method", CHECKOUT_TYPE.PAYMENT_METHOD);
 }
@@ -87,7 +84,6 @@ $(".sidebar-item-price").each(function (index: number, elem: HTMLSpanElement) {
     total += parseFloat(elem.innerHTML);
 });
 
-console.log("CountUp Grand Total END VALUE: " + (total + salestax) + " Expected: 64.44");
 counter = new CountUp(CHECKOUT_TOTAL_PRICE.attr('id'), total + salestax, {
     decimalPlaces: 2,
     duration: COUNTER_DURATION,
@@ -95,7 +91,6 @@ counter = new CountUp(CHECKOUT_TOTAL_PRICE.attr('id'), total + salestax, {
 });
 
 startCounter(counter);
-
 
 function stopAllInput(entry: JQuery) {
     $(entry).find(<any>'select').prop("disabled", true);
@@ -132,13 +127,11 @@ function forceEntry(formEntry: JQuery, toggleLabel: JQuery, toggler: JQuery, tog
 
 
 function updateSalesTax(sel: JQuery, withOption = true): number {
-    let x = sel.find(":selected");
-    console.log(x);
-    let stateTax: number = (withOption === true ?
-        SALES_TAX[x.attr("nile-shipping-state")] :
-        SALES_TAX[x.val() as string]);
-    salesTaxCounter.update(stateTax);
-    return stateTax;
+    let salesTax: number = (withOption === true ?
+        SALES_TAX[sel.find(":selected").attr("nile-shipping-state")] :
+        SALES_TAX[sel.find(":selected").val() as string]);
+    salesTaxCounter.update(salesTax);
+    return salesTax;
 }
 
 
