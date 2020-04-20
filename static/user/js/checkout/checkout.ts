@@ -42,7 +42,6 @@ const enum CHECKOUT_TYPE {
 if (paymentSelect.length) {
     stopAllInput(pmEntry);
     fillPMForm(paymentSelect);
-    selectFirstOption(shippingSelect);
     paymentSelect.on("change", function () {
         fillPMForm($(this));
     });
@@ -51,7 +50,6 @@ if (paymentSelect.length) {
 if (shippingSelect.length) {
     stopAllInput($(addrEntry));
     fillShippingForm(shippingSelect);
-    selectFirstOption(shippingSelect);
     shippingSelect.on("change", function () {
         fillShippingForm($(this));
         let num = updateSalesTax($(this));
@@ -98,10 +96,6 @@ counter = new CountUp(CHECKOUT_TOTAL_PRICE.attr('id'), total + salestax, {
 
 startCounter(counter);
 
-function selectFirstOption(sel: JQuery) {
-    sel.find("option:first").attr('selected', 'selected');
-}
-
 
 function stopAllInput(entry: JQuery) {
     $(entry).find(<any>'select').prop("disabled", true);
@@ -138,9 +132,11 @@ function forceEntry(formEntry: JQuery, toggleLabel: JQuery, toggler: JQuery, tog
 
 
 function updateSalesTax(sel: JQuery, withOption = true): number {
+    let x = sel.find(":selected");
+    console.log(x);
     let stateTax: number = (withOption === true ?
-        SALES_TAX[sel.find(":selected").attr("nile-shipping-state")] :
-        SALES_TAX[sel.find(":selected").val() as string]);
+        SALES_TAX[x.attr("nile-shipping-state")] :
+        SALES_TAX[x.val() as string]);
     salesTaxCounter.update(stateTax);
     return stateTax;
 }
