@@ -71,12 +71,10 @@ if (shippingSelect.length) {
         updateTotal(num);
     });
 }
-
 function stopAllInput(entry) {
     $(entry).find('select').prop("disabled", true);
     $(entry).find('input').prop("readonly", true);
 }
-
 function startCounter(ctr) {
     if (!ctr.error) {
         ctr.start();
@@ -84,7 +82,6 @@ function startCounter(ctr) {
         console.error(ctr.error);
     }
 }
-
 function forceEntry(formEntry, toggleLabel, toggler, toggleText, inputType) {
     formEntry.addClass("show");
     toggleLabel.text(toggleText)
@@ -102,7 +99,6 @@ function forceEntry(formEntry, toggleLabel, toggler, toggleText, inputType) {
         $(".pm-radio-holder").hide();
     }
 }
-
 function updateSalesTax(sel, withOption = true) {
     let stateTax = (withOption == true ?
         SALES_TAX[sel.find(":selected").attr("nile-shipping-state")] :
@@ -110,7 +106,6 @@ function updateSalesTax(sel, withOption = true) {
     salesTaxCounter.update(stateTax);
     return stateTax;
 }
-
 function switchToggler(toggler) {
     if ($(toggler).text() === "View") {
         $(toggler).text("Close View");
@@ -118,13 +113,11 @@ function switchToggler(toggler) {
         $(toggler).text("View");
     }
 }
-
 function updateTotal(...args) {
     let sum = arrSum(args);
     let newVal = SUBTOTAL_PLUS_SHIPPING + sum;
     counter.update(newVal);
 }
-
 function fillShippingForm(select) {
     let option = select.find(":selected");
     $("#addressEntry #checkoutAddressStreetAddress").attr("value", $(option).attr("nile-shipping-street1"));
@@ -165,7 +158,6 @@ function fillPMForm(select) {
     $("#paymentMethodEntry #checkoutBillingAddressState").val($(option).attr("nile-billing-state"));
     $("#paymentMethodEntry #checkoutBillingAddressCountry").val($(option).attr("nile-billing-country"));
 }
-
 /* Input Validation amirite? */
 /*
     Optional Address Fields
@@ -191,7 +183,6 @@ const BILLING_COUNTRY = document.getElementById("newBillingAddressCountry");
 const vcSH = new RegistrationInputValidator();
 const vcBL = new RegistrationInputValidator();
 const cc = new CreditCard();
-
 function proceedCheckoutSubmit() {
     let shipOpt = $(shippingSelect).find(":selected");
     let payOpt = $(paymentSelect).find(":selected");
@@ -236,7 +227,6 @@ function proceedCheckoutSubmit() {
     return false;
     post(FORM.attr("nile-dest"), "POST", final);
 }
-
 function checkEmptyInput(entry) {
     entry.find("input:required, select:required").each(function (index, value) {
         if ($(value).is('input')) {
@@ -251,7 +241,6 @@ function checkEmptyInput(entry) {
     });
     return true;
 }
-
 Array('input', 'focusin').forEach((evt) => {
     CARD_F_NAME.addEventListener(evt, function () {
         vcBL.setValidity(this, this, PURPOSE.Firstname, PURPOSE.Firstname.constraint(this.value));
