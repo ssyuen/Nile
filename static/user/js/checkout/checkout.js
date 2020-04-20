@@ -103,14 +103,14 @@ function forceEntry(formEntry, toggleLabel, toggler, toggleText, inputType) {
     }
 }
 function updateSalesTax(sel, withOption = true) {
-    let stateTax;
+    let salesTax;
     if (withOption == true) {
-        SALES_TAX[sel.find(":selected").attr("nile-shipping-state")];
+        salesTax = SALES_TAX[sel.find(":selected").attr("nile-shipping-state")];
     } else {
-        SALES_TAX[sel.find(":selected").val()];
+        salesTax = SALES_TAX[sel.find(":selected").val()];
     }
-    salesTaxCounter.update(stateTax);
-    return stateTax;
+    salesTaxCounter.update(salesTax);
+    return salesTax;
 }
 function switchToggler(toggler) {
     if ($(toggler).text() === "View") {
