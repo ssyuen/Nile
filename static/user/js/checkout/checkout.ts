@@ -39,6 +39,26 @@ const enum CHECKOUT_TYPE {
     PAYMENT_METHOD = 2
 }
 
+if (paymentSelect.length) {
+    stopAllInput(pmEntry);
+    fillPMForm(paymentSelect);
+    selectFirstOption(shippingSelect);
+    paymentSelect.on("change", function () {
+        fillPMForm($(this));
+    });
+}
+
+if (shippingSelect.length) {
+    stopAllInput($(addrEntry));
+    fillShippingForm(shippingSelect);
+    selectFirstOption(shippingSelect);
+    shippingSelect.on("change", function () {
+        fillShippingForm($(this));
+        let num = updateSalesTax($(this));
+        updateTotal(num);
+    });
+}
+
 let counter: CountUp;
 let salesTaxCounter: CountUp;
 
@@ -78,23 +98,8 @@ counter = new CountUp(CHECKOUT_TOTAL_PRICE.attr('id'), total + salestax, {
 
 startCounter(counter);
 
-if (paymentSelect.length) {
-    stopAllInput(pmEntry);
-    fillPMForm(paymentSelect);
-    paymentSelect.on("change", function () {
-        fillPMForm($(this));
-    });
-}
-
-if (shippingSelect.length) {
-    stopAllInput($(addrEntry));
-    fillShippingForm(shippingSelect);
-
-    shippingSelect.on("change", function () {
-        fillShippingForm($(this));
-        let num = updateSalesTax($(this));
-        updateTotal(num);
-    });
+function selectFirstOption(sel: JQuery) {
+    sel.find("option:first").attr('selected', 'selected');
 }
 
 
@@ -133,15 +138,11 @@ function forceEntry(formEntry: JQuery, toggleLabel: JQuery, toggler: JQuery, tog
 
 
 function updateSalesTax(sel: JQuery, withOption = true): number {
-    let salesTax: number;
-
-    if (withOption == true) {
-        salesTax = SALES_TAX[sel.find(":selected").attr("nile-shipping-state")]
-    } else {
-        salesTax = SALES_TAX[sel.find(":selected").val() as string];
-    }
-    salesTaxCounter.update(salesTax);
-    return salesTax;
+    let stateTax: number = (withOption === true ?
+        SALES_TAX[sel.find(":selected").attr("nile-shipping-state")] :
+        SALES_TAX[sel.find(":selected").val() as string]);
+    salesTaxCounter.update(stateTax);
+    return stateTax;
 }
 
 
