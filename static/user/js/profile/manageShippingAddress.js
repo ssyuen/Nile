@@ -3,7 +3,7 @@ import { RegistrationInputValidator, PURPOSE } from "../../../common/js/registra
 $(".remove-addr-btn").click(function (event) {
     let form = getClosestForm(event);
     let addressId = $(form).attr("nile-address-ident");
-    submitRemoval(form, { name: "addressID", value: addressId });
+    submitRemoval(form, this, { name: "addressID", value: addressId });
 });
 $(".update-addr-btn").click(function (event) {
     let form = getClosestForm(event);
@@ -21,7 +21,7 @@ $(".update-addr-btn").click(function (event) {
         event.preventDefault();
         return false;
     }
-    submitUpdate(form, { name: "addressID", value: addressId });
+    submitUpdate(form, this, { name: "addressID", value: addressId });
 });
 $(".edit-btn").click(function (event) {
     let form = $(getClosestCard(event)).find("form").first();
@@ -50,7 +50,7 @@ $("#createShippingAddress").click(function (event) {
         event.preventDefault();
         return false;
     }
-    submit($("#createShippingAddressForm"));
+    submit($("#createShippingAddressForm"), this);
 });
 let createValidator = new RegistrationInputValidator();
 Array('input', 'focusin').forEach((evt) => {
@@ -63,5 +63,13 @@ Array('input', 'focusin').forEach((evt) => {
     });
     $("#addAddressCity").bind(evt, function () {
         createValidator.setValidity(this, this, PURPOSE.City, PURPOSE.City.constraint(this.value));
+    });
+});
+Array('change', 'focusin').forEach((evt) => {
+    $("#addAddressState").bind(evt, function () {
+        createValidator.setValidity(this, this, PURPOSE.State, PURPOSE.State.constraint(this));
+    });
+    $("#addAddressCountry").bind(evt, function () {
+        createValidator.setValidity(this, this, PURPOSE.Country, PURPOSE.Country.constraint(this));
     });
 });
