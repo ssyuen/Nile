@@ -30,6 +30,7 @@ const paymentSelect = $("#paymentMethodSelect");
 const shippingSelect = $("#shippingAddressSelect");
 let counter;
 let salesTaxCounter;
+console.log("CountUp Sales Tax END VALUE: " + 0.00 + "Expected: 0.00");
 salesTaxCounter = new CountUp('salesTax', 0.00, {
     decimalPlaces: 2,
     duration: COUNTER_DURATION,
@@ -42,6 +43,7 @@ if (!shippingSelect.length) {
 } else {
     salestax = updateSalesTax(shippingSelect);
 }
+console.log("Sales Tax Amt: " + salestax);
 if (!paymentSelect.length) {
     forceEntry(newPMEntry, choosePMToggleLabel, pmToggler, "Enter a Payment Method", 2 /* PAYMENT_METHOD */);
 }
@@ -49,6 +51,7 @@ let total = 0;
 $(".sidebar-item-price").each(function (index, elem) {
     total += parseFloat(elem.innerHTML);
 });
+console.log("CountUp Grand Total END VALUE: " + (total + salestax) + " Expected: 64.44");
 counter = new CountUp(CHECKOUT_TOTAL_PRICE.attr('id'), total + salestax, {
     decimalPlaces: 2,
     duration: COUNTER_DURATION,
