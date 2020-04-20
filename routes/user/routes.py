@@ -584,10 +584,10 @@ def payment_methods():
 
 
 @user_bp.route('/settings/', methods=['POST', 'GET'])
-@login_required
-@cart_session
-@remember_me
-@user_only
+@login_required(session)
+@cart_session(session)
+@remember_me(session)
+@user_only(session)
 def settings():
     if request.method == 'GET':
         return render_template('profile/profileSubscriptions.html')

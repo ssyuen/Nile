@@ -1,106 +1,101 @@
 {% extends "base.html" %}
 {% block base_title %}
-    My Profile - {% block title %}{% endblock %}
+My Profile - {% block title %}{% endblock %}
 {% endblock %}
 
 {% block base_head %}
-    {{ super() }}
+{{ super() }}
 
-    {% block head %}
-        <style>
-            .card-specific {
-                border: solid 1px lightgray;
-                border-radius: 10px;
-                padding: 20px 20px 0 20px;
-                margin-bottom: 20px
-            }
+{% block head %}
+<style>
+    .card-specific {
+        border: solid 1px lightgray;
+        border-radius: 10px;
+        padding: 20px 20px 0 20px;
+        margin-bottom: 20px
+    }
 
-            .input-group .btn-outline-warning {
-                border-top-right-radius: 5px;
-                border-bottom-right-radius: 5px;
-            }
+    .input-group .btn-outline-warning {
+        border-top-right-radius: 5px;
+        border-bottom-right-radius: 5px;
+    }
 
-            @media (max-width: 991px) {
-                #accountListings {
-                    margin-bottom: 20px;
-                }
-            }
+    @media (max-width: 991px) {
+        #accountListings {
+            margin-bottom: 20px;
+        }
+    }
 
-            #accountListings > a {
-                height: 65px;
-            }
-        </style>
-    {% endblock head %}
+    #accountListings>a {
+        height: 65px;
+    }
+</style>
+{% endblock head %}
 {% endblock base_head %}
 
 {% block mainTitle %}
-    <div class="text-left" id="welcome">
-        <p class="primary-lg" id="account-holder">Welcome Back, <span
-                id="name">{{ session['firstName'] }}.</span></p>
-    </div>
+<div class="text-left" id="welcome">
+    <p class="primary-lg" id="account-holder">Welcome Back, <span id="name">{{ session['firstName'] }}.</span></p>
+</div>
 {% endblock %}
 
 {% block main %}
-    <div class="container footer-sep">
-        <div class="row">
-            <nav class="col-lg-3">
-                <ul class="list-group complement-light" id="accountListings">
-                    <a class="list-group-item waves-effect" id="accountOverview"
-                       href="{{ url_for('user_bp.overview') }}">
-                        Account Overview
-                    </a>
-                    <a class="list-group-item waves-effect" id="changeMyName"
-                       href="{{ url_for('user_bp.change_name') }}">
-                        Change My Name
-                    </a>
-                    <a class="list-group-item waves-effect" id="changeMyPass"
-                       href="{{ url_for('user_bp.change_pass') }}">
-                        Change My Password
-                    </a>
-                    <a class="list-group-item waves-effect" id="orderHist"
-                       href="{{ url_for('user_bp.order_history') }}">
-                        Order History
-                    </a>
-                    <a class="list-group-item waves-effect" id="manageAddress"
-                       href="{{ url_for('user_bp.shipping_address') }}">
-                        Manage Shipping Address
-                    </a>
-                    <a class="list-group-item waves-effect" id="managePaymentInfo"
-                       href="{{ url_for('user_bp.payment_methods') }}">
-                        Manage Payment Methods
-                    </a>
-                    <a class="list-group-item waves-effect" id="settings" href="{{ url_for('user_bp.settings') }}">
-                        Account Settings
-                    </a>
-                </ul>
-            </nav> <!-- col.// -->
-            <main class="col-lg-9 main-content" id="mainContent">
-                {% block content %}
-                {% endblock %}
-            </main> <!-- col.// -->
-        </div>
+<div class="container footer-sep">
+    <div class="row">
+        <nav class="col-lg-3">
+            <ul class="list-group complement-light" id="accountListings">
+                <a class="list-group-item waves-effect" id="accountOverview" href="{{ url_for('user_bp.overview') }}">
+                    Account Overview
+                </a>
+                <a class="list-group-item waves-effect" id="changeMyName" href="{{ url_for('user_bp.change_name') }}">
+                    Change My Name
+                </a>
+                <a class="list-group-item waves-effect" id="changeMyPass" href="{{ url_for('user_bp.change_pass') }}">
+                    Change My Password
+                </a>
+                <a class="list-group-item waves-effect" id="orderHist" href="{{ url_for('user_bp.order_history') }}">
+                    Order History
+                </a>
+                <a class="list-group-item waves-effect" id="manageAddress"
+                    href="{{ url_for('user_bp.shipping_address') }}">
+                    Manage Shipping Address
+                </a>
+                <a class="list-group-item waves-effect" id="managePaymentInfo"
+                    href="{{ url_for('user_bp.payment_methods') }}">
+                    Manage Payment Methods
+                </a>
+                <a class="list-group-item waves-effect" id="settings" href="{{ url_for('user_bp.settings') }}">
+                    Account Settings
+                </a>
+            </ul>
+        </nav> <!-- col.// -->
+        <main class="col-lg-9 main-content" id="mainContent">
+            {% block content %}
+            {% endblock %}
+        </main> <!-- col.// -->
     </div>
+</div>
 
-    <script>
-        $(function () {
-            let x = window.location.href;
-            if (x.includes("/overview/")) {
-                $("#accountOverview").addClass("active");
-            } else if (x.includes("/change_name/")) {
-                $("#changeMyName").addClass("active");
-            } else if (x.includes("/change_pass/")) {
-                $("#changeMyPass").addClass("active");
-            } else if (x.includes("/order_history/")) {
-                $("#orderHist").addClass("active");
-            } else if (x.includes("/shipping_address/")) {
-                $("#manageAddress").addClass("active");
-            } else if (x.includes("/payment_methods/")) {
-                $("#managePaymentInfo").addClass("active");
-            } else if (x.includes("/returns/")) {
-                $("#returnRefund").addClass("active");
-            } else if (x.includes("/settings/")) {
-                $("#settings").addClass("active");
-            }
-        });
-    </script>
+<script>
+    $(function () {
+        let x = window.location.href;
+        if (x.includes("/overview/")) {
+            $("#accountOverview").addClass("active");
+        } else if (x.includes("/change_name/")) {
+            $("#changeMyName").addClass("active");
+        } else if (x.includes("/change_pass/")) {
+            $("#changeMyPass").addClass("active");
+        } else if (x.includes("/order_history/")) {
+            $("#orderHist").addClass("active");
+        } else if (x.includes("/shipping_address/")) {
+            $("#manageAddress").addClass("active");
+        } else if (x.includes("/payment_methods/")) {
+            $("#managePaymentInfo").addClass("active");
+        } else if (x.includes("/returns/")) {
+            $("#returnRefund").addClass("active");
+        } else if (x.includes("/settings/")) {
+            $("#settings").addClass("active");
+        }
+    });
+</script>
 {% endblock main %}
