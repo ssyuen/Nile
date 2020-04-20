@@ -10,7 +10,7 @@ const CHECKOUT_BTN: JQuery = $("#checkoutBtn");
 const CHECKOUT_TOTAL_PRICE: JQuery = $("#checkoutTotalPrice");
 const SUBTOTAL: string = $(CHECKOUT_TOTAL_PRICE).html();
 const SHIPPING_TOTAL: JQuery = $("#shippingTotal");
-const SUBTOTAL_PLUS_SHIPPING: Number = parseFloat(CHECKOUT_TOTAL_PRICE.html());
+const SUBTOTAL_PLUS_SHIPPING: number = parseFloat(CHECKOUT_TOTAL_PRICE.html()) + parseFloat(SHIPPING_TOTAL.html());
 
 const arrSum = arr => arr.reduce((a, b) => a + b, 0);
 const convertToNumber = arr => arr.map(Number);
@@ -50,7 +50,7 @@ salesTaxCounter = new CountUp('salesTax', 0.00, {
 
 startCounter(salesTaxCounter);
 
-let salestax = 0;
+let salestax: number = 0;
 if (!shippingSelect.length) {
     forceEntry(newAddrEntry, chooseShippingToggleLabel, shipToggler, "Enter a Shipping Address", CHECKOUT_TYPE.SHIPPING);
 } else {

@@ -9,7 +9,7 @@ const CHECKOUT_BTN = $("#checkoutBtn");
 const CHECKOUT_TOTAL_PRICE = $("#checkoutTotalPrice");
 const SUBTOTAL = $(CHECKOUT_TOTAL_PRICE).html();
 const SHIPPING_TOTAL = $("#shippingTotal");
-const SUBTOTAL_PLUS_SHIPPING = parseFloat(CHECKOUT_TOTAL_PRICE.html());
+const SUBTOTAL_PLUS_SHIPPING = parseFloat(CHECKOUT_TOTAL_PRICE.html()) + parseFloat(SHIPPING_TOTAL.html());
 const arrSum = arr => arr.reduce((a, b) => a + b, 0);
 const convertToNumber = arr => arr.map(Number);
 //* For the Shipping Address */
