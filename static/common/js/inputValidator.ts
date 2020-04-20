@@ -42,7 +42,7 @@ export class InputValidator {
         return true;
     }
 
-    public setValidity(elem: HTMLInputElement, loc: HTMLElement | string, purpose: IPurpose, constr: boolean) {
+    public setValidity(elem: HTMLInputElement | HTMLSelectElement, loc: HTMLElement | string, purpose: IPurpose, constr: boolean) {
         this.curr_validity.set(elem.id, this.validator(elem, loc, purpose['template'], constr));
     }
 

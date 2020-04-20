@@ -6,6 +6,7 @@ import {
 } from "./ShippingPaymentCommon.js";
 
 import {CreditCard, RegistrationInputValidator, PURPOSE} from "../../../common/js/registration/regValidation.js";
+import {replaceBtn} from "../../../common/js/utility/util";
 
 $(".remove-pm-btn").click(function (event) {
 
@@ -14,6 +15,7 @@ $(".remove-pm-btn").click(function (event) {
     let pmID = $(form).attr("nile-pm-ident");
     submitRemoval(
         form,
+        this as HTMLButtonElement,
         {name: "billingAddressID", value: addressId},
         {name: "pm_id", value: pmID}
     )
@@ -43,6 +45,7 @@ $(".update-pm-btn").click(function (event) {
         return false;
     }
     submitUpdate(form,
+        this as HTMLButtonElement,
         {name: "billingAddressID", value: addressId},
         {name: "pm_id", value: pmID});
 });
@@ -116,7 +119,8 @@ $("#createPaymentMethodBtn").on("click", function (e: Event) {
         return false;
     }
 
-    submit(<HTMLFormElement><any>$("#createPMForm"), {name: "CCNProvider", value: createCreditValidator.getProvider()});
+    submit(<HTMLFormElement><any>$("#createPMForm"), this as HTMLButtonElement,
+        {name: "CCNProvider", value: createCreditValidator.getProvider()});
 });
 
 Array<string>('input', 'focusin').forEach((evt: string) => {
@@ -159,4 +163,14 @@ Array<string>('input', 'focusin').forEach((evt: string) => {
         createCreditValidator.setCVV((this as HTMLInputElement).value);
         createValidator.setValidity(this as HTMLInputElement, this, PURPOSE.CVV, PURPOSE.CVV.constraint(createCreditValidator));
     })
+});
+
+Array<string>('change', 'focusin').forEach((evt: string) => {
+    $("#createBillingAddressState").bind(evt, function () {
+        createValidator.setValidity(this as HTMLSelectElement, this as HTMLElement, PURPOSE.State, PURPOSE.State.constraint(this as HTMLSelectElement))
+    });
+
+    $("#createBillingAddressCountry").bind(evt, function () {
+        createValidator.setValidity(this as HTMLSelectElement, this as HTMLElement, PURPOSE.Country, PURPOSE.Country.constraint(this as HTMLSelectElement));
+    });
 });

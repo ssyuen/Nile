@@ -45,7 +45,6 @@ $(".quantity").on("input", function (evt) {
         data: {'bookISBN': isbn, 'newQuantity': $(evt.target).val()}
     });
 });
-
 function updateIndividual(inp) {
     let origPrice = parseFloat(inp.getAttribute(NILE_BUY_PR_ATTR));
     let isbn = inp.getAttribute(NILE_ISBN_ATTR);
@@ -66,8 +65,7 @@ function updateIndividual(inp) {
         };
         if (quantity === 1) {
             SESSION[isbn] = new CountUp(priceElem, origPrice, options);
-        }
-        else {
+        } else {
             SESSION[isbn] = new CountUp(priceElem, origPrice * quantity, options);
         }
         startAnimation(SESSION[isbn]);
@@ -86,7 +84,6 @@ function calcTotal() {
     }
     return total;
 }
-
 function startAnimation(ctr, callback) {
     if (!ctr.error) {
         ctr.start(callback);
@@ -94,11 +91,9 @@ function startAnimation(ctr, callback) {
         console.error(ctr.error);
     }
 }
-
 function getPrice(inputElement) {
     return $(inputElement).parent().parent().next().find('div.quant-price')[0];
 }
-
 $('.remove-btn').on('click', function () {
     $(this).closest('tr').remove();
     setTimeout(updateTotal, DURATION_M_SEC);
@@ -126,7 +121,6 @@ $(".minus").on("click", function (evt) {
         $(closestQuant).attr("value", increment).trigger("input");
     }
 });
-
 function isCartEmpty() {
     if ($('.table-shopping-cart > tbody > tr').length === 0 ||
         $('.dataTables_empty').length) {

@@ -583,12 +583,13 @@ def payment_methods():
         return render_template('profile/profilePaymentMethods.html', data=payment_sendable)
 
 
-@user_bp.route('/subscriptions/', methods=['POST', 'GET'])
-@login_required(session)
-@cart_session(session)
-@remember_me(session)
-@user_only(session)
-def manage_subscriptions():
+
+@user_bp.route('/settings/', methods=['POST', 'GET'])
+@login_required
+@cart_session
+@remember_me
+@user_only
+def settings():
     if request.method == 'GET':
         return render_template('profile/profileSubscriptions.html')
     elif request.method == 'POST':

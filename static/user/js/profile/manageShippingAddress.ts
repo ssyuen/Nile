@@ -9,7 +9,7 @@ import {RegistrationInputValidator, PURPOSE} from "../../../common/js/registrati
 $(".remove-addr-btn").click(function (event) {
     let form = getClosestForm(event);
     let addressId = $(form).attr("nile-address-ident");
-    submitRemoval(form, {name: "addressID", value: addressId});
+    submitRemoval(form, this as HTMLButtonElement, {name: "addressID", value: addressId});
 });
 
 $(".update-addr-btn").click(function (event) {
@@ -34,7 +34,7 @@ $(".update-addr-btn").click(function (event) {
         event.preventDefault();
         return false;
     }
-    submitUpdate(form, {name: "addressID", value: addressId});
+    submitUpdate(form, this as HTMLButtonElement, {name: "addressID", value: addressId});
 });
 
 $(".edit-btn").click(function (event) {
@@ -72,7 +72,7 @@ $("#createShippingAddress").click(function (event) {
         event.preventDefault();
         return false;
     }
-    submit(<HTMLFormElement><any>$("#createShippingAddressForm"))
+    submit(<HTMLFormElement><any>$("#createShippingAddressForm"), this as HTMLButtonElement)
 });
 
 let createValidator = new RegistrationInputValidator();
@@ -92,4 +92,13 @@ Array<string>('input', 'focusin').forEach((evt: string) => {
     });
 });
 
+Array<string>('change', 'focusin').forEach((evt: string) => {
+    $("#addAddressState").bind(evt, function () {
+        createValidator.setValidity(this as HTMLSelectElement, this as HTMLElement, PURPOSE.State, PURPOSE.State.constraint(this as HTMLSelectElement))
+    });
+
+    $("#addAddressCountry").bind(evt, function () {
+        createValidator.setValidity(this as HTMLSelectElement, this as HTMLElement, PURPOSE.Country, PURPOSE.Country.constraint(this as HTMLSelectElement));
+    });
+});
 

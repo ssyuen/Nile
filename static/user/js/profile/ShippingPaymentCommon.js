@@ -1,16 +1,18 @@
+import { replaceBtn } from "../../../common/js/utility/util.js";
 export var PostFlags;
 (function (PostFlags) {
     PostFlags["REMOVE"] = "REMOVE_FLAG";
     PostFlags["EDIT"] = "EDIT_FLAG";
     PostFlags["CREATE"] = "CREATE_FLAG";
 })(PostFlags || (PostFlags = {}));
-export function submitRemoval(form, ...names) {
+export function submitRemoval(form, btn, ...names) {
     $(form).on("submit", function (e) {
         let ans = confirm("Are you sure you would like to remove this?");
         if (!ans) {
             e.preventDefault();
             return false;
         }
+        replaceBtn(btn);
         for (let n of names) {
             let x = $("<input>").attr("type", "hidden").attr("name", n['name']).val(n['value']);
             $(form).append(x);
@@ -19,8 +21,9 @@ export function submitRemoval(form, ...names) {
         $(form).append(flag);
     });
 }
-export function submitUpdate(form, ...names) {
+export function submitUpdate(form, btn, ...names) {
     $(form).on("submit", function (e) {
+        replaceBtn(btn);
         for (let n of names) {
             let x = $("<input>").attr("type", "hidden").attr("name", n['name']).val(n['value']);
             $(form).append(x);
@@ -29,8 +32,9 @@ export function submitUpdate(form, ...names) {
         $(form).append(flag);
     });
 }
-export function submit(form, ...names) {
+export function submit(form, btn, ...names) {
     $(form).on("submit", function (e) {
+        replaceBtn(btn);
         for (let n of names) {
             let x = $("<input>").attr("type", "hidden").attr("name", n['name']).val(n['value']);
             $(form).append(x);

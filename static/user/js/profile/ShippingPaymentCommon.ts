@@ -1,4 +1,5 @@
-import {RegistrationInputValidator} from "../../../common/js/registration/regValidation";
+import {RegistrationInputValidator} from "../../../common/js/registration/regValidation.js";
+import {replaceBtn} from "../../../common/js/utility/util.js";
 
 export enum PostFlags {
     REMOVE = "REMOVE_FLAG",
@@ -11,7 +12,7 @@ export interface Appendable {
     value: string
 }
 
-export function submitRemoval(form: HTMLFormElement, ...names: Appendable[]) {
+export function submitRemoval(form: HTMLFormElement, btn: HTMLButtonElement, ...names: Appendable[]) {
 
     $(form).on("submit", function (e) {
         let ans = confirm("Are you sure you would like to remove this?");
@@ -20,6 +21,7 @@ export function submitRemoval(form: HTMLFormElement, ...names: Appendable[]) {
             e.preventDefault();
             return false;
         }
+        replaceBtn(btn);
 
         for (let n of names) {
             let x = $("<input>").attr("type", "hidden").attr("name", n['name']).val(n['value']);
@@ -30,8 +32,10 @@ export function submitRemoval(form: HTMLFormElement, ...names: Appendable[]) {
     });
 }
 
-export function submitUpdate(form: HTMLFormElement, ...names: Appendable[]) {
+export function submitUpdate(form: HTMLFormElement, btn: HTMLButtonElement, ...names: Appendable[]) {
     $(form).on("submit", function (e) {
+
+        replaceBtn(btn);
 
         for (let n of names) {
             let x = $("<input>").attr("type", "hidden").attr("name", n['name']).val(n['value']);
@@ -42,9 +46,9 @@ export function submitUpdate(form: HTMLFormElement, ...names: Appendable[]) {
     });
 }
 
-export function submit(form: HTMLFormElement, ...names: Appendable[]) {
+export function submit(form: HTMLFormElement, btn: HTMLButtonElement, ...names: Appendable[]) {
     $(form).on("submit", function (e) {
-
+        replaceBtn(btn);
         for (let n of names) {
             let x = $("<input>").attr("type", "hidden").attr("name", n['name']).val(n['value']);
             $(form).append(x);

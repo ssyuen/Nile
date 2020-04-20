@@ -4,7 +4,7 @@ $(".remove-pm-btn").click(function (event) {
     let form = getClosestForm(event);
     let addressId = $(form).attr("nile-address-ident");
     let pmID = $(form).attr("nile-pm-ident");
-    submitRemoval(form, { name: "billingAddressID", value: addressId }, { name: "pm_id", value: pmID });
+    submitRemoval(form, this, { name: "billingAddressID", value: addressId }, { name: "pm_id", value: pmID });
 });
 $(".update-pm-btn").click(function (event) {
     let form = getClosestForm(event);
@@ -23,7 +23,7 @@ $(".update-pm-btn").click(function (event) {
         event.preventDefault();
         return false;
     }
-    submitUpdate(form, { name: "billingAddressID", value: addressId }, { name: "pm_id", value: pmID });
+    submitUpdate(form, this, { name: "billingAddressID", value: addressId }, { name: "pm_id", value: pmID });
 });
 $(".edit-btn").click(function (event) {
     let form = $(getClosestCard(event)).find("form").first();
@@ -74,7 +74,7 @@ $("#createPaymentMethodBtn").on("click", function (e) {
         e.preventDefault();
         return false;
     }
-    submit($("#createPMForm"), { name: "CCNProvider", value: createCreditValidator.getProvider() });
+    submit($("#createPMForm"), this, { name: "CCNProvider", value: createCreditValidator.getProvider() });
 });
 Array('input', 'focusin').forEach((evt) => {
     $("#createCardHolderFirstName").bind(evt, function () {
@@ -108,5 +108,13 @@ Array('input', 'focusin').forEach((evt) => {
     $("#createCVV").bind(evt, function () {
         createCreditValidator.setCVV(this.value);
         createValidator.setValidity(this, this, PURPOSE.CVV, PURPOSE.CVV.constraint(createCreditValidator));
+    });
+});
+Array('change', 'focusin').forEach((evt) => {
+    $("#createBillingAddressState").bind(evt, function () {
+        createValidator.setValidity(this, this, PURPOSE.State, PURPOSE.State.constraint(this));
+    });
+    $("#createBillingAddressCountry").bind(evt, function () {
+        createValidator.setValidity(this, this, PURPOSE.Country, PURPOSE.Country.constraint(this));
     });
 });
