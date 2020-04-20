@@ -103,9 +103,12 @@ function forceEntry(formEntry, toggleLabel, toggler, toggleText, inputType) {
     }
 }
 function updateSalesTax(sel, withOption = true) {
-    let stateTax = (withOption == true ?
-        SALES_TAX[sel.find(":selected").attr("nile-shipping-state")] :
-        SALES_TAX[sel.find(":selected").val()]);
+    let stateTax;
+    if (withOption == true) {
+        SALES_TAX[sel.find(":selected").attr("nile-shipping-state")];
+    } else {
+        SALES_TAX[sel.find(":selected").val()];
+    }
     salesTaxCounter.update(stateTax);
     return stateTax;
 }
