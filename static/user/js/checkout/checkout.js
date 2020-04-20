@@ -223,8 +223,6 @@ function proceedCheckoutSubmit() {
     final["SALES_TAX"] = $("#salesTax").text();
     final["SUB_TOTAL"] = SUBTOTAL;
     final['GRAND_TOTAL'] = $(CHECKOUT_TOTAL_PRICE).text();
-    console.log(final);
-    return false;
     post(FORM.attr("nile-dest"), "POST", final);
 }
 function checkEmptyInput(entry) {

@@ -280,7 +280,6 @@ function proceedCheckoutSubmit() {
     final["SUB_TOTAL"] = SUBTOTAL;
     final['GRAND_TOTAL'] = $(CHECKOUT_TOTAL_PRICE).text();
 
-    console.log(final);
     post(FORM.attr("nile-dest"), "POST", final);
 }
 
