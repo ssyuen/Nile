@@ -48,13 +48,15 @@ def generate_secure_token(session,purpose):
         session[purpose] = {secure_token: datetime.now()}
     elif purpose is 'forgot_token':
         session[purpose] = {secure_token: datetime.now()}
+    elif purpose is 'order_token':
+        session[purpose] = {secure_token: datetime.now()}
         
 def secure_link(session,purpose):
     def dec(f):
         @wraps(f)
         def wrapped_func(*args, **kws):
             # if any of these if-else-ifs are entered, that means the link is still good
-            if (purpose == 'register' or 'forgot'):
+            if (purpose == 'register_token' or 'forgot_token' or 'order_token'):
                 if (datetime.now() - session[purpose]) < timedelta.seconds(300):
                     return f(*args, **kws)
             else:

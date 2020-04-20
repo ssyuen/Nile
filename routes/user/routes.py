@@ -10,7 +10,7 @@ from server import mysql, mail
 from key import FERNET
 from datetime import datetime
 
-from routes.common.util import remember_me, cart_session, login_required,insert_address,insert_payment,insert_useraddress,insert_userpayment,get_address_id,insert_userpayment,get_user_id,get_payment_id,insert_payment,get_book_orderdetails,get_first_name,generate_secure_token
+from routes.common.util import remember_me, cart_session, login_required,insert_address,insert_payment,insert_useraddress,insert_userpayment,get_address_id,insert_userpayment,get_user_id,get_payment_id,insert_payment,get_book_orderdetails,get_first_name,generate_secure_token, secure_link
 from routes.user.util import *
 
 user_bp = Blueprint('user_bp', __name__,
@@ -147,6 +147,7 @@ def checkout():
 
         session.pop('checkout_token')
         generate_secure_token(session,'checkout_token')
+        generate_secure_token(session,'order_token')
         return redirect(url_for('user_bp.order_conf',conf_token=secrets.token_urlsafe(256), email=session['email'], user_id=user_id, name=get_first_name(cursor,session['email'])))
 
     elif request.method == 'GET':
@@ -216,6 +217,14 @@ def checkout():
         return render_template('checkout.html', book_payload=book_payload, shipping_payload=shipping_payload,
                                billing_payload=payment_payload, total_quantity=total_quantity,grand_total=float(grand_total) + float(shipping_price),
                                shipping_price=shipping_price)
+
+
+# @user_bp.route('/base_profile/', methods=['POST'])
+# @login_required(session)
+# @secure_link(session,'order_token')
+# @cart_session(session)
+# @remember_me(session)
+# @user_only(session)
 
 @user_bp.route('/base_profile/', methods=['POST'])
 @login_required(session)

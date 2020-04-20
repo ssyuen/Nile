@@ -1,11 +1,15 @@
 from flask import Blueprint, render_template, request, jsonify, redirect, flash, session, url_for
 from flaskext.mysql import pymysql
+from functools import partial
 import bcrypt
 import sys
 import secrets
 from flask_mail import Message
 from server import mysql, mail
 from key import FERNET
+
+from contextlib import ExitStack
+
 from routes.common.util import *
 
 common_bp = Blueprint('common_bp', __name__,
@@ -22,41 +26,43 @@ def about():
 @cart_session(session)
 @remember_me(session)
 def landing_page(search_results=None):
-    # print(session['shopping_cart'])
-    # STEP 1: Make call to database to return all books, need ISBN for query in /product/?isbn=<isbn>
-    conn = mysql.connect()
-    cursor = conn.cursor()
+    with ExitStack() as stack:
+        stack.callback(partial(print,'off the stack'))
+        # print(session['shopping_cart'])
+        # STEP 1: Make call to database to return all books, need ISBN for query in /product/?isbn=<isbn>
+        conn = mysql.connect()
+        cursor = conn.cursor()
 
-    if search_results is None:
-        query = '''SELECT
-        title,
-        price,
-        CONCAT(authorFirstName, ' ', authorLastName) AS author_name,
-        ISBN,
-        summary,
-        publicationDate,
-        numPages,
-        (SELECT binding FROM binding WHERE binding.id=book.bindingID_book_FK) AS binding,
-        (SELECT genre from genre WHERE genre.id=book.genreID_book_FK) AS genre,
-        nile_cover_ID
-        FROM book'''
-        cursor.execute(query)
+        if search_results is None:
+            query = '''SELECT
+            title,
+            price,
+            CONCAT(authorFirstName, ' ', authorLastName) AS author_name,
+            ISBN,
+            summary,
+            publicationDate,
+            numPages,
+            (SELECT binding FROM binding WHERE binding.id=book.bindingID_book_FK) AS binding,
+            (SELECT genre from genre WHERE genre.id=book.genreID_book_FK) AS genre,
+            nile_cover_ID
+            FROM book'''
+            cursor.execute(query)
 
-        # STEP 2: Pass list of books to browse.html
-        results = cursor.fetchall()
-        header = [desc[0] for desc in cursor.description]
-        books = [dict(zip(header, result)) for result in results]
+            # STEP 2: Pass list of books to browse.html
+            results = cursor.fetchall()
+            header = [desc[0] for desc in cursor.description]
+            books = [dict(zip(header, result)) for result in results]
 
-        # STEP 3: In browse.html, iterate through list of books to populate page
-        genres = get_genres(cursor)
-        genre_counts = get_genres_count(cursor)
-        bindings = get_bindings(cursor)
-        binding_counts = get_bindings_count(cursor)
+            # STEP 3: In browse.html, iterate through list of books to populate page
+            genres = get_genres(cursor)
+            genre_counts = get_genres_count(cursor)
+            bindings = get_bindings(cursor)
+            binding_counts = get_bindings_count(cursor)
 
-        conn.close()
-        return render_template('browse.html', books=books, genres=genres, genre_counts=genre_counts, bindings=bindings, binding_counts=binding_counts)
-    else:
-        return render_template('browse.html', books=books)
+            conn.close()
+            return render_template('browse.html', books=books, genres=genres, genre_counts=genre_counts, bindings=bindings, binding_counts=binding_counts)
+        else:
+            return render_template('browse.html', books=books)
 
 
 @common_bp.route('/login/', methods=['POST', 'GET'])
