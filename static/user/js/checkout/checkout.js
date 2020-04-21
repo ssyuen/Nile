@@ -354,3 +354,15 @@ $(function () {
     let minMonth = ("0" + (now.getMonth() + 1)).slice(-2);
     $("#newCCEXP").attr("min", `${now.getFullYear()}-${minMonth}`);
 });
+$(document).scroll(function () {
+    if ($(window).width() >= 992) {
+        var y = $(document).scrollTop(), header = $("#sidebar");
+        console.log($('.card').offset());
+        console.log(y);
+        if (y >= (y + $('.card').offset().top)) {
+            header.css({"position": "static", "width": "auto"});
+        } else {
+            header.css({"position": "sticky", "width": "auto", "top": "20px"});
+        }
+    }
+});

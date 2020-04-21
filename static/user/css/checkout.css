@@ -26,7 +26,7 @@
     background: transparent !important;
 }
 
-@media (max-width: 1200px) {
+@media (max-width: 1900px) {
     .entry-seperation-border {
         border-top: 1px solid lightgray !important;
         margin-top: 1em !important;
@@ -37,3 +37,8 @@
     }
 }
 
+@media (min-width: 992px) {
+    #page-wrap {
+        position: relative;
+    }
+}
