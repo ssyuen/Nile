@@ -267,7 +267,7 @@ def register():
                 billing_id = get_address_id(cursor)
 
                 insert_user(cursor,user_payload)
-                user_id = get_user_id(cursor)
+                user_id = get_user_id(cursor,email)
 
                 # INSERTING USER ID AND SHIPPING ADDRESS ID INTO user_address association table
                 insert_useraddress(cursor,(user_id,shipping_id))
@@ -284,7 +284,7 @@ def register():
                 billing_id_query = get_address_id(cursor)
 
                 insert_user(cursor,user_payload)
-                user_id = get_user_id(cursor)
+                user_id = get_user_id(cursor,email)
 
                 # payment_payload depends on user and billing FKs
                 payment_payload = (card_first_name, card_last_name, ccn, ccn_provider, ccexp,
@@ -299,7 +299,7 @@ def register():
                 shipping_id = get_address_id(cursor)
 
                 insert_user(cursor,user_payload)
-                user_id = get_user_id(cursor)
+                user_id = get_user_id(cursor,email)
 
                 # INSERTING USER ID AND SHIPPING ADDRESS ID INTO user_address association table
                 insert_useraddress(cursor,(user_id,shipping_id))
@@ -363,9 +363,11 @@ def email_confirmation(verify_token):
     conn.commit()
     conn.close()
 
-    session.pop('register_token')
-
-    return render_template('confirmation/email_conf.html')
+    if 'register_token' in session:
+        session.pop('register_token')
+        return render_template('confirmation/email_conf.html')
+    else:
+        return redirect(url_for('common_bp.landing_page'))
 
 
 @common_bp.route('/forgot/', methods=['POST', 'GET'])
