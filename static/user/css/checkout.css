@@ -25,3 +25,15 @@
 .md-form input:read-only ~ label.active {
     background: transparent !important;
 }
+
+@media (max-width: 1200px) {
+    .entry-seperation-border {
+        border-top: 1px solid lightgray !important;
+        margin-top: 1em !important;
+        margin-bottom: 1em !important;
+        width: calc(100% - 2em) !important;
+        display: inline-block !important;
+        border-radius: 5px;
+    }
+}
+
