@@ -279,6 +279,13 @@
     <script>
         $(document).ready(function () {
 
+            //This function will be called every time the
+            //windows is resize. So, every time, we calculate
+            //viewport width and then paginate again
+            /*$(window).resize(function () {
+
+            });*/
+
             var shownRows = 0;
             var viewportWidth = $(window).width();
 
