@@ -22,15 +22,16 @@
                             <h3 class="complement-bold mb-4 card-title">Shipping & Billing Information</h3>
                             <div class="row my-row">
                                 <div class="col-xxl-6">
-                                    <div class="d-inline-flex">
-                                        <div class="custom-control custom-radio mr-2">
+                                    <div class="d-inline-block w-100">
+                                        <div class="custom-control custom-radio mr-2 d-inline-block">
                                             <input type="radio" class="custom-control-input" id="chooseShippingToggle"
                                                    name="shippingToggleGroup" checked>
                                             <label class="custom-control-label mb-2" for="chooseShippingToggle"
                                                    id="chooseShippingToggleLabel">Choose a Shipping
                                                 Address</label>
                                         </div>
-                                        <a data-toggle="collapse" data-target="#addressEntry" href=""
+                                        <a data-toggle="collapse" class="float-right" data-target="#addressEntry"
+                                           href=""
                                            id="addressToggler">View</a>
                                     </div>
                                     <label for="shippingAddressSelect" class="d-none"></label>
@@ -228,13 +229,15 @@
                                 </div>
                                 <hr class="entry-seperation-border d-none">
                                 <div class="col-xxl-6">
-                                    <div class="custom-control custom-radio">
-                                        <input type="radio" class="custom-control-input" id="choosePaymentMethodToggle"
+                                    <div class="custom-control custom-radio d-inline-block w-100">
+                                        <input type="radio" class="custom-control-input d-inline-block"
+                                               id="choosePaymentMethodToggle"
                                                name="paymentToggleGroup" checked>
                                         <label class="custom-control-label mb-2" for="choosePaymentMethodToggle"
                                                id="choosePaymentMethodToggleLabel">Choose a Payment
                                             Method</label>
-                                        <a data-toggle="collapse" data-target="#paymentMethodEntry" href=""
+                                        <a data-toggle="collapse" class="float-right" data-target="#paymentMethodEntry"
+                                           href=""
                                            id="paymentMethodToggler">View</a>
                                     </div>
 
@@ -422,7 +425,7 @@
                                                                style="text-transform: uppercase;"
                                                                maxlength="45"
                                                                data-error="First Name must me more than one character">
-                                                        <label for="newCardHolderFirstName">First Name on Card</label>
+                                                        <label for="newCardHolderFirstName">First Name</label>
                                                     </div>
                                                 </div>
                                                 <div class="col-sm-6">
@@ -434,7 +437,7 @@
                                                                style="text-transform: uppercase;"
                                                                maxlength="45"
                                                                data-error="Last Name must me more than two characters">
-                                                        <label for="newCardHolderLastName">Last Name on Card</label>
+                                                        <label for="newCardHolderLastName">Last Name</label>
                                                     </div>
                                                 </div>
                                             </div>
@@ -526,7 +529,7 @@
                                                     <select id="newBillingAddressState"
                                                             class="form-control" required
                                                             name="billingAddressState">
-                                                        <option value="" disabled selected>State</option>
+                                                        <option value="" disabled selected>--</option>
                                                         <option value="GA">GA</option>
                                                         <option value="CA">CA</option>
                                                     </select>
@@ -538,7 +541,7 @@
                                                             class="form-control"
                                                             required
                                                             name="billingAddressCountry">
-                                                        <option value="" disabled selected>Country</option>
+                                                        <option value="" disabled selected>--</option>
                                                         <option value="United States">United States</option>
                                                     </select>
                                                 </div>
