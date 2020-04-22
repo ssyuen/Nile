@@ -603,17 +603,18 @@
                     </ul>
                     <!-- Cart -->
                     <!-- Promo code -->
-                    <form class="card p-2">
-                        <div class="input-group">
-                            <input type="text" class="form-control" placeholder="Promo code"
-                                   aria-label="Recipient's username" aria-describedby="basic-addon2"
-                                   onkeyup="this.value = this.value.toUpperCase();">
+                    <div class="card p-2 promo-card">
+                        <div class="input-group md-outline md-form" id="promoCodeInputGroup">
+                            <input type="text" class="form-control" id="promoCodeInput"
+                                   style="text-transform: uppercase;">
                             <div class="input-group-append">
-                                <button class="btn blue-gradient btn-md waves-effect m-0 ml-2" type="button">Redeem
+                                <button class="btn blue-gradient btn-md waves-effect m-0 ml-2" id="promotBtn"
+                                        type="button">Redeem
                                 </button>
                             </div>
+                            <label for="promoCodeInput">Promo Code</label>
                         </div>
-                    </form>
+                    </div>
                     <a href="{{ url_for('common_bp.shopping_cart') }}">
                         <button class="btn btn-outline-primary btn-block rounded waves-effect waves-ripple mt-3"
                                 id="backToCartBtn">
@@ -625,5 +626,8 @@
             </div>
         </div>
     </div>
+    <style>
+
+    </style>
     <script type="module" src="/static/user/js/checkout/checkout.js"></script>
 {% endblock %}
