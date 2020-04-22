@@ -15,6 +15,7 @@ from routes.common.util import *
 common_bp = Blueprint('common_bp', __name__,
                       template_folder='templates', static_folder='static')
 
+
 @common_bp.route('/about/')
 @cart_session(session)
 @remember_me(session)
@@ -27,7 +28,7 @@ def about():
 @remember_me(session)
 def landing_page(search_results=None):
     with ExitStack() as stack:
-        stack.callback(partial(print,'off the stack'))
+        stack.callback(partial(print, 'off the stack'))
         # print(session['shopping_cart'])
         # STEP 1: Make call to database to return all books, need ISBN for query in /product/?isbn=<isbn>
         conn = mysql.connect()
@@ -142,7 +143,7 @@ def login(ctx=None):
                     session['lastName'] = results[3]
                     session['admin'] = False
                     session['remember_me'] = remember_me
-                    generate_secure_token(session,'checkout_token')
+                    generate_secure_token(session, 'checkout_token')
 
                     if session['remember_me'] != None:
                         session.permanent = True
@@ -250,8 +251,8 @@ def register():
         # INSERTING WITH NO SHIPPING OR PAYMENT METHOD
         if None in shipping_payload and None in billing_payload:
             try:
-                insert_user(cursor,user_payload)
-                user_id = get_user_id(cursor,email)
+                insert_user(cursor, user_payload)
+                user_id = get_user_id(cursor, email)
             except(pymysql.err.IntegrityError):
                 flash('An account with this email already exists.')
                 conn.close()
@@ -260,85 +261,87 @@ def register():
         else:  # insert with shipping and billing address
             # INSERTING SHIPPING ADDRESS AND PAYMENT INFO
             if None not in shipping_payload and None not in billing_payload:
-                insert_address(cursor,shipping_payload)
+                insert_address(cursor, shipping_payload)
                 shipping_id = get_address_id(cursor)
 
-                insert_address(cursor,billing_payload)
+                insert_address(cursor, billing_payload)
                 billing_id = get_address_id(cursor)
 
-                insert_user(cursor,user_payload)
-                user_id = get_user_id(cursor,email)
+                insert_user(cursor, user_payload)
+                user_id = get_user_id(cursor, email)
 
                 # INSERTING USER ID AND SHIPPING ADDRESS ID INTO user_address association table
-                insert_useraddress(cursor,(user_id,shipping_id))
+                insert_useraddress(cursor, (user_id, shipping_id))
 
                 # payment_payload depends on user and billing FKs
-                payment_payload = (card_first_name, card_last_name, ccn, ccn_provider, ccexp, billing_id)
-                insert_payment(cursor,payment_payload)
+                payment_payload = (card_first_name, card_last_name,
+                                   ccn, ccn_provider, ccexp, billing_id)
+                insert_payment(cursor, payment_payload)
                 payment_id = get_payment_id(cursor)
-                insert_userpayment(cursor,(user_id, payment_id))
+                insert_userpayment(cursor, (user_id, payment_id))
 
             # INSERTING BILLING ADDRESS (PAYMENT INFO ONLY)
             elif None in shipping_payload and None not in billing_payload:
-                query = insert_address(cursor,billing_payload)
+                query = insert_address(cursor, billing_payload)
                 billing_id_query = get_address_id(cursor)
 
-                insert_user(cursor,user_payload)
-                user_id = get_user_id(cursor,email)
+                insert_user(cursor, user_payload)
+                user_id = get_user_id(cursor, email)
 
                 # payment_payload depends on user and billing FKs
                 payment_payload = (card_first_name, card_last_name, ccn, ccn_provider, ccexp,
                                    user_id, billing_id)
-                insert_payment(cursor,payment_payload)
+                insert_payment(cursor, payment_payload)
                 payment_id = get_payment_id(cursor)
-                insert_userpayment(cursor,(user_id, payment_id))
+                insert_userpayment(cursor, (user_id, payment_id))
 
             # INSERTING SHIPPING ADDRESS (SHIPPING ADDRESS ONLY)
             elif None in billing_payload and None not in shipping_payload:
-                query = insert_address(cursor,shipping_payload)
+                query = insert_address(cursor, shipping_payload)
                 shipping_id = get_address_id(cursor)
 
-                insert_user(cursor,user_payload)
-                user_id = get_user_id(cursor,email)
+                insert_user(cursor, user_payload)
+                user_id = get_user_id(cursor, email)
 
                 # INSERTING USER ID AND SHIPPING ADDRESS ID INTO user_address association table
-                insert_useraddress(cursor,(user_id,shipping_id))
+                insert_useraddress(cursor, (user_id, shipping_id))
 
-            
-
-        generate_secure_token(session,'register_token')
-        print(session)
+        generate_secure_token(session, 'register_token')
 
         conn.commit()
         conn.close()
+        session['verified'] = False
         return redirect(url_for('common_bp.register_confirmation', sending_token=secrets.token_urlsafe(256), email=email, user_id=user_id, name=firstName))
 
 
 @common_bp.route('/conf/register_confirmation/<sending_token>+<email>+<user_id>+<name>', methods=['GET'])
-@secure_link(session,'register_token')
+@secure_link(session, 'register_token')
 @cart_session(session)
 @remember_me(session)
 def register_confirmation(sending_token, email=None, user_id=None, name=None):
     try:
-        conn = mysql.connect()
-        cursor = conn.cursor()
+        if 'register_token' in session:
+            conn = mysql.connect()
+            cursor = conn.cursor()
 
-        verification_token = secrets.token_urlsafe(16)
+            verification_token = secrets.token_urlsafe(16)
 
-        query = 'INSERT INTO user_token (userID_utoken_FK,token) VALUES (%s, %s)'
-        cursor.execute(query, (user_id, verification_token))
+            query = 'INSERT INTO user_token (userID_utoken_FK,token) VALUES (%s, %s)'
+            cursor.execute(query, (user_id, verification_token))
 
-        conn.commit()
-        conn.close()
+            conn.commit()
+            conn.close()
 
-        verification_url = f'http://127.0.0.1:5000/conf/email_confirmation/{verification_token}'
-        production_url = f'https://www.nilebookstore.com/conf/email_confirmation/{verification_token}'
+            verification_url = f'http://127.0.0.1:5000/conf/email_confirmation/{verification_token}'
+            production_url = f'https://www.nilebookstore.com/conf/email_confirmation/{verification_token}'
 
-        message_body = 'Hi ' + name + \
-            f',\n\nPlease click on the following link to confirm your registration here at Nile!\n\nDevelopment:{verification_url}\n_________________\n\nProduction:{production_url}\n\nRegards, Nile Bookstore Management'
-        msg = Message(subject='Nile Registration Confirmation', recipients=[
-            email, 'rootatnilebookstore@gmail.com'], sender='rootatnilebookstore@gmail.com', body=message_body)
-        mail.send(msg)
+            message_body = 'Hi ' + name + \
+                f',\n\nPlease click on the following link to confirm your registration here at Nile!\n\nDevelopment:{verification_url}\n_________________\n\nProduction:{production_url}\n\nRegards, Nile Bookstore Management'
+            msg = Message(subject='Nile Registration Confirmation', recipients=[
+                email, 'rootatnilebookstore@gmail.com'], sender='rootatnilebookstore@gmail.com', body=message_body)
+            mail.send(msg)
+        else:
+            return redirect(url_for('common_bp.landing_page'))
 
     except(pymysql.err.IntegrityError):
         return render_template('confirmation/reg_conf.html')
@@ -406,14 +409,12 @@ def forgot():
         msg = Message(subject='Reset Password', recipients=[
             email, 'rootatnilebookstore@gmail.com'], sender='rootatnilebookstore@gmail.com', body=message_body)
         mail.send(msg)
-
-
-        generate_secure_token(session,'forgot_token')
+        generate_secure_token(session, 'forgot_token')
         return redirect(url_for('common_bp.forgot_email_conf'))
 
 
 @common_bp.route('/reset_pass/<verify_token>', methods=['POST', 'GET'])
-@secure_link(session,'forgot_token')
+@secure_link(session, 'forgot_token')
 @cart_session(session)
 @remember_me(session)
 def reset_pass(verify_token):
@@ -494,16 +495,18 @@ def shopping_cart():
         book_isbn = request.form.get('bookISBN')
         quant_flag = request.form.get('newQuantity')
 
-        bod_id_query = '''SELECT bod_sc_FK FROM shoppingcart WHERE userID_sc_FK = (SELECT id FROM user WHERE email = %s) AND bod_sc_FK = (SELECT id FROM book_orderdetail WHERE ISBN_bod_FK = %s) '''
-        cursor.execute(bod_id_query, (session['email'], book_isbn))
+        bod_id_query = '''SELECT bod_sc_FK FROM shoppingcart WHERE userID_sc_FK = (SELECT id FROM user WHERE email = %s) AND bod_sc_FK = (SELECT id FROM book_orderdetail WHERE ISBN_bod_FK = %s AND userID_bod_FK = (SELECT id FROM user WHERE email = %s)) '''
+        cursor.execute(
+            bod_id_query, (session['email'], book_isbn, session['email']))
         bod_id = cursor.fetchall()[0][0]
 
         # REMOVE FROM CART
         if quant_flag is None:
             old_cart.pop(book_isbn)
-            session['shopping_cart']=old_cart
-            query = '''DELETE FROM shoppingcart WHERE userID_sc_FK = (SELECT id FROM user WHERE email = %s) AND bod_sc_FK = (SELECT id FROM book_orderdetail WHERE ISBN_bod_FK = %s)'''
-            cursor.execute(query, (session['email'], book_isbn))
+            session['shopping_cart'] = old_cart
+            query = '''DELETE FROM shoppingcart WHERE userID_sc_FK = (SELECT id FROM user WHERE email = %s) AND bod_sc_FK = (SELECT id FROM book_orderdetail WHERE ISBN_bod_FK = %s AND userID_bod_FK = (SELECT id FROM user WHERE email = %s))'''
+            cursor.execute(
+                query, (session['email'], book_isbn, session['email']))
 
             # remove from book_orderdetail next
             query = '''DELETE FROM book_orderdetail WHERE id = %s'''
@@ -512,14 +515,13 @@ def shopping_cart():
         # EDIT THE QUANTITY
         else:
             old_cart[book_isbn] = int(quant_flag)
-            session['shopping_cart']=old_cart
+            session['shopping_cart'] = old_cart
             quant_query = 'UPDATE book_orderdetail SET quantity = %s WHERE id = %s'
-            cursor.execute(quant_query, (quant_flag,bod_id))
+            cursor.execute(quant_query, (quant_flag, bod_id))
 
         conn.commit()
         conn.close()
-        return jsonify({'response':200})
-
+        return jsonify({'response': 200})
 
     # NON LOGGED IN USER EDITS QUANTITY ON SHOPPING CART PAGE
     else:
@@ -528,13 +530,12 @@ def shopping_cart():
 
         if quant_flag is None:
             old_cart.pop(book_isbn)
-            session['shopping_cart']=old_cart
+            session['shopping_cart'] = old_cart
         else:
             old_cart[book_isbn] = int(quant_flag)
-            session['shopping_cart']=old_cart
+            session['shopping_cart'] = old_cart
 
-        return jsonify({'response':200})
-
+        return jsonify({'response': 200})
 
 
 @common_bp.route('/product/', methods=['GET', 'POST'])
