@@ -2,11 +2,11 @@
     padding-left: 1em;
 }
 
-.md-form .form-control {
+.wow .md-form .form-control {
     margin-bottom: 0;
 }
 
-.md-form.md-outline {
+.wow .md-form.md-outline {
     margin-top: 0.5rem !important;
 }
 
@@ -17,12 +17,12 @@
     margin-bottom: 20px
 }
 
-.md-form input:read-only, select:disabled, .card-specific input:read-only {
+.wow .md-form input:read-only, .wow select:disabled, .card-specific input:read-only {
     background-color: #e9e9e9 !important;
     color: #000000;
 }
 
-.md-form input:read-only ~ label.active {
+.wow .md-form input:read-only ~ label.active {
     background: transparent !important;
 }
 
@@ -41,4 +41,21 @@
     #page-wrap {
         position: relative;
     }
+}
+
+.promo-card .md-form.md-outline {
+    margin-top: 0.2rem !important;
+}
+
+.promo-card .md-form {
+    margin-bottom: 0.5rem !important;
+}
+
+.promo-card .md-form.md-outline label.active {
+    background: #fff !important;
+    z-index: 1;
+}
+
+.promo-card .md-form.md-outline #promoCodeInput {
+    z-index: 0;
 }
