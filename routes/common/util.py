@@ -129,7 +129,7 @@ def insert_userpayment(cursor, payload):
     payload - (userID_pm_FK, paymentID_pm_FK)
     '''
     cursor.execute(
-        'INSERT INTO user_paymentmethod (userID_pm_FK, paymentID_pm_FK) VALUES (%s, %s)')
+        'INSERT INTO user_paymentmethod (userID_pm_FK, paymentID_pm_FK) VALUES (%s, %s)',payload)
 
 
 def insert_payment(cursor, payload):
@@ -139,7 +139,7 @@ def insert_payment(cursor, payload):
     payload - (firstname,lastname,cardNumber, cardType, expirationDate, billingAddress_addr_FK)
     '''
     cursor.execute(
-        'INSERT INTO payment_method (firstname,lastname,cardNumber, cardType, expirationDate, billingAddress_addr_FK) VALUES (%s,%s,%s, %s, %s, %s)')
+        'INSERT INTO payment_method (firstname,lastname,cardNumber, cardType, expirationDate, billingAddress_addr_FK) VALUES (%s,%s,%s, %s, %s, %s)',payload)
 
 
 def get_payment_id(cursor):
