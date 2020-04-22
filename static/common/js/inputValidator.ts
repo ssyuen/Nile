@@ -49,7 +49,7 @@ export class InputValidator {
     /*
         Generalized validation function
      */
-    private validator(inputType: HTMLElement,
+    private validator(inputType: HTMLInputElement | HTMLSelectElement,
                       invalidMessageLocation: string | HTMLElement | any,
                       invalidMessageType: [string, string],
                       constraintType: (boolean | RegExpMatchArray)): boolean {
