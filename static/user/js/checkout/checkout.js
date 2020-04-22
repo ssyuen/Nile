@@ -367,7 +367,7 @@ $(document).scroll(function () {
 const pcv = new PromotionCheckoutValidation();
 const PROMO_CODE_INPUT = document.getElementById("promoCodeInput");
 $("#promotBtn").on("click", function () {
-    let ref = PROMO_CODE_INPUT.innerText;
+    let ref = PROMO_CODE_INPUT.value;
     if (!pcv.validateAll(undefined)) {
         return false;
     }
