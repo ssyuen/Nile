@@ -10,12 +10,16 @@ export function post(path: string, method: string = "POST", ...parameters: any[]
     let form = $('<form></form>');
     form.attr({"method": method, "action": path});
     form.addClass("d-none");
-    $.each(parameters, function (key, value) {
-        let field = $('<input></input>');
-        field.attr("type", "hidden");
-        field.attr("name", <string | any>key);
-        field.attr("value", <string | any>value);
-        form.append(field);
+    $.each(parameters, function (key, obj) {
+        for (let k in obj) {
+            if (obj.hasOwnProperty(k)) {
+                let field = $('<input></input>');
+                field.attr("type", "hidden");
+                field.attr("name", <string | any>k);
+                field.attr("value", <string | any>obj[k]);
+                form.append(field);
+            }
+        }
     });
     // Form NEEDS to be in th document body to submit form
     $(document.body).append(form);
