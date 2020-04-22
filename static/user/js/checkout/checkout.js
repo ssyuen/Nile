@@ -190,8 +190,7 @@ function proceedCheckoutSubmit() {
     if (shipRad.is(":checked")) {
         shipPayload["SHIPPING_IDENT"] = $(shipOpt).attr("nile-shipping-ident");
     } else if (entShipRad.is(":checked")) {
-        if (checkEmptyInput(newAddrEntry) ||
-            !vcSH.validateAll('.card-title')) {
+        if (!checkEmptyInput(newAddrEntry) || !vcSH.validateAll('.card-title')) {
             return false;
         }
         shipPayload = serializedToObject(newAddrEntry.find("input, select"));
@@ -200,7 +199,7 @@ function proceedCheckoutSubmit() {
     if (pmRad.is(":checked")) {
         paymentPayload["PAYMENT_IDENT"] = $(payOpt).attr("nile-pm-ident");
     } else if (entPMRad.is(":checked")) {
-        if (checkEmptyInput(newPMEntry) || !vcBL.validateAll('.card-title')) {
+        if (!checkEmptyInput(newPMEntry) || !vcBL.validateAll('.card-title')) {
             return false;
         }
         if (!cc.checkCard()) {

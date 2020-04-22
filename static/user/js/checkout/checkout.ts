@@ -237,8 +237,7 @@ function proceedCheckoutSubmit() {
         shipPayload["SHIPPING_IDENT"] = $(shipOpt).attr("nile-shipping-ident");
     } else if (entShipRad.is(":checked")) {
 
-        if (checkEmptyInput(newAddrEntry) ||
-            !vcSH.validateAll('.card-title')) {
+        if (!checkEmptyInput(newAddrEntry) || !vcSH.validateAll('.card-title')) {
             return false;
         }
 
@@ -249,7 +248,7 @@ function proceedCheckoutSubmit() {
         paymentPayload["PAYMENT_IDENT"] = $(payOpt).attr("nile-pm-ident");
 
     } else if (entPMRad.is(":checked")) {
-        if (checkEmptyInput(newPMEntry) || !vcBL.validateAll('.card-title')) {
+        if (!checkEmptyInput(newPMEntry) || !vcBL.validateAll('.card-title')) {
             return false;
         }
 
@@ -277,7 +276,6 @@ function proceedCheckoutSubmit() {
     final["SALES_TAX"] = $("#salesTax").text();
     final["SUB_TOTAL"] = SUBTOTAL;
     final['GRAND_TOTAL'] = $(CHECKOUT_TOTAL_PRICE).text();
-
     post(FORM.attr("action"), "POST", final);
 }
 
