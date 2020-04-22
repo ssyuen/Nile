@@ -2,6 +2,7 @@ import {CountUp} from '../../../jsplugin/countUp.min.js';
 import {post, SALES_TAX, serializedToObject} from "./checkoutUtil.js";
 import {replaceBtn} from "../../../common/js/utility/util.js";
 import {CreditCard, PURPOSE, RegistrationInputValidator} from "../../../common/js/registration/regValidation.js";
+import {PromotionCheckoutValidation} from "./promoValidation.js";
 
 const COUNTER_DURATION = 0.5;
 const FORM = $("#dummyForm");
@@ -362,4 +363,29 @@ $(document).scroll(function () {
             header.css({"position": "sticky", "width": "auto", "top": "20px"});
         }
     }
+});
+const pcv = new PromotionCheckoutValidation();
+const PROMO_CODE_INPUT = document.getElementById("promoCodeInput");
+$("#promotBtn").on("click", function () {
+    let ref = PROMO_CODE_INPUT.innerText;
+    if (!pcv.validateAll(undefined)) {
+        return false;
+    }
+    $.ajax({
+        type: "POST",
+        url: "/checkout/promo_app/",
+        data: {"PROMO_IDENT": ref},
+        success: function (data) {
+            //Do something with the data (true or false) and display to customer
+        }
+    });
+});
+Array('input', 'focusin').forEach((evt) => {
+    PROMO_CODE_INPUT.addEventListener(evt, function () {
+        pcv.setValidity(this, $("#promoCodeInputGroup")[0], PromotionCheckoutValidation.PURPOSE.Promo, PromotionCheckoutValidation.PURPOSE.Promo.constraint(this.value));
+    });
+});
+PROMO_CODE_INPUT.addEventListener("focusout", function () {
+    $(this).removeClass("invalid");
+    $(PromotionCheckoutValidation.PURPOSE.Promo.template[1]).remove();
 });
