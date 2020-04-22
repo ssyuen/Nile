@@ -278,7 +278,7 @@ function proceedCheckoutSubmit() {
     final["SUB_TOTAL"] = SUBTOTAL;
     final['GRAND_TOTAL'] = $(CHECKOUT_TOTAL_PRICE).text();
 
-    post(FORM.attr("nile-dest"), "POST", final);
+    post(FORM.attr("action"), "POST", final);
 }
 
 
@@ -454,8 +454,6 @@ $(document).scroll(function () {
     if ($(window).width() >= 992) {
         var y = $(document).scrollTop(),
             header = $("#sidebar");
-        console.log($('.card').offset());
-        console.log(y);
         if (y >= (y + $('.card').offset().top)) {
             header.css({"position": "static", "width": "auto"});
         } else {
