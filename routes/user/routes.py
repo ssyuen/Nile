@@ -90,7 +90,7 @@ def checkout():
         if SHIPPING_IDENT and PAYMENT_IDENT not in request.form:
             insert_address(cursor,shipping_payload)
             shipping_id = get_address_id(cursor)
-            if REMEMBER_SHIPPING is not None:
+            if REMEMBER_SHIPPING is not 0:
                 insert_useraddress(cursor,payload=shipping_id,email=session['email'])
             
             insert_address(cursor,billing_payload)
@@ -99,7 +99,7 @@ def checkout():
             payment_payload = (checkoutCardHolderFirstName,checkoutCardHolderLastName,ccn,ct,ccexp,billing_id)
             insert_payment(cursor,payment_payload)
             payment_id = get_payment_id(cursor)
-            if REMEMBER_BILLING is not None:
+            if REMEMBER_BILLING is not 0:
                 insert_userpayment(cursor,(user_id,payment_id))
 
         # SAVED SHIPPING ADDRESS, NEW PAYMENT METHOD
@@ -112,7 +112,7 @@ def checkout():
             payment_payload = (checkoutCardHolderFirstName,checkoutCardHolderLastName,ccn,ct,ccexp,billing_id)
             insert_payment(cursor,payment_payload)
             payment_id = get_payment_id(cursor)
-            if REMEMBER_BILLING is not None:
+            if REMEMBER_BILLING is not 0:
                 insert_userpayment(cursor,(user_id,payment_id))
         
         # SAVED PAYMENT METHOD, NEW SHIPPING ADDRESS
@@ -121,7 +121,7 @@ def checkout():
 
             insert_address(cursor,shipping_payload)
             shipping_id = get_address_id(cursor)
-            if REMEMBER_SHIPPING is not None:
+            if REMEMBER_SHIPPING is not 0:
                 insert_useraddress(cursor,payload=shipping_id,email=session['email'])
 
         # USING BOTH SAVED SHIPPING AND PAYMENT
@@ -619,4 +619,4 @@ def settings():
 @remember_me(session)
 @user_only(session)
 def order_conf(conf_token, email=None, user_id=None, name=None):
-    return jsonify({'response':200})
+    return render_template('orderConf.html')

@@ -1,0 +1,18 @@
+{% extends "baseConfirm.html" %}
+{% block title %}Order Confirmation{% endblock %}
+
+{% block head %}
+    {{ super() }}
+{% endblock %}
+
+{% block cardTitle %}
+    Thank you! Your order has been recorded.
+{% endblock %}
+
+{% block content %}
+    We will send you a confirmation containing your order number: {{ order_num }}.
+{% endblock %}
+
+{% block card_footer %}
+    {#    #}
+{% endblock %}
