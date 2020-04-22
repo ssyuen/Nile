@@ -5,6 +5,25 @@
     {{ super() }}
     <link rel="stylesheet" type="text/css" href="/static/mdb/css/addons/datatables.min.css">
     <script type="text/javascript" src="/static/mdb/js/addons/datatables.min.js"></script>
+    <style>
+        .table-light, .table-light > td, .table-light > th {
+            background-color: #e2e2e2;
+        }
+
+        .table-striped tbody tr:nth-of-type(odd) {
+            background-color: rgb(206, 206, 206);
+        }
+
+        .table-light td {
+            color: black !important;
+            font-weight: normal !important;
+        }
+
+        .table-light th {
+            color: black !important;
+            font-weight: bold !important;
+        }
+    </style>
 {% endblock %}
 
 {% block content %}
@@ -37,7 +56,7 @@
     </div>
     <div class="row">
         <div class="col">
-            <table id="orderHistory" class="table table-dark table-responsive-md table-striped table-bordered"
+            <table id="orderHistory" class="table table-light table-responsive-md table-striped table-bordered"
                    cellspacing="0"
                    width="100%">
                 <thead>
@@ -86,5 +105,6 @@
             </table>
         </div>
     </div>
+    <script src="/static/mdb/js/addons/datatables.rowgroup.min.js"></script>
     <script type="module" src="/static/user/js/profile/orderHistory.js"></script>
 {% endblock %}

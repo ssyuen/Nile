@@ -2,100 +2,97 @@
 {% block base_title %}My Cart{% endblock %}
 
 {% block base_head %}
-{{ super() }}
-<style>
-    @media (max-width: 768px) {
-        #cartPricingWrapper {
-            padding-top: 20px;
+    {{ super() }}
+    <style>
+        @media (max-width: 768px) {
+            #cartPricingWrapper {
+                padding-top: 20px;
+            }
         }
-    }
 
-    .md-form.md-outline label[for=searchCart].active {
-        background: #f2f2f2 !important;
-    }
+        .md-form.md-outline label[for=searchCart].active {
+            background: #f2f2f2 !important;
+        }
 
-    #searchCart {
-        color: black;
-        border: 1px solid #636465;
-        background-color: rgba(200, 200, 200, 0.04);
-    }
-</style>
-<link rel="stylesheet" type="text/css" href="/static/common/css/cart.css">
+        #searchCart {
+            color: black;
+            border: 1px solid #636465;
+            background-color: rgba(200, 200, 200, 0.04);
+        }
+    </style>
+    <link rel="stylesheet" type="text/css" href="/static/common/css/cart.css">
 {% endblock %}
 
 {% block mainTitle %}
-<div class="text-left" id="content-header">
-    <p class="primary-lg" id="account-holder">My Shopping Cart.</p>
-</div>
+    <div class="text-left" id="content-header">
+        <p class="primary-lg" id="account-holder">My Shopping Cart.</p>
+    </div>
 {% endblock %}
 
 {% block main %}
-<div class="container">
-    <div class="row mb-2 mt-0" id="preMainRow">
-        <div class="col-md-9">
-            <div class="form-group md-outline md-form mt-0">
-                <input type="text" id="searchCart" class="form-control">
-                <label for="searchCart" style="">Search your Cart by author, title, ISBN, or price</label>
+    <div class="container">
+        <div class="row mb-2 mt-0" id="preMainRow">
+            <div class="col-md-9">
+                <div class="form-group md-outline md-form mt-0">
+                    <input type="text" id="searchCart" class="form-control">
+                    <label for="searchCart" style="">Search your Cart by author, title, ISBN, or price</label>
+                </div>
             </div>
         </div>
-    </div>
-    <div class="row">
-        <main class="col-md-9">
-            <div class="card" id="cartCard">
-                <div class="card-body">
-                    <div class="table-responsive-lg">
-                        <table class="table table-borderless table-shopping-cart" id="shoppingCart">
-                            <thead class="text-muted">
+        <div class="row">
+            <main class="col-md-9">
+                <div class="card" id="cartCard">
+                    <div class="card-body">
+                        <div class="table-responsive-lg">
+                            <table class="table table-borderless table-shopping-cart" id="shoppingCart">
+                                <thead class="text-muted">
                                 <tr class="small text-uppercase">
-                                    <th scope="col">Product</th>
+                                    <th scope="col">Cover</th>
+                                    <th scope="col">Title</th>
                                     <th scope="col">Quantity (Max: 80)</th>
                                     <th scope="col">Price</th>
                                     <th scope="col" class="text-right"></th>
                                 </tr>
-                            </thead>
-                            <tbody>
+                                </thead>
+                                <tbody>
 
-                            <!-- JINJA CODE HERE -->
+                                <!-- JINJA CODE HERE -->
 
-                            {% for isbn, payload in book_payload.items() %}
-                                <tr>
-                                    <td>
-                                        <div class="row">
-                                            <div class="col-xl-6">
-                                                <img src="{{ '/static/images/CoverImages/' + payload['nile_cover_id'] + '.jpg' }}"
-                                                     width="95" alt="Image of {{ isbn }}">
-                                            </div>
-                                            <div class="col-xl-6">
-                                                <p class="primary text-dark"
-                                                   style="font-size:1.5em;"><span
-                                                        class="title-payload">{{ payload['title'] }}</span></p>
-                                                <p class="small text-muted">ISBN: {{ isbn }}, Author:
-                                                    {{ payload['author_name'] }}</p>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td class="">
-                                        <div class="def-number-input number-input safari_only d-inline-block justify-content-center"
-                                             id="theDiv">
-                                            <button type="button"
-                                                    class="btn btn-sm btn-outline-grey minus waves-effect waves-ripple">
-                                                <i class="fas fa-minus fa-lg"></i>
+                                {% for isbn, payload in book_payload.items() %}
+                                    <tr>
+                                        <td>
+                                            <img src="{{ '/static/images/CoverImages/' + payload['nile_cover_id'] + '.jpg' }}"
+                                                 width="95" alt="Image of {{ isbn }}">
+                                        </td>
+                                        <td>
+                                            <p class="primary text-dark"
+                                               style="font-size:1.5em;"><span
+                                                    class="title-payload">{{ payload['title'] }}</span></p>
+                                            <p class="small text-muted">ISBN: {{ isbn }}, Author:
+                                                {{ payload['author_name'] }}</p>
+                                        </td>
+                                        <td class="">
+                                            <div class="def-number-input number-input safari_only d-inline-block justify-content-center"
+                                                 id="theDiv">
+                                                <button type="button"
+                                                        class="btn btn-sm btn-outline-grey minus waves-effect waves-ripple">
+                                                    <i class="fas fa-minus fa-lg"></i>
                                                 </button>
                                                 <input class="quantity" min="1" max="80" name="quantity"
                                                        value="{{ payload['quantity'] }}" type="number"
                                                        nile-isbn="{{ isbn }}"
                                                        buying-price="{{ payload['price'] }}">
-                                            <button type="button"
-                                                    class="btn btn-sm btn-outline-grey plus waves-effect waves-ripple">
-                                                <i class="fas fa-plus fa-lg"></i>
-                                            </button>
-                                        </div>
-                                    </td>
-                                    <td class="price-data">
-                                        <div class="price-wrap primary-sm">
-                                            <div class="d-inline-flex">$
-                                                <div class="quant-price" style="width: 4em;"
-                                                     id="xcvt">{{ payload['price'] }}</div>
+                                                <button type="button"
+                                                        class="btn btn-sm btn-outline-grey plus waves-effect waves-ripple">
+                                                    <i class="fas fa-plus fa-lg"></i>
+                                                </button>
+                                            </div>
+                                        </td>
+                                        <td class="price-data">
+                                            <div class="price-wrap primary-sm">
+                                                <div class="d-inline-flex">$
+                                                    <div class="quant-price" style="width: 4em;"
+                                                         id="xcvt">{{ payload['price'] }}</div>
                                                 </div>
                                             </div> <!-- price-wrap .// -->
                                             <p class="text-muted"><i>${{ payload['price'] }} each</i></p>
@@ -108,91 +105,91 @@
                                         </td>
                                     </tr>
                                 {% endfor %}
-                            </tbody>
-                        </table>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="card-footer border-top">
+                        <a href="/" class="waves-effect w-100 shadow">
+                            <button class="btn btn-outline-primary btn-block w-100 waves-effect z-depth-0"
+                                    id="continueShoppingBtn">
+                                <i class="fa fa-chevron-left"></i>
+                                Continue Shopping
+                            </button>
+                        </a>
+                    </div>
+                </div> <!-- card.// -->
+                <div class="card mt-5 d-none" id="cartEmptyCard">
+                    <div class="card-body border-top primary-md align-self-center">
+                        <p>Your cart is empty</p>
+                    </div>
+                    <div class="card-footer border-top">
+                        <a href="/" class="waves-effect w-100 shadow">
+                            <button class="btn btn-outline-primary btn-block w-100 waves-effect z-depth-0"
+                                    id="continueShoppingBtn">
+                                <i class="fa fa-chevron-left"></i>
+                                Continue Shopping
+                            </button>
+                        </a>
                     </div>
                 </div>
 
-                <div class="card-footer border-top">
-                    <a href="/" class="waves-effect w-100 shadow">
-                        <button class="btn btn-outline-primary btn-block w-100 waves-effect z-depth-0"
-                            id="continueShoppingBtn">
-                            <i class="fa fa-chevron-left"></i>
-                            Continue Shopping
-                        </button>
-                    </a>
-                </div>
-            </div> <!-- card.// -->
-            <div class="card mt-5 d-none" id="cartEmptyCard">
-                <div class="card-body border-top primary-md align-self-center">
-                    <p>Your cart is empty</p>
-                </div>
-                <div class="card-footer border-top">
-                    <a href="/" class="waves-effect w-100 shadow">
-                        <button class="btn btn-outline-primary btn-block w-100 waves-effect z-depth-0"
-                            id="continueShoppingBtn">
-                            <i class="fa fa-chevron-left"></i>
-                            Continue Shopping
-                        </button>
-                    </a>
-                </div>
-            </div>
+            </main> <!-- col.// -->
+            <aside class="col-md-3" id="cartPricingWrapper">
+                <h4 class="d-flex justify-content-between align-items-center mb-3">
+                    <span class="text-muted">Cart Pricing</span>
+                </h4>
+                <li class="list-group-item justify-content-between shadow">
+                    <p class="primary-sm">Total (USD):</p>
 
-        </main> <!-- col.// -->
-        <aside class="col-md-3" id="cartPricingWrapper">
-            <h4 class="d-flex justify-content-between align-items-center mb-3">
-                <span class="text-muted">Cart Pricing</span>
-            </h4>
-            <li class="list-group-item justify-content-between shadow">
-                <p class="primary-sm">Total (USD):</p>
-
-                <div class="price-wrap primary-md" id="totalPriceWrapContainer">
-                    <div class="d-inline-flex">$
-                        <div class="quant-price ml-1" id="totalPrice">0.00</div>
+                    <div class="price-wrap primary-md" id="totalPriceWrapContainer">
+                        <div class="d-inline-flex">$
+                            <div class="quant-price ml-1" id="totalPrice">0.00</div>
+                        </div>
                     </div>
+                    <p class="text-muted"><i>Excludes Shipping, Tax, and Discounts</i></p>
+                </li>
+                <div class="w-100 pt-3">
+                    <a href="{{ url_for('user_bp.checkout' ) }}" class="waves-effect w-100 shadow" id="checkoutBtn">
+                        <button class="btn blue-gradient btn-block w-100">Checkout
+                            <i class="fa fa-chevron-right"></i>
+                        </button>
+                    </a>
                 </div>
-                <p class="text-muted"><i>Excludes Shipping, Tax, and Discounts</i></p>
-            </li>
-            <div class="w-100 pt-3">
-                <a href="{{ url_for('user_bp.checkout' ) }}" class="waves-effect w-100 shadow" id="checkoutBtn">
-                    <button class="btn blue-gradient btn-block w-100">Checkout
-                        <i class="fa fa-chevron-right"></i>
-                    </button>
-                </a>
-            </div>
-        </aside> <!-- col.// -->
-    </div>
+            </aside> <!-- col.// -->
+        </div>
 
-</div> <!-- container .//  -->
+    </div> <!-- container .//  -->
 
-<script src="/static/common/js/cart/shoppingcart.js" type="module"></script>
-<script src="/static/mdb/js/addons/datatables.min.js"></script>
+    <script src="/static/common/js/cart/shoppingcart.js" type="module"></script>
+    <script src="/static/mdb/js/addons/datatables.min.js"></script>
 
-<script>
-    $(document).ready(function () {
-        var dataTable = $('#shoppingCart').DataTable({
-            "bLengthChange": false,
-            "bFilter": true,
-            "bInfo": false,
-            "bAutoWidth": false,
-            "pageLength": 5,
-            "dom": '<"top"flp<"clear">>rt<"bottom"ifp<"clear">>'
+    <script>
+        $(document).ready(function () {
+            var dataTable = $('#shoppingCart').DataTable({
+                "bLengthChange": false,
+                "bFilter": true,
+                "bInfo": false,
+                "bAutoWidth": false,
+                "pageLength": 5,
+                "dom": '<"top"flp<"clear">>rt<"bottom"ifp<"clear">>'
+            });
+
+            $("#searchCart").on("keyup", function () {
+                dataTable.search(this.value).draw();
+            });
+            $(".dataTables_filter").hide();
         });
+    </script>
+    <style>
+        div.top,
+        div.bottom {
+            text-align: right !important;
+        }
 
-        $("#searchCart").on("keyup", function () {
-            dataTable.search(this.value).draw();
-        });
-        $(".dataTables_filter").hide();
-    });
-</script>
-<style>
-    div.top,
-    div.bottom {
-        text-align: right !important;
-    }
-
-    .dataTables_paginate {
-        display: inline-block;
-    }
-</style>
+        .dataTables_paginate {
+            display: inline-block;
+        }
+    </style>
 {% endblock %}
