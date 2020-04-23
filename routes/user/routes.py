@@ -171,9 +171,10 @@ def checkout():
         return redirect(url_for('user_bp.order_conf',conf_token=secrets.token_urlsafe(256), email=session['email'], user_id=user_id, name=get_first_name(mysql,session['email']),order_num=order_num))
 
     elif request.method == 'GET':
+        print(f'length of sc --> {len(session["shopping_cart"])}')
         if len(session['shopping_cart']) == 0:
-            redirect(url_for('common_bp.landing_page'))
-            
+            return redirect(url_for('common_bp.landing_page'))
+
         total_quantity = 0
         book_total = 0
         # BOOKS FROM SHOPPING CART
