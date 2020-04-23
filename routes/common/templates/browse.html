@@ -278,14 +278,16 @@
     </div>
     <script>
         $(document).ready(function () {
+            paginate();
+        });
+        //This function will be called every time the
+        //windows is resize. So, every time, we calculate
+        //viewport width and then paginate again
+        $(window).resize(function () {
+            paginate();
+        });
 
-            //This function will be called every time the
-            //windows is resize. So, every time, we calculate
-            //viewport width and then paginate again
-            /*$(window).resize(function () {
-
-            });*/
-
+        function paginate() {
             var shownRows = 0;
             var viewportWidth = $(window).width();
 
@@ -354,7 +356,11 @@
                 $('#table > div').css('opacity', '0.0').hide().slice(startItem, endItem).css('display', 'table-row').animate({opacity: 1}, 300);
                 $(window).scrollTop(0);
             });
-        });
+        }
+
+
+        //SEARCH
+
         $(document).ready(function () {
             $("#searchButton").on("click", function () {
                 // Retrieve the input field text
