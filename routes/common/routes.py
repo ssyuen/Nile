@@ -496,18 +496,17 @@ def shopping_cart():
         book_isbn = request.form.get('bookISBN')
         quant_flag = request.form.get('newQuantity')
 
-        bod_id_query = '''SELECT bod_sc_FK FROM shoppingcart WHERE userID_sc_FK = (SELECT id FROM user WHERE email = %s) AND bod_sc_FK = (SELECT id FROM book_orderdetail WHERE ISBN_bod_FK = %s AND userID_bod_FK = (SELECT id FROM user WHERE email = %s)) '''
-        cursor.execute(
-            bod_id_query, (session['email'], book_isbn, session['email']))
+        bod_id_query = '''SELECT bod_sc_FK FROM shoppingcart JOIN book_orderdetail ON bod_sc_FK=book_orderdetail.id WHERE userID_bod_FK = (SELECT id FROM user WHERE email = %s)'''
+        cursor.execute(bod_id_query, (session['email']))
         bod_id = cursor.fetchall()[0][0]
 
         # REMOVE FROM CART
         if quant_flag is None:
             old_cart.pop(book_isbn)
             session['shopping_cart'] = old_cart
-            query = '''DELETE FROM shoppingcart WHERE userID_sc_FK = (SELECT id FROM user WHERE email = %s) AND bod_sc_FK = (SELECT id FROM book_orderdetail WHERE ISBN_bod_FK = %s AND userID_bod_FK = (SELECT id FROM user WHERE email = %s))'''
+            query = '''DELETE FROM shoppingcart WHERE userID_sc_FK = (SELECT id FROM user WHERE email = %s) AND bod_sc_FK = %s'''
             cursor.execute(
-                query, (session['email'], book_isbn, session['email']))
+                query, (session['email'], bod_id))
 
             # remove from book_orderdetail next
             query = '''DELETE FROM book_orderdetail WHERE id = %s'''

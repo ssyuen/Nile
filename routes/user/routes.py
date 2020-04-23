@@ -55,8 +55,13 @@ def checkout():
         PAYMENT_IDENT = request.form.get('PAYMENT_IDENT')
         
         # USER CHOOSES TO SAVE NEW SHIPPING/PAYMENT
-        REMEMBER_SHIPPING = int(request.form.get('REMEMBER_SHIPPING'))
-        REMEMBER_PAYMENT = int(request.form.get('REMEMBER_PAYMENT'))
+        REMEMBER_SHIPPING = request.form.get('REMEMBER_SHIPPING')
+        if REMEMBER_SHIPPING != None:
+            REMEMBER_SHIPPING = int(REMEMBER_SHIPPING)
+        
+        REMEMBER_PAYMENT = request.form.get('REMEMBER_PAYMENT')
+        if REMEMBER_PAYMENT != None:
+            REMEMBER_PAYMENT = int(REMEMBER_PAYMENT)
 
         # TOTALS/PRICES
         SALES_TAX = request.form.get('SALES_TAX')
