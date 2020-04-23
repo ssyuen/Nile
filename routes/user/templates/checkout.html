@@ -603,27 +603,33 @@
                     </ul>
                     <!-- Cart -->
                     <!-- Promo code -->
-                    <form class="card p-2" action="">
-                        <div class="input-group">
-                            <input type="text" class="form-control" placeholder="Promo code"
-                                   aria-label="Recipient's username" aria-describedby="basic-addon2"
-                                   onkeyup="this.value = this.value.toUpperCase();">
-                            <div class="input-group-append">
-                                <button class="btn blue-gradient btn-md waves-effect m-0 ml-2" type="button">Redeem
-                                </button>
+                    <form id="addPromoForm">
+                        <div class="card p-2 promo-card">
+                            <div class="input-group md-outline md-form" id="promoCodeInputGroup">
+                                <input type="text" class="form-control" id="promoCodeInput" required
+                                       style="text-transform: uppercase;">
+                                <div class="input-group-append">
+                                    <button class="btn blue-gradient btn-md waves-effect m-0 ml-2" id="promoBtn"
+                                            type="submit">Redeem
+                                    </button>
+                                </div>
+                                <label for="promoCodeInput">Promo Code</label>
                             </div>
                         </div>
+                        <a href="{{ url_for('common_bp.shopping_cart') }}">
+                            <button class="btn btn-outline-primary btn-block rounded waves-effect waves-ripple mt-3"
+                                    id="backToCartBtn" type="button">
+                                <i class="fa fa-chevron-left"></i>
+                                Back to Cart
+                            </button>
+                        </a>
                     </form>
-                    <a href="{{ url_for('common_bp.shopping_cart') }}">
-                        <button class="btn btn-outline-primary btn-block rounded waves-effect waves-ripple mt-3"
-                                id="backToCartBtn">
-                            <i class="fa fa-chevron-left"></i>
-                            Back to Cart
-                        </button>
-                    </a>
                 </div>
             </div>
         </div>
     </div>
+    <style>
+
+    </style>
     <script type="module" src="/static/user/js/checkout/checkout.js"></script>
 {% endblock %}

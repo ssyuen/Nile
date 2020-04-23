@@ -1,0 +1,2 @@
+ALTER TABLE `order`
+    MODIFY dateOrdered DATETIME NOT NULL;
