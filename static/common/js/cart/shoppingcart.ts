@@ -17,6 +17,25 @@ const DURATION_M_SEC: number = 500; //PROPORTIONAL TIMEOUT DURATION IN MILLISECO
 
 const SESSION = new Map<string, CountUp>();
 
+var cartTable;
+
+$(document).ready(function () {
+    cartTable = (<any>$('#shoppingCart')).DataTable({
+        "bLengthChange": false,
+        "bFilter": true,
+        "bInfo": false,
+        "bAutoWidth": false,
+        "pageLength": 5,
+        "dom": '<"top"flp<"clear">>rt<"bottom"ifp<"clear">>'
+    });
+
+    $("#searchCart").on("keyup", function () {
+        cartTable.search((<HTMLInputElement>this).value).draw();
+    });
+    $(".dataTables_filter").hide();
+});
+
+
 /* DEFAULT COUNTER */
 SESSION['totalCounter'] = new CountUp("totalPrice", 0, {
     decimalPlaces: 2,
@@ -110,8 +129,13 @@ function getPrice(inputElement: HTMLElement): HTMLElement {
     return $(inputElement).parent().parent().next().find('div.quant-price')[0];
 }
 
-$('.remove-btn').on('click', function () {
-    $(this).closest('tr').remove();
+$('#shoppingCart tbody').on('click', '.remove-btn', function () {
+
+    cartTable
+        .row($(this).parents('tr'))
+        .remove()
+        .draw();
+
     setTimeout(updateTotal, DURATION_M_SEC);
     isCartEmpty();
     let isbn = $(this).attr("nile-isbn");
@@ -144,8 +168,7 @@ $(".minus").on("click", function (evt: Event) {
 });
 
 function isCartEmpty(): boolean {
-    if ($('.table-shopping-cart > tbody > tr').length === 0 ||
-        $('.dataTables_empty').length) {
+    if (!(cartTable.data().any())) {
         $("#checkoutBtn").addClass("d-none");
         $("#cartEmptyCard").removeClass("d-none");
         $("#cartCard").addClass("d-none");

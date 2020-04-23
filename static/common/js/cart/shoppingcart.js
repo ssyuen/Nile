@@ -13,6 +13,21 @@ const NILE_BUY_PR_ATTR = "buying-price";
 const DURATION_SEC = 0.5; //ANIMATION DURATION IN SECONDS
 const DURATION_M_SEC = 500; //PROPORTIONAL TIMEOUT DURATION IN MILLISECONDS
 const SESSION = new Map();
+var cartTable;
+$(document).ready(function () {
+    cartTable = $('#shoppingCart').DataTable({
+        "bLengthChange": false,
+        "bFilter": true,
+        "bInfo": false,
+        "bAutoWidth": false,
+        "pageLength": 5,
+        "dom": '<"top"flp<"clear">>rt<"bottom"ifp<"clear">>'
+    });
+    $("#searchCart").on("keyup", function () {
+        cartTable.search(this.value).draw();
+    });
+    $(".dataTables_filter").hide();
+});
 /* DEFAULT COUNTER */
 SESSION['totalCounter'] = new CountUp("totalPrice", 0, {
     decimalPlaces: 2,
@@ -94,8 +109,12 @@ function startAnimation(ctr, callback) {
 function getPrice(inputElement) {
     return $(inputElement).parent().parent().next().find('div.quant-price')[0];
 }
-$('.remove-btn').on('click', function () {
-    $(this).closest('tr').remove();
+
+$('#shoppingCart tbody').on('click', '.remove-btn', function () {
+    cartTable
+        .row($(this).parents('tr'))
+        .remove()
+        .draw();
     setTimeout(updateTotal, DURATION_M_SEC);
     isCartEmpty();
     let isbn = $(this).attr("nile-isbn");
@@ -122,8 +141,7 @@ $(".minus").on("click", function (evt) {
     }
 });
 function isCartEmpty() {
-    if ($('.table-shopping-cart > tbody > tr').length === 0 ||
-        $('.dataTables_empty').length) {
+    if (!(cartTable.data().any())) {
         $("#checkoutBtn").addClass("d-none");
         $("#cartEmptyCard").removeClass("d-none");
         $("#cartCard").addClass("d-none");
