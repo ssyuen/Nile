@@ -31,6 +31,13 @@ def send_change_conf_email(recipient, recipient_fname, sender='rootatnilebooksto
         recipient, 'rootatnilebookstore@gmail.com'], sender='rootatnilebookstore@gmail.com', body=message_body)
     mail.send(msg)
 
+def send_order_conf_email(recipient, recipient_fname, conf_token, sender='rootatnilebookstore@gmail.com'):
+    message_body = 'Hi ' + recipient_fname + \
+                   f',\n\nYour order #{conf_token} has been recorded and is being processed. We hope you enjoy your book and come back soon!\n\nRegards, Nile Bookstore Management'
+    msg = Message(subject='Nile Profile Change', recipients=[
+        recipient, 'rootatnilebookstore@gmail.com'], sender='rootatnilebookstore@gmail.com', body=message_body)
+    mail.send(msg)
+
 def calculate_shipping(quantity):
     return float("{:.2f}".format(SHIPPING_PRICE + .5 * quantity))
 
