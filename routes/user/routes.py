@@ -608,7 +608,14 @@ def payment_methods():
 @user_only(session)
 def settings():
     if request.method == 'GET':
-        return render_template('profile/profileSubscriptions.html')
+        conn = mysql.connect()
+        cursor = conn.cursor()
+        subscription = int.from_bytes(get_subscription(cursor,session['email']),'big')
+
+        if subscription == 1:
+            return render_template('profile/profileSubscriptions.html',subscription="checked")
+        else:
+            return render_template('profile/profileSubscriptions.html',subscription="")
     elif request.method == 'POST':
         conn = mysql.connect()
         cursor = conn.cursor()
