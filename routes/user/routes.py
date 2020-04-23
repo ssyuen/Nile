@@ -25,17 +25,8 @@ user_bp = Blueprint('user_bp', __name__,
 @remember_me(session)
 @user_only(session)
 def checkout():
-    '''
-    REQUIREMENTS:
-    - Fill out available shipping addresses
-    - Fill out available billing addresses
-    - Fill out cart area with items from the cart
-    - Sucessful checkout ends with confirmation email
-    - AJAX POST on Enter an Address OR when you select an address
-    - AJAX POST on Eneter a Billing Address OR when you select an address
-    - When form is submitted, the credit card must be validated against the one in the db
-    - Applying of PROMO code must be successful VIA POST, else, flash error message while re-rendering a portion of the page
-    '''
+    if len(session['shopping_cart']) == 0:
+        redirect(url_for('common_bp.landing_page'))
 
     conn = mysql.connect()
     cursor = conn.cursor()
@@ -91,7 +82,9 @@ def checkout():
         except:
             ccn = ''
         ct = request.form.get("CCNProvider")
-        ccexp = request.form.get('ccexp') + '-01'
+        ccexp = request.form.get('ccexp')
+        if ccexp == None:
+            ccexp += '-01'
         billingStreetAddress = request.form.get('billingStreetAddress')
         billingApartmentOrSuite = request.form.get('billingApartmentOrSuite')
         billingAddressZip = request.form.get('billingAddressZip')
