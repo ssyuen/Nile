@@ -147,7 +147,7 @@ def get_payment_id(cursor):
     return cursor.fetchall()[0][0]
 
 def get_book_orderdetails(cursor,user_id):
-    cursor.execute('SELECT * FROM book_orderdetail WHERE userID_bod_FK=%s',user_id)
+    cursor.execute('SELECT * FROM book_orderdetail JOIN shoppingcart ON book_orderdetail.id = shoppingcart.bod_sc_FK WHERE userID_bod_FK=%s',user_id)
     return cursor.fetchall()
 
 def check_login(session) -> bool:
