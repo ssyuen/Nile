@@ -31,6 +31,13 @@ def send_change_conf_email(recipient, recipient_fname, sender='rootatnilebooksto
         recipient, 'rootatnilebookstore@gmail.com'], sender='rootatnilebookstore@gmail.com', body=message_body)
     mail.send(msg)
 
+def send_order_conf_email(recipient, recipient_fname, conf_token, sender='rootatnilebookstore@gmail.com'):
+    message_body = 'Hi ' + recipient_fname + \
+                   f',\n\nYour order #{conf_token} has been recorded and is being processed. We hope you enjoy your book and come back soon!\n\nRegards, Nile Bookstore Management'
+    msg = Message(subject='Nile Profile Change', recipients=[
+        recipient, 'rootatnilebookstore@gmail.com'], sender='rootatnilebookstore@gmail.com', body=message_body)
+    mail.send(msg)
+
 def calculate_shipping(quantity):
     return float("{:.2f}".format(SHIPPING_PRICE + .5 * quantity))
 
@@ -40,22 +47,12 @@ def insert_order(cursor,payload):
 
     payload - (userID_order_FK,paymentID_order_FK,total,salesTax,shippingPrice,dateOrdered,promotionID,confirmationNumber,shippingAddrID_order_FK)
     '''
-    order_query = '''INSERT INTO order (userID_order_FK,paymentID_order_FK,total,salesTax,shippingPrice,dateOrdered,promotionID,confirmationNumber,shippingAddrID_order_FK)
-            VALUES (
-            (SELECT id FROM user WHERE email = %s),
-            %s,
-            %s,
-            %s,
-            %s,
-            %s,
-            %s,
-            %s,
-            %s)
-            '''
+    order_query = 'INSERT INTO `order` (userID_order_FK,paymentID_order_FK,total,salesTax,shippingPrice,dateOrdered,promotionID,confirmationNumber,shippingAddrID_order_FK) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s);'
+    print(f'insert order order_payload --> {payload}')
     cursor.execute(order_query,payload)
 
 def get_order_id(cursor):
-    cursor.execute('SELECT id FROM order ORDER BY id DESC LIMIT 1')
+    cursor.execute('SELECT id FROM `order` ORDER BY id DESC LIMIT 1')
     return cursor.fetchall()[0][0]
 
 def insert_orderbod(cursor,payload):

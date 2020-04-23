@@ -9,6 +9,8 @@ import secrets
 from server import mysql, mail
 from key import FERNET
 from datetime import datetime
+from uuid import uuid1
+
 
 from routes.common.util import remember_me, cart_session, login_required,insert_address,insert_payment,insert_useraddress,insert_userpayment,get_address_id,insert_userpayment,get_user_id,get_payment_id,insert_payment,get_book_orderdetails,get_first_name,generate_secure_token, secure_link
 from routes.user.util import *
@@ -53,10 +55,19 @@ def checkout():
         PAYMENT_IDENT = request.form.get('PAYMENT_IDENT')
         
         # USER CHOOSES TO SAVE NEW SHIPPING/PAYMENT
-        REMEMBER_SHIPPING = request.form.get('REMEMBER_SHIPPING')
-        REMEMBER_BILLING = request.form.get('REMEMBER_BILLING')
-        
+        REMEMBER_SHIPPING = int(request.form.get('REMEMBER_SHIPPING'))
+        REMEMBER_PAYMENT = int(request.form.get('REMEMBER_PAYMENT'))
 
+        # TOTALS/PRICES
+        SALES_TAX = request.form.get('SALES_TAX')
+        SHIPPING_COST = request.form.get('SHIPPING_COST')
+
+        SUB_TOTAL = request.form.get('SUB_TOTAL')
+        GRAND_TOTAL = request.form.get('GRAND_TOTAL')
+
+        # PROMOTION
+        PROMO_IDENT = request.form.get('PROMO_IDENT')
+        
         # USER CHOOSES NEW SHIPPING
         addressStreetAddress = request.form.get('addressStreetAddress')
         addressApartmentOrSuite = request.form.get('addressApartmentOrSuite')
@@ -65,15 +76,18 @@ def checkout():
         addressState = request.form.get('addressState')
         addressCountry = request.form.get('addressCountry')
 
-        shipping_payload = (addressStreetAddress,addressApartmentOrSuite,addressZip,addressCity,addressState,addressCountry,str(1))
+        shipping_payload = (addressStreetAddress,addressApartmentOrSuite,addressCity,addressZip,addressState,addressCountry,str(1))
 
         # USER CHOOSES NEW PAYMENT
-        checkoutCardHolderFirstName = request.form.get('checkoutCardHolderFirstName')
-        checkoutCardHolderLastName = request.form.get('checkoutCardHolderLastName')
-        ccn = request.form.get('ccn')
+        checkoutCardHolderFirstName = request.form.get('cardHolderFirstName')
+        checkoutCardHolderLastName = request.form.get('cardHolderLastName')
+        try:
+            ccn = FERNET.encrypt(request.form.get('ccn').encode('utf-8'))
+        except:
+            ccn = ''
         ct = request.form.get("CCNProvider")
-        ccexp = request.form.get('ccexp')
-        billingStreetAddress = request.form.get('billingStreetAddres')
+        ccexp = request.form.get('ccexp') + '-01'
+        billingStreetAddress = request.form.get('billingStreetAddress')
         billingApartmentOrSuite = request.form.get('billingApartmentOrSuite')
         billingAddressZip = request.form.get('billingAddressZip')
         billingAddressCity = request.form.get('billingAddressCity')
@@ -81,56 +95,64 @@ def checkout():
         billingAddressCountry = request.form.get('billingAddressCountry')
         
         # PAYMENT PAYLOAD CREATED AFTER BILLING_PAYLOAD HAS BEEN INSERTED
-        billing_payload = (billingStreetAddress,billingApartmentOrSuite,billingAddressZip,billingAddressCity,billingAddressCountry,str(2))
+        billing_payload = (billingStreetAddress,billingApartmentOrSuite,billingAddressCity,billingAddressZip,billingAddressState,billingAddressCountry,str(2))
 
 
         user_id = get_user_id(cursor,session['email'])
 
         # NEW SHIPPING AND PAYMENT METHODS
-        if SHIPPING_IDENT and PAYMENT_IDENT not in request.form:
+        if SHIPPING_IDENT == None and PAYMENT_IDENT == None:
+            print('USING NEW SHIPPING AND PAYMENT METHOD')
             insert_address(cursor,shipping_payload)
             shipping_id = get_address_id(cursor)
-            if REMEMBER_SHIPPING is not 0:
-                insert_useraddress(cursor,payload=shipping_id,email=session['email'])
+            if REMEMBER_SHIPPING != 0:
+                insert_useraddress(cursor,payload=(user_id,shipping_id),email=session['email'])
             
             insert_address(cursor,billing_payload)
             billing_id = get_address_id(cursor)
 
             payment_payload = (checkoutCardHolderFirstName,checkoutCardHolderLastName,ccn,ct,ccexp,billing_id)
+            print(f'payment payload: {payment_payload}')
             insert_payment(cursor,payment_payload)
             payment_id = get_payment_id(cursor)
-            if REMEMBER_BILLING is not 0:
+            if REMEMBER_PAYMENT != 0:
                 insert_userpayment(cursor,(user_id,payment_id))
 
         # SAVED SHIPPING ADDRESS, NEW PAYMENT METHOD
-        elif SHIPPING_IDENT in request.form:
+        elif SHIPPING_IDENT != None and PAYMENT_IDENT == None:
+            print('USING SAVED SHIPPING ADDRESS AND NEW PAYMENT METHOD')
             shipping_id = SHIPPING_IDENT
 
             insert_address(cursor,billing_payload)
             billing_id = get_address_id(cursor)
 
             payment_payload = (checkoutCardHolderFirstName,checkoutCardHolderLastName,ccn,ct,ccexp,billing_id)
+            print(f'payment payload: {payment_payload}')
             insert_payment(cursor,payment_payload)
             payment_id = get_payment_id(cursor)
-            if REMEMBER_BILLING is not 0:
+            if REMEMBER_PAYMENT != 0:
                 insert_userpayment(cursor,(user_id,payment_id))
         
         # SAVED PAYMENT METHOD, NEW SHIPPING ADDRESS
-        elif PAYMENT_IDENT in request.form:
+        elif PAYMENT_IDENT != None and SHIPPING_IDENT == None:
+            print('USING SAVED PAYMENT METHOD AND NEW SHIPPING ADDRESS')
             payment_id = PAYMENT_IDENT
 
             insert_address(cursor,shipping_payload)
             shipping_id = get_address_id(cursor)
-            if REMEMBER_SHIPPING is not 0:
-                insert_useraddress(cursor,payload=shipping_id,email=session['email'])
+            if REMEMBER_SHIPPING != 0:
+                insert_useraddress(cursor,payload=(user_id,shipping_id),email=session['email'])
 
         # USING BOTH SAVED SHIPPING AND PAYMENT
         else:
+            print('USING SAVED ADDRESSES')
             payment_id = PAYMENT_IDENT
             shipping_id = SHIPPING_IDENT
         
         # STEP 2: INSERT INTO TABLES ACCORDING TO CASE ENDING WITH INSERTING INTO ORDER
-        order_payload = (user_id,payment_id)
+        order_num = str(uuid1())
+        order_payload = (user_id,int(payment_id),float(GRAND_TOTAL),float(SALES_TAX),float(SHIPPING_COST),datetime.now().strftime('%Y-%m-%d %H:%M:%S'),PROMO_IDENT,order_num,int(shipping_id))
+        print(f'order payload --> {order_payload}')
         insert_order(cursor,order_payload)
         order_id = get_order_id(cursor)
 
@@ -141,6 +163,7 @@ def checkout():
 
         # STEP 4: AFTER SUCCESSFUL CHECKOUT, DELETE FROM SHOPPINGCART TABLE AND REDIRECT TO CHECKOUT CONFIRMATION PAGE/ROUTE
         delete_shopping_cart(cursor,user_id)
+        session['shopping_cart'] = {}
 
         conn.commit()
         conn.close()
@@ -148,7 +171,7 @@ def checkout():
         session.pop('checkout_token')
         generate_secure_token(session,'checkout_token')
         generate_secure_token(session,'order_token')
-        return redirect(url_for('user_bp.order_conf',conf_token=secrets.token_urlsafe(256), email=session['email'], user_id=user_id, name=get_first_name(cursor,session['email'])))
+        return redirect(url_for('user_bp.order_conf',conf_token=secrets.token_urlsafe(256), email=session['email'], user_id=user_id, name=get_first_name(mysql,session['email']),order_num=order_num))
 
     elif request.method == 'GET':
 
@@ -214,7 +237,7 @@ def checkout():
             }
 
         shipping_price = calculate_shipping(quantity=total_quantity)
-        print(f'grand total --> {book_total}')
+
         return render_template('checkout.html', book_payload=book_payload, shipping_payload=shipping_payload,
                                billing_payload=payment_payload, total_quantity=total_quantity,book_total=book_total,
                                shipping_price=shipping_price)
@@ -470,6 +493,7 @@ def payment_methods():
         cln = request.form.get("cardHolderLastName").title()
         ct = request.form.get("CCNProvider")
         ccexp = request.form.get("ccexp") + '-01'
+        print(f'ccexp --> {type(ccexp)}')
         street1 = request.form.get("billingStreetAddress").title()
         street2 = request.form.get("billingApartmentOrSuite").title()
         zipcode = request.form.get("billingAddressZip")
@@ -613,10 +637,11 @@ def settings():
             conn.close()
             return jsonify({'response': 200})
 
-@user_bp.route('/order_conf/<conf_token>+<email>+<user_id>+<name>', methods=['GET'])
+@user_bp.route('/order_conf/<conf_token>+<email>+<user_id>+<name>+<order_num>', methods=['GET'])
 @login_required(session)
 @cart_session(session)
 @remember_me(session)
 @user_only(session)
-def order_conf(conf_token, email=None, user_id=None, name=None):
-    return render_template('orderConf.html')
+def order_conf(conf_token, email=None, user_id=None, name=None, order_num=None):
+    send_order_conf_email(email,name,order_num)
+    return render_template('orderConf.html',order_num=order_num)

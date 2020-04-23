@@ -116,7 +116,7 @@ def insert_useraddress(cursor, payload,email=None):
     payload - (userID_ua_FK, addressID_ua_FK)
     '''
     if email is not None:
-        cursor.execute( 'INSERT INTO user_address (userID_ua_FK, addressID_ua_FK) VALUES ((SELECT id FROM user WHERE email=%s), %s)',(email,payload[0]))
+        cursor.execute( 'INSERT INTO user_address (userID_ua_FK, addressID_ua_FK) VALUES ((SELECT id FROM user WHERE email=%s), %s)',(email,payload[1]))
     else:
         cursor.execute(
             'INSERT INTO user_address (userID_ua_FK, addressID_ua_FK) VALUES (%s, %s)',payload)
@@ -156,8 +156,12 @@ def check_login(session) -> bool:
     else:
         return False
 
-def get_first_name(cursor,email):
-    cursor.execute('SELECT firstname FROM user WHERE email=%s',email)
+def get_first_name(mysql,email):
+    conn = mysql.connect()
+    cursor = conn.cursor()
+    cursor.execute('SELECT firstname FROM user WHERE email=%s',(email))
+    conn.close()
+    return cursor.fetchall()[0][0]
 
 
 def save_cart(mysql, session):
@@ -220,7 +224,7 @@ def remember_me(session):
         def wrapped_func(*args, **kws):
             try:
                 if session['remember_me']:
-                    g.PERMANENT_SESSION_LIFETIME = timedelta(days=7)
+                    session.permanent = True
                     return f(*args, **kws)
             except KeyError:
                 session['remember_me'] = False
