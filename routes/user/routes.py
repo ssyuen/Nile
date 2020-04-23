@@ -83,7 +83,7 @@ def checkout():
             ccn = ''
         ct = request.form.get("CCNProvider")
         ccexp = request.form.get('ccexp')
-        if ccexp == None:
+        if ccexp != None:
             ccexp += '-01'
         billingStreetAddress = request.form.get('billingStreetAddress')
         billingApartmentOrSuite = request.form.get('billingApartmentOrSuite')
