@@ -284,6 +284,7 @@
         //windows is resize. So, every time, we calculate
         //viewport width and then paginate again
         $(window).resize(function () {
+            $(".bar").empty();
             paginate();
         });
 
