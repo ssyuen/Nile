@@ -23,7 +23,7 @@ def validate_promo():
         return jsonify({'code':PROMO_ID,'value':results[3]})
     else:
         print('promo doesnt exist')
-        return jsonify({"response":PROMO_ID})
+        return jsonify({"code":PROMO_ID})
 
 @api_bp.route('/'+api_url+'/isbn/', methods=['GET'])
 def query_isbn(search_query=None):
