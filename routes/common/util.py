@@ -1,6 +1,7 @@
 import secrets
 from datetime import datetime, timedelta
 from flask import flash, redirect, url_for
+from server import mysql
 from functools import wraps
 
 
@@ -249,4 +250,5 @@ def cart_session(session):
         return wrapped_func
     return dec
 
-
+def generate_cursor(mysql):
+    return mysql.connect().cursor()

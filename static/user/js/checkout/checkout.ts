@@ -475,7 +475,7 @@ $("#addPromoForm").on("submit", function (e: Event) {
 
     $.ajax({
         type: "POST",
-        url: "/checkout/promo_app/",
+        url: "/api/promo",
         data: {"PROMO_IDENT": ref},
         success: function (data) {
             //Do something with the data (true or false) and display to customer

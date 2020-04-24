@@ -1,9 +1,8 @@
-import {CountUp} from '../../../jsplugin/countUp.min.js';
-import {post, SALES_TAX, serializedToObject} from "./checkoutUtil.js";
-import {replaceBtn} from "../../../common/js/utility/util.js";
-import {CreditCard, PURPOSE, RegistrationInputValidator} from "../../../common/js/registration/regValidation.js";
-import {PromotionCheckoutValidation} from "./promoValidation.js";
-
+import { CountUp } from '../../../jsplugin/countUp.min.js';
+import { post, SALES_TAX, serializedToObject } from "./checkoutUtil.js";
+import { replaceBtn } from "../../../common/js/utility/util.js";
+import { CreditCard, PURPOSE, RegistrationInputValidator } from "../../../common/js/registration/regValidation.js";
+import { PromotionCheckoutValidation } from "./promoValidation.js";
 const COUNTER_DURATION = 0.5;
 const FORM = $("#dummyForm");
 const CHECKOUT_BTN = $("#checkoutBtn");
@@ -56,7 +55,8 @@ startCounter(salesTaxCounter);
 let salestax = 0;
 if (!shippingSelect.length) {
     forceEntry(newAddrEntry, chooseShippingToggleLabel, shipToggler, "Enter a Shipping Address", 1 /* SHIPPING */);
-} else {
+}
+else {
     salestax = updateSalesTax(shippingSelect);
 }
 if (!paymentSelect.length) {
@@ -79,7 +79,8 @@ function stopAllInput(entry) {
 function startCounter(ctr) {
     if (!ctr.error) {
         ctr.start();
-    } else {
+    }
+    else {
         console.error(ctr.error);
     }
 }
@@ -94,7 +95,8 @@ function forceEntry(formEntry, toggleLabel, toggler, toggleText, inputType) {
         shipRad.removeAttr("checked");
         entShipRad.attr("checked", "checked");
         $(".ship-radio-holder").hide();
-    } else {
+    }
+    else {
         pmRad.removeAttr("checked");
         entPMRad.attr("checked", "checked");
         $(".pm-radio-holder").hide();
@@ -110,7 +112,8 @@ function updateSalesTax(sel, withOption = true) {
 function switchToggler(toggler) {
     if ($(toggler).text() === "View") {
         $(toggler).text("Close View");
-    } else {
+    }
+    else {
         $(toggler).text("View");
     }
 }
@@ -190,7 +193,8 @@ function proceedCheckoutSubmit() {
     let shipPayload = {}, paymentPayload = {};
     if (shipRad.is(":checked")) {
         shipPayload["SHIPPING_IDENT"] = $(shipOpt).attr("nile-shipping-ident");
-    } else if (entShipRad.is(":checked")) {
+    }
+    else if (entShipRad.is(":checked")) {
         if (!checkEmptyInput(newAddrEntry) || !vcSH.validateAll('.card-title')) {
             return false;
         }
@@ -199,7 +203,8 @@ function proceedCheckoutSubmit() {
     }
     if (pmRad.is(":checked")) {
         paymentPayload["PAYMENT_IDENT"] = $(payOpt).attr("nile-pm-ident");
-    } else if (entPMRad.is(":checked")) {
+    }
+    else if (entPMRad.is(":checked")) {
         if (!checkEmptyInput(newPMEntry) || !vcBL.validateAll('.card-title')) {
             return false;
         }
@@ -231,7 +236,8 @@ function checkEmptyInput(entry) {
             if ($(value).val() === "") {
                 return false;
             }
-        } else {
+        }
+        else {
             if ($(value).find(":selected").val() === "") {
                 return false;
             }
@@ -270,7 +276,8 @@ Array('input', 'focusin').forEach((evt) => {
         vcBL.setValidity(this, this, PURPOSE.CCN, check);
         if (check) {
             CreditCard.toggleCardIcon(this, cc);
-        } else {
+        }
+        else {
             CreditCard.toggleCardIcon(this);
         }
     });
@@ -358,9 +365,10 @@ $(document).scroll(function () {
     if ($(window).width() >= 992) {
         var y = $(document).scrollTop(), header = $("#sidebar");
         if (y >= (y + $('.card').offset().top)) {
-            header.css({"position": "static", "width": "auto"});
-        } else {
-            header.css({"position": "sticky", "width": "auto", "top": "20px"});
+            header.css({ "position": "static", "width": "auto" });
+        }
+        else {
+            header.css({ "position": "sticky", "width": "auto", "top": "20px" });
         }
     }
 });
@@ -374,8 +382,8 @@ $("#addPromoForm").on("submit", function (e) {
     }
     $.ajax({
         type: "POST",
-        url: "/checkout/promo_app/",
-        data: {"PROMO_IDENT": ref},
+        url: "/api/promo",
+        data: { "PROMO_IDENT": ref },
         success: function (data) {
             //Do something with the data (true or false) and display to customer
         }

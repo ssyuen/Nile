@@ -242,15 +242,6 @@ def checkout():
                                billing_payload=payment_payload, total_quantity=total_quantity,book_total=book_total,
                                shipping_price=shipping_price)
 
-
-@user_bp.route('/base_profile/', methods=['POST'])
-@login_required(session)
-@cart_session(session)
-@remember_me(session)
-@user_only(session)
-def verify_promo():
-    return jsonify({'response':200})
-
 @user_bp.route('/base_profile/', methods=['GET'])
 @login_required(session)
 @cart_session(session)
