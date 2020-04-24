@@ -329,14 +329,16 @@ def order_history():
     conn = mysql.connect()
     cursor = conn.cursor()
 
-    order_history_query = """ SELECT `order`.`id`, `book`.`price`, `book`.`ISBN`, `book`.`title`, `book`.`authorFirstName`, `book`.`authorLastName`, `order`.`dateOrdered`
-                FROM `user`
-                JOIN `order` ON `user`.`id`=`order`.`userID_order_FK`
-                JOIN `order_bod` ON `order`.`id`=`order_bod`.`orderID_obod_FK`
-                JOIN `book_orderdetail` ON `order_bod`.`bodID_obod_FK`=`book_orderdetail`.`id`
-                JOIN `book` ON `book_orderdetail`.`ISBN_bod_FK`=`book`.`ISBN`
-                WHERE user.email=%s
-                ORDER BY `order`.`dateOrdered` ASC; """
+    order_history_query = """ 
+       SELECT o.`confirmationNumber`, b.`price`, b.`ISBN`,  b.`title`, obod.quantity,  
+       b.`authorFirstName`, b.`authorLastName`, o.`dateOrdered`, o.shippingPrice, o.salesTax, o.total
+                   FROM `user` u
+                   JOIN `order` o ON u.`id`= o.`userID_order_FK`
+                   JOIN `order_bod` ON o.`id`=`order_bod`.`orderID_obod_FK`
+                   JOIN `book_orderdetail` obod ON `order_bod`.`bodID_obod_FK`= obod.`id`
+                   JOIN `book` b ON obod.`ISBN_bod_FK`= b.`ISBN`
+                   WHERE u.email=%s
+                   ORDER BY o.`dateOrdered` ASC; """
     cursor.execute(order_history_query, (session["email"]))
     data = cursor.fetchall()
 
