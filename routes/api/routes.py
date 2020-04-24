@@ -17,8 +17,9 @@ def validate_promo():
     PROMO_ID = request.form.get('PROMO_IDENT')
     cursor = generate_cursor(mysql)
     cursor.execute('SELECT * FROM promotion WHERE code=%s',PROMO_ID)
+    results = cursor.fetchall()[0]
     if cursor.rowcount:
-        return jsonify(True)
+        return jsonify({'code':results[2],'value':results[3]})
     else:
         return jsonify(False)
 
