@@ -20,10 +20,10 @@ def validate_promo():
     
     if cursor.rowcount:
         results = cursor.fetchall()[0]
-        return jsonify({'code':results[2],'value':results[3]})
+        return jsonify({'code':PROMO_ID,'value':results[3]})
     else:
         print('promo doesnt exist')
-        return jsonify({"response":False})
+        return jsonify({"response":PROMO_ID})
 
 @api_bp.route('/'+api_url+'/isbn/', methods=['GET'])
 def query_isbn(search_query=None):
