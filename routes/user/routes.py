@@ -25,21 +25,10 @@ user_bp = Blueprint('user_bp', __name__,
 @remember_me(session)
 @user_only(session)
 def checkout():
-    
-
     conn = mysql.connect()
     cursor = conn.cursor()
 
     if request.method == 'POST':
-        '''
-        POST-REQUIREMENTS
-
-            # 1: User is not able to go back to the checkout area
-
-        '''
-        # STEP 1: RETRIEVE FORM VALUES
-        print(request.form)
-
         # USER CHOOSES SAVED OPTIONS
         SHIPPING_IDENT = request.form.get('SHIPPING_IDENT')
         PAYMENT_IDENT = request.form.get('PAYMENT_IDENT')
@@ -99,7 +88,6 @@ def checkout():
 
         # NEW SHIPPING AND PAYMENT METHODS
         if SHIPPING_IDENT == None and PAYMENT_IDENT == None:
-            print('USING NEW SHIPPING AND PAYMENT METHOD')
             insert_address(cursor,shipping_payload)
             shipping_id = get_address_id(cursor)
             if REMEMBER_SHIPPING != 0:
@@ -109,7 +97,6 @@ def checkout():
             billing_id = get_address_id(cursor)
 
             payment_payload = (checkoutCardHolderFirstName,checkoutCardHolderLastName,ccn,ct,ccexp,billing_id)
-            print(f'payment payload: {payment_payload}')
             insert_payment(cursor,payment_payload)
             payment_id = get_payment_id(cursor)
             if REMEMBER_PAYMENT != 0:
@@ -117,14 +104,12 @@ def checkout():
 
         # SAVED SHIPPING ADDRESS, NEW PAYMENT METHOD
         elif SHIPPING_IDENT != None and PAYMENT_IDENT == None:
-            print('USING SAVED SHIPPING ADDRESS AND NEW PAYMENT METHOD')
             shipping_id = SHIPPING_IDENT
 
             insert_address(cursor,billing_payload)
             billing_id = get_address_id(cursor)
 
             payment_payload = (checkoutCardHolderFirstName,checkoutCardHolderLastName,ccn,ct,ccexp,billing_id)
-            print(f'payment payload: {payment_payload}')
             insert_payment(cursor,payment_payload)
             payment_id = get_payment_id(cursor)
             if REMEMBER_PAYMENT != 0:
@@ -132,7 +117,6 @@ def checkout():
         
         # SAVED PAYMENT METHOD, NEW SHIPPING ADDRESS
         elif PAYMENT_IDENT != None and SHIPPING_IDENT == None:
-            print('USING SAVED PAYMENT METHOD AND NEW SHIPPING ADDRESS')
             payment_id = PAYMENT_IDENT
 
             insert_address(cursor,shipping_payload)
@@ -142,14 +126,12 @@ def checkout():
 
         # USING BOTH SAVED SHIPPING AND PAYMENT
         else:
-            print('USING SAVED ADDRESSES')
             payment_id = PAYMENT_IDENT
             shipping_id = SHIPPING_IDENT
         
         # STEP 2: INSERT INTO TABLES ACCORDING TO CASE ENDING WITH INSERTING INTO ORDER
         order_num = str(uuid1())
         order_payload = (user_id,int(payment_id),float(GRAND_TOTAL),float(SALES_TAX),float(SHIPPING_COST),datetime.now().strftime('%Y-%m-%d %H:%M:%S'),PROMO_IDENT,order_num,int(shipping_id))
-        print(f'order payload --> {order_payload}')
         insert_order(cursor,order_payload)
         order_id = get_order_id(cursor)
 
@@ -281,17 +263,11 @@ def change_name():
         lname = firstLetter + lname[1:].lower()
 
         session['firstName'] = fname
-        fname_query = '''
-        UPDATE user SET firstname = %s WHERE email = %s
-        '''
-        cursor.execute(fname_query, (fname, session['email']))
+        cursor.execute('UPDATE user SET firstname = %s WHERE email = %s', (fname, session['email']))
         conn.commit()
 
         session['lastName'] = lname
-        lname_query = '''
-        UPDATE user SET lastname = %s WHERE email = %s
-        '''
-        cursor.execute(lname_query, (lname, session['email']))
+        cursor.execute('UPDATE user SET lastname = %s WHERE email = %s', (lname, session['email']))
         conn.commit()
 
         conn.close()
@@ -312,8 +288,7 @@ def change_pass():
         conn = mysql.connect()
         cursor = conn.cursor()
 
-        db_pass_query = '''SELECT pass FROM user WHERE email = %s'''
-        cursor.execute(db_pass_query, (session['email']))
+        cursor.execute('SELECT pass FROM user WHERE email = %s', (session['email']))
         db_pass = cursor.fetchall()[0][0].encode('utf-8')
         current_password = request.form.get('currentPassword')
         if not bcrypt.checkpw(current_password.encode('utf-8'), db_pass):
@@ -351,11 +326,9 @@ def change_pass():
 @remember_me(session)
 @user_only(session)
 def order_history():
-    # Connect to niledb
     conn = mysql.connect()
     cursor = conn.cursor()
 
-    # Grab the order histor from the user
     order_history_query = """ SELECT `order`.`id`, `book`.`price`, `book`.`ISBN`, `book`.`title`, `book`.`authorFirstName`, `book`.`authorLastName`, `order`.`dateOrdered`
                 FROM `user`
                 JOIN `order` ON `user`.`id`=`order`.`userID_order_FK`
@@ -367,7 +340,6 @@ def order_history():
     cursor.execute(order_history_query, (session["email"]))
     data = cursor.fetchall()
 
-    # Close connection
     conn.close()
     return render_template('profile/profileOrderHistory.html', data=data)
 
@@ -484,7 +456,6 @@ def payment_methods():
         cln = request.form.get("cardHolderLastName").title()
         ct = request.form.get("CCNProvider")
         ccexp = request.form.get("ccexp") + '-01'
-        print(f'ccexp --> {type(ccexp)}')
         street1 = request.form.get("billingStreetAddress").title()
         street2 = request.form.get("billingApartmentOrSuite").title()
         zipcode = request.form.get("billingAddressZip")
@@ -618,8 +589,6 @@ def settings():
             query = 'UPDATE user SET isSubscribed = %s WHERE email = %s'
             cursor.execute(query, (1, session['email']))
 
-            print('subscribed')
-
             conn.commit()
             conn.close()
             return jsonify({'response': 200})
@@ -628,8 +597,6 @@ def settings():
         elif flag == 'UNSUBSCRIBE':
             query = 'UPDATE user SET isSubscribed = %s WHERE email = %s'
             cursor.execute(query, (0, session['email']))
-
-            print('unsubscribed')
 
             conn.commit()
             conn.close()

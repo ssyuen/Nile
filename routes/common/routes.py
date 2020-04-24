@@ -29,7 +29,7 @@ def about():
 def landing_page(search_results=None):
     with ExitStack() as stack:
         stack.callback(partial(print, 'off the stack'))
-        # print(session['shopping_cart'])
+
         # STEP 1: Make call to database to return all books, need ISBN for query in /product/?isbn=<isbn>
         conn = mysql.connect()
         cursor = conn.cursor()
@@ -81,10 +81,7 @@ def login(ctx=None):
 
         # ADMIN LOGIN
         if '@nile.com' in userEmail:
-
-            admin_payload = userEmail
-            query = 'SELECT email ,pass, firstName, lastName from admin WHERE email = %s'
-            cursor.execute(query, (admin_payload))
+            cursor.execute('SELECT email ,pass, firstName, lastName from admin WHERE email = %s', (userEmail))
             conn.close()
 
             try:
@@ -92,13 +89,9 @@ def login(ctx=None):
                 db_pass = results[1].encode('utf-8')
                 # db_pass = db_pass[2:-1].encode('utf-8')
                 if bcrypt.checkpw(password.encode('utf-8'), db_pass):
-                    session['logged_in'] = True
-                    session['email'] = results[0]
-                    session['admin'] = True
-                    session['lastName'] = results[3]
-                    session['firstName'] = results[2]
-                    session['remember_me'] = remember_me
+                    store_login(session,results,admin=True)
 
+                    session['remember_me'] = remember_me
                     if session['remember_me'] != None:
                         session.permanent = True
 
@@ -114,10 +107,7 @@ def login(ctx=None):
 
         # REGULAR LOGIN USER
         else:
-
-            user_payload = userEmail
-            query = 'SELECT email, pass, firstName, lastName, statusID_user_FK from user WHERE email= %s'
-            cursor.execute(query, user_payload)
+            cursor.execute('SELECT email, pass, firstName, lastName, statusID_user_FK from user WHERE email= %s', (userEmail))
             conn.close()
 
             try:
@@ -129,24 +119,21 @@ def login(ctx=None):
                     # VERIFIED ACCOUNT
                     if int(results[4]) == 2:
                         session['verified'] = True
-
-                    # USER IS UNVERIFIED
                     else:
                         session['verified'] = False
                         flash(
                             'You must verifiy your account before being able to login!')
                         return redirect(url_for('common_bp.login'))
 
-                    session['logged_in'] = True
-                    session['email'] = results[0]
-                    session['firstName'] = results[2]
-                    session['lastName'] = results[3]
-                    session['admin'] = False
-                    session['remember_me'] = remember_me
-                    generate_secure_token(session, 'checkout_token')
+                    store_login(session,results)
 
+                    session['remember_me'] = remember_me
                     if session['remember_me'] != None:
                         session.permanent = True
+
+
+                    # ENSURES A USER'S CHECKOUT SESSION CANNOT BE ACCESSED WITHOUT THE TOKEN
+                    generate_secure_token(session, 'checkout_token')
 
                     # IF USER LOGGED IN WITH ITEMS IN THEIR CART, STORE TO DB
                     save_cart(mysql, session)
@@ -276,7 +263,6 @@ def register():
                 # payment_payload depends on user and billing FKs
                 payment_payload = (card_first_name, card_last_name,
                                    ccn, ccn_provider, ccexp, billing_id)
-                print(f'payment payload: {payment_payload}')
                 insert_payment(cursor, payment_payload)
                 payment_id = get_payment_id(cursor)
                 insert_userpayment(cursor, (user_id, payment_id))
