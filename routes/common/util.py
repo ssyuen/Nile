@@ -3,7 +3,6 @@ from datetime import datetime, timedelta
 from flask import flash, redirect, url_for
 from server import mysql
 from functools import wraps
-from pydefer.defer import defer
 
 
 def get_genres(cursor, close=False):
