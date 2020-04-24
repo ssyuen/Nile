@@ -2,6 +2,9 @@ $(document).ready(function () {
     var dt = (<any>$('#orderHistory')).DataTable({
         responsive: true,
         order: [[0, 'asc']],
+        columnDefs: [
+            {targets: [2], orderable: false}
+        ],
         rowGroup: {
             dataSrc: 0,
 
@@ -13,13 +16,10 @@ $(document).ready(function () {
                         return a + b.replace("$", '') * 1;
                     }, 0);
 
-                return 'Order Total for ' + group + ': ' +
+                return 'Order Total: ' +
                     (<any>$.fn).dataTable.render.number(',', '.', 2, '$').display(total).bold();
             }
         }
     });
     dt.column(0).visible(false);
-    $(".dtrg-group.dtrg-start")
-        .find(":first-child")
-        .prepend("<span class='mr-3'>Order Confirmation #:</span>");
 });
