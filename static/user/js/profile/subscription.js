@@ -16,6 +16,11 @@ $(emailSubscription).change(function () {
         type: 'POST',
         data: { 'flag': flag }
     });
+    $.ajax({
+        url: '/admin/settings/',
+        type: 'POST',
+        data: { 'flag': flag }
+    });
 });
 var email;
 (function (email) {

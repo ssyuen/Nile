@@ -79,6 +79,10 @@ def secure_checkout(session):
         return wrapped_func
     return dec
 
-def get_subscription(cursor,email):
-    cursor.execute('SELECT isSubscribed FROM user WHERE email=%s',(email))
-    return cursor.fetchall()[0][0]
+def get_subscription(cursor,email,admin=False):
+    if not admin:
+        cursor.execute('SELECT isSubscribed FROM user WHERE email=%s',(email))
+        return cursor.fetchall()[0][0]
+    else:
+        cursor.execute('SELECT isSubscribed FROM admin WHERE email=%s',(email))
+        return cursor.fetchall()[0][0]
