@@ -14,7 +14,12 @@ $(emailSubscription).change(function() {
         flag = email.UNSUBSCRIBE
     }
     $.ajax({
-        url: '/nileuser/subscriptions/',
+        url: '/nileuser/settings/',
+        type: 'POST',
+        data: {'flag': flag}
+    });
+    $.ajax({
+        url: '/admin/settings/',
         type: 'POST',
         data: {'flag': flag}
     });

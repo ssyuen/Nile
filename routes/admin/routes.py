@@ -6,7 +6,7 @@ import sys
 import string
 
 from routes.common.util import remember_me, cart_session
-from routes.user.routes import send_change_conf_email
+from routes.user.routes import send_change_conf_email, get_subscription
 from routes.admin.util import admin_required
 
 admin_bp = Blueprint('admin_bp', __name__,
@@ -39,17 +39,11 @@ def change_name():
         lname = firstLetter + lname[1:].lower()
 
         session['firstName'] = fname
-        fname_query = '''
-        UPDATE admin SET firstname = %s WHERE email = %s
-        '''
-        cursor.execute(fname_query, (fname, session['email']))
+        cursor.execute('UPDATE admin SET firstname = %s WHERE email = %s', (fname, session['email']))
         conn.commit()
 
         session['lastName'] = lname
-        lname_query = '''
-        UPDATE admin SET lastname = %s WHERE email = %s
-        '''
-        cursor.execute(lname_query, (lname, session['email']))
+        cursor.execute('UPDATE admin SET lastname = %s WHERE email = %s', (lname, session['email']))
         conn.commit()
 
         conn.close()
@@ -77,8 +71,7 @@ def change_pass():
             new_password = bcrypt.hashpw(
                 new_password.encode('utf-8'), bcrypt.gensalt())
 
-            query = 'UPDATE admin SET pass=%s WHERE email=%s'
-            cursor.execute(query, (new_password, session['email']))
+            cursor.execute('UPDATE admin SET pass=%s WHERE email=%s', (new_password, session['email']))
             conn.commit()
             conn.close()
 
@@ -197,22 +190,40 @@ def add_promo_form():
 def edit_users_form():
     return render_template('./forms/edit_users_form.html')
 
-@admin_bp.route('/subscriptions/',methods=['POST','GET'])
+@admin_bp.route('/settings/',methods=['POST','GET'])
 @remember_me(session)
 @admin_required(session)
-def manage_subscriptions():
+def settings():
 
     if request.method == 'GET':
-        return render_template('profile/profileSubscriptions.html')
-    else:
+        conn = mysql.connect()
+        cursor = conn.cursor()
+        subscription = int.from_bytes(get_subscription(cursor,session['email'],True),'big')
+
+        if subscription == 1:
+            return render_template('adminSubscription.html',subscription="checked")
+        else:
+            return render_template('adminSubscription.html',subscription="")
+    elif request.method == 'POST':
         conn = mysql.connect()
         cursor = conn.cursor()
 
         flag = request.form.get("flag")
 
+        # USER IS SUBSCRIBING
         if flag == 'SUBSCRIBE':
+            query = 'UPDATE admin SET isSubscribed = %s WHERE email = %s'
+            cursor.execute(query, (1, session['email']))
+
+            conn.commit()
             conn.close()
-            return 200
+            return jsonify({'response': 200})
+
+        # USER IS UNSUBSCRIBING
         elif flag == 'UNSUBSCRIBE':
+            query = 'UPDATE admin SET isSubscribed = %s WHERE email = %s'
+            cursor.execute(query, (0, session['email']))
+
+            conn.commit()
             conn.close()
-            return 200
+            return jsonify({'response': 200})

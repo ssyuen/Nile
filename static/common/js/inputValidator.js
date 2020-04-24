@@ -53,7 +53,8 @@ export class InputValidator {
             }
             $(inputType).prop("aria-invalid", "false");
             return true;
-        } else {
+        }
+        else {
             if (!$(invalidMessageLocation).next(invalidMessageType[1]).length) {
                 $(invalidMessageLocation).after(invalidMessageType[0]);
             }

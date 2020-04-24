@@ -4,15 +4,25 @@ from functools import wraps
 from server import mysql
 import secrets
 
-from routes.common.routes import get_genres, get_bindings, get_genres_count, get_bindings_count
+from routes.common.routes import get_genres, get_bindings, get_genres_count, get_bindings_count,generate_cursor
 
-books_bp = Blueprint('books_bp', __name__,
+api_bp = Blueprint('api_bp', __name__,
                      template_folder='templates', static_folder='static')
 
 api_url = secrets.token_urlsafe(16)
 
 
-@books_bp.route('/'+api_url+'/isbn/', methods=['GET'])
+@api_bp.route('/promo',methods=['POST'])
+def validate_promo():
+    PROMO_ID = request.form.get('PROMO_IDENT')
+    cursor = generate_cursor(mysql)
+    cursor.execute('SELECT * FROM promotion WHERE code=%s',PROMO_ID)
+    if cursor.rowcount:
+        return jsonify(True)
+    else:
+        return jsonify(False)
+
+@api_bp.route('/'+api_url+'/isbn/', methods=['GET'])
 def query_isbn(search_query=None):
     if request.args is None:
         return redirect(url_for('common_bp.landing_page'))
@@ -56,7 +66,7 @@ def query_isbn(search_query=None):
                 return redirect(url_for('common_bp.landing_page'))
 
 
-@books_bp.route('/'+api_url, methods=['GET'])
+@api_bp.route('/'+api_url, methods=['GET'])
 def query_books(search_query=None):
     if request.args is None:
         return redirect(url_for('common_bp.landing_page'))
@@ -115,7 +125,6 @@ def query_books(search_query=None):
             conn.close()
             return render_template('browse.html', books=books, genres=genres, genre_counts=genre_counts, bindings=bindings, binding_counts=binding_counts)
         else:
-            print('here')
             return redirect(url_for('common_bp.landing_page'))
 
 

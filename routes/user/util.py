@@ -34,7 +34,7 @@ def send_change_conf_email(recipient, recipient_fname, sender='rootatnilebooksto
 def send_order_conf_email(recipient, recipient_fname, conf_token, sender='rootatnilebookstore@gmail.com'):
     message_body = 'Hi ' + recipient_fname + \
                    f',\n\nYour order #{conf_token} has been recorded and is being processed. We hope you enjoy your book and come back soon!\n\nRegards, Nile Bookstore Management'
-    msg = Message(subject='Nile Profile Change', recipients=[
+    msg = Message(subject=f'Nile Order Confirmation {conf_token}', recipients=[
         recipient, 'rootatnilebookstore@gmail.com'], sender='rootatnilebookstore@gmail.com', body=message_body)
     mail.send(msg)
 
@@ -78,3 +78,11 @@ def secure_checkout(session):
                 return redirect(url_for('common_bp.landing_page'))
         return wrapped_func
     return dec
+
+def get_subscription(cursor,email,admin=False):
+    if not admin:
+        cursor.execute('SELECT isSubscribed FROM user WHERE email=%s',(email))
+        return cursor.fetchall()[0][0]
+    else:
+        cursor.execute('SELECT isSubscribed FROM admin WHERE email=%s',(email))
+        return cursor.fetchall()[0][0]

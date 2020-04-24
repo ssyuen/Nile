@@ -1,6 +1,7 @@
 import secrets
 from datetime import datetime, timedelta
 from flask import flash, redirect, url_for
+from server import mysql
 from functools import wraps
 
 
@@ -35,7 +36,7 @@ def get_bindings_count(cursor, close=False):
     return payload
 
 
-def generate_secure_token(session,purpose):
+def generate_secure_token(session, purpose):
     '''
     session - backend session for an indiviudal user
 
@@ -50,8 +51,9 @@ def generate_secure_token(session,purpose):
         session[purpose] = {secure_token: datetime.now()}
     elif purpose is 'order_token':
         session[purpose] = {secure_token: datetime.now()}
-        
-def secure_link(session,purpose):
+
+
+def secure_link(session, purpose):
     def dec(f):
         @wraps(f)
         def wrapped_func(*args, **kws):
@@ -61,7 +63,8 @@ def secure_link(session,purpose):
                     session_time = [st for st in session[purpose].values()][0]
 
                     curr_time = datetime.now() - session_time
-                    expire_time = (datetime.now() + timedelta(seconds=300)) - datetime.now()
+                    expire_time = (datetime.now() +
+                                   timedelta(seconds=300)) - datetime.now()
                     if (curr_time > expire_time):
                         return redirect(url_for('common_bp.landing_page'))
                     else:
@@ -107,7 +110,7 @@ def get_user_id(cursor, email):
     return cursor.fetchall()[0][0]
 
 
-def insert_useraddress(cursor, payload,email=None):
+def insert_useraddress(cursor, payload, email=None):
     '''
     cursor - cursor object from conn
 
@@ -116,10 +119,11 @@ def insert_useraddress(cursor, payload,email=None):
     payload - (userID_ua_FK, addressID_ua_FK)
     '''
     if email is not None:
-        cursor.execute( 'INSERT INTO user_address (userID_ua_FK, addressID_ua_FK) VALUES ((SELECT id FROM user WHERE email=%s), %s)',(email,payload[1]))
+        cursor.execute(
+            'INSERT INTO user_address (userID_ua_FK, addressID_ua_FK) VALUES ((SELECT id FROM user WHERE email=%s), %s)', (email, payload[1]))
     else:
         cursor.execute(
-            'INSERT INTO user_address (userID_ua_FK, addressID_ua_FK) VALUES (%s, %s)',payload)
+            'INSERT INTO user_address (userID_ua_FK, addressID_ua_FK) VALUES (%s, %s)', payload)
 
 
 def insert_userpayment(cursor, payload):
@@ -129,7 +133,7 @@ def insert_userpayment(cursor, payload):
     payload - (userID_pm_FK, paymentID_pm_FK)
     '''
     cursor.execute(
-        'INSERT INTO user_paymentmethod (userID_pm_FK, paymentID_pm_FK) VALUES (%s, %s)',payload)
+        'INSERT INTO user_paymentmethod (userID_pm_FK, paymentID_pm_FK) VALUES (%s, %s)', payload)
 
 
 def insert_payment(cursor, payload):
@@ -139,16 +143,19 @@ def insert_payment(cursor, payload):
     payload - (firstname,lastname,cardNumber, cardType, expirationDate, billingAddress_addr_FK)
     '''
     cursor.execute(
-        'INSERT INTO payment_method (firstname,lastname,cardNumber, cardType, expirationDate, billingAddress_addr_FK) VALUES (%s,%s,%s, %s, %s, %s)',payload)
+        'INSERT INTO payment_method (firstname,lastname,cardNumber, cardType, expirationDate, billingAddress_addr_FK) VALUES (%s,%s,%s, %s, %s, %s)', payload)
 
 
 def get_payment_id(cursor):
     cursor.execute('SELECT id FROM payment_method ORDER BY id DESC LIMIT 1')
     return cursor.fetchall()[0][0]
 
-def get_book_orderdetails(cursor,user_id):
-    cursor.execute('SELECT * FROM book_orderdetail JOIN shoppingcart ON book_orderdetail.id = shoppingcart.bod_sc_FK WHERE userID_bod_FK=%s',user_id)
+
+def get_book_orderdetails(cursor, user_id):
+    cursor.execute(
+        'SELECT * FROM book_orderdetail JOIN shoppingcart ON book_orderdetail.id = shoppingcart.bod_sc_FK WHERE userID_bod_FK=%s', user_id)
     return cursor.fetchall()
+
 
 def check_login(session) -> bool:
     if 'logged_in' in session and session['logged_in']:
@@ -156,10 +163,11 @@ def check_login(session) -> bool:
     else:
         return False
 
-def get_first_name(mysql,email):
+
+def get_first_name(mysql, email):
     conn = mysql.connect()
     cursor = conn.cursor()
-    cursor.execute('SELECT firstname FROM user WHERE email=%s',(email))
+    cursor.execute('SELECT firstname FROM user WHERE email=%s', (email))
     conn.close()
     return cursor.fetchall()[0][0]
 
@@ -250,3 +258,16 @@ def cart_session(session):
     return dec
 
 
+def store_login(session, payload, admin=False):
+    session['logged_in'] = True
+    session['admin'] = False
+    session['email'] = payload[0]
+    session['lastName'] = payload[3]
+    session['firstName'] = payload[2]
+    session['remember_me'] = remember_me
+    if admin:
+        session['admin'] = True
+
+
+def generate_cursor(mysql):
+    return mysql.connect().cursor()

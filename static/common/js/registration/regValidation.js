@@ -4,7 +4,7 @@
     DESCRIPTION:        Generic form registration validation functions
     REVISIONS:          N/A
  */
-import {InputValidator} from "../inputValidator.js";
+import { InputValidator } from "../inputValidator.js";
 export class RegistrationInputValidator extends InputValidator {
     static firstNameConstraint(value) {
         return value.length >= 1;
@@ -27,19 +27,15 @@ export class RegistrationInputValidator extends InputValidator {
     static zipCodeConstraint(value) {
         return (/^\d{5}$|^\d{5}-\d{4}$/).test(value);
     }
-
     static cityConstraint(value) {
         return RegistrationInputValidator.firstNameConstraint(value); //Same constraint...that's why
     }
-
     static creditCardConstraint(cc) {
         return cc.checkNetwork();
     }
-
     static cvvConstraint(cc) {
         return cc.checkCVV();
     }
-
     static selectConstraint(sel) {
         return $(sel).find(":selected").val() !== "";
     }
