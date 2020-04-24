@@ -21,6 +21,7 @@ def validate_promo():
     if cursor.rowcount:
         return jsonify({'code':results[2],'value':results[3]})
     else:
+        print('promo doesnt exist')
         return jsonify(False)
 
 @api_bp.route('/'+api_url+'/isbn/', methods=['GET'])
