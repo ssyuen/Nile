@@ -8,6 +8,7 @@ from flask_mail import Message
 from server import mysql, mail
 from key import FERNET
 
+
 from contextlib import ExitStack
 
 from routes.common.util import *
@@ -27,15 +28,13 @@ def about():
 @cart_session(session)
 @remember_me(session)
 def landing_page(search_results=None):
-    with ExitStack() as stack:
-        stack.callback(partial(print, 'off the stack'))
 
-        # STEP 1: Make call to database to return all books, need ISBN for query in /product/?isbn=<isbn>
-        conn = mysql.connect()
-        cursor = conn.cursor()
+    # STEP 1: Make call to database to return all books, need ISBN for query in /product/?isbn=<isbn>
+    conn = mysql.connect()
+    cursor = conn.cursor()
 
-        if search_results is None:
-            query = '''SELECT
+    if search_results is None:
+        query = '''SELECT
             title,
             price,
             CONCAT(authorFirstName, ' ', authorLastName) AS author_name,
@@ -47,23 +46,23 @@ def landing_page(search_results=None):
             (SELECT genre from genre WHERE genre.id=book.genreID_book_FK) AS genre,
             nile_cover_ID
             FROM book'''
-            cursor.execute(query)
+        cursor.execute(query)
 
-            # STEP 2: Pass list of books to browse.html
-            results = cursor.fetchall()
-            header = [desc[0] for desc in cursor.description]
-            books = [dict(zip(header, result)) for result in results]
+        # STEP 2: Pass list of books to browse.html
+        results = cursor.fetchall()
+        header = [desc[0] for desc in cursor.description]
+        books = [dict(zip(header, result)) for result in results]
 
-            # STEP 3: In browse.html, iterate through list of books to populate page
-            genres = get_genres(cursor)
-            genre_counts = get_genres_count(cursor)
-            bindings = get_bindings(cursor)
-            binding_counts = get_bindings_count(cursor)
+        # STEP 3: In browse.html, iterate through list of books to populate page
+        genres = get_genres(cursor)
+        genre_counts = get_genres_count(cursor)
+        bindings = get_bindings(cursor)
+        binding_counts = get_bindings_count(cursor)
 
-            conn.close()
-            return render_template('browse.html', books=books, genres=genres, genre_counts=genre_counts, bindings=bindings, binding_counts=binding_counts)
-        else:
-            return render_template('browse.html', books=books)
+        # conn.close()
+        return render_template('browse.html', books=books, genres=genres, genre_counts=genre_counts, bindings=bindings, binding_counts=binding_counts)
+    else:
+        return render_template('browse.html', books=books)
 
 
 @common_bp.route('/login/', methods=['POST', 'GET'])
@@ -76,20 +75,19 @@ def login(ctx=None):
         userEmail = request.form.get('userEmail')
         password = request.form.get('userPassword')
         remember_me = request.form.get('rememberMe')
-        conn = mysql.connect()
-        cursor = conn.cursor()
+        cursor = generate_cursor(mysql)
 
         # ADMIN LOGIN
         if '@nile.com' in userEmail:
-            cursor.execute('SELECT email ,pass, firstName, lastName from admin WHERE email = %s', (userEmail))
-            conn.close()
+            cursor.execute(
+                'SELECT email ,pass, firstName, lastName from admin WHERE email = %s', (userEmail))
 
             try:
                 results = cursor.fetchall()[0]
                 db_pass = results[1].encode('utf-8')
                 # db_pass = db_pass[2:-1].encode('utf-8')
                 if bcrypt.checkpw(password.encode('utf-8'), db_pass):
-                    store_login(session,results,admin=True)
+                    store_login(session, results, admin=True)
 
                     session['remember_me'] = remember_me
                     if session['remember_me'] != None:
@@ -107,8 +105,8 @@ def login(ctx=None):
 
         # REGULAR LOGIN USER
         else:
-            cursor.execute('SELECT email, pass, firstName, lastName, statusID_user_FK from user WHERE email= %s', (userEmail))
-            conn.close()
+            cursor.execute(
+                'SELECT email, pass, firstName, lastName, statusID_user_FK from user WHERE email= %s', (userEmail))
 
             try:
                 results = cursor.fetchall()[0]
@@ -125,12 +123,11 @@ def login(ctx=None):
                             'You must verifiy your account before being able to login!')
                         return redirect(url_for('common_bp.login'))
 
-                    store_login(session,results)
+                    store_login(session, results)
 
                     session['remember_me'] = remember_me
                     if session['remember_me'] != None:
                         session.permanent = True
-
 
                     # ENSURES A USER'S CHECKOUT SESSION CANNOT BE ACCESSED WITHOUT THE TOKEN
                     generate_secure_token(session, 'checkout_token')

@@ -3,6 +3,7 @@ from datetime import datetime, timedelta
 from flask import flash, redirect, url_for
 from server import mysql
 from functools import wraps
+from pydefer.defer import defer
 
 
 def get_genres(cursor, close=False):
@@ -170,7 +171,6 @@ def get_first_name(mysql, email):
     cursor.execute('SELECT firstname FROM user WHERE email=%s', (email))
     conn.close()
     return cursor.fetchall()[0][0]
-
 
 def save_cart(mysql, session):
     conn = mysql.connect()
