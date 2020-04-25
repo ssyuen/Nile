@@ -24,10 +24,7 @@
                     </div>
                     <div class="card-footer">
                         {% block card_footer %}
-                            <button type="button" class="btn blue-gradient btn-lg btn-block waves-effect waves-ripple"
-                                    id="checkoutBtn">
                         {% endblock %}
-                        </button>
                     </div>
                 </div>
             </div>
@@ -80,7 +77,22 @@
             </div>
         </div>
     </div>
+    {% block add_script %}
+    {% endblock %}
+
+    <script>
+        $(document).scroll(function () {
+            if ($(window).width() >= 992) {
+                var y = $(document).scrollTop(),
+                    header = $("#sidebar");
+                if (y >= (y + $('.card').offset().top)) {
+                    header.css({"position": "static", "width": "auto"});
+                } else {
+                    header.css({"position": "sticky", "width": "auto", "top": "20px"});
+                }
+            }
+        });
+
+    </script>
 {% endblock %}
-
-
 

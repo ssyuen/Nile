@@ -58,128 +58,135 @@
         </div>
     </div>
     <div id="paymentMethodEntry" class="collapse checkout-readonly">
-        <small>
-            <span class="text-muted font-italic ml-2 mb-1">Card Information</span>
-        </small>
-        <small class="float-right">
-            <a href="{{ url_for('user_bp.payment_methods') }}" class="font-italic mr-1">Edit
-                Information</a>
-        </small>
-        <div class="card-specific">
-            <div class="form-row">
-                <div class="col-sm-6">
-                    <div class="form-group md-form md-outline">
-                        <input type="text" class="form-control"
-                               id="checkoutCardHolderFirstName"
-                               required
-                               name="cardHolderFirstName"
-                               style="text-transform: uppercase;"
-                               maxlength="45"
-                               data-error="First Name must me more than one character">
-                        <label for="checkoutCardHolderFirstName">First Name on
-                            Card</label>
+        <div class="row">
+            <div class="col-xxl-6">
+                <small>
+                    <span class="text-muted font-italic ml-2 mb-1">Card Information</span>
+                </small>
+                <small class="float-right">
+                    <a href="{{ url_for('user_bp.payment_methods') }}" class="font-italic mr-1">Edit
+                        Information</a>
+                </small>
+                <div class="card-specific">
+                    <div class="form-row">
+                        <div class="col-sm-6">
+                            <div class="form-group md-form md-outline">
+                                <input type="text" class="form-control"
+                                       id="checkoutCardHolderFirstName"
+                                       required
+                                       name="cardHolderFirstName"
+                                       style="text-transform: uppercase;"
+                                       maxlength="45"
+                                       data-error="First Name must me more than one character">
+                                <label for="checkoutCardHolderFirstName">First Name on
+                                    Card</label>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group md-form md-outline">
+                                <input type="text" class="form-control"
+                                       id="checkoutCardHolderLastName"
+                                       required
+                                       name="cardHolderLastName"
+                                       style="text-transform: uppercase;"
+                                       maxlength="45"
+                                       data-error="Last Name must me more than two characters">
+                                <label for="checkoutCardHolderLastName">Last Name on
+                                    Card</label>
+                            </div>
+                        </div>
                     </div>
-                </div>
-                <div class="col-sm-6">
-                    <div class="form-group md-form md-outline">
-                        <input type="text" class="form-control"
-                               id="checkoutCardHolderLastName"
-                               required
-                               name="cardHolderLastName"
-                               style="text-transform: uppercase;"
-                               maxlength="45"
-                               data-error="Last Name must me more than two characters">
-                        <label for="checkoutCardHolderLastName">Last Name on
-                            Card</label>
-                    </div>
-                </div>
-            </div>
-            <div class="form-row">
-                <div class="col">
-                    <div class="form-group">
-                        <label for="checkoutCCEXP">Credit Card Expiration Date</label>
-                        <input type="month" class="form-control" id="checkoutCCEXP"
-                               required
-                               name="ccexp">
-                    </div>
-                </div>
-            </div>
-        </div>
-        <small>
-            <span class="text-muted font-italic ml-2 mb-1">Billing Information</span>
-        </small>
-        <div class="billing-address">
-            <div class="form-row">
-                <div class="col">
-                    <div class="form-group md-form md-outline">
-                        <input type="text" class="form-control"
-                               id="checkoutBillingStreetAddress"
-                               required
-                               name="billingStreetAddress"
-                               maxlength="45"
-                               data-error="Street Address cannot be empty">
-                        <label for="checkoutBillingStreetAddress">Street Address</label>
+                    <div class="form-row">
+                        <div class="col">
+                            <div class="form-group">
+                                <label for="checkoutCCEXP">Credit Card Expiration Date</label>
+                                <input type="month" class="form-control" id="checkoutCCEXP"
+                                       required
+                                       name="ccexp">
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
-            <div class="form-row">
-                <div class="col">
-                    <div class="form-group md-form md-outline">
-                        <input type="text" class="form-control"
-                               id="checkoutBillingApartmentOrSuite" aria-invalid="false"
-                               maxlength="45"
-                               name="billingApartmentOrSuite"
-                               data-success="This field is optional">
-                        <label for="checkoutBillingApartmentOrSuite">Apartment or Suite
-                            (Optional)</label>
-                    </div>
-                </div>
-            </div>
-            <div class="form-row">
-                <div class="col">
-                    <div class="form-group md-form md-outline">
-                        <input type="text" class="form-control"
-                               id="checkoutBillingAddressZip"
-                               maxlength="10"
-                               name="billingAddressZip">
-                        <label for="checkoutBillingAddressZip">ZIP or Postal
-                            code</label>
-                    </div>
-                </div>
-            </div>
-            <div class="form-row">
-                <div class="form-group col-md-5">
-                    <div class="form-group md-form md-outline">
-                        <input type="text" class="form-control"
-                               id="checkoutBillingAddressCity"
-                               required
-                               maxlength="45"
-                               name="billingAddressCity">
-                        <label for="checkoutBillingAddressCity">City</label>
-                    </div>
-                </div>
-                <div class="form-group col-md-2" style="margin-top: 8px">
-                    <label for="checkoutBillingAddressState"
-                           class="d-none">State</label>
-                    <select id="checkoutBillingAddressState"
-                            class="form-control" required
-                            name="billingAddressState">
-                        <option value="" disabled selected>--</option>
-                        <option value="GA">GA</option>
-                        <option value="CA">CA</option>
-                    </select>
+            <div class="col-xxl-6">
+                <small>
+                    <span class="text-muted font-italic ml-2 mb-1">Billing Information</span>
+                </small>
 
-                </div>
-                <div class="form-group col-md-5" style="margin-top: 8px">
-                    <label for="checkoutBillingAddressCountry"
-                           class="d-none">Country</label>
-                    <select id="checkoutBillingAddressCountry"
-                            class="form-control"
-                            required
-                            name="billingAddressCountry">
-                        <option value="" disabled selected>--</option>
-                        <option value="United States">United States</option>
-                    </select>
+                <div class="billing-address">
+                    <div class="form-row">
+                        <div class="col">
+                            <div class="form-group md-form md-outline">
+                                <input type="text" class="form-control"
+                                       id="checkoutBillingStreetAddress"
+                                       required
+                                       name="billingStreetAddress"
+                                       maxlength="45"
+                                       data-error="Street Address cannot be empty">
+                                <label for="checkoutBillingStreetAddress">Street Address</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="col">
+                            <div class="form-group md-form md-outline">
+                                <input type="text" class="form-control"
+                                       id="checkoutBillingApartmentOrSuite" aria-invalid="false"
+                                       maxlength="45"
+                                       name="billingApartmentOrSuite"
+                                       data-success="This field is optional">
+                                <label for="checkoutBillingApartmentOrSuite">Apartment or Suite
+                                    (Optional)</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="col">
+                            <div class="form-group md-form md-outline">
+                                <input type="text" class="form-control"
+                                       id="checkoutBillingAddressZip"
+                                       maxlength="10"
+                                       name="billingAddressZip">
+                                <label for="checkoutBillingAddressZip">ZIP or Postal
+                                    code</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-5">
+                            <div class="form-group md-form md-outline">
+                                <input type="text" class="form-control"
+                                       id="checkoutBillingAddressCity"
+                                       required
+                                       maxlength="45"
+                                       name="billingAddressCity">
+                                <label for="checkoutBillingAddressCity">City</label>
+                            </div>
+                        </div>
+                        <div class="form-group col-md-2" style="margin-top: 8px">
+                            <label for="checkoutBillingAddressState"
+                                   class="d-none">State</label>
+                            <select id="checkoutBillingAddressState"
+                                    class="form-control" required
+                                    name="billingAddressState">
+                                <option value="" disabled selected>--</option>
+                                <option value="GA">GA</option>
+                                <option value="CA">CA</option>
+                            </select>
+
+                        </div>
+                        <div class="form-group col-md-5" style="margin-top: 8px">
+                            <label for="checkoutBillingAddressCountry"
+                                   class="d-none">Country</label>
+                            <select id="checkoutBillingAddressCountry"
+                                    class="form-control"
+                                    required
+                                    name="billingAddressCountry">
+                                <option value="" disabled selected>--</option>
+                                <option value="United States">United States</option>
+                            </select>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -193,139 +200,148 @@
             <label class="custom-control-label" for="rememberPM">Remember this next
                 time</label>
         </div>
-        <small>
-            <span class="text-muted font-italic mb-1 ml-1">Card Information</span>
-        </small>
-        <div class="card-specific">
-            <div class="form-row">
-                <div class="col-sm-6">
-                    <div class="form-group md-form md-outline">
-                        <input type="text" class="form-control"
-                               id="newCardHolderFirstName"
-                               required
-                               name="cardHolderFirstName"
-                               style="text-transform: uppercase;"
-                               maxlength="45"
-                               data-error="First Name must me more than one character">
-                        <label for="newCardHolderFirstName">First Name</label>
-                    </div>
-                </div>
-                <div class="col-sm-6">
-                    <div class="form-group md-form md-outline">
-                        <input type="text" class="form-control"
-                               id="newCardHolderLastName"
-                               required
-                               name="cardHolderLastName"
-                               style="text-transform: uppercase;"
-                               maxlength="45"
-                               data-error="Last Name must me more than two characters">
-                        <label for="newCardHolderLastName">Last Name</label>
-                    </div>
-                </div>
-            </div>
-            <div class="form-row">
-                <div class="col-sm-9">
-                    <div class="form-group md-form md-outline">
-                        <label for="newCCN">Credit Card Number</label>
-                        <input type="text" class="form-control" id="newCCN" name="ccn"
-                               required
-                               credit-provider=""
-                               data-error="Credit Card is not valid.">
-                    </div>
-                </div>
-                <div class="col-sm-3">
-                    <div class="form-group md-form md-outline">
-                        <input type="text" class="form-control" id="newCVV" name="cvv"
-                               required
-                               maxlength="3"
-                               data-error="CVV is not valid.">
-                        <label for="newCVV">CVV</label>
-                    </div>
-                </div>
-            </div>
-            <div class="form-row">
-                <div class="col">
-                    <div class="form-group">
-                        <label for="newCCEXP">Credit Card Expiration Date</label>
-                        <input type="month" class="form-control" id="newCCEXP" required
-                               name="ccexp">
-                    </div>
-                </div>
-            </div>
-        </div>
-        <small>
-            <span class="text-muted font-italic mb-1 ml-1">Billing Address</span>
-        </small>
-        <div class="billing-address">
-            <div class="form-row">
-                <div class="col">
-                    <div class="form-group md-form md-outline">
-                        <label for="newBillingStreetAddress">Street Address</label>
-                        <input type="text" class="form-control"
-                               id="newBillingStreetAddress"
-                               required
-                               name="billingStreetAddress"
-                               maxlength="45"
-                               data-error="Street Address cannot be empty">
-                    </div>
-                </div>
-            </div>
-            <div class="form-row">
-                <div class="col">
-                    <div class="form-group md-form md-outline">
-                        <label for="newBillingApartmentOrSuite">Apartment or Suite
-                            (Optional)</label>
-                        <input type="text" class="form-control valid"
-                               id="newBillingApartmentOrSuite" aria-invalid="false"
-                               maxlength="45"
-                               name="billingApartmentOrSuite"
-                               data-success="This field is optional">
-                    </div>
-                </div>
-            </div>
-            <div class="form-row">
-                <div class="col">
-                    <div class="form-group md-form md-outline">
-                        <label for="newBillingAddressZip">ZIP or Postal code</label>
-                        <input type="text" class="form-control"
-                               id="newBillingAddressZip"
-                               maxlength="10"
-                               required
-                               name="billingAddressZip">
-                    </div>
-                </div>
-            </div>
-            <div class="form-row">
-                <div class="form-group col-md-5">
-                    <div class="form-group md-form md-outline">
-                        <label for="newBillingAddressCity">City</label>
-                        <input type="text" class="form-control"
-                               id="newBillingAddressCity"
-                               required
-                               maxlength="45"
-                               name="billingAddressCity">
-                    </div>
-                </div>
-                <div class="form-group col-md-2" style="margin-top: 8px">
-                    <label for="newBillingAddressState" class="d-none">State</label>
-                    <select id="newBillingAddressState"
-                            class="form-control" required
-                            name="billingAddressState">
-                        <option value="" disabled selected>--</option>
-                        <option value="GA">GA</option>
-                        <option value="CA">CA</option>
-                    </select>
 
+        <div class="row">
+            <div class="col-xxl-6">
+                <small>
+                    <span class="text-muted font-italic mb-1 ml-1">Card Information</span>
+                </small>
+                <div class="card-specific">
+                    <div class="form-row">
+                        <div class="col-sm-6">
+                            <div class="form-group md-form md-outline">
+                                <input type="text" class="form-control"
+                                       id="newCardHolderFirstName"
+                                       required
+                                       name="cardHolderFirstName"
+                                       style="text-transform: uppercase;"
+                                       maxlength="45"
+                                       data-error="First Name must me more than one character">
+                                <label for="newCardHolderFirstName">First Name</label>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group md-form md-outline">
+                                <input type="text" class="form-control"
+                                       id="newCardHolderLastName"
+                                       required
+                                       name="cardHolderLastName"
+                                       style="text-transform: uppercase;"
+                                       maxlength="45"
+                                       data-error="Last Name must me more than two characters">
+                                <label for="newCardHolderLastName">Last Name</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="col-sm-9">
+                            <div class="form-group md-form md-outline">
+                                <label for="newCCN">Credit Card Number</label>
+                                <input type="text" class="form-control" id="newCCN" name="ccn"
+                                       required
+                                       credit-provider=""
+                                       data-error="Credit Card is not valid.">
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            <div class="form-group md-form md-outline">
+                                <input type="text" class="form-control" id="newCVV" name="cvv"
+                                       required
+                                       maxlength="3"
+                                       data-error="CVV is not valid.">
+                                <label for="newCVV">CVV</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="col">
+                            <div class="form-group">
+                                <label for="newCCEXP">Credit Card Expiration Date</label>
+                                <input type="month" class="form-control" id="newCCEXP" required
+                                       name="ccexp">
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="form-group col-md-5" style="margin-top: 8px">
-                    <label for="newBillingAddressCountry" class="d-none">Country</label>
-                    <select id="newBillingAddressCountry"
-                            class="form-control"
-                            required
-                            name="billingAddressCountry">
-                        <option value="" disabled selected>--</option>
-                        <option value="United States">United States</option>
-                    </select>
+            </div>
+            <div class="col-xxl-6">
+                <small>
+                    <span class="text-muted font-italic mb-1 ml-1">Billing Address</span>
+                </small>
+                <div class="billing-address">
+                    <form action="{{ url_for(request.endpoint) }}" id="dummyForm">
+                        <div class="form-row">
+                            <div class="col">
+                                <div class="form-group md-form md-outline">
+                                    <label for="newBillingStreetAddress">Street Address</label>
+                                    <input type="text" class="form-control"
+                                           id="newBillingStreetAddress"
+                                           required
+                                           name="billingStreetAddress"
+                                           maxlength="45"
+                                           data-error="Street Address cannot be empty">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="col">
+                                <div class="form-group md-form md-outline">
+                                    <label for="newBillingApartmentOrSuite">Apartment or Suite
+                                        (Optional)</label>
+                                    <input type="text" class="form-control valid"
+                                           id="newBillingApartmentOrSuite" aria-invalid="false"
+                                           maxlength="45"
+                                           name="billingApartmentOrSuite"
+                                           data-success="This field is optional">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="col">
+                                <div class="form-group md-form md-outline">
+                                    <label for="newBillingAddressZip">ZIP or Postal code</label>
+                                    <input type="text" class="form-control"
+                                           id="newBillingAddressZip"
+                                           maxlength="10"
+                                           required
+                                           name="billingAddressZip">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-md-5">
+                                <div class="form-group md-form md-outline">
+                                    <label for="newBillingAddressCity">City</label>
+                                    <input type="text" class="form-control"
+                                           id="newBillingAddressCity"
+                                           required
+                                           maxlength="45"
+                                           name="billingAddressCity">
+                                </div>
+                            </div>
+                            <div class="form-group col-md-2" style="margin-top: 8px">
+                                <label for="newBillingAddressState" class="d-none">State</label>
+                                <select id="newBillingAddressState"
+                                        class="form-control" required
+                                        name="billingAddressState">
+                                    <option value="" disabled selected>--</option>
+                                    <option value="GA">GA</option>
+                                    <option value="CA">CA</option>
+                                </select>
+
+                            </div>
+                            <div class="form-group col-md-5" style="margin-top: 8px">
+                                <label for="newBillingAddressCountry" class="d-none">Country</label>
+                                <select id="newBillingAddressCountry"
+                                        class="form-control"
+                                        required
+                                        name="billingAddressCountry">
+                                    <option value="" disabled selected>--</option>
+                                    <option value="United States">United States</option>
+                                </select>
+                            </div>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
@@ -333,14 +349,10 @@
 {% endblock %}
 
 {% block card_footer %}
-    <a href="{{ url_for('user_bp.review_checkout') }}">
-        <button type="button" class="btn blue-gradient btn-lg btn-block waves-effect waves-ripple">Review Order</button>
-    </a>
+    <button type="button" id="contToReviewBtn" class="btn blue-gradient btn-lg btn-block waves-effect waves-ripple">
+        Review Order
+    </button>
 {% endblock %}
-
-
-
-
 
 {% block add_list_item %}
     <li class="list-group-item d-flex justify-content-between">
@@ -359,5 +371,7 @@
 {% endblock %}
 
 
-
+{% block add_script %}
+    <script src="/static/user/js/checkout/billingCheckout.js" type="module"></script>
+{% endblock %}
 
