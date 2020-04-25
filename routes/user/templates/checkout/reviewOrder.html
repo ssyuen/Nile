@@ -26,15 +26,15 @@
     <li class="list-group-item d-flex justify-content-between">
         <span class="complement">Shipping Cost</span>
         <strong class="text-danger">+ $<span class="sidebar-item-price pl-0"
-                                             id="shippingTotal"></span></strong>
+                                             id="shippingTotal">{{ shipping_price }}</span></strong>
     </li>
     <li class="list-group-item d-flex justify-content-between" id="salesTaxListElement">
         <span class="complement">Sales Tax</span>
-        <strong class="text-danger">+ $<span id="salesTax"></span></strong>
+        <strong class="text-danger">+ $<span id="salesTax">{{ sales_tax }}</span></strong>
     </li>
     <li class="list-group-item d-flex justify-content-between">
         <span class="complement-bold">GRAND TOTAL (USD)</span>
-        <strong class="primary-md">$<span id="checkoutTotalPrice"></span></strong>
+        <strong class="primary-md">$<span id="checkoutTotalPrice">{{ grand_total }}</span></strong>
     </li>
 {% endblock %}
 

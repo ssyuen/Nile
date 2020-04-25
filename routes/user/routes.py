@@ -114,8 +114,7 @@ def shipping_checkout():
             shipping_id = SHIPPING_IDENT
         
         session['shipping'] = shipping_id
-        session['shipping_state'] = addressState
-        print(session['shipping_state'])
+        session['shipping_state'] = request.form.get('SHIPPING_STATE')
 
         conn.commit()
         conn.close()
@@ -129,12 +128,13 @@ def shipping_checkout():
 @remember_me(session)
 @user_only(session)
 def billing_checkout():
-    if request.method == 'GET':
-        if len(session['shopping_cart']) == 0:
-            return redirect(url_for('common_bp.landing_page'))
+    if len(session['shopping_cart']) == 0:
+        return redirect(url_for('common_bp.landing_page'))
 
-        conn = mysql.connect()
-        cursor = conn.cursor()
+    conn = mysql.connect()
+    cursor = conn.cursor()
+
+    if request.method == 'GET':
         # BILLING ADDRESSES FROM DB
         payment_payload = {}
 
@@ -166,10 +166,9 @@ def billing_checkout():
         x = get_books(cursor)
 
         sub_total = x['sub_total']
-        shipping_price = calculate_shipping(x['book_quantity'])
-        print(session['shipping_state'])
-        sales_tax = SALES_TAX[session['shipping_state']]
-        grand_total = sub_total + shipping_price + sales_tax
+        shipping_price = "{:.2f}".format(calculate_shipping(x['book_quantity']))
+        sales_tax = "{:.2f}".format(SALES_TAX[session['shipping_state']])
+        grand_total = "{:.2f}".format(float(sub_total) + float(shipping_price) + float(sales_tax))
 
 
         conn.close()
@@ -243,11 +242,11 @@ def review_checkout():
             return redirect(url_for('common_bp.landing_page'))
 
         x = get_books(cursor)
-
+        SALES_TAX  = {'GA':2.50, 'CA':3.50}
         sub_total = x['sub_total']
-        shipping_price = calculate_shipping(x['book_quantity'])
-        sales_tax = SALES_TAX[session['shipping_state']]
-        grand_total = sub_total + shipping_price + sales_tax
+        shipping_price = "{:.2f}".format(calculate_shipping(x['book_quantity']))
+        sales_tax = "{:.2f}".format(SALES_TAX[session['shipping_state']])
+        grand_total = "{:.2f}".format(float(sub_total) + float(shipping_price) + float(sales_tax))
 
         conn.close()
         return render_template('checkout/reviewOrder.html',
