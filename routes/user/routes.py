@@ -45,7 +45,7 @@ def get_books(cursor):
 
     return {"book_payload": book_payload,
             "sub_total": sub_total,
-            "book_quantity":total_quantity}
+            "book_quantity": total_quantity}
 
 
 @user_bp.route('/checkout/shipping/', methods=['POST', 'GET'])
@@ -80,7 +80,6 @@ def shipping_checkout():
         x = get_books(cursor)
         shipping_price = calculate_shipping(x['book_quantity'])
 
-
         conn.close()
         return render_template('checkout/shippingCheckout.html',
                                shipping_payload=shipping_payload,
@@ -99,23 +98,27 @@ def shipping_checkout():
         addressState = request.form.get('addressState')
         addressCountry = request.form.get('addressCountry')
 
-        shipping_payload = (addressStreetAddress,addressApartmentOrSuite,addressCity,addressZip,addressState,addressCountry,str(1))
+        shipping_payload = (addressStreetAddress, addressApartmentOrSuite,
+                            addressCity, addressZip, addressState, addressCountry, str(1))
 
         # IF USING NEW SHIPPING ADDRESS
         if SHIPPING_IDENT == None:
-            insert_address(cursor,shipping_payload)
-
+            insert_address(cursor, shipping_payload)
+            shipping_id = get_address_id(cursor)
+            session['shipping'] = shipping_id
+            session['shipping_state'] = addressState
+            print(f'\n\n{session["shipping_state"]}\n\n')
             if REMEMBER_SHIPPING != None and int(REMEMBER_SHIPPING) != 0:
-                shipping_id = get_address_id(cursor)
-                user_id = get_user_id(cursor,session['email'])
-                insert_useraddress(cursor,(user_id,shipping_id))
+
+                user_id = get_user_id(cursor, session['email'])
+                insert_useraddress(cursor, (user_id, shipping_id))
 
         # SAVED SHIPPING ADDRESS
         else:
             shipping_id = SHIPPING_IDENT
-        
-        session['shipping'] = shipping_id
-        session['shipping_state'] = request.form.get('SHIPPING_STATE')
+            session['shipping'] = shipping_id
+            session['shipping_state'] = request.form.get('SHIPPING_STATE')
+            print(f'\n\n{session["shipping_state"]}\n\n')
 
         conn.commit()
         conn.close()
@@ -147,7 +150,7 @@ def billing_checkout():
                 WHERE upm.userID_pm_FK = (SELECT id FROM user WHERE email = %s)'''
 
         cursor.execute(payment_query, (session['email']))
-        results = cursor.fetchall() 
+        results = cursor.fetchall()
         for i in results:
             payment_payload[i[0]] = {
                 'street1': i[1],
@@ -167,10 +170,11 @@ def billing_checkout():
         x = get_books(cursor)
 
         sub_total = x['sub_total']
-        shipping_price = "{:.2f}".format(calculate_shipping(x['book_quantity']))
+        shipping_price = "{:.2f}".format(
+            calculate_shipping(x['book_quantity']))
         sales_tax = "{:.2f}".format(SALES_TAX[session['shipping_state']])
-        grand_total = "{:.2f}".format(float(sub_total) + float(shipping_price) + float(sales_tax))
-
+        grand_total = "{:.2f}".format(
+            float(sub_total) + float(shipping_price) + float(sales_tax))
 
         conn.close()
         return render_template('checkout/billingCheckout.html',
@@ -203,25 +207,26 @@ def billing_checkout():
         billingAddressCountry = request.form.get('billingAddressCountry')
 
         # PAYMENT PAYLOAD CREATED AFTER BILLING_PAYLOAD HAS BEEN INSERTED
-        billing_payload = (billingStreetAddress,billingApartmentOrSuite,billingAddressCity,billingAddressZip,billingAddressState,billingAddressCountry,str(2))
+        billing_payload = (billingStreetAddress, billingApartmentOrSuite, billingAddressCity,
+                           billingAddressZip, billingAddressState, billingAddressCountry, str(2))
 
         # IF USING NEW SHIPPING ADDRESS
         if PAYMENT_IDENT == None:
-            insert_address(cursor,billing_payload)
+            insert_address(cursor, billing_payload)
             billing_id = get_address_id(cursor)
 
-            payment_payload = (checkoutCardHolderFirstName,checkoutCardHolderLastName,ccn,ct,ccexp,billing_id)
-            insert_payment(cursor,payment_payload)
+            payment_payload = (checkoutCardHolderFirstName,
+                               checkoutCardHolderLastName, ccn, ct, ccexp, billing_id)
+            insert_payment(cursor, payment_payload)
             payment_id = get_payment_id(cursor)
             if REMEMBER_PAYMENT != None and int(REMEMBER_PAYMENT) != 0:
-                user_id = get_user_id(cursor,session['email'])
-                insert_userpayment(cursor,(user_id,payment_id))
-
+                user_id = get_user_id(cursor, session['email'])
+                insert_userpayment(cursor, (user_id, payment_id))
 
         # SAVED SHIPPING ADDRESS
         else:
             payment_id = PAYMENT_IDENT
-        
+
         session['payment'] = payment_id
 
         conn.commit()
@@ -243,19 +248,21 @@ def review_checkout():
             return redirect(url_for('common_bp.landing_page'))
 
         x = get_books(cursor)
-        SALES_TAX  = {'GA':2.50, 'CA':3.50}
+        SALES_TAX = {'GA': 2.50, 'CA': 3.50}
         sub_total = x['sub_total']
-        shipping_price = "{:.2f}".format(calculate_shipping(x['book_quantity']))
+        shipping_price = "{:.2f}".format(
+            calculate_shipping(x['book_quantity']))
         sales_tax = "{:.2f}".format(SALES_TAX[session['shipping_state']])
-        grand_total = "{:.2f}".format(float(sub_total) + float(shipping_price) + float(sales_tax))
+        grand_total = "{:.2f}".format(
+            float(sub_total) + float(shipping_price) + float(sales_tax))
 
         conn.close()
         return render_template('checkout/reviewOrder.html',
-                            book_payload=x['book_payload'],
-                            sub_total=x['sub_total'],
-                            shipping_price=shipping_price,
-                            sales_tax=sales_tax,
-                            grand_total=grand_total)
+                               book_payload=x['book_payload'],
+                               sub_total=x['sub_total'],
+                               shipping_price=shipping_price,
+                               sales_tax=sales_tax,
+                               grand_total=grand_total)
 
     elif request.method == 'POST':
 
@@ -269,31 +276,31 @@ def review_checkout():
         # PROMOTION
         PROMO_IDENT = request.form.get('PROMO_IDENT')
 
-        user_id = get_user_id(cursor,session['email'])
+        user_id = get_user_id(cursor, session['email'])
         payment_id = session['payment']
 
         order_num = str(uuid1())
-        order_payload = (user_id,int(payment_id),float(GRAND_TOTAL),float(SALES_TAX),float(SHIPPING_COST),datetime.now().strftime('%Y-%m-%d %H:%M:%S'),PROMO_IDENT,order_num,int(session['shipping']))
-        insert_order(cursor,order_payload)
+        order_payload = (user_id, int(payment_id), float(GRAND_TOTAL), float(SALES_TAX), float(
+            SHIPPING_COST), datetime.now().strftime('%Y-%m-%d %H:%M:%S'), PROMO_IDENT, order_num, int(session['shipping']))
+        insert_order(cursor, order_payload)
         order_id = get_order_id(cursor)
 
         # STEP 3: INSERT INTO order_bod TABLE
-        book_orderdetails = get_book_orderdetails(cursor,user_id)
+        book_orderdetails = get_book_orderdetails(cursor, user_id)
         for bod in book_orderdetails:
-            insert_orderbod(cursor,(order_id,bod[0]))
+            insert_orderbod(cursor, (order_id, bod[0]))
 
         # STEP 4: AFTER SUCCESSFUL CHECKOUT, DELETE FROM SHOPPINGCART TABLE AND REDIRECT TO CHECKOUT CONFIRMATION PAGE/ROUTE
-        delete_shopping_cart(cursor,user_id)
+        delete_shopping_cart(cursor, user_id)
         session['shopping_cart'] = {}
 
         conn.commit()
         conn.close()
 
         session.pop('checkout_token')
-        generate_secure_token(session,'checkout_token')
-        generate_secure_token(session,'order_token')
-        return redirect(url_for('user_bp.order_conf',conf_token=secrets.token_urlsafe(256), email=session['email'], user_id=user_id, name=get_first_name(mysql,session['email']),order_num=order_num))
-
+        generate_secure_token(session, 'checkout_token')
+        generate_secure_token(session, 'order_token')
+        return redirect(url_for('user_bp.order_conf', conf_token=secrets.token_urlsafe(256), email=session['email'], user_id=user_id, name=get_first_name(mysql, session['email']), order_num=order_num))
 
 
 # @user_bp.route('/checkout/', methods=['POST', 'GET'])
@@ -541,11 +548,13 @@ def change_name():
         lname = firstLetter + lname[1:].lower()
 
         session['firstName'] = fname
-        cursor.execute('UPDATE user SET firstname = %s WHERE email = %s', (fname, session['email']))
+        cursor.execute(
+            'UPDATE user SET firstname = %s WHERE email = %s', (fname, session['email']))
         conn.commit()
 
         session['lastName'] = lname
-        cursor.execute('UPDATE user SET lastname = %s WHERE email = %s', (lname, session['email']))
+        cursor.execute(
+            'UPDATE user SET lastname = %s WHERE email = %s', (lname, session['email']))
         conn.commit()
 
         conn.close()
@@ -566,7 +575,8 @@ def change_pass():
         conn = mysql.connect()
         cursor = conn.cursor()
 
-        cursor.execute('SELECT pass FROM user WHERE email = %s', (session['email']))
+        cursor.execute('SELECT pass FROM user WHERE email = %s',
+                       (session['email']))
         db_pass = cursor.fetchall()[0][0].encode('utf-8')
         current_password = request.form.get('currentPassword')
         if not bcrypt.checkpw(current_password.encode('utf-8'), db_pass):
@@ -852,7 +862,8 @@ def settings():
     if request.method == 'GET':
         conn = mysql.connect()
         cursor = conn.cursor()
-        subscription = int.from_bytes(get_subscription(cursor, session['email']), 'big')
+        subscription = int.from_bytes(
+            get_subscription(cursor, session['email']), 'big')
 
         if subscription == 1:
             return render_template('profile/profileSubscriptions.html', subscription="checked")
