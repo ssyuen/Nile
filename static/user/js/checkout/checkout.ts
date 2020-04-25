@@ -1,116 +1,13 @@
 import {CountUp} from '../../../jsplugin/countUp.min.js';
-import {arrSum, post, SALES_TAX, serializedToObject} from "./checkoutUtil.js";
-import {replaceBtn} from "../../../common/js/utility/util.js";
-import {CreditCard, PURPOSE, RegistrationInputValidator} from "../../../common/js/registration/regValidation.js";
-import {PromotionCheckoutValidation} from "./promoValidation.js";
 
-const COUNTER_DURATION = 0.5;
+export const COUNTER_DURATION = 0.5;
 
-/* Sidebar Items */
-const FORM: JQuery = $("#dummyForm");
-const CHECKOUT_BTN: JQuery = $("#checkoutBtn");
-
-const SUBTOTAL_SEL: JQuery = $("#subtotal");
-const SUBTOTAL_NUM: number = parseFloat($("#subtotal").text());
-const SHIPPING_TOTAL: number = parseFloat($("#shippingTotal").text());
-const SALES_TAX_TOTAL: JQuery = $("#salesTax");
-
-const GRAND_TOTAL: JQuery = $("#checkoutTotalPrice");
-const SUBTOTAL_PLUS_SHIPPING: number = SUBTOTAL_NUM + SHIPPING_TOTAL;
-
-/* For the Shipping Address */
-const shipRad: JQuery = $("#chooseShippingToggle");
-const shipToggler: JQuery = $("#addressToggler");
-const entShipRad: JQuery = $("#enterAddressToggle");
-const chooseShippingToggleLabel: JQuery = $("#chooseShippingToggleLabel");
-const addrEntry: JQuery = $("#addressEntry");
-const newAddrEntry: JQuery = $("#newAddressEntry");
-
-/* For the Payment Method */
-const pmRad: JQuery = $("#choosePaymentMethodToggle");
-const pmToggler: JQuery = $("#paymentMethodToggler");
-const entPMRad: JQuery = $("#enterPaymentMethodToggle");
-const choosePMToggleLabel: JQuery = $("#choosePaymentMethodToggleLabel");
-const pmEntry: JQuery = $("#paymentMethodEntry");
-const newPMEntry: JQuery = $("#newPaymentMethodEntry");
-
-/* The select elements for both shipping and payment */
-const paymentSelect: JQuery = $("#paymentMethodSelect");
-const shippingSelect: JQuery = $("#shippingAddressSelect");
-
-const enum CHECKOUT_TYPE {
-    SHIPPING = 1,
-    PAYMENT_METHOD = 2
-}
-
-if (paymentSelect.length) {
-    stopAllInput(pmEntry);
-    fillPMForm(paymentSelect);
-    paymentSelect.on("change", function () {
-        fillPMForm($(this));
-    });
-}
-
-if (shippingSelect.length) {
-    stopAllInput($(addrEntry));
-    fillShippingForm(shippingSelect);
-    shippingSelect.on("change", function () {
-        fillShippingForm($(this));
-        let num = updateSalesTax($(this));
-        updateTotal(num);
-    });
-}
-
-let subtotalCounter: CountUp;
-let grandTotalCounter: CountUp;
-let salesTaxCounter: CountUp;
-
-subtotalCounter = new CountUp(SUBTOTAL_SEL.attr('id'), SUBTOTAL_NUM, {
-    decimalPlaces: 2,
-    duration: COUNTER_DURATION,
-    startVal: 0.00
-});
-
-startCounter(subtotalCounter);
-
-salesTaxCounter = new CountUp(SALES_TAX_TOTAL.attr('id'), "--", {
-    decimalPlaces: 2,
-    duration: COUNTER_DURATION,
-    startVal: 0.00
-});
-
-startCounter(salesTaxCounter);
-
-let salestax: number = 0;
-if (!shippingSelect.length) {
-    forceEntry(newAddrEntry, chooseShippingToggleLabel, shipToggler, "Enter a Shipping Address", CHECKOUT_TYPE.SHIPPING);
-} else {
-    salestax = updateSalesTax(shippingSelect);
-}
-
-if (!paymentSelect.length) {
-    forceEntry(newPMEntry, choosePMToggleLabel, pmToggler, "Enter a Payment Method", CHECKOUT_TYPE.PAYMENT_METHOD);
-}
-
-let total: number = 0;
-$(".sidebar-item-price").each(function (index: number, elem: HTMLSpanElement) {
-    total += parseFloat(elem.innerHTML);
-});
-
-grandTotalCounter = new CountUp(GRAND_TOTAL.attr('id'), total + salestax, {
-    decimalPlaces: 2,
-    duration: COUNTER_DURATION,
-    startVal: 0.00
-});
-
-startCounter(grandTotalCounter);
-
-function stopAllInput(entry: JQuery) {
+export function stopAllInput(entry: JQuery) {
     $(entry).find(<any>'select').prop("disabled", true);
     $(entry).find(<any>'input').prop("readonly", true);
 }
 
-function startCounter(ctr: CountUp) {
+export function startCounter(ctr: CountUp) {
     if (!ctr.error) {
         ctr.start();
     } else {
@@ -118,33 +15,16 @@ function startCounter(ctr: CountUp) {
     }
 }
 
-function forceEntry(formEntry: JQuery, toggleLabel: JQuery, toggler: JQuery, toggleText: string, inputType: CHECKOUT_TYPE) {
+export function forceEntry(formEntry: JQuery, toggleLabel: JQuery, toggler: JQuery, toggleText: string) {
     formEntry.addClass("show");
     toggleLabel.text(toggleText)
         .removeClass("custom-control-label")
         .closest(".custom-control")
         .removeClass("custom-control");
     toggler.hide();
-    if (inputType == CHECKOUT_TYPE.SHIPPING) {
-        shipRad.removeAttr("checked");
-        entShipRad.attr("checked", "checked");
-        $(".ship-radio-holder").hide();
-    } else {
-        pmRad.removeAttr("checked");
-        entPMRad.attr("checked", "checked");
-        $(".pm-radio-holder").hide();
-    }
 }
 
-function updateSalesTax(sel: JQuery, withOption = true): number {
-    let salesTax: number = (withOption === true ?
-        SALES_TAX[sel.find(":selected").attr("nile-shipping-state")] :
-        SALES_TAX[sel.find(":selected").val() as string]);
-    salesTaxCounter.update(salesTax);
-    return salesTax;
-}
-
-function switchToggler(toggler: HTMLElement | string | any) {
+export function switchToggler(toggler: HTMLElement | string | any) {
     if ($(toggler).text() === "View") {
         $(toggler).text(<any>"Close View");
     } else {
@@ -152,384 +32,26 @@ function switchToggler(toggler: HTMLElement | string | any) {
     }
 }
 
-function updateTotal(...args: number[]) {
-    let sum = arrSum(args);
-    let newVal = parseFloat(GRAND_TOTAL.text()) + sum;
-    grandTotalCounter.update(newVal);
-}
-
-function fillShippingForm(select: JQuery) {
-    let option: HTMLOptionElement = <HTMLOptionElement><any>select.find(":selected");
-    $("#addressEntry #checkoutAddressStreetAddress").attr("value", $(option).attr("nile-shipping-street1"));
-    $("#addressEntry label[for=checkoutAddressStreetAddress]").addClass("active");
-    let street2 = $(option).attr("nile-shipping-street2");
-    if (street2.length) {
-        $("#addressEntry #checkoutAddressApartmentOrSuite").attr("value", $(option).attr("nile-shipping-street2"));
-        $("#addressEntry label[for=checkoutAddressApartmentOrSuite]").addClass("active");
-    }
-    $("#addressEntry #checkoutAddressZip").attr("value", $(option).attr("nile-shippping-zip"));
-    $("#addressEntry label[for=checkoutAddressZip]").addClass("active");
-    $("#addressEntry #checkoutAddressCity").attr("value", $(option).attr("nile-shipping-city"));
-    $("#addressEntry label[for=checkoutAddressCity]").addClass("active");
-    $("#addressEntry #checkoutAddressState").val($(option).attr("nile-shipping-state"));
-    $("#addressEntry #checkoutAddressCountry").val($(option).attr("nile-shipping-country"));
-}
-
-
-function fillPMForm(select: JQuery) {
-    let option: HTMLOptionElement = <HTMLOptionElement><any>select.find(":selected");
-    /****** CARD INFORMATION ******/
-    $("#paymentMethodEntry #checkoutCardHolderFirstName").attr("value", $(option).attr("nile-card-fname"));
-    $("#paymentMethodEntry label[for=checkoutCardHolderFirstName]").addClass("active");
-    $("#paymentMethodEntry #checkoutCardHolderLastName").attr("value", $(option).attr("nile-card-lname"));
-    $("#paymentMethodEntry label[for=checkoutCardHolderLastName]").addClass("active");
-    $("#paymentMethodEntry #checkoutCCEXP").attr("value", $(option).attr("nile-card-expiry"));
-    $("#paymentMethodEntry label[for=checkoutCCEXP]").addClass("active");
-    /****** END CARD INFORMATION ******/
-    $("#paymentMethodEntry #checkoutBillingStreetAddress").attr("value", $(option).attr("nile-billing-street1"));
-    $("#paymentMethodEntry label[for=checkoutBillingStreetAddress]").addClass("active");
-    let street2 = $(option).attr("nile-billing-street2");
-    if (street2.length) {
-        $("#paymentMethodEntry #checkoutBillingApartmentOrSuite").attr("value", $(option).attr("nile-billing-street2"));
-        $("#paymentMethodEntry label[for=checkoutBillingApartmentOrSuite]").addClass("active");
-    }
-    $("#paymentMethodEntry #checkoutBillingAddressZip").attr("value", $(option).attr("nile-billing-zip"));
-    $("#paymentMethodEntry label[for=checkoutBillingAddressZip]").addClass("active");
-    $("#paymentMethodEntry #checkoutBillingAddressCity").attr("value", $(option).attr("nile-billing-city"));
-    $("#paymentMethodEntry label[for=checkoutBillingAddressCity]").addClass("active");
-    $("#paymentMethodEntry #checkoutBillingAddressState").val($(option).attr("nile-billing-state"));
-    $("#paymentMethodEntry #checkoutBillingAddressCountry").val($(option).attr("nile-billing-country"));
-}
-
-
-/* Input Validation amirite? */
-
-/*
-    Optional Address Fields
-    There's no need for city, state, country, and apt/suite because they aren't error prone
-*/
-const STREET_ADDR: HTMLInputElement = document.getElementById("newAddressStreetAddress") as HTMLInputElement;
-const ZIP: HTMLInputElement = document.getElementById("newAddressZip") as HTMLInputElement;
-const CITY: HTMLInputElement = document.getElementById("newAddressCity") as HTMLInputElement;
-const STATE: HTMLSelectElement = document.getElementById("newAddressState") as HTMLSelectElement;
-const COUNTRY: HTMLSelectElement = document.getElementById("newAddressCountry") as HTMLSelectElement;
-
-
-/*
- * Optional Billing Address Fields
- */
-const CARD_F_NAME: HTMLInputElement = document.getElementById("newCardHolderFirstName") as HTMLInputElement;
-const CARD_L_NAME: HTMLInputElement = document.getElementById("newCardHolderLastName") as HTMLInputElement;
-const CCN: HTMLInputElement = document.getElementById("newCCN") as HTMLInputElement;
-const CVV: HTMLInputElement = document.getElementById("newCVV") as HTMLInputElement;
-
-const BILLING_ST: HTMLInputElement = document.getElementById("newBillingStreetAddress") as HTMLInputElement;
-const BILLING_ZIP: HTMLInputElement = document.getElementById("newBillingAddressZip") as HTMLInputElement;
-const BILLING_CITY: HTMLInputElement = document.getElementById("newBillingAddressCity") as HTMLInputElement;
-const BILLING_STATE: HTMLSelectElement = document.getElementById("newBillingAddressState") as HTMLSelectElement;
-const BILLING_COUNTRY: HTMLSelectElement = document.getElementById("newBillingAddressCountry") as HTMLSelectElement;
-
-
-const vcSH = new RegistrationInputValidator();
-const vcBL = new RegistrationInputValidator();
-const cc = new CreditCard();
-
-function proceedCheckoutSubmit() {
-    let shipOpt: HTMLOptionElement = <HTMLOptionElement><any>$(shippingSelect).find(<any>":selected");
-    let payOpt: HTMLOptionElement = <HTMLOptionElement><any>$(paymentSelect).find(<any>":selected");
-
-    let shipPayload = {}, paymentPayload = {};
-
-    if (shipRad.is(":checked")) {
-        shipPayload["SHIPPING_IDENT"] = $(shipOpt).attr("nile-shipping-ident");
-    } else if (entShipRad.is(":checked")) {
-
-        if (!checkEmptyInput(newAddrEntry) || !vcSH.validateAll('.card-title')) {
-            return false;
-        }
-
-        shipPayload = serializedToObject(newAddrEntry.find("input, select"));
-        shipPayload["REMEMBER_SHIPPING"] = $("#rememberShipping").attr("value");
-    }
-    if (pmRad.is(":checked")) {
-        paymentPayload["PAYMENT_IDENT"] = $(payOpt).attr("nile-pm-ident");
-
-    } else if (entPMRad.is(":checked")) {
-        if (!checkEmptyInput(newPMEntry) || !vcBL.validateAll('.card-title')) {
-            return false;
-        }
-
-        if (!cc.checkCard()) {
-            if (!$("#creditWrong").length) {
-                $('.card-title').after(
-                    `<p class="text-center text-danger" id="creditWrong">
-            The Credit Card number you provided is invalid
-            </p>`);
-            }
-
-            $(CCN).addClass("invalid").removeClass("valid");
-            RegistrationInputValidator.scrollTopOfSelector('.card-title');
-            return false;
-        }
-
-        paymentPayload = serializedToObject(newPMEntry.find("input, select"));
-        paymentPayload["CCNProvider"] = cc.getProvider();
-        paymentPayload["REMEMBER_PAYMENT"] = $("#rememberPM").attr("value");
-    }
-
-    replaceBtn(CHECKOUT_BTN);
-    let final: Object = $.extend(shipPayload, paymentPayload);
-
-    if (promoData != null) {
-        final["PROMO_CODE"] = promoData['code'];
-        final["PROMO_VALUE"] = promoData['value'];
-    }
-    final["SHIPPING_COST"] = SHIPPING_TOTAL;
-    final["SALES_TAX"] = $("#salesTax").text();
-    final["SUB_TOTAL"] = SUBTOTAL_NUM;
-    final['GRAND_TOTAL'] = $(GRAND_TOTAL).text();
-
-    post(FORM.attr("action"), "POST", final);
-}
-
-function checkEmptyInput(entry: JQuery<HTMLElement>): boolean {
+export function checkEmptyInput(entry: JQuery<HTMLElement>): boolean {
+    let result = true;
     entry.find("input:required, select:required").each(function (index, value) {
         if ($(value).is('input')) {
             if ($(value).val() === "") {
+                result = false;
                 return false;
             }
         } else {
             if ($(value).find(":selected").val() === "") {
+                result = false;
                 return false;
             }
         }
     });
-    return true;
+    return result;
 }
-
-Array<string>('input', 'focusin').forEach((evt: string) => {
-
-    CARD_F_NAME.addEventListener(evt, function () {
-        vcBL.setValidity(this, this, PURPOSE.Firstname, PURPOSE.Firstname.constraint(this.value));
-    });
-
-    CARD_L_NAME.addEventListener(evt, function () {
-        vcBL.setValidity(this, this, PURPOSE.Lastname, PURPOSE.Lastname.constraint(this.value));
-    });
-
-    STREET_ADDR.addEventListener(evt, function () {
-        vcSH.setValidity(this, this, PURPOSE.StreetAddress, PURPOSE.StreetAddress.constraint(this.value))
-    });
-
-    BILLING_ST.addEventListener(evt, function () {
-        vcBL.setValidity(this, this, PURPOSE.StreetAddress, PURPOSE.StreetAddress.constraint(this.value))
-    });
-
-    ZIP.addEventListener(evt, function () {
-        vcSH.setValidity(this, this, PURPOSE.Zip, PURPOSE.Zip.constraint(this.value))
-    });
-
-    BILLING_ZIP.addEventListener(evt, function () {
-        vcBL.setValidity(this, this, PURPOSE.Zip, PURPOSE.Zip.constraint(this.value))
-    });
-
-    CITY.addEventListener(evt, function () {
-        vcSH.setValidity(this, this, PURPOSE.City, PURPOSE.City.constraint(this.value))
-    });
-
-    BILLING_CITY.addEventListener(evt, function () {
-        vcBL.setValidity(this, this, PURPOSE.City, PURPOSE.City.constraint(this.value))
-    });
-
-    CCN.addEventListener(evt, function () {
-        cc.setCCN(this.value);
-        let check = PURPOSE.CCN.constraint(cc);
-        vcBL.setValidity(this, this, PURPOSE.CCN, check);
-
-        if (check) {
-            CreditCard.toggleCardIcon(this, cc);
-        } else {
-            CreditCard.toggleCardIcon(this);
-        }
-    });
-
-    CVV.addEventListener(evt, function () {
-        cc.setCVV(this.value);
-        vcBL.setValidity(this, this, PURPOSE.CVV, PURPOSE.CVV.constraint(cc));
-    })
-});
-
-Array<string>('change', 'focusin').forEach((evt: string) => {
-
-    STATE.addEventListener(evt, function () {
-        vcSH.setValidity(this, this, PURPOSE.State, PURPOSE.State.constraint(this))
-    });
-
-    COUNTRY.addEventListener(evt, function () {
-        vcSH.setValidity(this, this, PURPOSE.Country, PURPOSE.Country.constraint(this))
-    });
-
-    BILLING_STATE.addEventListener(evt, function () {
-        vcBL.setValidity(this, this, PURPOSE.State, PURPOSE.State.constraint(this))
-    });
-
-    BILLING_COUNTRY.addEventListener(evt, function () {
-        vcBL.setValidity(this, this, PURPOSE.Country, PURPOSE.Country.constraint(this))
-    });
-});
-
-
-entShipRad.on("click", function () {
-    $(this).attr("checked", "checked");
-    shipRad.removeAttr("checked");
-    shipToggler.text("View");
-    (<any>newAddrEntry).collapse(<any>"show");
-    (<any>addrEntry).collapse(<any>"hide");
-});
-
-
-shipRad.on("click", function () {
-    $(this).attr("checked", "checked");
-    entShipRad.removeAttr("checked");
-    if (newAddrEntry.hasClass("show")) {
-        (<any>newAddrEntry).collapse(<any>"hide");
-        let num = updateSalesTax(shippingSelect);
-        updateTotal(num);
-    }
-    (<any>addrEntry).collapse(<any>"hide");
-});
-
-
-shipToggler.on("click", function () {
-    switchToggler(this);
-    if (newAddrEntry.hasClass("show")) {
-        shipRad.trigger("click");
-    }
-});
-
-
-entPMRad.on("click", function () {
-    $(this).attr("checked", "checked");
-    pmRad.removeAttr("checked");
-    pmToggler.text("View");
-    (<any>newPMEntry).collapse(<any>"show");
-    (<any>pmEntry).collapse(<any>"hide");
-});
-
-
-pmRad.on("click", function () {
-    $(this).attr("checked", "checked");
-    $(entPMRad).removeAttr("checked");
-    if (newPMEntry.hasClass("show")) {
-        (<any>newPMEntry).collapse(<any>"hide");
-    }
-    (<any>pmEntry).collapse(<any>"hide");
-});
-
-
-pmToggler.on("click", function () {
-    switchToggler(this);
-    if (newPMEntry.hasClass("show")) {
-        pmRad.trigger("click");
-    }
-});
-
-newAddrEntry.find("#newAddressState").on("change", function () {
-    let num = updateSalesTax($(this), false);
-    updateTotal(num);
-});
-
-CHECKOUT_BTN.on("click", function () {
-    proceedCheckoutSubmit();
-});
-
 
 $('.remember-me[type="checkbox"]').on("click", function () {
     $(this).attr("value", function (index, attr) {
         return attr === '0' ? '1' : '0';
     });
 });
-
-$(function () {
-    let now = new Date();
-    let minMonth = ("0" + (now.getMonth() + 1)).slice(-2);
-    $("#newCCEXP").attr("min", `${now.getFullYear()}-${minMonth}`)
-});
-
-
-$(document).scroll(function () {
-    if ($(window).width() >= 992) {
-        var y = $(document).scrollTop(),
-            header = $("#sidebar");
-        if (y >= (y + $('.card').offset().top)) {
-            header.css({"position": "static", "width": "auto"});
-        } else {
-            header.css({"position": "sticky", "width": "auto", "top": "20px"});
-        }
-    }
-});
-
-const pcv = new PromotionCheckoutValidation();
-const PROMO_CODE_INPUT: HTMLInputElement = document.getElementById("promoCodeInput") as HTMLInputElement;
-var promoData = null;
-
-$("#addPromoForm").on("submit", function (e: Event) {
-    e.preventDefault();
-
-    let ref = PROMO_CODE_INPUT.value;
-    if (!pcv.validateAll(undefined)) {
-        return false;
-    }
-
-    $.ajax({
-        type: "POST",
-        url: "/api/promo",
-        data: {"PROMO_IDENT": ref},
-        success: function (data) {
-            if (data['code'] !== false) {
-                applyPromo(data);
-                promoData = data;
-            } else {
-                $("#promoCodeInputGroup").after(`<small class="text-danger" id="invalidPromo">The Promotion you entered was not valid. Idiot.</small>`);
-            }
-        }
-    });
-});
-
-function applyPromo(data: string) {
-    let template = `<li class="list-group-item d-flex justify-content-between bg-light sidebar-item-price">
-                        <div class="text-success">
-                            <h6 class="my-0 complement-light">Promo code</h6>
-                            <small>${data['code']}</small>
-                        </div>
-                        <span class="text-success complement">%${data['value'] * 100} off</span>
-                    </li>`;
-    $("#salesTaxListElement").after(template);
-
-    let ct = parseFloat(GRAND_TOTAL.text());
-    let val = ct - ct * data['value'];
-    updateTotal(val);
-}
-
-Array<string>('input', 'focusin').forEach((evt: string) => {
-    PROMO_CODE_INPUT.addEventListener(evt, function () {
-        removePromoError();
-        pcv.setValidity(this,
-            <HTMLElement><any>$("#promoCodeInputGroup")[0],
-            PromotionCheckoutValidation.PURPOSE.Promo,
-            PromotionCheckoutValidation.PURPOSE.Promo.constraint(this.value));
-    });
-});
-
-PROMO_CODE_INPUT.addEventListener("focusout", function () {
-    $(this).removeClass("invalid");
-    $(PromotionCheckoutValidation.PURPOSE.Promo.template[1]).remove();
-    removePromoError();
-});
-
-function removePromoError() {
-    let ref = $("#invalidPromo");
-    if (ref.length) {
-        ref.remove();
-    }
-}
