@@ -1,0 +1,60 @@
+{% extends "checkout/baseCheckout.html" %}
+{% block child_title %}Shipping{% endblock %}
+
+{% block base_head %}
+    {{ super() }}
+{% endblock %}
+
+{% block title %}Review{% endblock %}
+
+{% block card_title %}
+    Review Entries
+{% endblock %}
+{% block card_content %}
+    <p>Need to write this</p>
+{% endblock %}
+
+{% block card_footer %}
+    <a href="{{ url_for('user_bp.billing_checkout') }}">
+        <button type="button" class="btn blue-gradient btn-lg btn-block waves-effect waves-ripple">Place Order
+        </button>
+    </a>
+{% endblock %}
+
+
+{% block add_list_item %}
+    <li class="list-group-item d-flex justify-content-between">
+        <span class="complement">Shipping Cost</span>
+        <strong class="text-danger">+ $<span class="sidebar-item-price pl-0"
+                                             id="shippingTotal"></span></strong>
+    </li>
+    <li class="list-group-item d-flex justify-content-between" id="salesTaxListElement">
+        <span class="complement">Sales Tax</span>
+        <strong class="text-danger">+ $<span id="salesTax"></span></strong>
+    </li>
+    <li class="list-group-item d-flex justify-content-between">
+        <span class="complement-bold">GRAND TOTAL (USD)</span>
+        <strong class="primary-md">$<span id="checkoutTotalPrice"></span></strong>
+    </li>
+{% endblock %}
+
+
+
+
+
+{% block below_cart_item %}
+    <form id="addPromoForm">
+        <div class="card p-2 promo-card">
+            <div class="input-group md-outline md-form" id="promoCodeInputGroup">
+                <input type="text" class="form-control" id="promoCodeInput" required
+                       style="text-transform: uppercase;">
+                <div class="input-group-append">
+                    <button class="btn blue-gradient btn-md waves-effect m-0 ml-2" id="promoBtn"
+                            type="submit">Redeem
+                    </button>
+                </div>
+                <label for="promoCodeInput">Promo Code</label>
+            </div>
+        </div>
+    </form>
+{% endblock %}
