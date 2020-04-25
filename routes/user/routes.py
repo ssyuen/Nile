@@ -107,6 +107,7 @@ def shipping_checkout():
             shipping_id = get_address_id(cursor)
             session['shipping'] = shipping_id
             session['shipping_state'] = addressState
+            session['shipping_payload'] = shipping_payload
             print(f'\n\n{session["shipping_state"]}\n\n')
             if REMEMBER_SHIPPING != None and int(REMEMBER_SHIPPING) != 0:
 
@@ -118,6 +119,7 @@ def shipping_checkout():
             shipping_id = SHIPPING_IDENT
             session['shipping'] = shipping_id
             session['shipping_state'] = request.form.get('SHIPPING_STATE')
+            session['shipping_payload'] = shipping_payload
             print(f'\n\n{session["shipping_state"]}\n\n')
 
         conn.commit()
@@ -217,6 +219,10 @@ def billing_checkout():
 
             payment_payload = (checkoutCardHolderFirstName,
                                checkoutCardHolderLastName, ccn, ct, ccexp, billing_id)
+
+            session['payment_payload'] = payment_payload
+            session['billing_payload'] = billing_payload
+
             insert_payment(cursor, payment_payload)
             payment_id = get_payment_id(cursor)
             if REMEMBER_PAYMENT != None and int(REMEMBER_PAYMENT) != 0:
@@ -256,13 +262,44 @@ def review_checkout():
         grand_total = "{:.2f}".format(
             float(sub_total) + float(shipping_price) + float(sales_tax))
 
-        conn.close()
-        return render_template('checkout/reviewOrder.html',
-                               book_payload=x['book_payload'],
-                               sub_total=x['sub_total'],
-                               shipping_price=shipping_price,
-                               sales_tax=sales_tax,
-                               grand_total=grand_total)
+        if 'payment_payload' and 'billing_payload' in session:
+            payment_payload = session['payment_payload']
+            billing_payload = session['billing_payload']
+
+            conn.close()
+            return render_template('checkout/reviewOrder.html',
+                                   book_payload=x['book_payload'],
+                                   sub_total=x['sub_total'],
+                                   shipping_price=shipping_price,
+                                   sales_tax=sales_tax,
+                                   grand_total=grand_total,
+                                   payment_payload=payment_payload,
+                                   billing_payload=billing_payload)
+
+        else:
+            payment_query = 'SELECT firstname,lastname,cardNumber,cardType, billingAddress_addr_FK FROM payment_method WHERE id = %s'
+            cursor.execute(payment_query, (session['payment']))
+            results = cursor.fetchall()[0]
+            fname = results[0]
+            lname = results[1]
+            ccn = results[2]
+            card_type = results[3]
+            billing_id = results[4]
+            billing_query = 'SELECT * FROM address WHERE id = %s'
+            cursor.execute(billing_query, (billing_id))
+
+            billing_payload = cursor.fetchall()[0]
+            payment_payload = (fname, lname, ccn, card_type)
+
+            conn.close()
+            return render_template('checkout/reviewOrder.html',
+                                   book_payload=x['book_payload'],
+                                   sub_total=x['sub_total'],
+                                   shipping_price=shipping_price,
+                                   sales_tax=sales_tax,
+                                   grand_total=grand_total,
+                                   payment_payload=payment_payload,
+                                   billing_payload=billing_payload)
 
     elif request.method == 'POST':
 
