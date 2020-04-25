@@ -124,6 +124,7 @@ function proceedShippingSubmit() {
 
     if (shipRad.is(":checked")) {
         shipPayload["SHIPPING_IDENT"] = $(shipOpt).attr("nile-shipping-ident");
+        shipPayload["SHIPPING_STATE"] = $(shipOpt).attr("nile-shipping-state");
     } else if (entShipRad.is(":checked")) {
 
         if (!checkout.checkEmptyInput(newAddrEntry) || !vcSH.validateAll('.card-title')) {
