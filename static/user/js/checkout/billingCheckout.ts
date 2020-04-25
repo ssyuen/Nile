@@ -168,7 +168,11 @@ function proceedBillingSubmit() {
         paymentPayload["PAYMENT_IDENT"] = $(payOpt).attr("nile-pm-ident");
 
     } else if (entPMRad.is(":checked")) {
-        if (!checkout.checkEmptyInput(newPMEntry) || !vcBL.validateAll('.card-title')) {
+        if (!checkout.checkEmptyInput(newPMEntry)) {
+            $('<input type="submit">').hide().appendTo(FORM).click().remove();
+            return false;
+        }
+        if (!vcBL.validateAll('.card-title')) {
             return false;
         }
 
