@@ -282,7 +282,7 @@ def review_checkout():
             results = cursor.fetchall()[0]
             fname = results[0]
             lname = results[1]
-            ccn = results[2]
+            ccn = results[2][-4:]
             card_type = results[3]
             billing_id = results[4]
             billing_query = 'SELECT * FROM address WHERE id = %s'
