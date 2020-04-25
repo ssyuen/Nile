@@ -101,7 +101,11 @@ function proceedShippingSubmit() {
         shipPayload["SHIPPING_STATE"] = $(shipOpt).attr("nile-shipping-state");
     }
     else if (entShipRad.is(":checked")) {
-        if (!checkout.checkEmptyInput(newAddrEntry) || !vcSH.validateAll('.card-title')) {
+        if (!checkout.checkEmptyInput(newAddrEntry)) {
+            $('<input type="submit">').hide().appendTo(FORM).click().remove();
+            return false;
+        }
+        if (!vcSH.validateAll('.card-title')) {
             return false;
         }
         shipPayload = serializedToObject(newAddrEntry.find("input, select"));
