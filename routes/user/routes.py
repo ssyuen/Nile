@@ -80,6 +80,7 @@ def shipping_checkout():
         x = get_books(cursor)
         shipping_price = calculate_shipping(x['book_quantity'])
 
+
         conn.close()
         return render_template('checkout/shippingCheckout.html',
                                shipping_payload=shipping_payload,
@@ -272,7 +273,7 @@ def review_checkout():
         payment_id = session['payment']
 
         order_num = str(uuid1())
-        order_payload = (user_id,int(payment_id),float(GRAND_TOTAL),float(SALES_TAX),float(SHIPPING_COST),datetime.now().strftime('%Y-%m-%d %H:%M:%S'),PROMO_IDENT,order_num,int(shipping_id))
+        order_payload = (user_id,int(payment_id),float(GRAND_TOTAL),float(SALES_TAX),float(SHIPPING_COST),datetime.now().strftime('%Y-%m-%d %H:%M:%S'),PROMO_IDENT,order_num,int(session['shipping']))
         insert_order(cursor,order_payload)
         order_id = get_order_id(cursor)
 
