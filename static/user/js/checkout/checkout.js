@@ -1,18 +1,20 @@
-import { CountUp } from '../../../jsplugin/countUp.min.js';
-import { post, SALES_TAX, serializedToObject } from "./checkoutUtil.js";
-import { replaceBtn } from "../../../common/js/utility/util.js";
-import { CreditCard, PURPOSE, RegistrationInputValidator } from "../../../common/js/registration/regValidation.js";
-import { PromotionCheckoutValidation } from "./promoValidation.js";
+import {CountUp} from '../../../jsplugin/countUp.min.js';
+import {arrSum, post, SALES_TAX, serializedToObject} from "./checkoutUtil.js";
+import {replaceBtn} from "../../../common/js/utility/util.js";
+import {CreditCard, PURPOSE, RegistrationInputValidator} from "../../../common/js/registration/regValidation.js";
+import {PromotionCheckoutValidation} from "./promoValidation.js";
+
 const COUNTER_DURATION = 0.5;
+/* Sidebar Items */
 const FORM = $("#dummyForm");
 const CHECKOUT_BTN = $("#checkoutBtn");
-const CHECKOUT_TOTAL_PRICE = $("#checkoutTotalPrice");
-const SUBTOTAL = $(CHECKOUT_TOTAL_PRICE).html();
-const SHIPPING_TOTAL = $("#shippingTotal");
-const SUBTOTAL_PLUS_SHIPPING = parseFloat(CHECKOUT_TOTAL_PRICE.html()) + parseFloat(SHIPPING_TOTAL.html());
-const arrSum = arr => arr.reduce((a, b) => a + b, 0);
-const convertToNumber = arr => arr.map(Number);
-//* For the Shipping Address */
+const SUBTOTAL_SEL = $("#subtotal");
+const SUBTOTAL_NUM = parseFloat($("#subtotal").text());
+const SHIPPING_TOTAL = parseFloat($("#shippingTotal").text());
+const SALES_TAX_TOTAL = $("#salesTax");
+const GRAND_TOTAL = $("#checkoutTotalPrice");
+const SUBTOTAL_PLUS_SHIPPING = SUBTOTAL_NUM + SHIPPING_TOTAL;
+/* For the Shipping Address */
 const shipRad = $("#chooseShippingToggle");
 const shipToggler = $("#addressToggler");
 const entShipRad = $("#enterAddressToggle");
@@ -26,6 +28,7 @@ const entPMRad = $("#enterPaymentMethodToggle");
 const choosePMToggleLabel = $("#choosePaymentMethodToggleLabel");
 const pmEntry = $("#paymentMethodEntry");
 const newPMEntry = $("#newPaymentMethodEntry");
+/* The select elements for both shipping and payment */
 const paymentSelect = $("#paymentMethodSelect");
 const shippingSelect = $("#shippingAddressSelect");
 if (paymentSelect.length) {
@@ -44,9 +47,16 @@ if (shippingSelect.length) {
         updateTotal(num);
     });
 }
-let counter;
+let subtotalCounter;
+let grandTotalCounter;
 let salesTaxCounter;
-salesTaxCounter = new CountUp('salesTax', 0.00, {
+subtotalCounter = new CountUp(SUBTOTAL_SEL.attr('id'), SUBTOTAL_NUM, {
+    decimalPlaces: 2,
+    duration: COUNTER_DURATION,
+    startVal: 0.00
+});
+startCounter(subtotalCounter);
+salesTaxCounter = new CountUp(SALES_TAX_TOTAL.attr('id'), "--", {
     decimalPlaces: 2,
     duration: COUNTER_DURATION,
     startVal: 0.00
@@ -55,8 +65,7 @@ startCounter(salesTaxCounter);
 let salestax = 0;
 if (!shippingSelect.length) {
     forceEntry(newAddrEntry, chooseShippingToggleLabel, shipToggler, "Enter a Shipping Address", 1 /* SHIPPING */);
-}
-else {
+} else {
     salestax = updateSalesTax(shippingSelect);
 }
 if (!paymentSelect.length) {
@@ -66,12 +75,12 @@ let total = 0;
 $(".sidebar-item-price").each(function (index, elem) {
     total += parseFloat(elem.innerHTML);
 });
-counter = new CountUp(CHECKOUT_TOTAL_PRICE.attr('id'), total + salestax, {
+grandTotalCounter = new CountUp(GRAND_TOTAL.attr('id'), total + salestax, {
     decimalPlaces: 2,
     duration: COUNTER_DURATION,
     startVal: 0.00
 });
-startCounter(counter);
+startCounter(grandTotalCounter);
 function stopAllInput(entry) {
     $(entry).find('select').prop("disabled", true);
     $(entry).find('input').prop("readonly", true);
@@ -119,8 +128,8 @@ function switchToggler(toggler) {
 }
 function updateTotal(...args) {
     let sum = arrSum(args);
-    let newVal = SUBTOTAL_PLUS_SHIPPING + sum;
-    counter.update(newVal);
+    let newVal = parseFloat(GRAND_TOTAL.text()) + sum;
+    grandTotalCounter.update(newVal);
 }
 function fillShippingForm(select) {
     let option = select.find(":selected");
@@ -228,10 +237,10 @@ function proceedCheckoutSubmit() {
         final["PROMO_CODE"] = promoData['code'];
         final["PROMO_VALUE"] = promoData['value'];
     }
-    final["SHIPPING_COST"] = $(SHIPPING_TOTAL).text();
+    final["SHIPPING_COST"] = SHIPPING_TOTAL;
     final["SALES_TAX"] = $("#salesTax").text();
-    final["SUB_TOTAL"] = SUBTOTAL;
-    final['GRAND_TOTAL'] = $(CHECKOUT_TOTAL_PRICE).text();
+    final["SUB_TOTAL"] = SUBTOTAL_NUM;
+    final['GRAND_TOTAL'] = $(GRAND_TOTAL).text();
     post(FORM.attr("action"), "POST", final);
 }
 function checkEmptyInput(entry) {
@@ -399,7 +408,6 @@ $("#addPromoForm").on("submit", function (e) {
         }
     });
 });
-
 function applyPromo(data) {
     let template = `<li class="list-group-item d-flex justify-content-between bg-light sidebar-item-price">
                         <div class="text-success">
@@ -409,9 +417,9 @@ function applyPromo(data) {
                         <span class="text-success complement">%${data['value'] * 100} off</span>
                     </li>`;
     $("#salesTaxListElement").after(template);
-    let currCheckout = parseFloat(CHECKOUT_TOTAL_PRICE.text());
-    let val = currCheckout - currCheckout * data['value'];
-    setTimeout(counter.update(val), COUNTER_DURATION);
+    let ct = parseFloat(GRAND_TOTAL.text());
+    let val = ct - ct * data['value'];
+    updateTotal(val);
 }
 Array('input', 'focusin').forEach((evt) => {
     PROMO_CODE_INPUT.addEventListener(evt, function () {
@@ -424,7 +432,6 @@ PROMO_CODE_INPUT.addEventListener("focusout", function () {
     $(PromotionCheckoutValidation.PURPOSE.Promo.template[1]).remove();
     removePromoError();
 });
-
 function removePromoError() {
     let ref = $("#invalidPromo");
     if (ref.length) {

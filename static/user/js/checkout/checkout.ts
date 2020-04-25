@@ -1,22 +1,24 @@
 import {CountUp} from '../../../jsplugin/countUp.min.js';
-import {post, SALES_TAX, serializedToObject} from "./checkoutUtil.js";
+import {arrSum, post, SALES_TAX, serializedToObject} from "./checkoutUtil.js";
 import {replaceBtn} from "../../../common/js/utility/util.js";
 import {CreditCard, PURPOSE, RegistrationInputValidator} from "../../../common/js/registration/regValidation.js";
 import {PromotionCheckoutValidation} from "./promoValidation.js";
 
 const COUNTER_DURATION = 0.5;
 
+/* Sidebar Items */
 const FORM: JQuery = $("#dummyForm");
 const CHECKOUT_BTN: JQuery = $("#checkoutBtn");
-const CHECKOUT_TOTAL_PRICE: JQuery = $("#checkoutTotalPrice");
-const SUBTOTAL: string = $(CHECKOUT_TOTAL_PRICE).html();
-const SHIPPING_TOTAL: JQuery = $("#shippingTotal");
-const SUBTOTAL_PLUS_SHIPPING: number = parseFloat(CHECKOUT_TOTAL_PRICE.html()) + parseFloat(SHIPPING_TOTAL.html());
 
-const arrSum = arr => arr.reduce((a, b) => a + b, 0);
-const convertToNumber = arr => arr.map(Number);
+const SUBTOTAL_SEL: JQuery = $("#subtotal");
+const SUBTOTAL_NUM: number = parseFloat($("#subtotal").text());
+const SHIPPING_TOTAL: number = parseFloat($("#shippingTotal").text());
+const SALES_TAX_TOTAL: JQuery = $("#salesTax");
 
-//* For the Shipping Address */
+const GRAND_TOTAL: JQuery = $("#checkoutTotalPrice");
+const SUBTOTAL_PLUS_SHIPPING: number = SUBTOTAL_NUM + SHIPPING_TOTAL;
+
+/* For the Shipping Address */
 const shipRad: JQuery = $("#chooseShippingToggle");
 const shipToggler: JQuery = $("#addressToggler");
 const entShipRad: JQuery = $("#enterAddressToggle");
@@ -32,6 +34,7 @@ const choosePMToggleLabel: JQuery = $("#choosePaymentMethodToggleLabel");
 const pmEntry: JQuery = $("#paymentMethodEntry");
 const newPMEntry: JQuery = $("#newPaymentMethodEntry");
 
+/* The select elements for both shipping and payment */
 const paymentSelect: JQuery = $("#paymentMethodSelect");
 const shippingSelect: JQuery = $("#shippingAddressSelect");
 
@@ -58,10 +61,19 @@ if (shippingSelect.length) {
     });
 }
 
-let counter: CountUp;
+let subtotalCounter: CountUp;
+let grandTotalCounter: CountUp;
 let salesTaxCounter: CountUp;
 
-salesTaxCounter = new CountUp('salesTax', 0.00, {
+subtotalCounter = new CountUp(SUBTOTAL_SEL.attr('id'), SUBTOTAL_NUM, {
+    decimalPlaces: 2,
+    duration: COUNTER_DURATION,
+    startVal: 0.00
+});
+
+startCounter(subtotalCounter);
+
+salesTaxCounter = new CountUp(SALES_TAX_TOTAL.attr('id'), "--", {
     decimalPlaces: 2,
     duration: COUNTER_DURATION,
     startVal: 0.00
@@ -85,19 +97,18 @@ $(".sidebar-item-price").each(function (index: number, elem: HTMLSpanElement) {
     total += parseFloat(elem.innerHTML);
 });
 
-counter = new CountUp(CHECKOUT_TOTAL_PRICE.attr('id'), total + salestax, {
+grandTotalCounter = new CountUp(GRAND_TOTAL.attr('id'), total + salestax, {
     decimalPlaces: 2,
     duration: COUNTER_DURATION,
     startVal: 0.00
 });
 
-startCounter(counter);
+startCounter(grandTotalCounter);
 
 function stopAllInput(entry: JQuery) {
     $(entry).find(<any>'select').prop("disabled", true);
     $(entry).find(<any>'input').prop("readonly", true);
 }
-
 
 function startCounter(ctr: CountUp) {
     if (!ctr.error) {
@@ -106,7 +117,6 @@ function startCounter(ctr: CountUp) {
         console.error(ctr.error);
     }
 }
-
 
 function forceEntry(formEntry: JQuery, toggleLabel: JQuery, toggler: JQuery, toggleText: string, inputType: CHECKOUT_TYPE) {
     formEntry.addClass("show");
@@ -126,7 +136,6 @@ function forceEntry(formEntry: JQuery, toggleLabel: JQuery, toggler: JQuery, tog
     }
 }
 
-
 function updateSalesTax(sel: JQuery, withOption = true): number {
     let salesTax: number = (withOption === true ?
         SALES_TAX[sel.find(":selected").attr("nile-shipping-state")] :
@@ -134,7 +143,6 @@ function updateSalesTax(sel: JQuery, withOption = true): number {
     salesTaxCounter.update(salesTax);
     return salesTax;
 }
-
 
 function switchToggler(toggler: HTMLElement | string | any) {
     if ($(toggler).text() === "View") {
@@ -144,13 +152,11 @@ function switchToggler(toggler: HTMLElement | string | any) {
     }
 }
 
-
 function updateTotal(...args: number[]) {
     let sum = arrSum(args);
-    let newVal = SUBTOTAL_PLUS_SHIPPING + sum;
-    counter.update(newVal);
+    let newVal = parseFloat(GRAND_TOTAL.text()) + sum;
+    grandTotalCounter.update(newVal);
 }
-
 
 function fillShippingForm(select: JQuery) {
     let option: HTMLOptionElement = <HTMLOptionElement><any>select.find(":selected");
@@ -278,14 +284,13 @@ function proceedCheckoutSubmit() {
         final["PROMO_CODE"] = promoData['code'];
         final["PROMO_VALUE"] = promoData['value'];
     }
-    final["SHIPPING_COST"] = $(SHIPPING_TOTAL).text();
+    final["SHIPPING_COST"] = SHIPPING_TOTAL;
     final["SALES_TAX"] = $("#salesTax").text();
-    final["SUB_TOTAL"] = SUBTOTAL;
-    final['GRAND_TOTAL'] = $(CHECKOUT_TOTAL_PRICE).text();
+    final["SUB_TOTAL"] = SUBTOTAL_NUM;
+    final['GRAND_TOTAL'] = $(GRAND_TOTAL).text();
 
     post(FORM.attr("action"), "POST", final);
 }
-
 
 function checkEmptyInput(entry: JQuery<HTMLElement>): boolean {
     entry.find("input:required, select:required").each(function (index, value) {
@@ -301,7 +306,6 @@ function checkEmptyInput(entry: JQuery<HTMLElement>): boolean {
     });
     return true;
 }
-
 
 Array<string>('input', 'focusin').forEach((evt: string) => {
 
@@ -430,12 +434,10 @@ pmToggler.on("click", function () {
     }
 });
 
-
 newAddrEntry.find("#newAddressState").on("change", function () {
     let num = updateSalesTax($(this), false);
     updateTotal(num);
 });
-
 
 CHECKOUT_BTN.on("click", function () {
     proceedCheckoutSubmit();
@@ -466,7 +468,6 @@ $(document).scroll(function () {
         }
     }
 });
-
 
 const pcv = new PromotionCheckoutValidation();
 const PROMO_CODE_INPUT: HTMLInputElement = document.getElementById("promoCodeInput") as HTMLInputElement;
@@ -505,9 +506,9 @@ function applyPromo(data: string) {
                     </li>`;
     $("#salesTaxListElement").after(template);
 
-    let currCheckout = parseFloat(CHECKOUT_TOTAL_PRICE.text());
-    let val = currCheckout - currCheckout * data['value'];
-    setTimeout(counter.update(val), COUNTER_DURATION);
+    let ct = parseFloat(GRAND_TOTAL.text());
+    let val = ct - ct * data['value'];
+    updateTotal(val);
 }
 
 Array<string>('input', 'focusin').forEach((evt: string) => {
