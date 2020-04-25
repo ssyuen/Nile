@@ -4,7 +4,7 @@ import {post, serializedToObject} from "./checkoutUtil.js";
 import {replaceBtn} from "../../../common/js/utility/util.js";
 
 const paymentSelect: JQuery = $("#paymentMethodSelect");
-const FORM: JQuery = $("dummyForm");
+const FORM: JQuery = $("#dummyForm");
 const CONT_BTN = $("#contToReviewBtn");
 
 /* For the Payment Method */
@@ -168,6 +168,7 @@ function proceedBillingSubmit() {
         paymentPayload["PAYMENT_IDENT"] = $(payOpt).attr("nile-pm-ident");
 
     } else if (entPMRad.is(":checked")) {
+
         if (!checkout.checkEmptyInput(newPMEntry)) {
             $('<input type="submit">').hide().appendTo(FORM).click().remove();
             return false;

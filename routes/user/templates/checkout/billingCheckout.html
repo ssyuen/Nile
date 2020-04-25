@@ -200,76 +200,75 @@
             <label class="custom-control-label" for="rememberPM">Remember this next
                 time</label>
         </div>
-
-        <div class="row">
-            <div class="col-xxl-6">
-                <small>
-                    <span class="text-muted font-italic mb-1 ml-1">Card Information</span>
-                </small>
-                <div class="card-specific">
-                    <div class="form-row">
-                        <div class="col-sm-6">
-                            <div class="form-group md-form md-outline">
-                                <input type="text" class="form-control"
-                                       id="newCardHolderFirstName"
-                                       required
-                                       name="cardHolderFirstName"
-                                       style="text-transform: uppercase;"
-                                       maxlength="45"
-                                       data-error="First Name must me more than one character">
-                                <label for="newCardHolderFirstName">First Name</label>
+        <form action="{{ url_for(request.endpoint) }}" id="dummyForm">
+            <div class="row">
+                <div class="col-xxl-6">
+                    <small>
+                        <span class="text-muted font-italic mb-1 ml-1">Card Information</span>
+                    </small>
+                    <div class="card-specific">
+                        <div class="form-row">
+                            <div class="col-sm-6">
+                                <div class="form-group md-form md-outline">
+                                    <input type="text" class="form-control"
+                                           id="newCardHolderFirstName"
+                                           required
+                                           name="cardHolderFirstName"
+                                           style="text-transform: uppercase;"
+                                           maxlength="45"
+                                           data-error="First Name must me more than one character">
+                                    <label for="newCardHolderFirstName">First Name</label>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group md-form md-outline">
+                                    <input type="text" class="form-control"
+                                           id="newCardHolderLastName"
+                                           required
+                                           name="cardHolderLastName"
+                                           style="text-transform: uppercase;"
+                                           maxlength="45"
+                                           data-error="Last Name must me more than two characters">
+                                    <label for="newCardHolderLastName">Last Name</label>
+                                </div>
                             </div>
                         </div>
-                        <div class="col-sm-6">
-                            <div class="form-group md-form md-outline">
-                                <input type="text" class="form-control"
-                                       id="newCardHolderLastName"
-                                       required
-                                       name="cardHolderLastName"
-                                       style="text-transform: uppercase;"
-                                       maxlength="45"
-                                       data-error="Last Name must me more than two characters">
-                                <label for="newCardHolderLastName">Last Name</label>
+                        <div class="form-row">
+                            <div class="col-sm-9">
+                                <div class="form-group md-form md-outline">
+                                    <label for="newCCN">Credit Card Number</label>
+                                    <input type="text" class="form-control" id="newCCN" name="ccn"
+                                           required
+                                           credit-provider=""
+                                           data-error="Credit Card is not valid.">
+                                </div>
+                            </div>
+                            <div class="col-sm-3">
+                                <div class="form-group md-form md-outline">
+                                    <input type="text" class="form-control" id="newCVV" name="cvv"
+                                           required
+                                           maxlength="3"
+                                           data-error="CVV is not valid.">
+                                    <label for="newCVV">CVV</label>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="form-row">
-                        <div class="col-sm-9">
-                            <div class="form-group md-form md-outline">
-                                <label for="newCCN">Credit Card Number</label>
-                                <input type="text" class="form-control" id="newCCN" name="ccn"
-                                       required
-                                       credit-provider=""
-                                       data-error="Credit Card is not valid.">
-                            </div>
-                        </div>
-                        <div class="col-sm-3">
-                            <div class="form-group md-form md-outline">
-                                <input type="text" class="form-control" id="newCVV" name="cvv"
-                                       required
-                                       maxlength="3"
-                                       data-error="CVV is not valid.">
-                                <label for="newCVV">CVV</label>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-row">
-                        <div class="col">
-                            <div class="form-group">
-                                <label for="newCCEXP">Credit Card Expiration Date</label>
-                                <input type="month" class="form-control" id="newCCEXP" required
-                                       name="ccexp">
+                        <div class="form-row">
+                            <div class="col">
+                                <div class="form-group">
+                                    <label for="newCCEXP">Credit Card Expiration Date</label>
+                                    <input type="month" class="form-control" id="newCCEXP" required
+                                           name="ccexp">
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="col-xxl-6">
-                <small>
-                    <span class="text-muted font-italic mb-1 ml-1">Billing Address</span>
-                </small>
-                <div class="billing-address">
-                    <form action="{{ url_for(request.endpoint) }}" id="dummyForm">
+                <div class="col-xxl-6">
+                    <small>
+                        <span class="text-muted font-italic mb-1 ml-1">Billing Address</span>
+                    </small>
+                    <div class="billing-address">
                         <div class="form-row">
                             <div class="col">
                                 <div class="form-group md-form md-outline">
@@ -341,10 +340,10 @@
                                 </select>
                             </div>
                         </div>
-                    </form>
+                    </div>
                 </div>
             </div>
-        </div>
+        </form>
     </div>
 {% endblock %}
 

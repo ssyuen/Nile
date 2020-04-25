@@ -3,7 +3,7 @@ import { CreditCard, PURPOSE, RegistrationInputValidator } from "../../../common
 import { post, serializedToObject } from "./checkoutUtil.js";
 import { replaceBtn } from "../../../common/js/utility/util.js";
 const paymentSelect = $("#paymentMethodSelect");
-const FORM = $("dummyForm");
+const FORM = $("#dummyForm");
 const CONT_BTN = $("#contToReviewBtn");
 /* For the Payment Method */
 const pmRad = $("#choosePaymentMethodToggle");
