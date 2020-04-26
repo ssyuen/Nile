@@ -4,7 +4,7 @@ import {post} from "./checkoutUtil.js";
 
 const GRAND_TOTAL = $("#checkoutTotalPrice");
 const PLACE_ORDER_BTN = $("#placeOrder");
-const DUMMY = $("#dummyForm");
+const DUMMY = $("#dummy");
 const pcv = new PromotionCheckoutValidation();
 const PROMO_CODE_INPUT: HTMLInputElement = document.getElementById("promoCodeInput") as HTMLInputElement;
 var promoData = null;
@@ -82,5 +82,5 @@ function removePromoError() {
 }
 
 PLACE_ORDER_BTN.on("click", function () {
-    post(DUMMY.attr("action"), "POST")
+    post(DUMMY.attr("nile-form-action"), "POST", {"X": "Y"});
 });
