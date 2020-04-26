@@ -1,5 +1,4 @@
 import {AdminInputValidator, PURPOSE} from "../adminInputValidation.js";
-
 $("#editBtn").click(function () {
     $("#manageBooksForm input, #manageBooksForm select, #manageBooksForm textarea").removeAttr("readonly disabled");
 });
