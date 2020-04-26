@@ -279,7 +279,7 @@ def register():
 
                 # payment_payload depends on user and billing FKs
                 payment_payload = (card_first_name, card_last_name, ccn, ccn_provider, ccexp,
-                                   user_id, billing_id)
+                                   billing_id)
                 insert_payment(cursor, payment_payload)
                 payment_id = get_payment_id(cursor)
                 insert_userpayment(cursor, (user_id, payment_id))
