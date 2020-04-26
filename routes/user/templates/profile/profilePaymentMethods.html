@@ -98,125 +98,140 @@
                           nile-form-ident="{{ loop.index }}"
                           nile-pm-ident="{{ info['pm_id'] }}"
                           action="/nileuser/payment_methods/">
-                        <small>
-                            <p class="text-muted font-italic">Card Information</p>
-                        </small>
-                        <div class="card-specific">
-                            <div class="form-row">
-                                <div class="col-sm-6">
-                                    <div class="form-group md-form md-outline">
-                                        <input type="text" class="form-control targetName1"
-                                               id="cardHolderFirstName{{ loop.index }}"
-                                               required readonly
-                                               value="{{ info['firstname'] }}"
-                                               name="cardHolderFirstName"
-                                               style="text-transform: uppercase;"
-                                               maxlength="45"
-                                               data-error="First Name must me more than one character">
-                                        <label for="cardHolderFirstName{{ loop.index }}">First Name on Card</label>
+                        <div class="row">
+                            <div class="col-xxl-6">
+                                <small>
+                                    <p class="text-muted font-italic">Card Information</p>
+                                </small>
+                                <div class="card-specific">
+                                    <div class="form-row">
+                                        <div class="col-sm-6">
+                                            <div class="form-group md-form md-outline">
+                                                <input type="text" class="form-control targetName1"
+                                                       id="cardHolderFirstName{{ loop.index }}"
+                                                       required readonly
+                                                       value="{{ info['firstname'] }}"
+                                                       name="cardHolderFirstName"
+                                                       style="text-transform: uppercase;"
+                                                       maxlength="45"
+                                                       data-error="First Name must me more than one character">
+                                                <label for="cardHolderFirstName{{ loop.index }}">First Name on
+                                                    Card</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <div class="form-group md-form md-outline">
+                                                <input type="text" class="form-control targetName2"
+                                                       id="cardHolderLastName{{ loop.index }}"
+                                                       required readonly
+                                                       value="{{ info['lastname'] }}"
+                                                       name="cardHolderLastName"
+                                                       style="text-transform: uppercase;"
+                                                       maxlength="45"
+                                                       data-error="Last Name must me more than two characters">
+                                                <label for="cardHolderLastName{{ loop.index }}">Last Name on
+                                                    Card</label>
+                                            </div>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="col-sm-6">
-                                    <div class="form-group md-form md-outline">
-                                        <input type="text" class="form-control targetName2"
-                                               id="cardHolderLastName{{ loop.index }}"
-                                               required readonly
-                                               value="{{ info['lastname'] }}"
-                                               name="cardHolderLastName"
-                                               style="text-transform: uppercase;"
-                                               maxlength="45"
-                                               data-error="Last Name must me more than two characters">
-                                        <label for="cardHolderLastName{{ loop.index }}">Last Name on Card</label>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="form-row">
-                                <div class="col">
-                                    <div class="form-group">
-                                        <label for="ccexp{{ loop.index }}">Credit Card Expiration Date</label>
-                                        <input type="month" class="form-control targetCCEXP" id="ccexp{{ loop.index }}"
-                                               required
-                                               readonly
-                                               name="ccexp" value="{{ info['expirationDate'] }}">
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <small>
-                            <p class="text-muted font-italic">Billing Address</p>
-                        </small>
-                        <div class="billing-address">
-                            <div class="form-row">
-                                <div class="col">
-                                    <div class="form-group md-form md-outline">
-                                        <input type="text" class="form-control targetStreet1"
-                                               id="billingStreetAddress{{ loop.index }}"
-                                               required
-                                               name="billingStreetAddress"
-                                               maxlength="45"
-                                               value="{{ info['street1'] }}" readonly
-                                               data-error="Street Address cannot be empty">
-                                        <label for="billingStreetAddress{{ loop.index }}">Street Address</label>
+                                    <div class="form-row">
+                                        <div class="col">
+                                            <div class="form-group">
+                                                <label for="ccexp{{ loop.index }}">Credit Card Expiration Date</label>
+                                                <input type="month" class="form-control targetCCEXP"
+                                                       id="ccexp{{ loop.index }}"
+                                                       required
+                                                       readonly
+                                                       name="ccexp" value="{{ info['expirationDate'] }}">
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                            <div class="form-row">
-                                <div class="col">
-                                    <div class="form-group md-form md-outline">
-                                        <input type="text" class="form-control targetStreet2"
-                                               id="billingApartmentOrSuite{{ loop.index }}"
-                                               value="{{ info['street2'] }}" readonly
-                                               maxlength="45"
-                                               name="billingApartmentOrSuite" data-success="This field is optional">
-                                        <label for="billingApartmentOrSuite{{ loop.index }}">Apartment or Suite
-                                            (Optional)</label>
+                            <div class="col-xxl-6">
+                                <small>
+                                    <p class="text-muted font-italic">Billing Address</p>
+                                </small>
+                                <div class="billing-address">
+                                    <div class="form-row">
+                                        <div class="col">
+                                            <div class="form-group md-form md-outline">
+                                                <input type="text" class="form-control targetStreet1"
+                                                       id="billingStreetAddress{{ loop.index }}"
+                                                       required
+                                                       name="billingStreetAddress"
+                                                       maxlength="45"
+                                                       value="{{ info['street1'] }}" readonly
+                                                       data-error="Street Address cannot be empty">
+                                                <label for="billingStreetAddress{{ loop.index }}">Street Address</label>
+                                            </div>
+                                        </div>
                                     </div>
-                                </div>
-                            </div>
-                            <div class="form-row">
-                                <div class="col">
-                                    <div class="form-group md-form md-outline">
-                                        <input type="text" class="form-control targetZip"
-                                               id="billlingAddressZip{{ loop.index }}"
-                                               readonly
-                                               maxlength="10"
-                                               name="billingAddressZip" value="{{ info['zip'] }}">
-                                        <label for="billlingAddressZip{{ loop.index }}">ZIP or Postal code</label>
+                                    <div class="form-row">
+                                        <div class="col">
+                                            <div class="form-group md-form md-outline">
+                                                <input type="text" class="form-control targetStreet2"
+                                                       id="billingApartmentOrSuite{{ loop.index }}"
+                                                       value="{{ info['street2'] }}" readonly
+                                                       maxlength="45"
+                                                       name="billingApartmentOrSuite"
+                                                       data-success="This field is optional">
+                                                <label for="billingApartmentOrSuite{{ loop.index }}">Apartment or Suite
+                                                    (Optional)</label>
+                                            </div>
+                                        </div>
                                     </div>
-                                </div>
-                            </div>
-                            <div class="form-row">
-                                <div class="form-group col-md-8">
-                                    <div class="form-group md-form md-outline">
-                                        <input type="text" class="form-control targetCity"
-                                               id="billingAddressCity{{ loop.index }}"
-                                               required readonly
-                                               maxlength="45"
-                                               value="{{ info['city'] }}"
-                                               name="billingAddressCity">
-                                        <label for="billingAddressCity{{ loop.index }}">City</label>
+                                    <div class="form-row">
+                                        <div class="col">
+                                            <div class="form-group md-form md-outline">
+                                                <input type="text" class="form-control targetZip"
+                                                       id="billlingAddressZip{{ loop.index }}"
+                                                       readonly
+                                                       maxlength="10"
+                                                       name="billingAddressZip" value="{{ info['zip'] }}">
+                                                <label for="billlingAddressZip{{ loop.index }}">ZIP or Postal
+                                                    code</label>
+                                            </div>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="form-group col-md-2" style="margin-top: 8px">
-                                    <label for="billingAddressState{{ loop.index }}" class="d-none">State</label>
-                                    <select id="billingAddressState{{ loop.index }}" class="form-control" required
-                                            name="billingAddressState" disabled>
-                                        <option value="GA">GA</option>
-                                        <option value="CA">CA</option>
-                                    </select>
-                                    <script>
-                                        doSelect(document.getElementById("billingAddressState{{ loop.index }}").id, "{{ info['state'] }}");
-                                    </script>
-                                </div>
-                                <div class="form-group col-md-2" style="margin-top: 8px">
-                                    <label for="billingAddressCountry{{ loop.index }}" class="d-none">Country</label>
-                                    <select id="billingAddressCountry{{ loop.index }}" class="form-control" required
-                                            name="billingAddressCountry" disabled>
-                                        <option value="United States">United States</option>
-                                    </select>
-                                    <script>
-                                        doSelect(document.getElementById("billingAddressCountry{{ loop.index }}").id, "{{ info['country'] }}");
-                                    </script>
+                                    <div class="form-row">
+                                        <div class="form-group col-md-8">
+                                            <div class="form-group md-form md-outline">
+                                                <input type="text" class="form-control targetCity"
+                                                       id="billingAddressCity{{ loop.index }}"
+                                                       required readonly
+                                                       maxlength="45"
+                                                       value="{{ info['city'] }}"
+                                                       name="billingAddressCity">
+                                                <label for="billingAddressCity{{ loop.index }}">City</label>
+                                            </div>
+                                        </div>
+                                        <div class="form-group col-md-2" style="margin-top: 8px">
+                                            <label for="billingAddressState{{ loop.index }}"
+                                                   class="d-none">State</label>
+                                            <select id="billingAddressState{{ loop.index }}" class="form-control"
+                                                    required
+                                                    name="billingAddressState" disabled>
+                                                <option value="GA">GA</option>
+                                                <option value="CA">CA</option>
+                                            </select>
+                                            <script>
+                                                doSelect(document.getElementById("billingAddressState{{ loop.index }}").id, "{{ info['state'] }}");
+                                            </script>
+                                        </div>
+                                        <div class="form-group col-md-2" style="margin-top: 8px">
+                                            <label for="billingAddressCountry{{ loop.index }}"
+                                                   class="d-none">Country</label>
+                                            <select id="billingAddressCountry{{ loop.index }}" class="form-control"
+                                                    required
+                                                    name="billingAddressCountry" disabled>
+                                                <option value="United States">United States</option>
+                                            </select>
+                                            <script>
+                                                doSelect(document.getElementById("billingAddressCountry{{ loop.index }}").id, "{{ info['country'] }}");
+                                            </script>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
