@@ -91,6 +91,7 @@ def shipping_checkout():
         REMEMBER_SHIPPING = request.form.get('REMEMBER_SHIPPING')
 
         # USER CHOOSES NEW SHIPPING
+        SHIPPING_HEADERS = ['street1','street2','zip','city','state','country']
         addressStreetAddress = request.form.get('addressStreetAddress')
         addressApartmentOrSuite = request.form.get('addressApartmentOrSuite')
         addressZip = request.form.get('addressZip')
@@ -101,14 +102,17 @@ def shipping_checkout():
         shipping_payload = (addressStreetAddress, addressApartmentOrSuite,
                             addressCity, addressZip, addressState, addressCountry, str(1))
 
+        formatted_shipping = zip(SHIPPING_HEADERS,shipping_payload[:-1])
+        formatted_shipping_payload = {table_headers:val for (table_headers,val) in formatted_shipping}
+
         # IF USING NEW SHIPPING ADDRESS
         if SHIPPING_IDENT == None:
             insert_address(cursor, shipping_payload)
             shipping_id = get_address_id(cursor)
             session['shipping'] = shipping_id
             session['shipping_state'] = addressState
-            session['shipping_payload'] = shipping_payload
-            print(f'\n\n{session["shipping_state"]}\n\n')
+            session['shipping_payload'] = formatted_shipping_payload
+
             if REMEMBER_SHIPPING != None and int(REMEMBER_SHIPPING) != 0:
 
                 user_id = get_user_id(cursor, session['email'])
@@ -119,8 +123,16 @@ def shipping_checkout():
             shipping_id = SHIPPING_IDENT
             session['shipping'] = shipping_id
             session['shipping_state'] = request.form.get('SHIPPING_STATE')
+            shipping_query = 'SELECT * FROM address WHERE id = %s'
+            cursor.execute(shipping_query, (shipping_id))
+
+            header = [desc[0] for desc in cursor.description][1:-1]
+            shipping_payload = {}
+            results = cursor.fetchall()[0][1:-1]
+            formatted_results = zip(header, results)
+            shipping_payload = {table_headers: val for (
+                table_headers, val) in formatted_results}
             session['shipping_payload'] = shipping_payload
-            print(f'\n\n{session["shipping_state"]}\n\n')
 
         conn.commit()
         conn.close()
@@ -201,6 +213,8 @@ def billing_checkout():
         ccexp = request.form.get('ccexp')
         if ccexp != None:
             ccexp += '-01'
+
+        BILLING_HEADERS = ['street1','street2','zip','city','state','country']
         billingStreetAddress = request.form.get('billingStreetAddress')
         billingApartmentOrSuite = request.form.get('billingApartmentOrSuite')
         billingAddressZip = request.form.get('billingAddressZip')
@@ -211,17 +225,24 @@ def billing_checkout():
         # PAYMENT PAYLOAD CREATED AFTER BILLING_PAYLOAD HAS BEEN INSERTED
         billing_payload = (billingStreetAddress, billingApartmentOrSuite, billingAddressCity,
                            billingAddressZip, billingAddressState, billingAddressCountry, str(2))
+        formatted_billing = zip(BILLING_HEADERS,billing_payload[:-1])
+        formatted_billing_payload = {table_headers:val for (table_headers,val) in formatted_billing}
 
         # IF USING NEW SHIPPING ADDRESS
         if PAYMENT_IDENT == None:
             insert_address(cursor, billing_payload)
             billing_id = get_address_id(cursor)
 
+            PAYMENT_HEADERS = ['firstname','lastname','cardNumber','cardType']
             payment_payload = (checkoutCardHolderFirstName,
                                checkoutCardHolderLastName, ccn, ct, ccexp, billing_id)
+            formatted_results = zip(PAYMENT_HEADERS,payment_payload[:-1])
+            formatted_payment_payload = {table_headers:val for (table_headers,val) in formatted_results}
+            formatted_payment_payload['cardNumber'] = FERNET.decrypt(formatted_payment_payload['cardNumber']).decode('utf-8')[-4:]
 
-            session['payment_payload'] = payment_payload
-            session['billing_payload'] = billing_payload
+
+            session['payment_payload'] = formatted_payment_payload
+            session['billing_payload'] = formatted_billing_payload
 
             insert_payment(cursor, payment_payload)
             payment_id = get_payment_id(cursor)
@@ -233,7 +254,37 @@ def billing_checkout():
         else:
             payment_id = PAYMENT_IDENT
 
-        session['payment'] = payment_id
+            session['payment'] = payment_id
+
+            payment_payload = {}
+            payment_query = 'SELECT firstname,lastname,cardNumber,cardType, billingAddress_addr_FK FROM payment_method WHERE id = %s'
+            cursor.execute(payment_query, (payment_id))
+            
+            header = [desc[0] for desc in cursor.description][:-1]
+            payment_payload = {}
+            results = cursor.fetchall()[0]
+            table_vals = results[:-1]
+            billing_id = results[-1]
+
+            formatted_results = zip(header, results)
+            payment_payload = {table_headers: val for (
+                table_headers, val) in zip(header, results)}
+
+            payment_payload['cardNumber'] = FERNET.decrypt(payment_payload['cardNumber'].encode('utf-8')).decode('utf-8')[-4:]
+            session['payment_payload'] = payment_payload
+
+
+            billing_payload = {}
+            billing_query = 'SELECT * FROM address WHERE id = %s'
+            cursor.execute(billing_query, (billing_id))
+            
+            header = [desc[0] for desc in cursor.description][1:-1]
+            billing_payload = {}
+            results = cursor.fetchall()[0][1:-1]
+            formatted_results = zip(header, results)
+            billing_payload = {table_headers: val for (
+                table_headers, val) in zip(header, results)}
+            session['billing_payload'] = billing_payload
 
         conn.commit()
         conn.close()
@@ -265,6 +316,11 @@ def review_checkout():
         if 'payment_payload' and 'billing_payload' in session:
             payment_payload = session['payment_payload']
             billing_payload = session['billing_payload']
+            shipping_payload = session['shipping_payload']
+
+            print(f'billing payload --> {billing_payload}')
+            print(f'payment payload --> {payment_payload}')
+            print(f'shippign payload --> {shipping_payload}')
 
             conn.close()
             return render_template('checkout/reviewOrder.html',
@@ -274,22 +330,37 @@ def review_checkout():
                                    sales_tax=sales_tax,
                                    grand_total=grand_total,
                                    payment_payload=payment_payload,
-                                   billing_payload=billing_payload)
+                                   billing_payload=billing_payload,
+                                   shipping_payload=shipping_payload)
 
         else:
             payment_query = 'SELECT firstname,lastname,cardNumber,cardType, billingAddress_addr_FK FROM payment_method WHERE id = %s'
             cursor.execute(payment_query, (session['payment']))
-            results = cursor.fetchall()[0]
-            fname = results[0]
-            lname = results[1]
-            ccn = results[2][-4:]
-            card_type = results[3]
-            billing_id = results[4]
+
+            header = [desc[0] for desc in cursor.description][1:-1]
+            payment_payload = {}
+            results = cursor.fetchall()[0][1:-1]
+            formatted_results = zip(header, results)
+            payment_payload = {table_headers: val for (
+                table_headers, val) in zip(header, results)}
+            session['payment_payload'] = payment_payload
+
             billing_query = 'SELECT * FROM address WHERE id = %s'
             cursor.execute(billing_query, (billing_id))
 
-            billing_payload = cursor.fetchall()[0]
-            payment_payload = (fname, lname, ccn, card_type)
+            header = [desc[0] for desc in cursor.description][1:-1]
+            billing_payload = {}
+            results = cursor.fetchall()[0][1:-1]
+            formatted_results = zip(header, results)
+            billing_payload = {table_headers: val for (
+                table_headers, val) in formatted_results}
+            session['billing_payload'] = billing_payload
+
+            shipping_payload = session['shipping_payload']
+
+            print(f'billing payload --> {billing_payload}')
+            print(f'payment payload --> {payment_payload}')
+            print(f'shippign payload --> {shipping_payload}')
 
             conn.close()
             return render_template('checkout/reviewOrder.html',
@@ -299,7 +370,8 @@ def review_checkout():
                                    sales_tax=sales_tax,
                                    grand_total=grand_total,
                                    payment_payload=payment_payload,
-                                   billing_payload=billing_payload)
+                                   billing_payload=billing_payload,
+                                   shipping_payload=shipping_payload)
 
     elif request.method == 'POST':
 
