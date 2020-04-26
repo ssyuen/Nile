@@ -1,3 +1,6 @@
+-- MySQL Workbench Forward Engineering
+
+SET @OLD_UNIQUE_CHECKS = @@UNIQUE_CHECKS, UNIQUE_CHECKS = 0;
 SET @OLD_FOREIGN_KEY_CHECKS = @@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS = 0;
 SET @OLD_SQL_MODE = @@SQL_MODE, SQL_MODE =
         'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION';
@@ -61,11 +64,12 @@ CREATE TABLE IF NOT EXISTS `niledb`.`address`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `niledb`.`admin`
 (
-    `id`        INT                                                               NOT NULL AUTO_INCREMENT,
-    `email`     VARCHAR(255) CHARACTER SET 'utf8mb4' COLLATE 'utf8mb4_0900_ai_ci' NOT NULL,
-    `firstName` VARCHAR(45) CHARACTER SET 'utf8mb4' COLLATE 'utf8mb4_0900_ai_ci'  NOT NULL,
-    `lastName`  VARCHAR(45) CHARACTER SET 'utf8mb4' COLLATE 'utf8mb4_0900_ai_ci'  NOT NULL,
-    `pass`      VARCHAR(100) CHARACTER SET 'utf8mb4' COLLATE 'utf8mb4_0900_ai_ci' NOT NULL,
+    `id`           INT                                                               NOT NULL AUTO_INCREMENT,
+    `email`        VARCHAR(255) CHARACTER SET 'utf8mb4' COLLATE 'utf8mb4_0900_ai_ci' NOT NULL,
+    `firstName`    VARCHAR(45) CHARACTER SET 'utf8mb4' COLLATE 'utf8mb4_0900_ai_ci'  NOT NULL,
+    `lastName`     VARCHAR(45) CHARACTER SET 'utf8mb4' COLLATE 'utf8mb4_0900_ai_ci'  NOT NULL,
+    `pass`         VARCHAR(100) CHARACTER SET 'utf8mb4' COLLATE 'utf8mb4_0900_ai_ci' NOT NULL,
+    `isSubscribed` BIT(1)                                                            NOT NULL DEFAULT b'1',
     PRIMARY KEY (`id`),
     UNIQUE INDEX `email_UNIQUE` (`email` ASC) VISIBLE,
     INDEX `Key` (`firstName` ASC, `lastName` ASC, `pass` ASC) VISIBLE
@@ -286,7 +290,7 @@ CREATE TABLE IF NOT EXISTS `niledb`.`book_orderdetail`
     `userID_bod_FK` INT         NOT NULL,
     `ISBN_bod_FK`   VARCHAR(20) NOT NULL,
     `quantity`      INT         NOT NULL DEFAULT '1',
-    PRIMARY KEY (`userID_bod_FK`, `ISBN_bod_FK`),
+    PRIMARY KEY (`id`, `userID_bod_FK`, `ISBN_bod_FK`),
     INDEX `ISBN_bod_FK` (`ISBN_bod_FK` ASC) VISIBLE,
     INDEX `userID_bod_FK_idx` (`userID_bod_FK` ASC) INVISIBLE,
     INDEX `id` (`id` ASC) VISIBLE,
@@ -307,14 +311,15 @@ CREATE TABLE IF NOT EXISTS `niledb`.`book_orderdetail`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `niledb`.`promotion`
 (
-    `id`        INT                                                              NOT NULL AUTO_INCREMENT,
-    `name`      VARCHAR(50)                                                      NOT NULL,
-    `code`      VARCHAR(45) CHARACTER SET 'utf8mb4' COLLATE 'utf8mb4_0900_ai_ci' NULL DEFAULT NULL,
-    `discount`  DOUBLE                                                           NULL DEFAULT NULL,
-    `startDate` DATE                                                             NULL DEFAULT NULL,
-    `endDate`   DATE                                                             NULL DEFAULT NULL,
-    `notes`     VARCHAR(500)                                                     NULL DEFAULT NULL,
+    `id`        INT          NOT NULL AUTO_INCREMENT,
+    `code`      VARCHAR(45)  NOT NULL,
+    `name`      VARCHAR(50)  NOT NULL,
+    `discount`  DOUBLE       NULL DEFAULT NULL,
+    `startDate` DATE         NULL DEFAULT NULL,
+    `endDate`   DATE         NULL DEFAULT NULL,
+    `notes`     VARCHAR(500) NULL DEFAULT NULL,
     PRIMARY KEY (`id`),
+    UNIQUE INDEX `promotion_code_uindex` (`code` ASC) VISIBLE,
     INDEX `Key` (`code` ASC, `discount` ASC, `startDate` ASC, `endDate` ASC) VISIBLE
 )
     ENGINE = InnoDB
@@ -334,7 +339,7 @@ CREATE TABLE IF NOT EXISTS `niledb`.`order`
     `total`                   FLOAT       NULL DEFAULT NULL,
     `salesTax`                FLOAT       NULL DEFAULT NULL,
     `shippingPrice`           FLOAT       NULL DEFAULT NULL,
-    `dateOrdered`             DATE        NULL DEFAULT NULL,
+    `dateOrdered`             DATETIME    NOT NULL,
     `promotionID`             INT         NULL DEFAULT NULL,
     `confirmationNumber`      VARCHAR(45) NULL DEFAULT NULL,
     `shippingAddrID_order_FK` INT         NULL DEFAULT NULL,
@@ -416,7 +421,6 @@ CREATE TABLE IF NOT EXISTS `niledb`.`user_token`
     ENGINE = InnoDB
     DEFAULT CHARACTER SET = utf8mb4
     COLLATE = utf8mb4_0900_ai_ci;
-
 
 INSERT INTO address_type (`id`, `type`)
 VALUES (1, 'SHIPPING');
@@ -665,3 +669,4 @@ INSERT INTO book (`ISBN`, `bindingID_book_FK`, `genreID_book_FK`, `typeID_book_F
 VALUES ('9780061124952', 2, 12, 4, 'Charlotte\'s Web', 5.40, 192, 'NILE_CI_0025', 'Early edition', 'HarperCollins',
         '2012-04-10', 144, 'E.b.', 'White',
         'Don’t miss one of America’s top 100 most-loved novels, selected by PBS’s The Great American Read.\r\n\r\nThis beloved book by E. B. White, author of Stuart Little and The Trumpet of the Swan, is a classic of children\'s literature that is \"just about perfect.\" This paper-over-board edition includes a foreword by two-time Newbery winning author Kate DiCamillo.\r\n\r\nSome Pig. Humble. Radiant. These are the words in Charlotte\'s Web, high up in Zuckerman\'s barn. Charlotte\'s spiderweb tells of her feelings for a little pig named Wilbur, who simply wants a friend. They also express the love of a girl named Fern, who saved Wilbur\'s life when he was born the runt of his litter.\r\n\r\nE. B. White\'s Newbery Honor Book is a tender novel of friendship, love, life, and death that will continue to be enjoyed by generations to come. It contains illustrations by Garth Williams, the acclaimed illustrator of E. B. White\'s Stuart Little and Laura Ingalls Wilder\'s Little House series, among many other books.');
+
