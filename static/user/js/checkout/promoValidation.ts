@@ -17,5 +17,4 @@ export class PromotionCheckoutValidation extends InputValidator {
     public static promoNameConstraint(value: string): boolean {
         return value.length >= 1;
     }
-
 }

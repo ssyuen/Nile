@@ -1,5 +1,3 @@
-import {CountUp} from '../../../jsplugin/countUp.min.js';
-
 export const COUNTER_DURATION = 0.5;
 
 export function stopAllInput(entry: JQuery) {
