@@ -272,7 +272,7 @@ def register():
             # INSERTING BILLING ADDRESS (PAYMENT INFO ONLY)
             elif None in shipping_payload and None not in billing_payload:
                 query = insert_address(cursor, billing_payload)
-                billing_id_query = get_address_id(cursor)
+                billing_id = get_address_id(cursor)
 
                 insert_user(cursor, user_payload)
                 user_id = get_user_id(cursor, email)
