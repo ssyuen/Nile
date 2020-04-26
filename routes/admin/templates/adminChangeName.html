@@ -12,9 +12,29 @@
             margin-top: 0.5rem !important;
         }
 
-        .md-form input:read-only {
-            background: lightgray !important;
-            opacity: 0.8 !important;
+        .md-form input:read-only, .card-specific input:read-only {
+            background-color: #e9e9e9 !important;
+            color: #000000;
+        }
+
+        .md-form input:read-only ~ label.active {
+            background: transparent !important;
+        }
+
+        .form-group i.fas.fa-user {
+            position: absolute;
+            right: 10px;
+            bottom: 6.5px;
+        }
+
+        /* Extra Small Devices, Phones */
+        @media (max-width: 480px) {
+            #editBtn {
+                float: none !important;
+                display: block !important;
+                width: 100% !important;
+                margin: 20px 0 20px 0 !important;
+            }
         }
     </style>
 {% endblock %}
@@ -45,14 +65,20 @@
     <div class="card-body white change-my-name">
         <div class="d-inline-block w-100 ">
             <h4 class="text-uppercase font-weight-bold my-2 d-inline-block" id="nameDetails">Manage your Name</h4>
-            <button class="btn btn-sm nile-yellow-gradient my-2 float-right align-content-center waves-effect"
-                    id="editBtn">
-                Edit
+            <button class="btn nile-yellow-gradient btn-sm my-2 float-right align-content-center waves-effect"
+                    id="editBtn">Edit
             </button>
         </div>
+        {% with name_change = get_flashed_messages() %}
+            {% if name_change %}
+                <p class="flashes text-center" style="color: rgb(37, 179, 132);">
+                    {% for msg in name_change %}
+                        {{ msg }}
+                    {% endfor %}
+                </p>
+            {% endif %}
+        {% endwith %}
         <form id="changeNameForm" class="profile-form" method="POST">
-            <i class="fas fa-user prefix"></i>
-            <label for="inputFirstname">First Name</label>
             <div class="form-row mb-3">
                 <div class="col">
                     <div class="form-group md-form md-outline mb-0" id="inputFirstnameGroup">
@@ -61,34 +87,29 @@
                                aria-label="First Name" name="inputFirstname"
                                maxlength="45"
                                value="{{ session['firstName'] }}">
+                        <label for="inputFirstname">First Name</label>
+                        <i class="fas fa-user prefix"></i>
                     </div>
                 </div>
             </div>
             <div class="form-row">
                 <div class="col">
-                    <i class="fas fa-user prefix"></i>
-                    <label for="inputLastname">Last Name</label>
                     <div class="form-group md-form md-outline mb-0" id="inputLastnameGroup">
                         <input id="inputLastname" type="text" class="form-control" placeholder="Last Name"
                                aria-label="Last Name" name="inputLastname"
                                maxlength="45"
                                value="{{ session['lastName'] }}" readonly aria-readonly="true">
+                        <label for="inputLastname">Last Name</label>
+                        <i class="fas fa-user prefix"></i>
                     </div>
                 </div>
             </div>
             <div class="row mt-4">
                 <div class="col">
-                    {% with name_change = get_flashed_messages() %}
-                        {% if name_change %}
-                            <p class="flashes text-center" style="color: rgb(37, 179, 132);">
-                                {% for msg in name_change %}
-                                    {{ msg }}
-                                {% endfor %}
-                            </p>
-                        {% endif %}
-                    {% endwith %}
                     <!--PLEASE FOR THE LOVE OF GOD CHANGE THIS MARGIN TOP VALUEs-->
-                    <button class="btn blue-gradient btn-block" style="margin-top: 30px;" type="submit">Update</button>
+                    <button class="btn blue-gradient btn-block" style="margin-top: 30px;" type="submit"
+                            id="changeNameBtn">Update
+                    </button>
                 </div>
             </div>
         </form>
