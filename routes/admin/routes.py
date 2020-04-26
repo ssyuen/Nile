@@ -7,7 +7,7 @@ import string
 
 from routes.common.util import remember_me, cart_session
 from routes.user.routes import send_change_conf_email, get_subscription
-from routes.admin.util import admin_required
+from routes.admin.util import admin_required,send_promo_email
 
 admin_bp = Blueprint('admin_bp', __name__,
                      template_folder='templates', static_folder='static')
@@ -176,6 +176,14 @@ def add_promo_form():
                 VALUES (%s, %s, %s, %s, %s, %s)
                 """
         cursor.execute(query, (promo_code, promo_name, promo_amt, promo_start, promo_expiry, promo_notes))
+
+        subscribed_users_query = 'SELECT firstname,email FROM user WHERE isSubscribed = 1'
+        cursor.execute(subscribed_users_query)
+        results = cursor.fetchall()
+        for result in results:
+            send_promo_email(recipient=result[1],recipient_fname=result[0],promo_code=promo_code,promo_amount=promo_amt,url=request.url_root)
+        
+
         conn.commit()
         conn.close()
 
