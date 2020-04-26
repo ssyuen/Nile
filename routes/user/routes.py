@@ -497,12 +497,16 @@ def overview():
     conn = mysql.connect()
     cursor = conn.cursor()
 
-    get_num_orders = """SELECT COALESCE(COUNT(*), 0) 
+    get_num_orders = """SELECT COUNT(*) 
         FROM `order` WHERE userID_order_FK = (SELECT id FROM user WHERE email = %s) 
         GROUP BY userID_order_FK"""
     cursor.execute(get_num_orders, session['email'])
-    num_orders = cursor.fetchall()[0][0]
-    print(num_orders, file=sys.stderr)
+    num_orders = cursor.fetchall()
+
+    if len(num_orders) != 0:
+        num_orders = num_orders[0][0]
+    else:
+        num_orders = 0
 
     get_top_four_orders = """SELECT dateOrdered, confirmationNumber FROM `order` 
     WHERE userID_order_FK = (SELECT id FROM user WHERE email = %s) 
