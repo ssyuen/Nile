@@ -1,4 +1,4 @@
-import { addToCart, removeFromCart } from "../../../common/js/cart/addToCart";
+import { addToCart, removeFromCart } from "../../../common/js/cart/addToCart.js";
 $(document).ready(function () {
     var dt = $('#orderHistory').DataTable({
         responsive: true,
@@ -22,8 +22,8 @@ $(document).ready(function () {
     });
     dt.column(0).visible(false);
 });
-$("#reorderBtn").click(function () {
-    let sel = $(this).closest('tr').children('.isbn');
+$(".reorderBtn").click(function () {
+    let sel = $(this).closest('tr').children('.isbn').text();
     if ($(this).hasClass("blue-gradient")) {
         addToCart(this, sel);
     }
