@@ -30,37 +30,37 @@ export class AdminInputValidator extends InputValidator {
 }
 AdminInputValidator.INVALID_PASS_MSS = [`
         <small class="text-danger error-messsage" id="invalidPass">
-          Password must be more than 8 or more characters long, contain at least 1 uppercase character, 1 lowercase character, and 1 number.
+          Password must be more than 8 or more characters long, contain at least 1 uppercase character, 1 lowercase character, and 1 number
         </small>
 `, "#invalidPass"];
 AdminInputValidator.INVALID_PASS_CONF_MSS = [`
         <small class="text-danger error-message" id="invalidPassConf">
-          Passwords do not match.
+          Passwords do not match
         </small>
 `, "#invalidPassConf"];
 AdminInputValidator.INVALID_F_NAME_MSS = [`
         <small class="text-danger error-message" id="invalidFName">
-          Firstname must be more than 1 character.
+          Firstname must be more than 1 character
         </small>    
 `, "#invalidFName"];
 AdminInputValidator.INVALID_L_NAME_MSS = [`
         <small class="text-danger error-message" id="invalidLName">
-          Lastname must be more than 2 characters.
+          Lastname must be more than 2 characters
         </small>
 `, "#invalidLName"];
 AdminInputValidator.INVALID_BOOK_TITLE_MSS = [`
         <small class="text-danger error-message" id="invalidTitle"">
-            Title needs 1 or more characters.
+            Title needs 1 or more characters
         </small>
 `, "#invalidTitle"];
 AdminInputValidator.INVALID_ISBN_MSS = [`
         <small class="text-danger error-message" id="invalidISBN"">
-            Must have 13 digits and be in the format 1234567891011 or 978-0-596-52068-7.
+            Must have 13 digits and be in the format 1234567891011, 978-0-596-52068-7, or 978-0735219090
         </small>
 `, "#invalidISBN"];
 AdminInputValidator.INVALID_PUBLISHER_MSS = [`
         <small class="text-danger error-message" id="invalidPublisher"">
-          Publisher needs to be 2 or more characters.
+          Publisher needs to be 2 or more characters
         </small>
 `, "#invalidPublisher"];
 export const PURPOSE = {
