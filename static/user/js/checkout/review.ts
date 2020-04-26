@@ -82,5 +82,10 @@ function removePromoError() {
 }
 
 PLACE_ORDER_BTN.on("click", function () {
-    post(DUMMY.attr("nile-form-action"), "POST", {"X": "Y"});
+    let payload = {};
+    if (promoData != null) {
+        payload["PROMO_IDENT"] = promoData['code'];
+    }
+    payload["GRAND_TOTAL"] = GRAND_TOTAL.text();
+    post(DUMMY.attr("nile-form-action"), "POST", payload);
 });
