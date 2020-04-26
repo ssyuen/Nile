@@ -36,6 +36,5 @@ export const SALES_TAX = {
     "CA": 2.50
 };
 
-
 export const arrSum = arr => arr.reduce((a, b) => a + b, 0);
 export const convertToNumber = arr => arr.map(Number);
