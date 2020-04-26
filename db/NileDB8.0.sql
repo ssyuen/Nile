@@ -29,7 +29,7 @@ CREATE TABLE IF NOT EXISTS `niledb`.`address_type`
     UNIQUE INDEX `type_UNIQUE` (`type` ASC) VISIBLE
 )
     ENGINE = InnoDB
-    AUTO_INCREMENT = 3
+    AUTO_INCREMENT = 1
     DEFAULT CHARACTER SET = utf8;
 
 
@@ -74,7 +74,7 @@ CREATE TABLE IF NOT EXISTS `niledb`.`admin`
     INDEX `Key` (`firstName` ASC, `lastName` ASC, `pass` ASC) VISIBLE
 )
     ENGINE = InnoDB
-    AUTO_INCREMENT = 3
+    AUTO_INCREMENT = 1
     DEFAULT CHARACTER SET = utf8mb4
     COLLATE = utf8mb4_0900_ai_ci;
 
@@ -90,7 +90,7 @@ CREATE TABLE IF NOT EXISTS `niledb`.`binding`
     UNIQUE INDEX `binding_UNIQUE` (`binding` ASC) VISIBLE
 )
     ENGINE = InnoDB
-    AUTO_INCREMENT = 3
+    AUTO_INCREMENT = 1
     DEFAULT CHARACTER SET = utf8;
 
 
@@ -105,7 +105,7 @@ CREATE TABLE IF NOT EXISTS `niledb`.`genre`
     UNIQUE INDEX `genre_UNIQUE` (`genre` ASC) VISIBLE
 )
     ENGINE = InnoDB
-    AUTO_INCREMENT = 20
+    AUTO_INCREMENT = 1
     DEFAULT CHARACTER SET = utf8;
 
 
@@ -120,7 +120,7 @@ CREATE TABLE IF NOT EXISTS `niledb`.`product_type`
     UNIQUE INDEX `product_type_type_uindex` (`type` ASC) VISIBLE
 )
     ENGINE = InnoDB
-    AUTO_INCREMENT = 9
+    AUTO_INCREMENT = 1
     DEFAULT CHARACTER SET = utf8;
 
 
@@ -202,6 +202,7 @@ CREATE TABLE IF NOT EXISTS `niledb`.`payment_method`
             REFERENCES `niledb`.`address` (`id`)
 )
     ENGINE = InnoDB
+    AUTO_INCREMENT = 1
     DEFAULT CHARACTER SET = utf8mb4
     COLLATE = utf8mb4_0900_ai_ci;
 
@@ -238,7 +239,7 @@ CREATE TABLE IF NOT EXISTS `niledb`.`status`
     INDEX `Key` (`status` ASC) VISIBLE
 )
     ENGINE = InnoDB
-    AUTO_INCREMENT = 4
+    AUTO_INCREMENT = 1
     DEFAULT CHARACTER SET = utf8mb4
     COLLATE = utf8mb4_0900_ai_ci;
 
@@ -274,6 +275,7 @@ CREATE TABLE IF NOT EXISTS `niledb`.`user`
             REFERENCES `niledb`.`status` (`id`)
 )
     ENGINE = InnoDB
+    AUTO_INCREMENT = 1
     DEFAULT CHARACTER SET = utf8mb4
     COLLATE = utf8mb4_0900_ai_ci;
 
@@ -299,6 +301,7 @@ CREATE TABLE IF NOT EXISTS `niledb`.`book_orderdetail`
             REFERENCES `niledb`.`user` (`id`)
 )
     ENGINE = InnoDB
+    AUTO_INCREMENT = 1
     DEFAULT CHARACTER SET = utf8;
 
 
@@ -319,6 +322,7 @@ CREATE TABLE IF NOT EXISTS `niledb`.`promotion`
     INDEX `Key` (`code` ASC, `discount` ASC, `startDate` ASC, `endDate` ASC) VISIBLE
 )
     ENGINE = InnoDB
+    AUTO_INCREMENT = 1
     DEFAULT CHARACTER SET = utf8mb4
     COLLATE = utf8mb4_0900_ai_ci;
 
@@ -357,6 +361,7 @@ CREATE TABLE IF NOT EXISTS `niledb`.`order`
             REFERENCES `niledb`.`user` (`id`)
 )
     ENGINE = InnoDB
+    AUTO_INCREMENT = 1
     DEFAULT CHARACTER SET = utf8;
 
 
