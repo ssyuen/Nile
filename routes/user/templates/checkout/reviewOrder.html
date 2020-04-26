@@ -16,7 +16,7 @@
     Review Your Order
 {% endblock %}
 {% block card_content %}
-    <form class="d-none" action="{{ url_for('user_bp.review_checkout') }}" id="dummyForm"></form>
+    <div class="d-none" nile-form-action="{{ url_for('user_bp.review_checkout') }}" id="dummy"></div>
     <div class="row">
         <div class="col">
             <div class="shipping-entries">
@@ -70,11 +70,9 @@
 {% endblock %}
 
 {% block card_footer %}
-    <a href="{{ url_for('user_bp.review_checkout') }}">
-        <button type="button" id="placeOrder" class="btn blue-gradient btn-lg btn-block waves-effect waves-ripple">Place
-            Order
-        </button>
-    </a>
+    <button type="button" id="placeOrder" class="btn blue-gradient btn-lg btn-block waves-effect waves-ripple">Place
+        Order
+    </button>
 {% endblock %}
 
 
@@ -95,7 +93,7 @@
 {% endblock %}
 
 {% block below_cart_item %}
-    <form id="addPromoForm">
+    <form id="addPromoForm" method="POST">
         <div class="card p-2 promo-card">
             <div class="input-group md-outline md-form" id="promoCodeInputGroup">
                 <input type="text" class="form-control" id="promoCodeInput" required
