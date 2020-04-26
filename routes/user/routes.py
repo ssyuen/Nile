@@ -433,7 +433,7 @@ def review_checkout():
             billing_id = get_address_id(cursor)
             session['new_payment'][-1] = billing_id
             # payment_payload = (payment_val for payment_val in session['new_payment'])
-            payment_payload = (session['new_payment'][0], session['new_payment'][1], session['new_payment']
+            payment_payload = (session['new_payment'][0].upper(), session['new_payment'][1].upper(), session['new_payment']
                                [2], session['new_payment'][3], session['new_payment'][4], session['new_payment'][5])
             print(payment_payload)
             insert_payment(cursor, payment_payload)
