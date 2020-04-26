@@ -1,7 +1,10 @@
 import {PromotionCheckoutValidation} from "./promoValidation.js";
 import {CountUp} from "../../../jsplugin/countUp.min.js";
+import {post} from "./checkoutUtil.js";
 
 const GRAND_TOTAL = $("#checkoutTotalPrice");
+const PLACE_ORDER_BTN = $("#placeOrder");
+const DUMMY = $("#dummyForm");
 const pcv = new PromotionCheckoutValidation();
 const PROMO_CODE_INPUT: HTMLInputElement = document.getElementById("promoCodeInput") as HTMLInputElement;
 var promoData = null;
@@ -77,3 +80,7 @@ function removePromoError() {
         ref.remove();
     }
 }
+
+PLACE_ORDER_BTN.on("click", function () {
+    post(DUMMY.attr("action"), "POST")
+});
