@@ -1,6 +1,7 @@
 import {PromotionCheckoutValidation} from "./promoValidation.js";
 import {CountUp} from "../../../jsplugin/countUp.min.js";
 import {post} from "./checkoutUtil.js";
+import {replaceBtn} from "../../../common/js/utility/util.js";
 
 const GRAND_TOTAL = $("#checkoutTotalPrice");
 const PLACE_ORDER_BTN = $("#placeOrder");
@@ -87,5 +88,6 @@ PLACE_ORDER_BTN.on("click", function () {
         payload["PROMO_IDENT"] = promoData['code'];
     }
     payload["GRAND_TOTAL"] = GRAND_TOTAL.text();
+    replaceBtn(this);
     post(DUMMY.attr("nile-form-action"), "POST", payload);
 });

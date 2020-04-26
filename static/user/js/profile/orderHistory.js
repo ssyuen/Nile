@@ -1,4 +1,4 @@
-import { addToCart, removeFromCart } from "../../../common/js/cart/addToCart";
+import { addToCart } from "../../../common/js/cart/addToCart.js";
 $(document).ready(function () {
     var dt = $('#orderHistory').DataTable({
         responsive: true,
@@ -22,12 +22,13 @@ $(document).ready(function () {
     });
     dt.column(0).visible(false);
 });
-$("#reorderBtn").click(function () {
-    let sel = $(this).closest('tr').children('.isbn');
+//In Order history, we can add to cart, but we can't remove from cart
+$(".reorderBtn").click(function () {
+    let sel = $(this).closest('tr').children('.isbn').text();
     if ($(this).hasClass("blue-gradient")) {
         addToCart(this, sel);
     }
     else {
-        removeFromCart(this, sel);
+        window.alert("To remove this item, go to your shopping cart");
     }
 });
