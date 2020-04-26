@@ -172,10 +172,10 @@ def add_promo_form():
         cursor = conn.cursor()
 
         query = """
-                INSERT INTO promotion (name, code, discount, startDate, endDate, notes)
+                INSERT INTO promotion (code, name, discount, startDate, endDate, notes)
                 VALUES (%s, %s, %s, %s, %s, %s)
                 """
-        cursor.execute(query, (promo_name, promo_code, promo_amt, promo_start, promo_expiry, promo_notes))
+        cursor.execute(query, (promo_code, promo_name, promo_amt, promo_start, promo_expiry, promo_notes))
         conn.commit()
         conn.close()
 
