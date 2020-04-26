@@ -27,7 +27,7 @@ $("#addPromoForm").on("submit", function (e: Event) {
                 applyPromo(data);
                 promoData = data;
             } else {
-                $("#promoCodeInputGroup").after(`<small class="text-danger" id="invalidPromo">The Promotion you entered was not valid. Idiot.</small>`);
+                $("#promoCodeInputGroup").after(`<small class="text-danger" id="invalidPromo">The Promotion you entered was not valid.</small>`);
             }
         }
     });
