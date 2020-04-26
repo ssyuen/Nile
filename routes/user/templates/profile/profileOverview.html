@@ -68,19 +68,29 @@
         <div class="card-body">
             <h5 class="card-title mb-4">Recent Orders</h5>
             <div class="row">
-                {% for dt, od in top_four %}
+                {% if top_four|length != 0 %}
+                    {% for dt, od in top_four %}
+                        <div class="col-md-6">
+                            <figure class="itemside  mb-3">
+                                <figcaption class="info">
+                                    <time class="text-muted"><i
+                                            class="fa fa-calendar-alt"></i> {{ dt.strftime('%Y-%m-%d') }}
+                                    </time>
+                                    <p>Order Number: {{ od }}</p>
+                                    <span class="text-success">Shipped</span>
+                                </figcaption>
+                            </figure>
+                        </div>
+                    {% endfor %}
+                {% else %}
                     <div class="col-md-6">
                         <figure class="itemside  mb-3">
                             <figcaption class="info">
-                                <time class="text-muted"><i
-                                        class="fa fa-calendar-alt"></i> {{ dt.strftime('%Y-%m-%d') }}
-                                </time>
-                                <p>Order Number: {{ od }}</p>
-                                <span class="text-success">Shipped</span>
+                                <p>No Recent Orders 😢</p>
                             </figcaption>
                         </figure>
                     </div> <!-- col.// -->
-                {% endfor %}
+                {% endif %}
             </div> <!-- row.// -->
             <a href="{{ url_for('user_bp.order_history') }}">
                 <button class="btn btn-outline-primary waves-effect ml-0">
