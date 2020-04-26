@@ -28,7 +28,7 @@ $(function () {
     $("#promoExpiry").attr("max", `${now.getFullYear() + 25}-${month}-${date}`);
 });
 $('#promoForm').on('submit', function (e) {
-    if (!vc.validateAll('.card-title')) {
+    if (!vc.validateAll('.pre-form-space')) {
         e.preventDefault();
         return false;
     }

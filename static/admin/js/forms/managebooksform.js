@@ -36,7 +36,7 @@ $(FORM).on("submit", function (e) {
         e.preventDefault();
         return false;
     }
-    if (!vc.validateAll('.card-title')) {
+    if (!vc.validateAll('.pre-form-space')) {
         e.preventDefault();
         return false;
     }
