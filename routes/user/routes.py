@@ -497,7 +497,7 @@ def overview():
     conn = mysql.connect()
     cursor = conn.cursor()
 
-    get_num_orders = """SELECT COUNT(*) 
+    get_num_orders = """SELECT COALESCE(COUNT(*), 0) 
         FROM `order` WHERE userID_order_FK = (SELECT id FROM user WHERE email = %s) 
         GROUP BY userID_order_FK"""
     cursor.execute(get_num_orders, session['email'])
