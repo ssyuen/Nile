@@ -7,14 +7,6 @@ export function stopAllInput(entry: JQuery) {
     $(entry).find(<any>'input').prop("readonly", true);
 }
 
-export function startCounter(ctr: CountUp) {
-    if (!ctr.error) {
-        ctr.start();
-    } else {
-        console.error(ctr.error);
-    }
-}
-
 export function forceEntry(formEntry: JQuery, toggleLabel: JQuery, toggler: JQuery, toggleText: string) {
     formEntry.addClass("show");
     toggleLabel.text(toggleText)
