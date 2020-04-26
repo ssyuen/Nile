@@ -24,12 +24,13 @@
                     <span class="complement-bold mr-2">Shipping Address</span>
                     <a href="{{ url_for('user_bp.shipping_checkout') }}">Edit</a>
                 </div>
-                <p class="shipping-entries" id="street1">Placeholder 123</p>
-                <p class="shipping-entries" id="street2">Placeholder 234</p> <!-- ONLY IF A STREET 2 EXISTS!!! -->
-                <p class="shipping-entries" id="zip">56561</p>
-                <span class="shipping-entries" id="city">Fishers, </span>
-                <span class="shipping-entries" id="state">GA</span>
-                <p class="shipping-entries" id="country">United States</p>
+                <p class="shipping-entries" id="street1">{{ shipping_payload['street1'] }}</p>
+                {% if 'street2' in shipping_payload %}
+                    <p class="billing-entries" id="street2">{{ shipping_payload['street2'] }}</p>
+                {% endif %}<p class="shipping-entries" id="zip">{{ shipping_payload['zip'] }}</p>
+                <span class="shipping-entries" id="city">{{ shipping_payload['city'] }}, </span>
+                <span class="shipping-entries" id="state">{{ shipping_payload['state'] }}</span>
+                <p class="shipping-entries" id="country">{{ shipping_payload['country'] }}</p>
             </div>
         </div>
         <div class="col">
@@ -44,24 +45,26 @@
                         <div class="d-block">
                             <small class="text-muted d-block">Card Information</small>
                             <div class="d-block">
-                                <span class="shipping-entries" id="cardFirst">Manu</span>
-                                <span class="shipping-entries" id="cardLast">Puduvalli</span>
+                                <span class="shipping-entries" id="cardFirst">{{ payment_payload['firstname'] }}</span>
+                                <span class="shipping-entries" id="cardLast">{{ payment_payload['lastname'] }}</span>
                             </div>
                             <div class="d-block">
-                                <span class="shipping-entries" id="cardType">DISCOVER</span>
-                                <span class="shipping-entries" id="cardLast4">5729</span>
+                                <span class="shipping-entries" id="cardType">{{ payment_payload['cardType'] }}</span>
+                                <span class="shipping-entries" id="cardLast4">{{ payment_payload['cardNumber'] }}</span>
                             </div>
                         </div>
                     </div>
                     <div class="col">
                         <small class="text-muted d-block">Billing Address</small>
-                        <p class="billing-entries" id="street1">Placeholder 123</p>
-                        <p class="billing-entries" id="street2">Placeholder 234</p>
+                        <p class="billing-entries" id="street1">{{ billing_payload['street1'] }}</p>
+                        {% if 'street2' in billing_payload %}
+                            <p class="billing-entries" id="street2">{{ billing_payload['street2'] }}</p>
+                        {% endif %}
                         <!-- ONLY IF A STREET 2 EXISTS!!! -->
-                        <p class="billing-entries" id="zip">56561</p>
-                        <span class="shipping-entries" id="city">Fishers, </span>
-                        <span class="shipping-entries" id="state">GA</span>
-                        <p class="billing-entries" id="country">United States</p>
+                        <p class="billing-entries" id="zip">{{ billing_payload['zip'] }}</p>
+                        <span class="shipping-entries" id="city">{{ billing_payload['city'] }}, </span>
+                        <span class="shipping-entries" id="state">{{ billing_payload['state'] }}</span>
+                        <p class="billing-entries" id="country">{{ billing_payload['country'] }}</p>
                     </div>
                 </div>
             </div>
