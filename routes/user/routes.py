@@ -426,40 +426,71 @@ def review_checkout():
             PROMO_IDENT = cursor.fetchall()[0][0]
 
         user_id = get_user_id(cursor, session['email'])
-        
+        payment_id, shipping_id = '',''
 
         if 'new_payment' in session:
             insert_address(cursor, session['new_billing'])
             billing_id = get_address_id(cursor)
             session['new_payment'][-1] = billing_id
-            payment_payload = (payment_val for payment_val in session['new_payment'])
+            # payment_payload = (payment_val for payment_val in session['new_payment'])
+            payment_payload = (session['new_payment'][0], session['new_payment'][1], session['new_payment']
+                               [2], session['new_payment'][3], session['new_payment'][4], session['new_payment'][5])
+            print(payment_payload)
             insert_payment(cursor, payment_payload)
-
+            payment_id = get_payment_id(cursor)
             if 'payment_remember' in session and session['payment_remember']:
-                payment_id = get_payment_id(cursor)
+                
                 insert_userpayment(cursor, (user_id, payment_id))
         else:
-            payment_id = session['payment'] 
-
+            payment_id = session['payment']
 
         if 'new_shipping' in session:
             insert_address(cursor, session['new_shipping'])
-
+            shipping_id = get_address_id(cursor)
             if 'payment_remember' in session and session['payment_remember']:
-                shipping_id = get_address_id(cursor)
+                
                 insert_useraddress(cursor, (user_id, shipping_id))
         else:
             shipping_id = session['shipping']
-
-
-        order_num = str(uuid1())
         
-        order_payload = (user_id, int(payment_id), float(GRAND_TOTAL), float(SALES_TAX), float(
-                SHIPPING_COST), datetime.now().strftime('%Y-%m-%d %H:%M:%S'), PROMO_IDENT, order_num, int(session['shipping']))
+        payment_id = int(payment_id)
+        grand_total = float(GRAND_TOTAL)
+        sales_tax = float(SALES_TAX)
+        shipping_cost = float(SHIPPING_COST)
+        order_time = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        promo_id = PROMO_IDENT
+        order_num = str(uuid1())
+        shipping_id = int(shipping_id)
+
+        order_payload = (user_id, payment_id, grand_total, sales_tax,
+                         shipping_cost, order_time, promo_id, order_num, shipping_id)
         insert_order(cursor, order_payload)
         order_id = get_order_id(cursor)
 
-        
+        # PREPARE SHIPPING/PAYMENT/BILLING PAYLOADS FOR ORDER CONF EMAIL
+        shipping_address_query = '''SELECT street1, street2, zip, city, state, country FROM address WHERE id = %s'''
+        cursor.execute(shipping_address_query,(shipping_id))
+        results = cursor.fetchall()[0]
+        headers = [desc[0] for desc in cursor.description]
+        formatted_results = zip(headers,results)
+        shipping_payload = {table_headers:val for (table_headers,val) in formatted_results}
+
+        payment_method_query = '''SELECT cardType, cardNumber, billingAddress_addr_FK FROM payment_method WHERE id = %s'''
+        cursor.execute(payment_method_query,(payment_id))
+        results = cursor.fetchall()[0]
+        table_vals = results[:-1]
+        billing_id = results[-1]
+        headers = [desc[0] for desc in cursor.description][:-1]
+        formatted_results = zip(headers,table_vals)
+        payment_payload = {table_headers:val for (table_headers,val) in formatted_results}
+
+        billing_query = '''SELECT street1, street2, zip,city,state,country FROM address WHERE id = %s'''
+        cursor.execute(billing_query,(billing_id))
+        results = cursor.fetchall()[0]
+        headers = [desc[0] for desc in cursor.description]
+        formatted_results = zip(headers,results)
+        billing_payload = {table_headers:val for (table_headers,val) in formatted_results}
+
 
         # STEP 3: INSERT INTO order_bod TABLE
         book_orderdetails = get_book_orderdetails(cursor, user_id)
@@ -473,10 +504,13 @@ def review_checkout():
         conn.commit()
         conn.close()
 
+        send_order_conf_email(session['email'], get_first_name(mysql, session['email']), order_num, time=order_time, subtotal=SUB_TOTAL,
+                              shipping_cost=shipping_cost, sales_tax=sales_tax, grand_total=grand_total, shipping_payload=shipping_payload, payment_payload=payment_payload,billing_payload=billing_payload)
+
         session.pop('checkout_token')
         generate_secure_token(session, 'checkout_token')
         generate_secure_token(session, 'order_token')
-        return redirect(url_for('user_bp.order_conf', conf_token=secrets.token_urlsafe(256), email=session['email'], user_id=user_id, name=get_first_name(mysql, session['email']), order_num=order_num))
+        return redirect(url_for('user_bp.order_conf', conf_token=secrets.token_urlsafe(256), order_num=order_num))
 
 
 @user_bp.route('/base_profile/', methods=['GET'])
@@ -885,11 +919,11 @@ def settings():
             return jsonify({'response': 200})
 
 
-@user_bp.route('/order_conf/<conf_token>+<email>+<user_id>+<name>+<order_num>', methods=['GET'])
+@user_bp.route('/order_conf/<conf_token>+<order_num>', methods=['GET'])
 @login_required(session)
 @cart_session(session)
 @remember_me(session)
 @user_only(session)
-def order_conf(conf_token, email=None, user_id=None, name=None, order_num=None):
-    send_order_conf_email(email, name, order_num)
+def order_conf(conf_token, order_num=None):
+
     return render_template('checkout/orderConf.html', order_num=order_num)
