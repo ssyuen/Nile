@@ -38,6 +38,10 @@ Array('input', 'focusin').forEach((evt) => {
 });
 
 $(FORM).on("submit", function (e) {
+    if($("#manageBooksForm input, #manageBooksForm select, #manageBooksForm textarea").has("readonly disabled")) {
+        e.preventDefault();
+        return false;
+    }
     if (!vc.validateAll('.card-title')) {
         e.preventDefault();
         return false;
