@@ -94,7 +94,7 @@ function calcTotal() {
     let allSelect = $(".quantity");
     let total = 0.00;
     for (let val of allSelect) {
-        let priceOfBook = parseFloat(getPrice(val).innerHTML);
+        let priceOfBook = parseFloat(getPrice(val).innerHTML.replace(',', ''));
         total += priceOfBook;
     }
     return total;
@@ -109,7 +109,6 @@ function startAnimation(ctr, callback) {
 function getPrice(inputElement) {
     return $(inputElement).parent().parent().next().find('div.quant-price')[0];
 }
-
 $('#shoppingCart tbody').on('click', '.remove-btn', function () {
     cartTable
         .row($(this).parents('tr'))

@@ -2,13 +2,13 @@ import {adjustCartTotal} from "./cartUtil.js";
 
 $("#addToCartBtn").click(function () {
     if ($(this).hasClass("blue-gradient")) {
-        addToCart(this as HTMLButtonElement);
+        addToCart(this as HTMLButtonElement, $("#bookISBN"));
     } else {
-        removeFromCart(this as HTMLButtonElement);
+        removeFromCart(this as HTMLButtonElement, $("#bookISBN"));
     }
 });
 
-function addToCart(btn: HTMLButtonElement) {
+export function addToCart(btn: HTMLButtonElement, sel: JQuery) {
     $(btn).removeClass("blue-gradient");
     $(btn).addClass("btn-outline-success");
     $(btn).children("span").html("Added to Cart");
@@ -16,7 +16,7 @@ function addToCart(btn: HTMLButtonElement) {
     $.ajax({
         url: '/product/',
         type: 'POST',
-        data: {'flag': CART_TYPE.ADD, 'bookISBN': $("#bookISBN").attr("nile-isbn")}
+        data: {'flag': CART_TYPE.ADD, 'bookISBN': sel.attr("nile-isbn")}
     });
 
     let valAsInt: number = parseInt($("#cartTotal").html());
@@ -25,7 +25,7 @@ function addToCart(btn: HTMLButtonElement) {
     console.log('posted');
 }
 
-function removeFromCart(btn: HTMLButtonElement) {
+export function removeFromCart(btn: HTMLButtonElement, sel: JQuery) {
     $(btn).removeClass("btn-outline-success");
     $(btn).addClass("blue-gradient");
     $(btn).children("span").html("Add to Cart");
@@ -33,13 +33,12 @@ function removeFromCart(btn: HTMLButtonElement) {
     $.ajax({
         url: '/product/',
         type: 'POST',
-        data: {'flag': CART_TYPE.REMOVE, 'bookISBN': $("#bookISBN").attr("nile-isbn")}
+        data: {'flag': CART_TYPE.REMOVE, 'bookISBN': sel.attr("nile-isbn")}
     });
 
     let valAsInt: number = parseInt($("#cartTotal").html());
     adjustCartTotal(--valAsInt);
 }
-
 
 enum CART_TYPE {
     ADD = "ADD",

@@ -4,7 +4,7 @@ from datetime import datetime
 from flask_mail import Message
 from server import mail
 
-SALES_TAX  = {'GA':.04, 'CA':.0725}
+SALES_TAX  = {'GA':2.50, 'CA':3.50}
 
 # MULTIPLY THIS BY THE TOTAL AMOUNT OF BOOKS
 SHIPPING_PRICE = float("{:.2f}".format(4.00))

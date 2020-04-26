@@ -1,3 +1,4 @@
+import { addToCart, removeFromCart } from "../../../common/js/cart/addToCart";
 $(document).ready(function () {
     var dt = $('#orderHistory').DataTable({
         responsive: true,
@@ -20,4 +21,13 @@ $(document).ready(function () {
         }
     });
     dt.column(0).visible(false);
+});
+$("#reorderBtn").click(function () {
+    let sel = $(this).closest('tr').children('.isbn');
+    if ($(this).hasClass("blue-gradient")) {
+        addToCart(this, sel);
+    }
+    else {
+        removeFromCart(this, sel);
+    }
 });

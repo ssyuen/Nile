@@ -1,0 +1,117 @@
+{% extends "checkout/baseCheckout.html" %}
+{% block child_title %}Shipping{% endblock %}
+
+{% block base_head %}
+    {{ super() }}
+    <style>
+        p.shipping-entries, p.billing-entries {
+            margin-bottom: 0.2rem;
+        }
+    </style>
+{% endblock %}
+
+{% block title %}Review{% endblock %}
+
+{% block card_title %}
+    Review Your Order
+{% endblock %}
+{% block card_content %}
+    <div class="d-none" nile-form-action="{{ url_for('user_bp.review_checkout') }}" id="dummy"></div>
+    <div class="row">
+        <div class="col">
+            <div class="shipping-entries">
+                <div class="heading-group d-inline-block mb-3">
+                    <span class="complement-bold mr-2">Shipping Address</span>
+                    <a href="{{ url_for('user_bp.shipping_checkout') }}">Edit</a>
+                </div>
+                <p class="shipping-entries" id="street1">{{ shipping_payload['street1'] }}</p>
+                {% if 'street2' in shipping_payload %}
+                    <p class="billing-entries" id="street2">{{ shipping_payload['street2'] }}</p>
+                {% endif %}<p class="shipping-entries" id="zip">{{ shipping_payload['zip'] }}</p>
+                <span class="shipping-entries" id="city">{{ shipping_payload['city'] }}, </span>
+                <span class="shipping-entries" id="state">{{ shipping_payload['state'] }}</span>
+                <p class="shipping-entries" id="country">{{ shipping_payload['country'] }}</p>
+            </div>
+        </div>
+        <div class="col">
+            <div class="billing-entries">
+                <div class="heading-group d-inline-block mb-3">
+                    <span class="complement-bold mr-2">Payment Method</span>
+                    <a href="{{ url_for('user_bp.billing_checkout') }}">Edit</a>
+                </div>
+                <div class="row">
+                    <div class="col">
+
+                        <div class="d-block">
+                            <small class="text-muted d-block">Card Information</small>
+                            <div class="d-block">
+                                <span class="shipping-entries" id="cardFirst">{{ payment_payload['firstname'] }}</span>
+                                <span class="shipping-entries" id="cardLast">{{ payment_payload['lastname'] }}</span>
+                            </div>
+                            <div class="d-block">
+                                <span class="shipping-entries" id="cardType">{{ payment_payload['cardType'] }}</span>
+                                <span class="shipping-entries" id="cardLast4">{{ payment_payload['cardNumber'] }}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <small class="text-muted d-block">Billing Address</small>
+                        <p class="billing-entries" id="street1">{{ billing_payload['street1'] }}</p>
+                        {% if 'street2' in billing_payload %}
+                            <p class="billing-entries" id="street2">{{ billing_payload['street2'] }}</p>
+                        {% endif %}
+                        <!-- ONLY IF A STREET 2 EXISTS!!! -->
+                        <p class="billing-entries" id="zip">{{ billing_payload['zip'] }}</p>
+                        <span class="shipping-entries" id="city">{{ billing_payload['city'] }}, </span>
+                        <span class="shipping-entries" id="state">{{ billing_payload['state'] }}</span>
+                        <p class="billing-entries" id="country">{{ billing_payload['country'] }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block card_footer %}
+    <button type="button" id="placeOrder" class="btn blue-gradient btn-lg btn-block waves-effect waves-ripple">Place
+        Order
+    </button>
+{% endblock %}
+
+
+{% block add_list_item %}
+    <li class="list-group-item d-flex justify-content-between">
+        <span class="complement">Shipping Cost</span>
+        <strong class="text-danger">+ $<span class="sidebar-item-price pl-0"
+                                             id="shippingTotal">{{ shipping_price }}</span></strong>
+    </li>
+    <li class="list-group-item d-flex justify-content-between" id="salesTaxListElement">
+        <span class="complement">Sales Tax</span>
+        <strong class="text-danger">+ $<span id="salesTax">{{ sales_tax }}</span></strong>
+    </li>
+    <li class="list-group-item d-flex justify-content-between">
+        <span class="complement-bold">GRAND TOTAL (USD)</span>
+        <strong class="primary-md">$<span id="checkoutTotalPrice">{{ grand_total }}</span></strong>
+    </li>
+{% endblock %}
+
+{% block below_cart_item %}
+    <form id="addPromoForm" method="POST">
+        <div class="card p-2 promo-card">
+            <div class="input-group md-outline md-form" id="promoCodeInputGroup">
+                <input type="text" class="form-control" id="promoCodeInput" required
+                       style="text-transform: uppercase;">
+                <div class="input-group-append">
+                    <button class="btn blue-gradient btn-md waves-effect m-0 ml-2" id="promoBtn"
+                            type="submit">Redeem
+                    </button>
+                </div>
+                <label for="promoCodeInput">Promo Code</label>
+            </div>
+        </div>
+    </form>
+{% endblock %}
+
+{% block add_script %}
+    <script src="/static/user/js/checkout/review.js" type="module"></script>
+{% endblock %}

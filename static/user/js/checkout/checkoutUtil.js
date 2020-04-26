@@ -28,3 +28,5 @@ export const SALES_TAX = {
     "GA": 1.50,
     "CA": 2.50
 };
+export const arrSum = arr => arr.reduce((a, b) => a + b, 0);
+export const convertToNumber = arr => arr.map(Number);
