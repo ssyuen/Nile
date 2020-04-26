@@ -41,6 +41,7 @@ def query_isbn(search_query=None):
                     price,
                     CONCAT(authorFirstName, ' ', authorLastName) AS author_name,
                     ISBN,
+                    summary,
                     publisher,
                     publicationDate,
                     numPages,
@@ -91,6 +92,7 @@ def query_books(search_query=None):
                     price,
                     CONCAT(authorFirstName, ' ', authorLastName) AS author_name,
                     ISBN,
+                    summary,
                     publisher,
                     publicationDate,
                     numPages,
@@ -105,6 +107,7 @@ def query_books(search_query=None):
 
                     header = [desc[0] for desc in cursor.description]
                     books = [dict(zip(header, result)) for result in results]
+                    print(books)
 
                 genres = get_genres(cursor)
                 genre_counts = get_genres_count(cursor)
@@ -139,6 +142,7 @@ def general_search(search_query, cursor):
                     price,
                     CONCAT(authorFirstName, ' ', authorLastName) AS author_name,
                     ISBN,
+                    summary,
                     publisher,
                     publicationDate,
                     numPages,
