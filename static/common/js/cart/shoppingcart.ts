@@ -111,7 +111,7 @@ function calcTotal(): number {
     let allSelect = $(".quantity");
     let total: number = 0.00;
     for (let val of allSelect) {
-        let priceOfBook = parseFloat(getPrice(val).innerHTML);
+        let priceOfBook = parseFloat(getPrice(val).innerHTML.replace(',', ''));
         total += priceOfBook;
     }
     return total;
