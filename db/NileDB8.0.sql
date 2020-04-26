@@ -439,11 +439,11 @@ VALUES (1, 'manu@nile.com', 'Manu', 'Puduvalli', '$2b$12$TrQ7pMqXkUFKFihGfBV6Y.b
 INSERT INTO admin (`id`, `email`, `firstName`, `lastName`, `pass`)
 VALUES (2, 'sam@nile.com', 'Sam', 'Yuen', '$2b$12$TrQ7pMqXkUFKFihGfBV6Y.bi5KqKOp0kaBrKbBXZ1FUg.huCFNJ2e');
 INSERT INTO admin (`id`, `email`, `firstName`, `lastName`, `pass`)
-VALUES (2, 'glen@nile.com', 'Glen', 'George', '$2b$12$TrQ7pMqXkUFKFihGfBV6Y.bi5KqKOp0kaBrKbBXZ1FUg.huCFNJ2e');
+VALUES (3, 'glen@nile.com', 'Glen', 'George', '$2b$12$TrQ7pMqXkUFKFihGfBV6Y.bi5KqKOp0kaBrKbBXZ1FUg.huCFNJ2e');
 INSERT INTO admin (`id`, `email`, `firstName`, `lastName`, `pass`)
-VALUES (2, 'lok@nile.com', 'Lok', 'Kwong', '$2b$12$TrQ7pMqXkUFKFihGfBV6Y.bi5KqKOp0kaBrKbBXZ1FUg.huCFNJ2e');
+VALUES (4, 'lok@nile.com', 'Lok', 'Kwong', '$2b$12$TrQ7pMqXkUFKFihGfBV6Y.bi5KqKOp0kaBrKbBXZ1FUg.huCFNJ2e');
 INSERT INTO admin (`id`, `email`, `firstName`, `lastName`, `pass`)
-VALUES (2, 'vrund@nile.com', 'Vrund', 'Parikh', '$2b$12$TrQ7pMqXkUFKFihGfBV6Y.bi5KqKOp0kaBrKbBXZ1FUg.huCFNJ2e');
+VALUES (5, 'vrund@nile.com', 'Vrund', 'Parikh', '$2b$12$TrQ7pMqXkUFKFihGfBV6Y.bi5KqKOp0kaBrKbBXZ1FUg.huCFNJ2e');
 
 
 INSERT INTO genre (`id`, `genre`)
