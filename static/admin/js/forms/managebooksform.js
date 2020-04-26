@@ -1,6 +1,8 @@
 import {AdminInputValidator, PURPOSE} from "../adminInputValidation.js";
+import {replaceBtn} from "../../../common/js/utility/util.js";
+
 $("#editBtn").click(function () {
-    $("#manageBooksForm input, #manageBooksForm select, #manageBooksForm textarea").removeAttr("readonly disabled");
+    $("#manageBooksForm input, #manageBooksForm select, #manageBooksForm textarea").removeAttr("disabled");
 });
 let vc = new AdminInputValidator();
 const A_FNAME = document.getElementById("authorFirstName");
@@ -30,7 +32,7 @@ Array('input', 'focusin').forEach((evt) => {
     });
 });
 $(FORM).on("submit", function (e) {
-    if($("#manageBooksForm input, #manageBooksForm select, #manageBooksForm textarea").has("readonly disabled")) {
+    if ($("#manageBooksForm input, #manageBooksForm select, #manageBooksForm textarea").attr("disabled")) {
         e.preventDefault();
         return false;
     }
@@ -38,4 +40,5 @@ $(FORM).on("submit", function (e) {
         e.preventDefault();
         return false;
     }
+    replaceBtn($("#updateBtn"));
 });
