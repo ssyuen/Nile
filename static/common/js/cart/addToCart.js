@@ -1,35 +1,35 @@
 import { adjustCartTotal } from "./cartUtil.js";
 $("#addToCartBtn").click(function () {
     if ($(this).hasClass("blue-gradient")) {
-        addToCart(this, $("#bookISBN"));
+        addToCart(this, $("#bookISBN").attr("nile-isbn"));
     }
     else {
-        removeFromCart(this, $("#bookISBN"));
+        removeFromCart(this, $("#bookISBN").attr("nile-isbn"));
     }
 });
 
-export function addToCart(btn, sel) {
+export function addToCart(btn, isbn) {
     $(btn).removeClass("blue-gradient");
     $(btn).addClass("btn-outline-success");
     $(btn).children("span").html("Added to Cart");
     $.ajax({
         url: '/product/',
         type: 'POST',
-        data: {'flag': CART_TYPE.ADD, 'bookISBN': sel.attr("nile-isbn")}
+        data: {'flag': CART_TYPE.ADD, 'bookISBN': isbn}
     });
     let valAsInt = parseInt($("#cartTotal").html());
     adjustCartTotal(++valAsInt);
     console.log('posted');
 }
 
-export function removeFromCart(btn, sel) {
+export function removeFromCart(btn, isbn) {
     $(btn).removeClass("btn-outline-success");
     $(btn).addClass("blue-gradient");
     $(btn).children("span").html("Add to Cart");
     $.ajax({
         url: '/product/',
         type: 'POST',
-        data: {'flag': CART_TYPE.REMOVE, 'bookISBN': sel.attr("nile-isbn")}
+        data: {'flag': CART_TYPE.REMOVE, 'bookISBN': isbn}
     });
     let valAsInt = parseInt($("#cartTotal").html());
     adjustCartTotal(--valAsInt);
