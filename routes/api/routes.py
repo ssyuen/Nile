@@ -49,7 +49,7 @@ def query_isbn(search_query=None):
                     (SELECT type FROM product_type WHERE product_type.id=book.typeID_book_FK) AS type,
                     nile_cover_ID
                     FROM book
-                    WHERE book.ISBN=%s'''
+                    WHERE book.ISBN=%s ORDER BY title'''
                 cursor.execute(query, (isbn))
                 results = cursor.fetchall()
 
@@ -99,7 +99,7 @@ def query_books(search_query=None):
                     (SELECT type FROM product_type WHERE product_type.id=book.typeID_book_FK) AS type,
                     nile_cover_ID
                     FROM book
-                    WHERE book.typeID_book_FK=(SELECT id FROM product_type WHERE type=%s)'''
+                    WHERE book.typeID_book_FK=(SELECT id FROM product_type WHERE type=%s) ORDER BY title'''
                     cursor.execute(query, (search_query))
                     results = cursor.fetchall()
 
@@ -146,7 +146,7 @@ def general_search(search_query, cursor):
                     (SELECT genre FROM genre WHERE genre.id=book.genreID_book_FK) AS genre,
                     (SELECT type FROM product_type WHERE product_type.id=book.typeID_book_FK) AS type,
                     nile_cover_ID
-                    FROM book'''
+                    FROM book ORDER BY title'''
     cursor.execute(query)
     results = cursor.fetchall()
 
