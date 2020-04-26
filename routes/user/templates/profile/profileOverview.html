@@ -48,21 +48,16 @@
                 </div>
             </figure>
             <hr>
-            <i class="fa fa-map-marker text-muted"></i> My Shipping Address:
-            <div class="text mb-4" id="myShippingAddress">
-                123 Wallaby Avenue Lawrenceville, GA 30609
-                <a class="ml-3" href="{{ url_for('user_bp.shipping_address') }}">EDIT</a>
-            </div>
             <article class="card-group">
                 <div class="card mr-3 bg-light" id="ordersCard">
                     <div class="p-3">
-                        <h5 class="card-title primary-md">2</h5>
+                        <h5 class="card-title primary-md">{{ num_orders }}</h5>
                         <span>Orders</span>
                     </div>
                 </div>
                 <div class="card bg-light" id="deliveredCard">
                     <div class="p-3">
-                        <h5 class="card-title primary-md">1</h5>
+                        <h5 class="card-title primary-md">{{ num_orders }}</h5>
                         <span>Delivered items</span>
                     </div>
                 </div>
@@ -73,36 +68,19 @@
         <div class="card-body">
             <h5 class="card-title mb-4">Active Orders</h5>
             <div class="row">
-                <div class="col-md-6">
-                    <figure class="itemside  mb-3">
-                        <figcaption class="info">
-                            <time class="text-muted"><i class="fa fa-calendar-alt"></i> 12.09.2019
-                            </time>
-                            <p>Order Number: 82710234782934</p>
-                            <span class="text-warning">Pending</span>
-                        </figcaption>
-                    </figure>
-                </div> <!-- col.// -->
-                <div class="col-md-6">
-                    <figure class="itemside  mb-3">
-                        <figcaption class="info">
-                            <time class="text-muted"><i class="fa fa-calendar-alt"></i> 12.09.2019
-                            </time>
-                            <p>Order Number: 82710231874934</p>
-                            <span class="text-success">Departured</span>
-                        </figcaption>
-                    </figure>
-                </div> <!-- col.// -->
-                <div class="col-md-6">
-                    <figure class="itemside mb-3">
-                        <figcaption class="info">
-                            <time class="text-muted"><i class="fa fa-calendar-alt"></i> 12.09.2019
-                            </time>
-                            <p>Order Number: 82316425782934</p>
-                            <span class="text-success">Shipped</span>
-                        </figcaption>
-                    </figure>
-                </div> <!-- col.// -->
+                {% for dt, od in top_four %}
+                    <div class="col-md-6">
+                        <figure class="itemside  mb-3">
+                            <figcaption class="info">
+                                <time class="text-muted"><i
+                                        class="fa fa-calendar-alt"></i> {{ dt.strftime('%Y-%m-%d') }}
+                                </time>
+                                <p>Order Number: {{ od }}</p>
+                                <span class="text-success">Shipped</span>
+                            </figcaption>
+                        </figure>
+                    </div> <!-- col.// -->
+                {% endfor %}
             </div> <!-- row.// -->
             <a href="{{ url_for('user_bp.order_history') }}">
                 <button class="btn btn-outline-primary waves-effect ml-0">

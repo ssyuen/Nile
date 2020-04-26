@@ -481,7 +481,24 @@ def base_profile():
 @remember_me(session)
 @user_only(session)
 def overview():
-    return render_template('profile/profileOverview.html')
+    conn = mysql.connect()
+    cursor = conn.cursor()
+
+    get_num_orders = """SELECT COUNT(*) 
+        FROM `order` WHERE userID_order_FK = (SELECT id FROM user WHERE email = %s) 
+        GROUP BY userID_order_FK"""
+    cursor.execute(get_num_orders, session['email'])
+    num_orders = cursor.fetchall()[0][0]
+    print(num_orders, file=sys.stderr)
+
+    get_top_four_orders = """SELECT dateOrdered, confirmationNumber FROM `order` 
+    WHERE userID_order_FK = (SELECT id FROM user WHERE email = %s) 
+    ORDER BY dateOrdered DESC LIMIT 4"""
+    cursor.execute(get_top_four_orders, session['email'])
+    top_four = cursor.fetchall()
+    print(top_four, file=sys.stderr)
+
+    return render_template('profile/profileOverview.html', num_orders=num_orders, top_four=top_four)
 
 
 @user_bp.route('/change_name/', methods=['GET', 'POST'])
