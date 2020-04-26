@@ -54,6 +54,7 @@ CREATE TABLE IF NOT EXISTS `niledb`.`address`
             REFERENCES `niledb`.`address_type` (`id`)
 )
     ENGINE = InnoDB
+    AUTO_INCREMENT = 1
     DEFAULT CHARACTER SET = utf8mb4
     COLLATE = utf8mb4_0900_ai_ci;
 
