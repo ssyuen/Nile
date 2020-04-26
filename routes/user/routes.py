@@ -109,8 +109,10 @@ def shipping_checkout():
 
         # IF USING NEW SHIPPING ADDRESS
         if SHIPPING_IDENT == None:
-            insert_address(cursor, shipping_payload)
+            # insert_address(cursor, shipping_payload)
+            session['new_shipping'] = shipping_payload
             shipping_id = get_address_id(cursor)
+            session['new_shipping_id'] = shipping_id
             session['shipping'] = shipping_id
             session['shipping_state'] = addressState
             session['shipping_payload'] = formatted_shipping_payload
@@ -118,7 +120,10 @@ def shipping_checkout():
             if REMEMBER_SHIPPING != None and int(REMEMBER_SHIPPING) != 0:
 
                 user_id = get_user_id(cursor, session['email'])
-                insert_useraddress(cursor, (user_id, shipping_id))
+                session['shipping_remember'] = True
+            else:
+                session['shipping_remember'] = False
+                # insert_useraddress(cursor, (user_id, shipping_id))
 
         # SAVED SHIPPING ADDRESS
         else:
@@ -234,8 +239,10 @@ def billing_checkout():
 
         # IF USING NEW SHIPPING ADDRESS
         if PAYMENT_IDENT == None:
-            insert_address(cursor, billing_payload)
+            # insert_address(cursor, billing_payload)
+            session['new_billing'] = billing_payload
             billing_id = get_address_id(cursor)
+            session['new_billing_id'] = billing_id
 
             PAYMENT_HEADERS = ['firstname',
                                'lastname', 'cardNumber', 'cardType']
@@ -250,12 +257,17 @@ def billing_checkout():
             session['payment_payload'] = formatted_payment_payload
             session['billing_payload'] = formatted_billing_payload
 
-            insert_payment(cursor, payment_payload)
+            # insert_payment(cursor, payment_payload)
+            session['new_payment'] = payment_payload
             payment_id = get_payment_id(cursor)
+            session['new_payment_id'] = payment_id
             session['payment'] = payment_id
             if REMEMBER_PAYMENT != None and int(REMEMBER_PAYMENT) != 0:
                 user_id = get_user_id(cursor, session['email'])
-                insert_userpayment(cursor, (user_id, payment_id))
+                session['payment_remember'] = True
+                # insert_userpayment(cursor, (user_id, payment_id))
+            else:
+                session['payment_remember'] = False
 
         # SAVED SHIPPING ADDRESS
         else:
@@ -422,6 +434,19 @@ def review_checkout():
                 SHIPPING_COST), datetime.now().strftime('%Y-%m-%d %H:%M:%S'), PROMO_IDENT, order_num, int(session['shipping']))
         insert_order(cursor, order_payload)
         order_id = get_order_id(cursor)
+
+        if 'new_payment' in session:
+            insert_address(cursor, session['new_billing'])
+            insert_payment(cursor, session['new_payment'])
+
+            if 'payment_remember' in session and session['payment_remember']:
+                insert_userpayment(cursor, (user_id, session['new_payment_id']))
+
+        if 'new_shipping' in session:
+            insert_address(cursor, session['new_shipping'])
+
+            if 'payment_remember' in session and session['payment_remember']:
+                insert_useraddress(cursor, (user_id, session['new_shipping_id']))
 
         # STEP 3: INSERT INTO order_bod TABLE
         book_orderdetails = get_book_orderdetails(cursor, user_id)
