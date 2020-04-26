@@ -584,7 +584,8 @@ def change_name():
 
         conn.close()
 
-        send_change_conf_email(session['email'], session['firstName'])
+        if session['subscribed'] == b'\x01':
+            send_change_conf_email(session['email'], session['firstName'])
 
         flash('Your information has been recorded.')
         return redirect(url_for('user_bp.change_name'))
@@ -625,7 +626,8 @@ def change_pass():
             conn.commit()
             conn.close()
 
-            send_change_conf_email(session['email'], session['firstName'])
+            if session['subscribed'] == b'\x01':
+                send_change_conf_email(session['email'], session['firstName'])
 
             flash('Your information has been recorded.', category='success')
             return redirect(url_for('user_bp.change_pass'))
@@ -718,7 +720,9 @@ def shipping_address():
                                           city, zipcode, state, country, 1, addr_id))
 
         conn.commit()
-        send_change_conf_email(session['email'], session['firstName'])
+
+        if session['subscribed'] == b'\x01':
+            send_change_conf_email(session['email'], session['firstName'])
         return redirect(url_for('user_bp.shipping_address'))
 
     elif request.method == 'GET':
@@ -834,7 +838,8 @@ def payment_methods():
         conn.commit()
         conn.close()
 
-        send_change_conf_email(session['email'], session['firstName'])
+        if session['subscribed'] ==  b'\x01':
+            send_change_conf_email(session['email'], session['firstName'])
         return redirect(url_for('user_bp.payment_methods'))
 
     # GET REQUEST

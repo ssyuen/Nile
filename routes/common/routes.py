@@ -129,6 +129,11 @@ def login(ctx=None):
                     if session['remember_me'] != None:
                         session.permanent = True
 
+                    subscibe_check_query = 'SELECT isSubscribed FROM user WHERE email=%s'
+                    cursor.execute(subscibe_check_query,(session['email']))
+                    session['subscribed'] = cursor.fetchall()[0][0]
+                    print(session['subscribed'])
+
                     # ENSURES A USER'S CHECKOUT SESSION CANNOT BE ACCESSED WITHOUT THE TOKEN
                     generate_secure_token(session, 'checkout_token')
 
