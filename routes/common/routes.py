@@ -45,7 +45,7 @@ def landing_page(search_results=None):
             (SELECT binding FROM binding WHERE binding.id=book.bindingID_book_FK) AS binding,
             (SELECT genre from genre WHERE genre.id=book.genreID_book_FK) AS genre,
             nile_cover_ID
-            FROM book'''
+            FROM book ORDER BY title'''
         cursor.execute(query)
 
         # STEP 2: Pass list of books to browse.html
