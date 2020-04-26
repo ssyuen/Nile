@@ -1,4 +1,6 @@
 import { PromotionCheckoutValidation } from "./promoValidation.js";
+import { CountUp } from "../../../jsplugin/countUp.min.js";
+const GRAND_TOTAL = $("#checkoutTotalPrice");
 const pcv = new PromotionCheckoutValidation();
 const PROMO_CODE_INPUT = document.getElementById("promoCodeInput");
 var promoData = null;
@@ -32,9 +34,19 @@ function applyPromo(data) {
                         <span class="text-success complement">%${data['value'] * 100} off</span>
                     </li>`;
     $("#salesTaxListElement").after(template);
-    // let ct = parseFloat(GRAND_TOTAL.text());
-    // let val = ct - ct * data['value'];
-    // updateTotal(val);
+    let ct = parseFloat(GRAND_TOTAL.text());
+    let val = ct - ct * data['value'];
+    let gtc = new CountUp(GRAND_TOTAL.attr('id'), val, {
+        decimalPlaces: 2,
+        duration: 0.5,
+        startVal: ct
+    });
+    if (!gtc.error) {
+        gtc.start();
+    }
+    else {
+        console.error(gtc.error);
+    }
 }
 Array('input', 'focusin').forEach((evt) => {
     PROMO_CODE_INPUT.addEventListener(evt, function () {
