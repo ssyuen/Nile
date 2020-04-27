@@ -156,10 +156,32 @@ def add_books_form():
     return render_template('./forms/manage_books_form.html')
 
 
-@admin_bp.route('/manage_promotions/epromof/')
+@admin_bp.route('/manage_promotions/epromof/', methods=['GET', 'POST'])
 @admin_required(session)
 @remember_me(session)
 def edit_promo_form():
+    if request.method == 'POST':
+        promo_id = request.form.get('promoId')
+
+        conn = mysql.connect()
+        cursor = conn.cursor()
+
+        query = """
+                SELECT * FROM promotion WHERE ID=%s
+                """
+        cursor.execute(query, promo_id)
+        results = cursor.fetchall()
+        conn.close()
+
+        if len(results) == 0:
+            flash('A promotion with that ID does not exists.')
+            return render_template('./forms/edit_promo_form.html')
+        else:
+            return render_template('./forms/edit_promo_form.html', id=results[0][0],
+                                   name=results[0][2], code=results[0][1],
+                                   discount=format(results[0][3], ".0%"),
+                                   endDate=results[0][5], notes=results[0][6])
+
     return render_template('./forms/edit_promo_form.html')
 
 

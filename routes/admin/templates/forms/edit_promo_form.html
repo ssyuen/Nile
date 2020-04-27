@@ -26,16 +26,21 @@
 
     <div class="container">
         <!--Grid row-->
-        <div class="row">
-            <div class="col">
-                <div class="md-form mt-0">
-                    <input class="form-control" type="text" placeholder="Enter Promotion ID" aria-label="Search">
+        <form id="managePromoForm" method="POST">
+            <div class="row">
+                <div class="col">
+                    <div class="md-form mt-0">
+                        <input id="promoId" name="promoId" class="form-control" type="text"
+                               placeholder="Enter Promotion ID"
+                               aria-label="Search">
+                    </div>
+                </div>
+                <div class="col-sm-2 text-right">
+                    <button class="btn blue-gradient btn-rounded btn-sm" type="submit">Search</button>
                 </div>
             </div>
-            <div class="col-sm-2 text-right">
-                <button class="btn blue-gradient btn-rounded btn-sm" type="submit">Search</button>
-            </div>
-        </div>
+        </form>
+
         <div class="row">
             <!--Grid column-->
             <div class="col mb-4">
@@ -61,14 +66,24 @@
                         </div>
                     </div>
                     <!-- Content -->
+                    {% with change = get_flashed_messages() %}
+                        {% if change %}
+                            <br>
+                            <p class="flashes complement-bold text-center text-danger">
+                                {% for msg in change %}
+                                    {{ msg }}
+                                {% endfor %}
+                            </p>
+                        {% endif %}
+                    {% endwith %}
                     <div class="card-body white">
                         <form>
                             <div class="form-row">
                                 <div class="form-group col">
                                     <label for="promoId">Promo Id</label>
                                     <div class="input-group">
-                                        <input type="text" class="form-control" id="promoId" placeholder="Promotion ID"
-                                               readonly>
+                                        <input type="text" class="form-control" id="promoId"
+                                               placeholder="{{ id }}" readonly>
                                     </div>
                                 </div>
                             </div>
@@ -77,15 +92,14 @@
                                     <label for="promoName">Promo Name</label>
                                     <div class="input-group">
                                         <input type="text" class="form-control" id="promoName"
-                                               placeholder="Promotion Name"
-                                               readonly>
+                                               placeholder="{{ name }}" readonly>
                                     </div>
                                 </div>
                                 <div class="form-group col-md-2">
                                     <label for="promoCode">Promo Code</label>
                                     <div class="input-group">
                                         <input type="text" class="form-control" id="promoCode"
-                                               placeholder="Promotion Code" readonly>
+                                               placeholder="{{ code }}" readonly>
                                     </div>
                                 </div>
                             </div>
@@ -94,36 +108,28 @@
                                     <label for="promoAmt">Promo Amount</label>
                                     <div class="input-group">
                                         <input type="number" class="form-control" id="promoAmt"
-                                               placeholder="Promotion Amount" readonly>
+                                               placeholder="{{ discount }}" readonly>
                                     </div>
                                 </div>
                                 <div class="form-group col-md-4">
                                     <label for="promoExpiry">Promo Expiration Date</label>
-                                    <input type="date" class="form-control" id="promoExpiry" readonly>
+                                    <input type="text" class="form-control" id="promoExpiry"
+                                           placeholder="{{ endDate }}"readonly>
                                 </div>
                             </div>
                             <div class="form-row">
                                 <div class="form-group col">
                                     <label for="exampleFormControlTextarea3">Promotion Notes</label>
                                     <textarea class="form-control" id="exampleFormControlTextarea3" rows="4"
-                                              placeholder="Notes" readonly></textarea>
+                                              placeholder="{{ notes }}" readonly></textarea>
                                 </div>
                             </div>
-
-
                         </form>
                     </div>
                 </div>
             </div>
             <!--Grid column-->
         </div>
-        <div class="row">
-            <div class="col">
-                <button type="button" id="deleteBtn" class="btn btn-danger btn-rounded btn-block mb-5">Delete
-                    Promotion
-                </button>
-            </div>
-        </div>
-        <!--Grid row-->
     </div>
+
 {% endblock main %}
