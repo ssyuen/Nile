@@ -1,4 +1,3 @@
-import {CountUp} from "../../../jsplugin/countUp.min.js";
 import * as checkout from "./checkout.js";
 import {PURPOSE, RegistrationInputValidator} from "../../../common/js/registration/regValidation.js";
 import {post, serializedToObject} from "./checkoutUtil.js";
@@ -15,8 +14,6 @@ const entShipRad: JQuery = $("#enterAddressToggle");
 const chooseShippingToggleLabel: JQuery = $("#chooseShippingToggleLabel");
 const addrEntry: JQuery = $("#addressEntry");
 const newAddrEntry: JQuery = $("#newAddressEntry");
-
-let subtotalCounter: CountUp;
 
 if (shippingSelect.length) {
     checkout.stopAllInput($(addrEntry));

@@ -12,7 +12,6 @@ const entShipRad = $("#enterAddressToggle");
 const chooseShippingToggleLabel = $("#chooseShippingToggleLabel");
 const addrEntry = $("#addressEntry");
 const newAddrEntry = $("#newAddressEntry");
-let subtotalCounter;
 if (shippingSelect.length) {
     checkout.stopAllInput($(addrEntry));
     fillShippingForm(shippingSelect);
