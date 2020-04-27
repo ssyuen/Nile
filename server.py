@@ -13,6 +13,8 @@ def create_server(config):
 
     # update app config from file config.py
     app.config.from_object('config.DevelopmentConfig')
+    # IN A PRODUCTION ENVIRONMENT
+    # app.config.from_object(config)
     app.jinja_env.cache = {}
 
     with app.app_context():

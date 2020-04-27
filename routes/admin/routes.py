@@ -144,6 +144,8 @@ def add_books_form():
         conn.commit()
         conn.close()
 
+        flash('Book has been successfully added.')
+
         return redirect(url_for('admin_bp.add_books_form'))
 
     return render_template('./forms/manage_books_form.html')
@@ -186,6 +188,8 @@ def add_promo_form():
 
         conn.commit()
         conn.close()
+
+        flash('Promotion has been successfully added.')
 
         return redirect(url_for('admin_bp.add_promo_form'))
 
