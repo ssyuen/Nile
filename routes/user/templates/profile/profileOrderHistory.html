@@ -105,12 +105,14 @@
                         </td>
                         <td>Shipping Cost: <b class="ml-1">${{ item[9] }}</b><br>
                             Sales Tax: <b class="ml-1">${{ item[8] }}</b><br>
-                            Grand Total: <b class="ml-1">${{ item[10] }}</b></td>
+                            <span class="mt-2 primary-sm" style="font-size: larger">Grand Total: ${{ item[10] }}</span>
+                        </td>
                     </tr>
                 {% endfor %}
                 </tbody>
                 <tfoot>
                 <tr>
+                    <th>Order No.</th>
                     <th>Price</th>
                     <th>ISBN</th>
                     <th>Title</th>
