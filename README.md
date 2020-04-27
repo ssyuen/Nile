@@ -36,7 +36,7 @@ where the `` `n `` is the newline break.
 
 1. Clone this repository to your local via git clone <hhttps://github.com/ssyuen/Nile.git>
 
-2. Install MySql. Create a schema name `niledb`. Run the `NileDBX.X.sql` script to create the necessary tables.
+2. Install MySql. Create a schema name `niledb`. Run the `NileDB8.0.sql` and `NileDB8.1.sql` script to create the necessary tables.
 
 3. cd into the cloned directory
 
