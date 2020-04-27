@@ -51,6 +51,15 @@
                     <!-- Content -->
                     <div class="card-body white">
                         <div class="pre-form-space"></div>
+                        {% with change = get_flashed_messages() %}
+                            {% if change %}
+                                <p class="flashes complement-bold text-center text-success">
+                                    {% for msg in change %}
+                                        {{ msg }}
+                                    {% endfor %}
+                                </p>
+                            {% endif %}
+                        {% endwith %}
                         <form method="POST" id="manageBooksForm">
                             <div class="form-row">
                                 <div class="form-group col-md-6">
