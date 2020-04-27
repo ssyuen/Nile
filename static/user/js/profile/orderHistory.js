@@ -8,19 +8,16 @@ $(document).ready(function () {
         ],
         rowGroup: {
             dataSrc: 0,
-            endRender: function (rows, group) {
-                var total = rows
-                    .data()
-                    .pluck(1)
-                    .reduce(function (a, b) {
-                    return a + b.replace("$", '') * 1;
-                }, 0);
-                return 'Order Total: ' +
-                    $.fn.dataTable.render.number(',', '.', 2, '$').display(total).bold();
+            endRender: function (rows, group, level) {
+                var text = rows
+                    .data()[0][8];
+                console.log(text);
+                return text;
             }
         }
     });
     dt.column(0).visible(false);
+    dt.column(8).visible(false);
 });
 //In Order history, we can add to cart, but we can't remove from cart
 $(".reorderBtn").click(function () {
