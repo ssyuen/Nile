@@ -90,7 +90,7 @@
                                 <div class="pb-3">
                                     <div class="shadow" id="slider-range"></div>
                                 </div>
-                                <form method="POST" id="priceForm" action="/api/price/">
+                                <form method="POST" id="priceForm" action="{{ url_for('api_bp.price') }}">
                                     <div class="form-row">
                                         <div class="form-group col">
                                             <label for="minRange">Min</label>
