@@ -76,6 +76,7 @@
                     <th>Author Name</th>
                     <th>Order Date</th>
                     <th>Re-Order</th>
+                    <th>Order Totals</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -102,9 +103,23 @@
                                 {% endif %}
                             </p>
                         </td>
+                        <td>Shipping Cost: <b class="ml-1">${{ item[9] }}</b><br>
+                            Sales Tax: <b class="ml-1">${{ item[8] }}</b><br>
+                            Grand Total: <b class="ml-1">${{ item[10] }}</b></td>
                     </tr>
                 {% endfor %}
                 </tbody>
+                <tfoot>
+                <tr>
+                    <th>Price</th>
+                    <th>ISBN</th>
+                    <th>Title</th>
+                    <th>Quantity</th>
+                    <th>Author Name</th>
+                    <th>Order Date</th>
+                    <th>Re-Order</th>
+                </tr>
+                </tfoot>
             </table>
         </div>
     </div>
