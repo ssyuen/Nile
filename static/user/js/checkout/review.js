@@ -2,6 +2,7 @@ import { PromotionCheckoutValidation } from "./promoValidation.js";
 import { CountUp } from "../../../jsplugin/countUp.min.js";
 import { post } from "./checkoutUtil.js";
 import { replaceBtn } from "../../../common/js/utility/util.js";
+import { COUNTER_DURATION } from "./checkout.js";
 const GRAND_TOTAL = $("#checkoutTotalPrice");
 const PLACE_ORDER_BTN = $("#placeOrder");
 const DUMMY = $("#dummy");
@@ -14,23 +15,25 @@ $("#addPromoForm").on("submit", function (e) {
     if (!pcv.validateAll(undefined)) {
         return false;
     }
-    $.ajax({
-        type: "POST",
-        url: "/api/promo",
-        data: { "PROMO_IDENT": ref },
-        success: function (data) {
-            if (data['code'] !== false) {
-                applyPromo(data);
-                promoData = data;
+    if (!$(".promo-list").length && !$("#invalidPromo").length) {
+        $.ajax({
+            type: "POST",
+            url: "/api/promo",
+            data: { "PROMO_IDENT": ref },
+            success: function (data) {
+                if (data['code'] !== false) {
+                    applyPromo(data);
+                    promoData = data;
+                }
+                else {
+                    $("#promoCodeInputGroup").after(`<small class="text-danger" id="invalidPromo">The Promotion you entered was not valid.</small>`);
+                }
             }
-            else {
-                $("#promoCodeInputGroup").after(`<small class="text-danger" id="invalidPromo">The Promotion you entered was not valid.</small>`);
-            }
-        }
-    });
+        });
+    }
 });
 function applyPromo(data) {
-    let template = `<li class="list-group-item d-flex justify-content-between bg-light sidebar-item-price">
+    let template = `<li class="list-group-item d-flex justify-content-between bg-light sidebar-item-price promo-list">
                         <div class="text-success">
                             <h6 class="my-0 complement-light">Promo code</h6>
                             <small>${data['code']}</small>
@@ -38,11 +41,11 @@ function applyPromo(data) {
                         <span class="text-success complement">%${data['value'] * 100} off</span>
                     </li>`;
     $("#salesTaxListElement").after(template);
-    let ct = parseFloat(GRAND_TOTAL.text());
+    let ct = parseFloat(GRAND_TOTAL.text().replace(",", ""));
     let val = ct - ct * data['value'];
     let gtc = new CountUp(GRAND_TOTAL.attr('id'), val, {
         decimalPlaces: 2,
-        duration: 0.5,
+        duration: COUNTER_DURATION,
         startVal: ct
     });
     if (!gtc.error) {
@@ -74,7 +77,7 @@ PLACE_ORDER_BTN.on("click", function () {
     if (promoData != null) {
         payload["PROMO_IDENT"] = promoData['code'];
     }
-    payload["GRAND_TOTAL"] = GRAND_TOTAL.text();
+    payload["GRAND_TOTAL"] = GRAND_TOTAL.text().replace(",", "");
     replaceBtn(this);
     post(DUMMY.attr("nile-form-action"), "POST", payload);
 });
