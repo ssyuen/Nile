@@ -49,3 +49,11 @@ var BINDING;
     BINDING["PAPAERBACK"] = "PAPAERBACK";
     BINDING["HARDBACK"] = "HARDBACK";
 })(BINDING || (BINDING = {}));
+$("#priceForm").on("submit", function () {
+    let minRange = parseFloat($("#minRange").val());
+    let maxRange = parseFloat($("#maxRange").val());
+    if (minRange < 0 || maxRange > 9999) {
+        window.alert("Please select a valid price range");
+        return false;
+    }
+});

@@ -7,12 +7,12 @@ console.log("Hey there fellow developer.\nHope you have a great day!");
 
 // AJAX FOR GENRE CHECKBOXES
 let gc: HTMLInputElement = document.getElementById("genreContainer") as HTMLInputElement;
-$(gc).change(function(){
+$(gc).change(function () {
     let genresChecked = $(".genre:checkbox:checked");
     for (let genre in genresChecked) {
         console.log(genre);
     }
-    
+
     // $.ajax({
     //     url:"/",
     //     type: "POST",
@@ -21,7 +21,6 @@ $(gc).change(function(){
 });
 
 // AJAX FOR BINDING
-
 
 
 enum SEARCH_TYPE {
@@ -54,3 +53,12 @@ enum BINDING {
     PAPAERBACK = "PAPAERBACK",
     HARDBACK = "HARDBACK"
 }
+
+$("#priceForm").on("submit", function () {
+    let minRange = parseFloat(<string>$("#minRange").val());
+    let maxRange = parseFloat(<string>$("#maxRange").val());
+    if (minRange < 0 || maxRange > 9999) {
+        window.alert("Please select a valid price range");
+        return false;
+    }
+});

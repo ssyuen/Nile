@@ -90,16 +90,16 @@
                                 <div class="pb-3">
                                     <div class="shadow" id="slider-range"></div>
                                 </div>
-                                <form method="POST" name="priceForm">
+                                <form method="POST" id="priceForm" action="/api/price/">
                                     <div class="form-row">
                                         <div class="form-group col">
-                                            <label>Min</label>
+                                            <label for="minRange">Min</label>
                                             <div class="input-group">
                                                 <div class="input-group-prepend">
                                                     <div class="input-group-text">$</div>
                                                 </div>
                                                 <input class="form-control numbersOnly" type="number" pattern="[0-9]"
-                                                       id="minRange">
+                                                       id="minRange" name="min_price" value="0" min="0">
                                             </div>
                                         </div>
                                     </div>
@@ -111,11 +111,13 @@
                                                     <div class="input-group-text">$</div>
                                                 </div>
                                                 <input class="form-control numbersOnly" type="number" pattern="[0-9]"
-                                                       id="maxRange">
+                                                       id="maxRange" name="max_price" value="100" max="100">
                                             </div>
                                         </div>
                                     </div> <!-- form-row.// -->
-                                    <button class="btn btn-block blue-gradient shadow">Apply</button>
+                                    <button id="priceRangeApplyBtn" type="submit"
+                                            class="btn btn-block blue-gradient shadow">Apply
+                                    </button>
                                 </form>
 
 
