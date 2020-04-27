@@ -484,8 +484,8 @@ def shopping_cart():
         book_isbn = request.form.get('bookISBN')
         quant_flag = request.form.get('newQuantity')
 
-        bod_id_query = '''SELECT bod_sc_FK FROM shoppingcart JOIN book_orderdetail ON bod_sc_FK=book_orderdetail.id WHERE userID_bod_FK = (SELECT id FROM user WHERE email = %s)'''
-        cursor.execute(bod_id_query, (session['email']))
+        bod_id_query = '''SELECT bod_sc_FK FROM shoppingcart JOIN book_orderdetail ON bod_sc_FK=book_orderdetail.id WHERE userID_bod_FK = (SELECT id FROM user WHERE email = %s) AND ISBN_bod_FK =%s'''
+        cursor.execute(bod_id_query, (session['email'],book_isbn))
         bod_id = cursor.fetchall()[0][0]
 
         # REMOVE FROM CART
@@ -504,8 +504,8 @@ def shopping_cart():
         else:
             old_cart[book_isbn] = int(quant_flag)
             session['shopping_cart'] = old_cart
-            quant_query = 'UPDATE book_orderdetail SET quantity = %s WHERE id = %s'
-            cursor.execute(quant_query, (quant_flag, bod_id))
+            quant_query = 'UPDATE book_orderdetail SET quantity = %s WHERE id = %s AND ISBN_bod_FK = %s'
+            cursor.execute(quant_query, (quant_flag, bod_id,book_isbn))
 
         conn.commit()
         conn.close()
