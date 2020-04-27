@@ -1,0 +1,16 @@
+{% extends "errors/errorBase.html" %}
+{% block error_title %} 500 {% endblock %}
+
+{% block head %}
+    {{ super() }}
+{% endblock %}
+
+{% block error_header %}
+    Oh No! 500 - Internal Server Error
+{% endblock %}
+
+
+{% block error_message %}
+    <p class="complement-bold">This is embarrassing. We'll send our team on it!</p>
+    <a href="{{ url_for('common_bp.landing_page') }}"><p class="complement">Click Here to go back to Browse</p></a>
+{% endblock %}

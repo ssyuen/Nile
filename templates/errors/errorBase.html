@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block base_title %}Error - {% block error_title %}{% endblock %}{% endblock %}
+
+{% block base_head %}
+    {{ super() }}
+{% endblock %}
+
+{% block mainTitle %}
+    <div class="text-center" id="content-header">
+        <p class="primary-lg">{% block error_header %}{% endblock %}</p>
+        <p>{% block error_message %}{% endblock %}</p>
+        <a href=""><p></p></a>
+    </div>
+{% endblock %}
