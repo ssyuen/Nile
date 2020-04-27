@@ -70,7 +70,7 @@
         </div>
         {% with name_change = get_flashed_messages() %}
             {% if name_change %}
-                <p class="flashes text-center" style="color: rgb(37, 179, 132);">
+                <p class="flashes text-center text-success complement-bold">
                     {% for msg in name_change %}
                         {{ msg }}
                     {% endfor %}
