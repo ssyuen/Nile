@@ -50,7 +50,7 @@
 
                                 </div>
                                 <span class="text-muted complement">$<span
-                                        class="sidebar-item-price pl-0">{{ "${:,.2f}".format(payload['total_price']) }}</span></span>
+                                        class="sidebar-item-price pl-0">{{ payload['total_price'] }}</span></span>
                             </li>
                         {% endfor %}
                         <li class="list-group-item d-flex justify-content-between" id="subtotalListElement">
