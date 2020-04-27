@@ -169,7 +169,7 @@ def edit_promo_form():
 def add_promo_form():
     if request.method == 'POST':
         promo_name = request.form.get('promoName')
-        promo_code = request.form.get('promoCode')
+        promo_code = request.form.get('promoCode').upper()
         promo_amt = float(request.form.get('promoAmt')) / 100
         promo_start = request.form.get('promoStart')
         promo_expiry = request.form.get('promoExpiry')
