@@ -7,7 +7,7 @@ import string
 
 from routes.common.util import remember_me, cart_session
 from routes.user.routes import send_change_conf_email, get_subscription
-from routes.admin.util import admin_required,send_promo_email
+from routes.admin.util import admin_required, send_promo_email
 
 admin_bp = Blueprint('admin_bp', __name__,
                      template_folder='templates', static_folder='static')
@@ -20,7 +20,7 @@ def overview():
     return render_template('./adminOverview.html')
 
 
-@admin_bp.route('/change_name/',methods=['GET','POST'])
+@admin_bp.route('/change_name/', methods=['GET', 'POST'])
 @admin_required(session)
 @remember_me(session)
 def change_name():
@@ -48,13 +48,13 @@ def change_name():
 
         conn.close()
 
-        send_change_conf_email(session['email'],session['firstName'])
+        send_change_conf_email(session['email'], session['firstName'])
 
         flash('Your information has been recorded.')
         return redirect(url_for('admin_bp.change_name'))
 
 
-@admin_bp.route('/change_pass/',methods=['GET','POST'])
+@admin_bp.route('/change_pass/', methods=['GET', 'POST'])
 @admin_required(session)
 @remember_me(session)
 def change_pass():
@@ -75,12 +75,13 @@ def change_pass():
             conn.commit()
             conn.close()
 
-            send_change_conf_email(session['email'],session['firstName'])
+            send_change_conf_email(session['email'], session['firstName'])
 
             flash('Your information has been recorded.')
             return redirect(url_for('admin_bp.change_pass'))
     else:
         return render_template('adminChangePassword.html')
+
 
 @admin_bp.route('/manage_books/')
 @admin_required(session)
@@ -127,7 +128,6 @@ def add_books_form():
         print(cover_id, file=sys.stderr)
         conn = mysql.connect()
         cursor = conn.cursor()
-
         query = """
         INSERT INTO book (ISBN, bindingID_book_FK, genreID_book_FK, typeID_book_FK, title, price, numPages, nile_cover_ID,
         edition, publisher, publicationDate, stock, authorFirstName, authorLastName, summary)
@@ -139,13 +139,18 @@ def add_books_form():
         %s, %s, %s, %s, %s, %s,
         %s, %s, %s, %s, %s)
         """
-        cursor.execute(query, (isbn, binding_type, genre, p_type, book_title, price, num_pages, cover_id, edition,
-                               publisher, date_published, recv_stock, author_firstname, author_lastname, book_summary))
-        conn.commit()
-        conn.close()
+
+        try:
+            cursor.execute(query, (isbn, binding_type, genre, p_type, book_title, price, num_pages, cover_id, edition,
+                                   publisher, date_published, recv_stock, author_firstname, author_lastname,
+                                   book_summary))
+            conn.commit()
+            conn.close()
+        except Exception as e:
+            flash('Book already exists in the database')
+            return redirect(url_for('admin_bp.add_books_form'))
 
         flash('Book has been successfully added.')
-
         return redirect(url_for('admin_bp.add_books_form'))
 
     return render_template('./forms/manage_books_form.html')
@@ -177,17 +182,22 @@ def add_promo_form():
                 INSERT INTO promotion (code, name, discount, startDate, endDate, notes)
                 VALUES (%s, %s, %s, %s, %s, %s)
                 """
-        cursor.execute(query, (promo_code, promo_name, promo_amt, promo_start, promo_expiry, promo_notes))
+        try:
+            cursor.execute(query, (promo_code, promo_name, promo_amt, promo_start, promo_expiry, promo_notes))
 
-        subscribed_users_query = 'SELECT firstname,email FROM user WHERE isSubscribed = 1'
-        cursor.execute(subscribed_users_query)
-        results = cursor.fetchall()
+            subscribed_users_query = 'SELECT firstname, email FROM user WHERE isSubscribed = 1'
+            cursor.execute(subscribed_users_query)
+
+            results = cursor.fetchall()
+            conn.commit()
+            conn.close()
+        except Exception as e:
+            flash('A promotion with this code already exists.')
+            return redirect(url_for('admin_bp.add_promo_form'))
+
         for result in results:
-            send_promo_email(recipient=result[1],recipient_fname=result[0],promo_code=promo_code,promo_amount=promo_amt,url=request.url_root)
-        
-
-        conn.commit()
-        conn.close()
+            send_promo_email(recipient=result[1], recipient_fname=result[0], promo_code=promo_code,
+                             promo_amount=promo_amt, url=request.url_root)
 
         flash('Promotion has been successfully added.')
 
@@ -202,20 +212,20 @@ def add_promo_form():
 def edit_users_form():
     return render_template('./forms/edit_users_form.html')
 
-@admin_bp.route('/settings/',methods=['POST','GET'])
+
+@admin_bp.route('/settings/', methods=['POST', 'GET'])
 @remember_me(session)
 @admin_required(session)
 def settings():
-
     if request.method == 'GET':
         conn = mysql.connect()
         cursor = conn.cursor()
-        subscription = int.from_bytes(get_subscription(cursor,session['email'],True),'big')
+        subscription = int.from_bytes(get_subscription(cursor, session['email'], True), 'big')
 
         if subscription == 1:
-            return render_template('adminSubscription.html',subscription="checked")
+            return render_template('adminSubscription.html', subscription="checked")
         else:
-            return render_template('adminSubscription.html',subscription="")
+            return render_template('adminSubscription.html', subscription="")
     elif request.method == 'POST':
         conn = mysql.connect()
         cursor = conn.cursor()
