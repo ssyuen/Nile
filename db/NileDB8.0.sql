@@ -15,18 +15,17 @@ SET @OLD_SQL_MODE = @@SQL_MODE, SQL_MODE =
 -- -----------------------------------------------------
 -- Schema niledb
 -- -----------------------------------------------------
-CREATE SCHEMA IF NOT EXISTS `niledb` DEFAULT CHARACTER SET utf8;
-USE `niledb`;
+
 
 -- -----------------------------------------------------
--- Table `niledb`.`address_type`
+-- Table `address_type`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `niledb`.`address_type`
+CREATE TABLE IF NOT EXISTS `address_type`
 (
     `id`   INT         NOT NULL AUTO_INCREMENT,
     `type` VARCHAR(20) NOT NULL,
     PRIMARY KEY (`id`),
-    UNIQUE INDEX `type_UNIQUE` (`type` ASC) VISIBLE
+    UNIQUE INDEX `type_UNIQUE` (`type` ASC) 
 )
     ENGINE = InnoDB
     AUTO_INCREMENT = 1
@@ -34,61 +33,61 @@ CREATE TABLE IF NOT EXISTS `niledb`.`address_type`
 
 
 -- -----------------------------------------------------
--- Table `niledb`.`address`
+-- Table `address`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `niledb`.`address`
+CREATE TABLE IF NOT EXISTS `address`
 (
     `id`                       INT                                                              NOT NULL AUTO_INCREMENT,
-    `street1`                  VARCHAR(45) CHARACTER SET 'utf8mb4' COLLATE 'utf8mb4_0900_ai_ci' NULL DEFAULT NULL,
+    `street1`                  VARCHAR(45) CHARACTER SET 'utf8mb4'  NULL DEFAULT NULL,
     `street2`                  VARCHAR(45)                                                      NULL DEFAULT NULL,
-    `city`                     VARCHAR(45) CHARACTER SET 'utf8mb4' COLLATE 'utf8mb4_0900_ai_ci' NULL DEFAULT NULL,
-    `zip`                      VARCHAR(45) CHARACTER SET 'utf8mb4' COLLATE 'utf8mb4_0900_ai_ci' NULL DEFAULT NULL,
-    `state`                    VARCHAR(45) CHARACTER SET 'utf8mb4' COLLATE 'utf8mb4_0900_ai_ci' NULL DEFAULT NULL,
+    `city`                     VARCHAR(45) CHARACTER SET 'utf8mb4'  NULL DEFAULT NULL,
+    `zip`                      VARCHAR(45) CHARACTER SET 'utf8mb4'  NULL DEFAULT NULL,
+    `state`                    VARCHAR(45) CHARACTER SET 'utf8mb4'  NULL DEFAULT NULL,
     `country`                  VARCHAR(50)                                                      NULL DEFAULT NULL,
     `addressTypeID_address_FK` INT                                                              NOT NULL,
     PRIMARY KEY (`id`),
-    INDEX `Key` (`street1` ASC, `city` ASC, `state` ASC, `zip` ASC) VISIBLE,
-    INDEX `addressTypeId_idx` (`addressTypeID_address_FK` ASC) VISIBLE,
+    INDEX `Key` (`street1` ASC, `city` ASC, `state` ASC, `zip` ASC) ,
+    INDEX `addressTypeId_idx` (`addressTypeID_address_FK` ASC) ,
     CONSTRAINT `addressTypeID_address_FK`
         FOREIGN KEY (`addressTypeID_address_FK`)
-            REFERENCES `niledb`.`address_type` (`id`)
+            REFERENCES `address_type` (`id`)
 )
     ENGINE = InnoDB
     AUTO_INCREMENT = 1
-    DEFAULT CHARACTER SET = utf8mb4
-    COLLATE = utf8mb4_0900_ai_ci;
+    DEFAULT CHARACTER SET = utf8mb4;
+
 
 
 -- -----------------------------------------------------
--- Table `niledb`.`admin`
+-- Table `admin`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `niledb`.`admin`
+CREATE TABLE IF NOT EXISTS `admin`
 (
     `id`           INT                                                               NOT NULL AUTO_INCREMENT,
-    `email`        VARCHAR(255) CHARACTER SET 'utf8mb4' COLLATE 'utf8mb4_0900_ai_ci' NOT NULL,
-    `firstName`    VARCHAR(45) CHARACTER SET 'utf8mb4' COLLATE 'utf8mb4_0900_ai_ci'  NOT NULL,
-    `lastName`     VARCHAR(45) CHARACTER SET 'utf8mb4' COLLATE 'utf8mb4_0900_ai_ci'  NOT NULL,
-    `pass`         VARCHAR(100) CHARACTER SET 'utf8mb4' COLLATE 'utf8mb4_0900_ai_ci' NOT NULL,
+    `email`        VARCHAR(255) CHARACTER SET 'utf8mb4'  NOT NULL,
+    `firstName`    VARCHAR(45) CHARACTER SET 'utf8mb4'   NOT NULL,
+    `lastName`     VARCHAR(45) CHARACTER SET 'utf8mb4'   NOT NULL,
+    `pass`         VARCHAR(100) CHARACTER SET 'utf8mb4'  NOT NULL,
     `isSubscribed` BIT(1)                                                            NOT NULL DEFAULT b'1',
     PRIMARY KEY (`id`),
-    UNIQUE INDEX `email_UNIQUE` (`email` ASC) VISIBLE,
-    INDEX `Key` (`firstName` ASC, `lastName` ASC, `pass` ASC) VISIBLE
+    UNIQUE INDEX `email_UNIQUE` (`email` ASC) ,
+    INDEX `Key` (`firstName` ASC, `lastName` ASC, `pass` ASC) 
 )
     ENGINE = InnoDB
     AUTO_INCREMENT = 1
-    DEFAULT CHARACTER SET = utf8mb4
-    COLLATE = utf8mb4_0900_ai_ci;
+    DEFAULT CHARACTER SET = utf8mb4;
+
 
 
 -- -----------------------------------------------------
--- Table `niledb`.`binding`
+-- Table `binding`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `niledb`.`binding`
+CREATE TABLE IF NOT EXISTS `binding`
 (
     `id`      INT         NOT NULL AUTO_INCREMENT,
     `binding` VARCHAR(45) NOT NULL,
     PRIMARY KEY (`id`),
-    UNIQUE INDEX `binding_UNIQUE` (`binding` ASC) VISIBLE
+    UNIQUE INDEX `binding_UNIQUE` (`binding` ASC) 
 )
     ENGINE = InnoDB
     AUTO_INCREMENT = 1
@@ -96,14 +95,14 @@ CREATE TABLE IF NOT EXISTS `niledb`.`binding`
 
 
 -- -----------------------------------------------------
--- Table `niledb`.`genre`
+-- Table `genre`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `niledb`.`genre`
+CREATE TABLE IF NOT EXISTS `genre`
 (
     `id`    INT         NOT NULL AUTO_INCREMENT,
     `genre` VARCHAR(45) NOT NULL,
     PRIMARY KEY (`id`),
-    UNIQUE INDEX `genre_UNIQUE` (`genre` ASC) VISIBLE
+    UNIQUE INDEX `genre_UNIQUE` (`genre` ASC) 
 )
     ENGINE = InnoDB
     AUTO_INCREMENT = 1
@@ -111,14 +110,14 @@ CREATE TABLE IF NOT EXISTS `niledb`.`genre`
 
 
 -- -----------------------------------------------------
--- Table `niledb`.`product_type`
+-- Table `product_type`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `niledb`.`product_type`
+CREATE TABLE IF NOT EXISTS `product_type`
 (
     `id`   INT         NOT NULL AUTO_INCREMENT,
     `type` VARCHAR(50) NOT NULL,
     PRIMARY KEY (`id`),
-    UNIQUE INDEX `product_type_type_uindex` (`type` ASC) VISIBLE
+    UNIQUE INDEX `product_type_type_uindex` (`type` ASC) 
 )
     ENGINE = InnoDB
     AUTO_INCREMENT = 1
@@ -126,67 +125,67 @@ CREATE TABLE IF NOT EXISTS `niledb`.`product_type`
 
 
 -- -----------------------------------------------------
--- Table `niledb`.`book`
+-- Table `book`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `niledb`.`book`
+CREATE TABLE IF NOT EXISTS `book`
 (
     `ISBN`              VARCHAR(20)                                                        NOT NULL,
     `bindingID_book_FK` INT                                                                NOT NULL,
     `genreID_book_FK`   INT                                                                NOT NULL,
     `typeID_book_FK`    INT                                                                NOT NULL,
-    `title`             VARCHAR(200) CHARACTER SET 'utf8mb4' COLLATE 'utf8mb4_0900_ai_ci'  NOT NULL,
+    `title`             VARCHAR(200) CHARACTER SET 'utf8mb4'   NOT NULL,
     `price`             DECIMAL(12, 2)                                                     NOT NULL,
     `numPages`          INT                                                                NULL DEFAULT NULL,
     `nile_cover_ID`     VARCHAR(75)                                                        NULL DEFAULT NULL,
-    `edition`           VARCHAR(45) CHARACTER SET 'utf8mb4' COLLATE 'utf8mb4_0900_ai_ci'   NULL DEFAULT NULL,
+    `edition`           VARCHAR(45) CHARACTER SET 'utf8mb4'    NULL DEFAULT NULL,
     `publisher`         VARCHAR(255)                                                       NULL DEFAULT NULL,
     `publicationDate`   DATE                                                               NULL DEFAULT NULL,
     `stock`             INT                                                                NOT NULL,
-    `authorFirstName`   VARCHAR(45) CHARACTER SET 'utf8mb4' COLLATE 'utf8mb4_0900_ai_ci'   NOT NULL,
-    `authorLastName`    VARCHAR(45) CHARACTER SET 'utf8mb4' COLLATE 'utf8mb4_0900_ai_ci'   NULL DEFAULT NULL,
-    `summary`           VARCHAR(2000) CHARACTER SET 'utf8mb4' COLLATE 'utf8mb4_0900_ai_ci' NULL DEFAULT NULL,
+    `authorFirstName`   VARCHAR(45) CHARACTER SET 'utf8mb4'    NOT NULL,
+    `authorLastName`    VARCHAR(45) CHARACTER SET 'utf8mb4'    NULL DEFAULT NULL,
+    `summary`           VARCHAR(2000) CHARACTER SET 'utf8mb4'  NULL DEFAULT NULL,
     PRIMARY KEY (`ISBN`),
-    INDEX `genreID_book_FK_idx` (`genreID_book_FK` ASC) VISIBLE,
-    INDEX `typeID_book_FK_idx` (`typeID_book_FK` ASC) VISIBLE,
-    INDEX `bindingID_book_FK_idx` (`bindingID_book_FK` ASC) VISIBLE,
+    INDEX `genreID_book_FK_idx` (`genreID_book_FK` ASC) ,
+    INDEX `typeID_book_FK_idx` (`typeID_book_FK` ASC) ,
+    INDEX `bindingID_book_FK_idx` (`bindingID_book_FK` ASC) ,
     CONSTRAINT `bindingID_book_FK`
         FOREIGN KEY (`bindingID_book_FK`)
-            REFERENCES `niledb`.`binding` (`id`),
+            REFERENCES `binding` (`id`),
     CONSTRAINT `genreID_book_FK`
         FOREIGN KEY (`genreID_book_FK`)
-            REFERENCES `niledb`.`genre` (`id`),
+            REFERENCES `genre` (`id`),
     CONSTRAINT `typeID_book_FK`
         FOREIGN KEY (`typeID_book_FK`)
-            REFERENCES `niledb`.`product_type` (`id`)
+            REFERENCES `product_type` (`id`)
 )
     ENGINE = InnoDB
     DEFAULT CHARACTER SET = utf8;
 
 
 -- -----------------------------------------------------
--- Table `niledb`.`user_address`
+-- Table `user_address`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `niledb`.`user_address`
+CREATE TABLE IF NOT EXISTS `user_address`
 (
     `userID_ua_FK`    INT NOT NULL,
     `addressID_ua_FK` INT NOT NULL,
     PRIMARY KEY (`userID_ua_FK`, `addressID_ua_FK`),
-    INDEX `addressID_ua_FK_idx` (`addressID_ua_FK` ASC) VISIBLE,
+    INDEX `addressID_ua_FK_idx` (`addressID_ua_FK` ASC) ,
     CONSTRAINT `addressID_ua_FK`
         FOREIGN KEY (`addressID_ua_FK`)
-            REFERENCES `niledb`.`address` (`id`),
+            REFERENCES `address` (`id`),
     CONSTRAINT `userID_ua_FK`
         FOREIGN KEY (`userID_ua_FK`)
-            REFERENCES `niledb`.`user` (`id`)
+            REFERENCES `user` (`id`)
 )
     ENGINE = InnoDB
     DEFAULT CHARACTER SET = utf8;
 
 
 -- -----------------------------------------------------
--- Table `niledb`.`payment_method`
+-- Table `payment_method`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `niledb`.`payment_method`
+CREATE TABLE IF NOT EXISTS `payment_method`
 (
     `id`                     INT          NOT NULL AUTO_INCREMENT,
     `firstname`              VARCHAR(45)  NOT NULL,
@@ -196,110 +195,110 @@ CREATE TABLE IF NOT EXISTS `niledb`.`payment_method`
     `expirationDate`         DATE         NOT NULL,
     `billingAddress_addr_FK` INT          NOT NULL,
     PRIMARY KEY (`id`),
-    INDEX `Key` (`cardNumber` ASC, `expirationDate` ASC) VISIBLE,
-    INDEX `billingAddress_addr_FK_idx` (`billingAddress_addr_FK` ASC) VISIBLE,
+    INDEX `Key` (`cardNumber` ASC, `expirationDate` ASC) ,
+    INDEX `billingAddress_addr_FK_idx` (`billingAddress_addr_FK` ASC) ,
     CONSTRAINT `billingAddress_addr_FK`
         FOREIGN KEY (`billingAddress_addr_FK`)
-            REFERENCES `niledb`.`address` (`id`)
+            REFERENCES `address` (`id`)
 )
     ENGINE = InnoDB
     AUTO_INCREMENT = 1
-    DEFAULT CHARACTER SET = utf8mb4
-    COLLATE = utf8mb4_0900_ai_ci;
+    DEFAULT CHARACTER SET = utf8mb4;
+    
 
 
 -- -----------------------------------------------------
--- Table `niledb`.`user_paymentmethod`
+-- Table `user_paymentmethod`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `niledb`.`user_paymentmethod`
+CREATE TABLE IF NOT EXISTS `user_paymentmethod`
 (
     `userID_pm_FK`    INT NOT NULL,
     `paymentID_pm_FK` INT NOT NULL,
     PRIMARY KEY (`userID_pm_FK`, `paymentID_pm_FK`),
-    INDEX `paymentID_pm_FK_idx` (`paymentID_pm_FK` ASC) VISIBLE,
+    INDEX `paymentID_pm_FK_idx` (`paymentID_pm_FK` ASC) ,
     CONSTRAINT `paymentID_pm_FK`
         FOREIGN KEY (`paymentID_pm_FK`)
-            REFERENCES `niledb`.`payment_method` (`id`),
+            REFERENCES `payment_method` (`id`),
     CONSTRAINT `userID_pm_FK`
         FOREIGN KEY (`userID_pm_FK`)
-            REFERENCES `niledb`.`user` (`id`)
+            REFERENCES `user` (`id`)
 )
     ENGINE = InnoDB
     DEFAULT CHARACTER SET = utf8;
 
 
 -- -----------------------------------------------------
--- Table `niledb`.`status`
+-- Table `status`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `niledb`.`status`
+CREATE TABLE IF NOT EXISTS `status`
 (
     `id`     INT                                                              NOT NULL AUTO_INCREMENT,
-    `status` VARCHAR(45) CHARACTER SET 'utf8mb4' COLLATE 'utf8mb4_0900_ai_ci' NOT NULL,
+    `status` VARCHAR(45) CHARACTER SET 'utf8mb4'  NOT NULL,
     PRIMARY KEY (`id`),
-    UNIQUE INDEX `status_UNIQUE` (`status` ASC) VISIBLE,
-    INDEX `Key` (`status` ASC) VISIBLE
+    UNIQUE INDEX `status_UNIQUE` (`status` ASC) ,
+    INDEX `Key` (`status` ASC) 
 )
     ENGINE = InnoDB
     AUTO_INCREMENT = 1
-    DEFAULT CHARACTER SET = utf8mb4
-    COLLATE = utf8mb4_0900_ai_ci;
+    DEFAULT CHARACTER SET = utf8mb4;
+    
 
 
 -- -----------------------------------------------------
--- Table `niledb`.`user`
+-- Table `user`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `niledb`.`user`
+CREATE TABLE IF NOT EXISTS `user`
 (
     `id`               INT                                                               NOT NULL AUTO_INCREMENT,
-    `email`            VARCHAR(255) CHARACTER SET 'utf8mb4' COLLATE 'utf8mb4_0900_ai_ci' NOT NULL,
+    `email`            VARCHAR(255) CHARACTER SET 'utf8mb4'  NOT NULL,
     `statusID_user_FK` INT                                                               NOT NULL,
-    `pass`             VARCHAR(100) CHARACTER SET 'utf8mb4' COLLATE 'utf8mb4_0900_ai_ci' NOT NULL,
-    `firstname`        VARCHAR(45) CHARACTER SET 'utf8mb4' COLLATE 'utf8mb4_0900_ai_ci'  NOT NULL,
-    `lastname`         VARCHAR(45) CHARACTER SET 'utf8mb4' COLLATE 'utf8mb4_0900_ai_ci'  NOT NULL,
+    `pass`             VARCHAR(100) CHARACTER SET 'utf8mb4'  NOT NULL,
+    `firstname`        VARCHAR(45) CHARACTER SET 'utf8mb4'   NOT NULL,
+    `lastname`         VARCHAR(45) CHARACTER SET 'utf8mb4'   NOT NULL,
     `isSubscribed`     BIT(1)                                                            NOT NULL DEFAULT b'1',
     `def_address`      INT                                                               NULL     DEFAULT NULL,
     `def_payment`      INT                                                               NULL     DEFAULT NULL,
     PRIMARY KEY (`id`),
-    UNIQUE INDEX `email_UNIQUE` (`email` ASC) VISIBLE,
-    INDEX `Key` (`pass` ASC, `firstname` ASC, `lastname` ASC) VISIBLE,
-    INDEX `statusID_user_FK_idx` (`statusID_user_FK` ASC) VISIBLE,
-    INDEX `def_payment_idx` (`def_payment` ASC) VISIBLE,
-    INDEX `def_address_idx` (`def_address` ASC) VISIBLE,
+    UNIQUE INDEX `email_UNIQUE` (`email` ASC) ,
+    INDEX `Key` (`pass` ASC, `firstname` ASC, `lastname` ASC) ,
+    INDEX `statusID_user_FK_idx` (`statusID_user_FK` ASC) ,
+    INDEX `def_payment_idx` (`def_payment` ASC) ,
+    INDEX `def_address_idx` (`def_address` ASC) ,
     CONSTRAINT `def_address`
         FOREIGN KEY (`def_address`)
-            REFERENCES `niledb`.`user_address` (`addressID_ua_FK`),
+            REFERENCES `user_address` (`addressID_ua_FK`),
     CONSTRAINT `def_payment`
         FOREIGN KEY (`def_payment`)
-            REFERENCES `niledb`.`user_paymentmethod` (`paymentID_pm_FK`),
+            REFERENCES `user_paymentmethod` (`paymentID_pm_FK`),
     CONSTRAINT `statusID_user_FK`
         FOREIGN KEY (`statusID_user_FK`)
-            REFERENCES `niledb`.`status` (`id`)
+            REFERENCES `status` (`id`)
 )
     ENGINE = InnoDB
     AUTO_INCREMENT = 1
-    DEFAULT CHARACTER SET = utf8mb4
-    COLLATE = utf8mb4_0900_ai_ci;
+    DEFAULT CHARACTER SET = utf8mb4;
+    
 
 
 -- -----------------------------------------------------
--- Table `niledb`.`book_orderdetail`
+-- Table `book_orderdetail`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `niledb`.`book_orderdetail`
+CREATE TABLE IF NOT EXISTS `book_orderdetail`
 (
     `id`            INT         NOT NULL AUTO_INCREMENT,
     `userID_bod_FK` INT         NOT NULL,
     `ISBN_bod_FK`   VARCHAR(20) NOT NULL,
     `quantity`      INT         NOT NULL DEFAULT '1',
     PRIMARY KEY (`id`, `userID_bod_FK`, `ISBN_bod_FK`),
-    INDEX `ISBN_bod_FK` (`ISBN_bod_FK` ASC) VISIBLE,
-    INDEX `userID_bod_FK_idx` (`userID_bod_FK` ASC) INVISIBLE,
-    INDEX `id` (`id` ASC) VISIBLE,
+    INDEX `ISBN_bod_FK` (`ISBN_bod_FK` ASC) ,
+    INDEX `userID_bod_FK_idx` (`userID_bod_FK` ASC) IN,
+    INDEX `id` (`id` ASC) ,
     CONSTRAINT `ISBN_bod_FK`
         FOREIGN KEY (`ISBN_bod_FK`)
-            REFERENCES `niledb`.`book` (`ISBN`),
+            REFERENCES `book` (`ISBN`),
     CONSTRAINT `userID_bod_FK`
         FOREIGN KEY (`userID_bod_FK`)
-            REFERENCES `niledb`.`user` (`id`)
+            REFERENCES `user` (`id`)
 )
     ENGINE = InnoDB
     AUTO_INCREMENT = 1
@@ -307,9 +306,9 @@ CREATE TABLE IF NOT EXISTS `niledb`.`book_orderdetail`
 
 
 -- -----------------------------------------------------
--- Table `niledb`.`promotion`
+-- Table `promotion`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `niledb`.`promotion`
+CREATE TABLE IF NOT EXISTS `promotion`
 (
     `id`        INT          NOT NULL AUTO_INCREMENT,
     `code`      VARCHAR(45)  NOT NULL,
@@ -319,19 +318,19 @@ CREATE TABLE IF NOT EXISTS `niledb`.`promotion`
     `endDate`   DATE         NULL DEFAULT NULL,
     `notes`     VARCHAR(500) NULL DEFAULT NULL,
     PRIMARY KEY (`id`),
-    UNIQUE INDEX `promotion_code_uindex` (`code` ASC) VISIBLE,
-    INDEX `Key` (`code` ASC, `discount` ASC, `startDate` ASC, `endDate` ASC) VISIBLE
+    UNIQUE INDEX `promotion_code_uindex` (`code` ASC) ,
+    INDEX `Key` (`code` ASC, `discount` ASC, `startDate` ASC, `endDate` ASC) 
 )
     ENGINE = InnoDB
     AUTO_INCREMENT = 1
-    DEFAULT CHARACTER SET = utf8mb4
-    COLLATE = utf8mb4_0900_ai_ci;
+    DEFAULT CHARACTER SET = utf8mb4;
+    
 
 
 -- -----------------------------------------------------
--- Table `niledb`.`order`
+-- Table `order`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `niledb`.`order`
+CREATE TABLE IF NOT EXISTS `order`
 (
     `id`                      INT         NOT NULL AUTO_INCREMENT,
     `userID_order_FK`         INT         NOT NULL,
@@ -344,22 +343,22 @@ CREATE TABLE IF NOT EXISTS `niledb`.`order`
     `confirmationNumber`      VARCHAR(45) NULL DEFAULT NULL,
     `shippingAddrID_order_FK` INT         NULL DEFAULT NULL,
     PRIMARY KEY (`id`),
-    INDEX `userID_order_FK_idx` (`userID_order_FK` ASC) VISIBLE,
-    INDEX `paymentID_order_FK_idx` (`paymentID_order_FK` ASC) VISIBLE,
-    INDEX `promotionID_idx` (`promotionID` ASC) VISIBLE,
-    INDEX `shippingAddrID_order_FK_idx` (`shippingAddrID_order_FK` ASC) VISIBLE,
+    INDEX `userID_order_FK_idx` (`userID_order_FK` ASC) ,
+    INDEX `paymentID_order_FK_idx` (`paymentID_order_FK` ASC) ,
+    INDEX `promotionID_idx` (`promotionID` ASC) ,
+    INDEX `shippingAddrID_order_FK_idx` (`shippingAddrID_order_FK` ASC) ,
     CONSTRAINT `paymentID_order_FK`
         FOREIGN KEY (`paymentID_order_FK`)
-            REFERENCES `niledb`.`payment_method` (`id`),
+            REFERENCES `payment_method` (`id`),
     CONSTRAINT `promotionID`
         FOREIGN KEY (`promotionID`)
-            REFERENCES `niledb`.`promotion` (`id`),
+            REFERENCES `promotion` (`id`),
     CONSTRAINT `shippingAddrID_order_FK`
         FOREIGN KEY (`shippingAddrID_order_FK`)
-            REFERENCES `niledb`.`address` (`id`),
+            REFERENCES `address` (`id`),
     CONSTRAINT `userID_order_FK`
         FOREIGN KEY (`userID_order_FK`)
-            REFERENCES `niledb`.`user` (`id`)
+            REFERENCES `user` (`id`)
 )
     ENGINE = InnoDB
     AUTO_INCREMENT = 1
@@ -367,60 +366,60 @@ CREATE TABLE IF NOT EXISTS `niledb`.`order`
 
 
 -- -----------------------------------------------------
--- Table `niledb`.`order_bod`
+-- Table `order_bod`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `niledb`.`order_bod`
+CREATE TABLE IF NOT EXISTS `order_bod`
 (
     `orderID_obod_FK` INT NOT NULL,
     `bodID_obod_FK`   INT NOT NULL,
     PRIMARY KEY (`orderID_obod_FK`, `bodID_obod_FK`),
-    INDEX `bodID_obod_FK_idx` (`bodID_obod_FK` ASC) VISIBLE,
+    INDEX `bodID_obod_FK_idx` (`bodID_obod_FK` ASC) ,
     CONSTRAINT `bodID_obod_FK`
         FOREIGN KEY (`bodID_obod_FK`)
-            REFERENCES `niledb`.`book_orderdetail` (`id`),
+            REFERENCES `book_orderdetail` (`id`),
     CONSTRAINT `orderID_obod_FK`
         FOREIGN KEY (`orderID_obod_FK`)
-            REFERENCES `niledb`.`order` (`id`)
+            REFERENCES `order` (`id`)
 )
     ENGINE = InnoDB
     DEFAULT CHARACTER SET = utf8;
 
 
 -- -----------------------------------------------------
--- Table `niledb`.`shoppingcart`
+-- Table `shoppingcart`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `niledb`.`shoppingcart`
+CREATE TABLE IF NOT EXISTS `shoppingcart`
 (
     `userID_sc_FK` INT NOT NULL,
     `bod_sc_FK`    INT NOT NULL,
     PRIMARY KEY (`userID_sc_FK`, `bod_sc_FK`),
-    INDEX `bod_sc_FK_idx` (`bod_sc_FK` ASC) VISIBLE,
+    INDEX `bod_sc_FK_idx` (`bod_sc_FK` ASC) ,
     CONSTRAINT `bod_sc_FK`
         FOREIGN KEY (`bod_sc_FK`)
-            REFERENCES `niledb`.`book_orderdetail` (`id`),
+            REFERENCES `book_orderdetail` (`id`),
     CONSTRAINT `userID_sc_FK`
         FOREIGN KEY (`userID_sc_FK`)
-            REFERENCES `niledb`.`user` (`id`)
+            REFERENCES `user` (`id`)
 )
     ENGINE = InnoDB
     DEFAULT CHARACTER SET = utf8;
 
 
 -- -----------------------------------------------------
--- Table `niledb`.`user_token`
+-- Table `user_token`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `niledb`.`user_token`
+CREATE TABLE IF NOT EXISTS `user_token`
 (
     `userID_utoken_FK` INT         NOT NULL,
     `token`            VARCHAR(50) NOT NULL,
     PRIMARY KEY (`userID_utoken_FK`, `token`),
     CONSTRAINT `userID_utoken_FK`
         FOREIGN KEY (`userID_utoken_FK`)
-            REFERENCES `niledb`.`user` (`id`)
+            REFERENCES `user` (`id`)
 )
     ENGINE = InnoDB
-    DEFAULT CHARACTER SET = utf8mb4
-    COLLATE = utf8mb4_0900_ai_ci;
+    DEFAULT CHARACTER SET = utf8mb4;
+    
 
 INSERT INTO address_type (`id`, `type`)
 VALUES (1, 'SHIPPING');
