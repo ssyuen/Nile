@@ -8,10 +8,13 @@ SET @OLD_SQL_MODE = @@SQL_MODE, SQL_MODE =
 -- -----------------------------------------------------
 -- Schema mydb
 -- -----------------------------------------------------
+
+CREATE SCHEMA IF NOT EXISTS `niledb`;
+
 -- -----------------------------------------------------
 -- Schema niledb
 -- -----------------------------------------------------
-
+USE `niledb`;
 -- -----------------------------------------------------
 -- Schema niledb
 -- -----------------------------------------------------
@@ -291,7 +294,7 @@ CREATE TABLE IF NOT EXISTS `book_orderdetail`
     `quantity`      INT         NOT NULL DEFAULT '1',
     PRIMARY KEY (`id`, `userID_bod_FK`, `ISBN_bod_FK`),
     INDEX `ISBN_bod_FK` (`ISBN_bod_FK` ASC) ,
-    INDEX `userID_bod_FK_idx` (`userID_bod_FK` ASC) IN,
+    INDEX `userID_bod_FK_idx` (`userID_bod_FK` ASC),
     INDEX `id` (`id` ASC) ,
     CONSTRAINT `ISBN_bod_FK`
         FOREIGN KEY (`ISBN_bod_FK`)
