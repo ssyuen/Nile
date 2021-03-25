@@ -5,9 +5,9 @@
   https://www.nilebookstore.com
 </p>
 
-# DELIVERABLE 6 EXECUTION INSTRUCTIONS AND REQUIREMENTS
+# Execution Instructions
 
-## REQUIREMENTS
+## Requirements
 
 The following is required to run this project:
 
@@ -15,156 +15,198 @@ The following is required to run this project:
   - Using pip3 (or pip if you default to Python 3.7), install pipenv using this command: `pip3 install pipenv` or `pip install pipenv`.
     - If you have trouble running this or get Permission denied, then try the following: `pip install pipenv -u`
 
-## INSTRUCTIONS
+## Execution
 
-1. Unzip/decompress the file
-
-2. Go to INTO the directory of the unzipped file.'
-
-3. If you are on windows, run the following command in Powershell to set up the appropriate environment variables:
+1. If you are on windows, run the following command in Powershell to set up the appropriate environment variables:
 ``Set-Content ./.env "DB=niledb`nDB_HOST=localhost`nMAIL_SERVER=smtp.gmail.com`nMAIL_PORT=465`nMAIL_USER=rootatnilebookstore@gmail.com`nMAIL_PASS=Testing1"``
 where the `` `n `` is the newline break.
 
-4. If you are on mac or some variant of linux, run the following command to set up the appropriate environment variables:
+2. If you are on mac or some variant of linux, run the following command to set up the appropriate environment variables:
 `printf "DB=niledb\nDB_HOST=localhost\nMAIL_SERVER=smtp.gmail.com\nMAIL_PORT=465\nMAIL_USER=rootatnilebookstore@gmail.com\nMAIL_PASS=Testing1" > .env`
 
-5. If you are on windows, run this to start the server: `pipenv run windows_server`
+3. Clone this repository to your local via git clone <hhttps://github.com/ssyuen/Nile.git>
 
-6. If you are on mac or some variant of linux, run this to start the server: `pipenv run server`
+4. Install MySql. Create a schema name `niledb`. Run the `NileDB8.0.sql` and `NileDB8.1.sql` script to create the necessary tables.
 
-## Installation
+5. cd into the cloned directory
 
-1. Clone this repository to your local via git clone <hhttps://github.com/ssyuen/Nile.git>
+6. `pipenv shell` will activate the virtual environment.
 
-2. Install MySql. Create a schema name `niledb`. Run the `NileDB8.0.sql` and `NileDB8.1.sql` script to create the necessary tables.
+7. `pipenv install` will install the dependencies (i.e. flask and pandas)
 
-3. cd into the cloned directory
+8. If you are on windows, run this to start the server: `pipenv run windows_server`
+   If you are on mac or some variant of linux, run this to start the server: `pipenv run server`
 
-4. `pipenv shell` will activate the virtual environment.
-
-5. `pipenv install` will install the dependencies (i.e. flask and pandas)
-
-6. Make sure when you are done with development, run `exit` to exit out of the virtual environment.
+9. Make sure when you are done with development, run `exit` to exit out of the virtual environment.
 This is important to make sure you will not have to delete and re-clone the repository.
 
-### Testing
+## Disclaimer
+Disclaimer! This site should **not** be used to fulfil any purchases with valid banking information. The Nile website lacks
+robust security standards and industry compliance protocols, while relying only on rudimentary protections.
+This site was made to fulfill our term-project requirement for CSCI 4050 - Software Engineering class at The University of Georgia.
 
-- [x] Registration
-  - [x] Registration Form (Completeness, showing/indicating all mandatory/optional fields)
-    - [x] Form cannot be submitted with empty required fields FRONT END NEEDS TO BE LOOKED INTO BUT NO EFFECT ON BACKEND SO FAR
-    - [x] Input validation on credit card and zipcode
-    - [x] Input validation on password and confirm password
-    - [x] Input validation on email
-    - [x] If you click on Add Shipping Address, fill out fields in Address, then unclick Add Shipping Address, then shipping address is NOT submitted
-      - [x] Tables in question: address,  user_address
-    - [x] If you click on Add Payment Method, fill out fields in Payment, then unclick Add Payment Method, then payment method and billing address is NOT submitted
-      - [x] Tables in question: payment_method, user_address, address
-  - [x] Sending the confirmation email
-    - [x] Confirmation email should only verify the user once, so multiple clicks on verification link should not break application
-  - [x] Test that user data is stored in the database with correct status (Active/Inactive)
-    - [x] Tables in question: user, user_address, user_token, address, payment_method
-- [x] Login
-  - [x] Login Form
-  - [x] Forget my password (testing that the complete process is correct)
-    - [x] Properly sends confirmation email with reset password link
-      - [x] Confirmation link should only reset password once
-  - [x] Testing for correct login functionality (as existing user, wrong password, admin/user navigate to the correct page based on privileges (customer or admin))
-  - [x] Remember me option works (BONUS)
-- [x] Logout
-  - [x] Session ended correctly
-- [x] Edit Profile
-  - [ ] Edit Profile Form (Completeness and correctness)
-    - [x] Information should be pulled from the database and displayed on form.
-    - Users may change:
-      - [x] First and Last Name
-      - [x] Billing Address
-      - [x] Password
-      - [x] Payment Card/Information
-  - [x] Users should NOT be able to modify the email address
-  - [x] Information should be saved in the database correctly.
-    - [x] Tables in question: user, payment_method, user_address
-- [x] Non-Functional Requirements
-  - [x] Usability (UI/UX)
-    - [x] The look and feel of the UI
-    - [x] Guidance
-    - [x] Helpful/Positive Prompts
-    - [x] Error Messages
-      - List of errors
-        - User tries to login with:
-          - [x] Wrong email: `Your login details were not found. Please try again.`
-          - [x] Wrong password: `Your login details were not found. Please try again.`
-        - User tries to access:
-          - [x] Login WITHOUT being verified: `You must verifiy your account before being able to login!`
-          - [x] Admin areas/urls: `You need to be an admin to access that area!`
-        - Admin tries to access:
-          - [x] User specific areas: `Please login using a non-administrative account to access this feature.`
-    - [x] Confirmation Messages
-      - [x] Registration confirmation page
-  - [x] Security Requirements
-    - [x] User Privileges (based points given during login process)
-    - [x] Users should be asked to provide their current password if they selected to CHANGE their password
-    - [x] Password and Payment Method/Information should be in encrypted in the database
-    - [x] In case of changing profile information, send an email to the user that the profile has been changed (BONUS)
+All product information including ISBN, publisher, and cover images was taken from Amazon.com. We claim no ownership for any information. 
+All rights go to their respective owner(s). Any information on nilebookstore.com inconsistent to its representation on Amazon is purely unintentional, 
+originating from errors or faults in retrieving information by our team.
 
-## Execution
+## Implemented Features
+- Home Page
+    - Search by Title
+    - Search by ISBN
+    - Search by Category
+    - Multi-page layout
+- Product Page
+    - Comprehensive and well-formed layout
+    - Simple add to Cart
+- Shopping Cart
+    - "Always-on" Cart display on Navbar
+    - Remove from Cart
+    - Quantity management (max: 80)
+        - Total and individual price
+    - Multi-page layout
+    - Sub-total
+    - Single path Checkout (checkout only from shopping cart)
+- Registration
+    - Email based
+    - Add optional billing address
+        - Credit card recognition
+    - Add optional shipping address
+    - Sensitive data encryption
+    - Email verification
+- Login
+    - Remember password (session management)
+    - Forgot my password
+        - Email verification
+- Profile
+    - Account Overview
+        - Ordered items
+        - Delivered items
+        - View/Edit name
+        - View email
+        - Recent orders
+    - Change Name
+    - Change Password
+        - Password confirmation
+        - Sensitive data encryption
+    - Order History
+        - Unique confirmation numbers
+        - Comprehensive and well-formed layout
+        - Multi-page layout
+        - Per-order Grand Total, Shipping Cost, and Sales Tax
+        - Reorder Item
+    - Manage Shipping Address
+        - Edit shipping address
+        - Add multiple shipping addresses
+    - Manage Billing Address
+        - Add multiple billing addresses
+        - Credit card recognition
+        - Sensitive data encryption
+    - Email Settings
+        - Unsubscribe from future promotions email notifications
+- Checkout
+    - Shipping Information
+        - Choose from saved address
+        - Remember address option
+        - United States postal code support
+    - Billing Information
+        - Choose from saved payment method
+        - Remember payment method option
+        - United States postal code support
+    - Sticky Sidebar
+        - Displays Shopping Cart
+            - Product name, price, ISBN, and quantity
+        - Subtotal
+        - Shipping Cost (for GA and CA only)
+        - Sales Tax (for GA and CA only)
+        - Grand Total
+        - Back to Cart option
+    - Review Order
+        - Edit shipping information
+        - Edit billing information
+        - Redeem promo code
+    - Session management
+    - Email confirmation
+- Admin Profile
+    - Admin detection
+    - Checkout and Cart inability
+    - Change Name
+    - Change Password
+        - Password confirmation
+        - Sensitive data encryption
+    - Manage Books and Inventory
+        - Search inventory by title or ISBN
+        - Edit all properties of product
+        - Add product to existing inventory
+        - Remove product from existing inventory
+    - Manage Promotions
+        - Edit promotion
+        - Add promotion
+        - Remove promotion
+            - Automatic promotion expiration
+    - Manage Users
+        - Promote user to admin
+        - Delete user
+    - Email Settings
+        - Unsubscribe from future promotions email notifications
+- Overall
+    - Material design
+    - Highly responsive layout
+    - Session awareness
+    - UI/UX centric features
+    - Accessibility
+    
+# Screenshots
 
-- Assuming you are not in the virtual environment, go to the root directory of the project and run `pipenv run server`. This just runs the script without you having to start a virtual environment.
+## User Platform
+![Nile Home page](demo/Homepage.PNG)
 
-- To start the server, make sure you have done `pipenv shell` in the top-level directory of nile, and run `./start.sh`
-- If `DB_USER` and `DB_PASS` are not found in the local machine environment variables, the shell script will prompt you
-for it. Read the instructions at the top of the script.
+![Nile Login page](demo/Login.PNG)  
 
-## Todo List
+![Nile Sign Up page](demo/Sign Up.PNG)  
 
-- [ ] Back-end Development
-  - [x] Registration
-  - [x] Jinja2 with sessions in all html files
-  - [x] If web user clicks on checkout, direct to login, redirect to checkout upon successful login
-  - [x] Install third party libraries (bootstrap, JQuery, JS)
-  - [ ] Books
-    - [x] Manage Books
-    - [ ] Manage Promotions
-    - [ ] Manage Users
-  - [x] User Profile
-    - [x] Update My Info
-      - [x] Individual Edit Buttons
-      - [x] Update all fields
-    - [x] Update Password
-  - [x] Payment Info
-    - [x] Individual Edit Buttons
-    - [x] Update all fields
-    - [x] Remove payment method
-  - [x] Add Payment Info
-  - [x] Billing Address
-    - [x] Individual Edit Buttons
-    - [x] Update all fields
-    - [x] Remove address
-  - [x] Add Address
-  - [x] Search Bar
-  - [x] Shopping Cart
-    - [x] Fill Shopping Cart with user's items from database
-    - [x] Items should be tracked in users table with under items column
-  - [x] Password Security
-    - [x] Password hashing before entered into database
-  - [x] Sign Out
-- [x] Database Development
-  - [x] Schema Creation
-    - [x] Add field for if admin (necessary to differentiate drop down for My Admin Profile and just My Profile)
-- [ ] Front-end Development
-  - [x] About page
-  - [ ] Promotions
-    - [x] Expiration dates need to be added for admin
-  - [ ] Scripting
-    - [x] Required columns for address when the user chooses the optional
-    - [x] Change active on Browse to unactive when About is clicked on
-    - [x] Password & Confirm Password Restrictions
-    - [ ] Shopping Cart
-      - [x] Cart Pricing needs to reflect price in cart
-      - [ ] Increasing quantity of an item should dynamically increase Cart Pricing
-      - [ ] Remove Item from cart
-      - [x] Number above Shopping Cart icon needs to adjust to the number of items in the cart dyanmically
-    - [x] User Profile edit buttons (change from readonly state)
-  - [ ] Custom Error pages
-    - [ ] 404
-    - [ ] 400
-    - [ ] 500
+![Nile Sign Up page demo](demo/Sign Up Info.PNG)  
+
+![Nile Profile page](demo/Profile.PNG)  
+
+![Nile Order History page](demo/Order History.PNG)  
+
+![Nile Order Product page](demo/Product.PNG)  
+
+![Nile Shopping Cart page](demo/Shopping Cart.PNG)  
+
+![Nile Checkout-shipping page](demo/Checkout Shipping.PNG)  
+
+![Nile Checkout-billing page](demo/Checkout Billing.PNG)  
+
+![Nile Checkout-review page](demo/Checkout Review.PNG)  
+
+![Nile Order History page](demo/Post Checkout Order History.PNG)  
+
+![Nile Footer](demo/Footer.PNG) 
+
+![Nile Footer Alternate](demo/Footer Alt.PNG)
+
+### Responsive Design
+Responsiveness shown through an iPhone X.
+
+![Nile iPhone Product page](demo/iPhone/iPhone Product.png)
+![Nile iPhone Product page](demo/iPhone/iPhone Profile.png)
+
+## Admin Platform
+
+![Nile Admin Profile page](demo/Admin Profile.PNG) 
+
+![Nile Create Promotions page](demo/Create Promotions.PNG) 
+
+## Initial Mockups
+These mockups were designed prior to backend development as a prototype for the user interface. Our
+goal was to create a high-fidelity wireframe for the deliverable. We recorded any drawbacks and
+altered the pages. These mockups evolved into the designs under the "Screenshots" header above.
+
+![Nile Mockup Home page](demo/mock/Homepage.PNG)
+
+![Nile Mockup Registration page](demo/mock/Registration.PNG)  
+
+![Nile Mockup Shopping Cart page](demo/mock/Shopping Cart.PNG)  
+
+![Nile Mockup Profile page](demo/mock/Profile.PNG)  
