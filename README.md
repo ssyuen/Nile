@@ -124,6 +124,7 @@ of project deliverables.
     - Material design
     - Highly responsive layout
     - Session awareness
+    - SSL Certification
     - UI/UX centric features
     - Accessibility
     
