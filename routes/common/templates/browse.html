@@ -1,46 +1,389 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="4050 Software Engineering Project">
-    <meta name="author" content="Manu Puduvalli | Samuel Yuen | Glen George | Lok Kwong | Vrund Parikh">
-    <title>Nile</title>
+{% extends "base.html" %}
+{% block base_title %}Browse{% endblock %}
 
-    {% include 'common_links.html' %}
+{% block base_head %}
+    {{ super() }}
     <style>
-        .our {
-            background: rgb(33, 33, 33);
-        }
-
-        @media (min-width: 700px) {
-            .nile-logo-center {
-                position: absolute;
-                top: 50%;
-                left: 50%;
-                width: 789px;
-                height: 392px;
-                margin-top: -192px; /* Half the height */
-                margin-left: -394.5px; /* Half the width */
-            }
-        }
-
-        @media (max-width: 699px) {
-            .nile-logo-center {
-                height: 100%;
-                position: absolute;
-                top: 50%;
+        @media (min-width: 1200px) {
+            .card-img-top {
+                max-height: 350px;
             }
         }
     </style>
-</head>
-<body class="our">
-<div class="main-content-container" id="mainContent">
-    <div class="nile-logo-center">
-        <img src="/static/images/Misc/Nile Dark Bkgnd Rectangular.png"
-             alt="Nile Logo">
-        <p class="text-center primary-md text-white position-relative">We'll be back. Even better.</p>
+    <link rel="stylesheet" type="text/css" href="/static/common/css/browse.css">
+{% endblock %}
+
+{% block mainTitle %}
+
+    {% with valid_login = get_flashed_messages() %}
+        {% if valid_login %}
+            <p class="flashes h5 text-center" style="color: red;">
+                {% for msg in valid_login %}
+                    {{ msg }}
+                {% endfor %}
+            </p>
+        {% endif %}
+    {% endwith %}
+
+    <div class="text-left" id="content-header">
+        <p class="primary-lg" id="account-holder">Browse Our Selection.</p>
     </div>
-</div>
-</body>
-</html>
+{% endblock %}
+<!-- Page Content -->
+{% block main %}
+    <div class="container">
+        <div class="row">
+            <aside class="col-xxl-3 col-xl-4 mb-4">
+                <div class="card">
+                    <article class="filter-group">
+                        <header class="card-header">
+                            <a href="#" data-toggle="collapse" data-target="#collapse_1" aria-expanded="true" class="">
+                                <i class="icon-control fa fa-chevron-down"></i>
+                                <h6 class="title complement">ISBN</h6>
+                            </a>
+                        </header>
+                        <div class="filter-content collapse show" id="collapse_1">
+                            <div class="card-body">
+                                <form class="pb-3" name="isbnForm" action="{{ url_for('api_bp.query_isbn') }}">
+                                    <div class="input-group shadow">
+                                        <input type="text" class="form-control" name="inputISBN" placeholder="Search">
+                                        <div class="input-group-append">
+                                            <button class="btn blue-gradient m-0 px-3 py-2 z-depth-0 waves-effect"
+                                                    type="submit"><i class="fa fa-search"></i></button>
+                                        </div>
+                                    </div>
+                                </form>
+
+                            </div> <!-- card-body.// -->
+                        </div>
+                    </article> <!-- filter-group  .// -->
+                    <article class="filter-group">
+                        <header class="card-header">
+                            <a href="#" data-toggle="collapse" data-target="#collapse_2" aria-expanded="true" class="">
+                                <i class="icon-control fa fa-chevron-down"></i>
+                                <h6 class="title complement">Genre's</h6>
+                            </a>
+                        </header>
+                        <div class="filter-content collapse show" id="collapse_2">
+                            <div class="card-body" id="genreContainer">
+                                {% for genre in genres %}
+                                    <label class="custom-control custom-checkbox">
+                                        <input type="checkbox" checked="" class="custom-control-input genre"
+                                               nile-genre="{{ genre }}">
+                                        <div class="custom-control-label d-inline">{{ genre }}
+                                            <b class="badge badge-pill badge-light float-right">{{ genre_counts[genre] }}</b>
+                                        </div>
+                                    </label>
+                                {% endfor %}
+                            </div> <!-- card-body.// -->
+                        </div>
+                    </article> <!-- filter-group .// -->
+                    <article class="filter-group">
+                        <header class="card-header">
+                            <a href="#" data-toggle="collapse" data-target="#collapse_3" aria-expanded="true" class="">
+                                <i class="icon-control fa fa-chevron-down"></i>
+                                <h6 class="title complement">Price range</h6>
+                            </a>
+                        </header>
+                        <div class="filter-content collapse show" id="collapse_3">
+                            <div class="card-body">
+                                <div class="pb-3">
+                                    <div class="shadow" id="slider-range"></div>
+                                </div>
+                                <form method="POST" id="priceForm" action="{{ url_for('api_bp.price') }}">
+                                    <div class="form-row">
+                                        <div class="form-group col">
+                                            <label for="minRange">Min</label>
+                                            <div class="input-group">
+                                                <div class="input-group-prepend">
+                                                    <div class="input-group-text">$</div>
+                                                </div>
+                                                <input class="form-control numbersOnly" type="number" pattern="[0-9]"
+                                                       id="minRange" name="min_price" value="0" min="0">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-row">
+                                        <div class="form-group col">
+                                            <label for="maxRange">Max</label>
+                                            <div class="input-group">
+                                                <div class="input-group-prepend">
+                                                    <div class="input-group-text">$</div>
+                                                </div>
+                                                <input class="form-control numbersOnly" type="number" pattern="[0-9]"
+                                                       id="maxRange" name="max_price" value="100" max="100">
+                                            </div>
+                                        </div>
+                                    </div> <!-- form-row.// -->
+                                    <button id="priceRangeApplyBtn" type="submit"
+                                            class="btn btn-block blue-gradient shadow">Apply
+                                    </button>
+                                </form>
+
+
+                            </div><!-- card-body.// -->
+                        </div>
+                    </article> <!-- filter-group .// -->
+                    <script>
+                        let sr = $("#slider-range");
+
+                        $(() => {
+                            sr.slider({
+                                range: true,
+                                min: 0,
+                                max: 100,
+                                values: [0, 100],
+                                step: 1,
+                                animate: true,
+                                slide: (event, ui) => {
+                                    $("#minRange").val(ui.values[0]);
+                                    $("#maxRange").val(ui.values[1]);
+                                }
+                            });
+                            $("#minRange").attr("placeholder", sr.slider("values", 0));
+                            $("#maxRange").attr("placeholder", sr.slider("values", 1));
+                        });
+
+                        $("#minRange")[0].addEventListener("input", evt => {
+                            sr.slider("values", 0, evt.target.value);
+                        });
+
+                        $("#maxRange")[0].addEventListener("input", evt => {
+                            sr.slider("values", 1, evt.target.value);
+                        });
+
+                    </script>
+                    <article class="filter-group">
+                        <header class="card-header">
+                            <a href="#" data-toggle="collapse" data-target="#collapse_4" aria-expanded="false" class="">
+                                <i class="icon-control fa fa-chevron-down"></i>
+                                <h6 class="title complement">Binding Type</h6>
+                            </a>
+                        </header>
+                        <div class="filter-content collapse in" id="collapse_4">
+                            <div class="card-body">
+                                {% for binding in bindings %}
+                                    <label class="custom-control custom-checkbox">
+                                        <input type="checkbox" checked="" class="custom-control-input"
+                                               nile-binding="{{ binding }}">
+                                        <div class="custom-control-label"> {{ binding }}
+                                            <b
+                                                    class="badge badge-pill badge-light float-right">{{ binding_counts[binding] }}</b>
+                                        </div>
+                                    </label>
+                                {% endfor %}
+                            </div> <!-- card-body.// -->
+                        </div>
+                    </article> <!-- filter-group .// -->
+                    <article class="filter-group">
+                        <header class="card-header">
+                            <a href="#" data-toggle="collapse" data-target="#collapse_5" aria-expanded="false" class="">
+                                <i class="icon-control fa fa-chevron-down"></i>
+                                <h6 class="title complement">Condition</h6>
+                            </a>
+                        </header>
+                        <div class="filter-content collapse in" id="collapse_5">
+                            <div class="card-body">
+                                <div class="text-center mb-2 coming-soon-holder">
+                                    <div class="complement-bold coming-soon">Coming Soon</div>
+                                </div>
+                                <div class="condition-content" style="opacity: 0.3">
+                                    <label class="custom-control custom-radio">
+                                        <input type="radio" name="myfilter_radio" checked=""
+                                               class="custom-control-input">
+                                        <div class="custom-control-label">Any condition</div>
+                                    </label>
+
+                                    <label class="custom-control custom-radio">
+                                        <input type="radio" name="myfilter_radio" class="custom-control-input">
+                                        <div class="custom-control-label">Brand new</div>
+                                    </label>
+
+                                    <label class="custom-control custom-radio">
+                                        <input type="radio" name="myfilter_radio" class="custom-control-input">
+                                        <div class="custom-control-label">Used items</div>
+                                    </label>
+
+                                    <label class="custom-control custom-radio">
+                                        <input type="radio" name="myfilter_radio" class="custom-control-input">
+                                        <div class="custom-control-label">Very old</div>
+                                    </label>
+                                </div>
+                            </div><!-- card-body.// -->
+                        </div>
+                    </article> <!-- filter-group .// -->
+                </div> <!-- card.// -->
+            </aside>
+            <!-- /.col-lg-3 -->
+
+            <div class="col-xxl-9 col-xl-8">
+                <header class="border-bottom mb-4 pb-3">
+                    <div class="form-inline">
+                        <span class="mr-md-auto mr-3" id="itemsFound">{{ books|length }} Items found</span>
+
+                        <div class="row h-100 view-selection">
+                            <div class="col view-selection-opt" style="align-self: center">
+                                <select class="custom-select custom-select-lg our-color"
+                                        style="border: 2px solid black;">
+                                    <option>Latest items</option>
+                                    <option>Most Popular</option>
+                                    <option>Cheapest</option>
+                                </select>
+                            </div>
+                            <div class="col view-selection-opt">
+                                <div class="btn-group">
+                                    <button class="btn btn-outline-dark btn waves-effect mr-3" data-toggle="tooltip"
+                                            title="" data-original-title="List view">
+                                        <i class="fa fa-bars"></i></button>
+                                    <button class="btn btn-outline-dark waves-effect active" data-toggle="tooltip"
+                                            title=""
+                                            data-original-title="Grid view">
+                                        <i class="fa fa-th"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </header>
+                <div class="row" id="table">
+                    {% for book in books %}
+                        <div class="col-lg-4 col-xl-3 col-xxl-2 col-md-6 mb-4">
+                            <a
+                                    href="{{ url_for('common_bp.product', title=book['title'],price=book['price'],author_name=book['author_name'],isbn=book['ISBN'],summary=book['summary'],publicationDate=book['publicationDate'],numPages=book['numPages'],binding=book['binding'],genre=book['genre'],nile_cover_ID=book['nile_cover_ID']) }}">
+                                <div class="card h-100 text-dark waves-effect" id="hp">
+                                    <div class="p-2 grey lighten-4">
+                                        <img class="card-img-top rounded"
+                                             src="{{ '/static/images/CoverImages/' + book['nile_cover_ID'] + '.jpg' }}"
+                                             alt="Cover Image of {{ book['title'] }}" width="200">
+                                    </div>
+                                    <div class="card-body grey lighten-4 d-flex align-items-center">
+                                        <div class="titleHolder align-self-middle">
+                                            <!--Jinja allows to truncate number of characters and add ellipses
+                                                            if the title happens to be too long (to the point it changes
+                                                            the height of the card. And we defintely don't want that-->
+                                            <h6 class="complement card-title" style="font-weight: bold">
+                                                {{ book['title']|truncate(40, true) }}</h6>
+                                        </div>
+                                    </div>
+                                    <div class="card-footer grey lighten-3 text-dark">
+                                        <span class="primary-sm float-left">Price:</span>
+                                        <span class="book-price primary-sm text-dark float-right d-inline-flex"
+                                              style="font-size: x-large">${{ book['price'] }}</span>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                    {% endfor %}
+                </div>
+                <nav class="bar" aria-label="Page navigation example"></nav>
+            </div>
+        </div>
+    </div>
+    <script>
+        $(document).ready(function () {
+            paginate();
+        });
+        //This function will be called every time the
+        //windows is resize. So, every time, we calculate
+        //viewport width and then paginate again
+        $(window).resize(function () {
+            $(".bar").empty();
+            paginate();
+        });
+
+        function paginate() {
+            var shownRows = 0;
+            var viewportWidth = $(window).width();
+
+            if (viewportWidth >= 1900) {
+                shownRows = 18;
+            } else {
+                shownRows = 12;
+            }
+
+
+            var rowsTotal = $("#table > div").length; // selects all div elements where parent is id = table
+            var pageNumbers = Math.ceil(rowsTotal / shownRows);
+
+            var html = "<ul class='pagination justify-content-center'> <li class='page-item'> <a class='page-link' aria-label='Previous'> <span aria-hidden='true'>&laquo;</span> <span class='sr-only'>Previous</span> </a> </li>";
+            for (let i = 0; i < pageNumbers; i++) {
+                var paginationNum = i + 1; // 1 2 3 4 ... etc
+                html += "<li class='page-item' id='pageNums'> <a class='page-link waves-effect waves-effect' rel='" + i + "'>" + paginationNum + "</a> </li>";
+            }
+            html += "<li class='page-item'> <a class='page-link' aria-label='Next'> <span aria-hidden='true'>&raquo;</span> <span class='sr-only'>Next</span> </a> </li> </ul>";
+
+            $(".bar").append(html);
+
+            $("#table > div").hide();
+            $("#table > div").slice(0, shownRows).show();
+
+            $('#pageNums a:first').addClass('active'); // The current active page of books to be shown (1)
+            $('#pageNums a').bind('click', function () { // Upon clicking change the active page of books to next
+                $('#pageNums a').removeClass('active');
+                $(this).addClass('active');
+                console.log(this);
+                var currentPage = $(this).attr('rel');
+                var startItem = currentPage * shownRows;
+                var endItem = startItem + shownRows;
+                $('#table > div').css('opacity', '0.0').hide().slice(startItem, endItem).css('display', 'table-row').animate({opacity: 1}, 300);
+            });
+
+            $("[aria-label=Previous]").bind('click', function () { // Upon clicking change the active page of books to next
+                var currentPage = $("a.active").attr("rel"); // Find current rel -> subtract 1
+                console.log(currentPage);
+                if (currentPage == 0) {
+                    return;
+                } else {
+                    currentPage--;
+                }
+                $('#pageNums a').removeClass('active'); // dark magic
+                $('a[rel=' + currentPage + ']').addClass('active');
+
+                var startItem = currentPage * shownRows;
+                var endItem = startItem + shownRows;
+                $('#table > div').css('opacity', '0.0').hide().slice(startItem, endItem).css('display', 'table-row').animate({opacity: 1}, 300);
+                $(window).scrollTop(0);
+            });
+
+            $("[aria-label=Next]").click(function () {
+                var currentPage = $("a.active").attr("rel"); // Find current rel -> add 1
+                console.log(currentPage);
+                if (currentPage == pageNumbers - 1) {
+                    return;
+                } else {
+                    currentPage++;
+                }
+                $('#pageNums a').removeClass('active'); // Black magic below
+                $('a[rel=' + currentPage + ']').addClass('active');
+                var startItem = currentPage * shownRows;
+                var endItem = startItem + shownRows;
+                $('#table > div').css('opacity', '0.0').hide().slice(startItem, endItem).css('display', 'table-row').animate({opacity: 1}, 300);
+                $(window).scrollTop(0);
+            });
+        }
+
+
+        //SEARCH
+
+        $(document).ready(function () {
+            $("#searchButton").on("click", function () {
+                // Retrieve the input field text
+                var querry = $("#searchInput").val().toLowerCase();
+                console.log(querry);
+
+                // Loop through TITLE, AUTHOR, ISBN, GENRE
+                $("#table > div").each(function () {
+                    // If the list item does not contain the text phrase fade it out
+                    if ($(this).text().search(new RegExp(querry, "gi")) < 0) {
+                        $(this).fadeOut();
+                        // Show the list item if the phrase matches
+                    } else {
+                        $(this).show();
+                    }
+                });
+            });
+        });
+
+    </script>
+
+    <script type="module" src="/static/common/js/browse/browse.js"></script>
+{% endblock %}
