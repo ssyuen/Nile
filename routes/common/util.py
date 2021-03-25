@@ -1,18 +1,21 @@
 import secrets
 from datetime import datetime, timedelta
-from flask import flash, redirect, url_for
-from server import mysql
 from functools import wraps
+
+from flask import flash, redirect, url_for
 
 
 def get_genres(cursor, close=False):
-    cursor.execute('SELECT genre FROM genre')
+    cursor.execute("""SELECT genre FROM genre""")
     return [genre[0] for genre in cursor.fetchall()]
 
 
 def get_genres_count(cursor, close=False):
     cursor.execute(
-        'SELECT (SELECT genre FROM genre WHERE id=genreID_book_FK), COUNT(*) AS numBooks FROM book GROUP BY genreID_book_FK')
+        """SELECT (SELECT genre FROM genre WHERE id=genreID_book_FK), COUNT(*) AS numBooks 
+        FROM book 
+        GROUP BY genreID_book_FK
+        """)
     payload = {}
     for genre, count in cursor.fetchall():
         payload[genre] = count
@@ -21,14 +24,16 @@ def get_genres_count(cursor, close=False):
 
 
 def get_bindings(cursor, close=False):
-    cursor.execute('SELECT binding FROM binding')
+    cursor.execute("""SELECT binding FROM binding""")
     results = cursor.fetchall()
     return [binding[0] for binding in results]
 
 
 def get_bindings_count(cursor, close=False):
     cursor.execute(
-        'SELECT (SELECT binding FROM binding WHERE id=bindingID_book_FK), COUNT(*) AS numBooks FROM book GROUP BY bindingID_book_FK')
+        """SELECT (SELECT binding FROM binding WHERE id=bindingID_book_FK), COUNT(*) AS numBooks 
+        FROM book GROUP BY bindingID_book_FK
+        """)
     payload = {}
     for genre, count in cursor.fetchall():
         payload[genre] = count
@@ -37,11 +42,13 @@ def get_bindings_count(cursor, close=False):
 
 
 def generate_secure_token(session, purpose):
-    '''
+    """
     session - backend session for an indiviudal user
 
-    purpose - the purpose of the token. if 'checkout', then token is to secure checkout page to ensure after successful checkout, the page cannot be revisited, else 'expire', register_conf/forget password should timeout after a certain amount of time
-    '''
+    purpose - the purpose of the token. if 'checkout', then token is to secure checkout page to ensure after
+    successful checkout, the page cannot be revisited, else 'expire', register_conf/forget password should timeout
+    after a certain amount of time
+    """
     secure_token = secrets.token_urlsafe(64)
     if purpose is 'checkout_token':
         session[purpose] = secure_token
@@ -57,15 +64,14 @@ def secure_link(session, purpose):
     def dec(f):
         @wraps(f)
         def wrapped_func(*args, **kws):
-            # if any of these if-else-ifs are entered, that means the link is still good
-            if (purpose == 'register_token' or 'forgot_token' or 'order_token'):
+            if purpose == 'register_token' or purpose == 'forgot_token' or purpose == 'order_token':
                 if purpose in session:
                     session_time = [st for st in session[purpose].values()][0]
 
                     curr_time = datetime.now() - session_time
                     expire_time = (datetime.now() +
                                    timedelta(seconds=300)) - datetime.now()
-                    if (curr_time > expire_time):
+                    if curr_time > expire_time:
                         return redirect(url_for('common_bp.landing_page'))
                     else:
                         return f(*args, **kws)
@@ -81,79 +87,89 @@ def secure_link(session, purpose):
 
 
 def insert_address(cursor, payload):
-    '''
+    """
     cursor - cursor object from conn
 
     payload - (street1,street2,city,zip,state,country,addressTypeID_address_FK)
-    '''
+    """
     cursor.execute(
-        'INSERT INTO address (street1,street2,city,zip,state,country,addressTypeID_address_FK) VALUES (%s, %s, %s, %s, %s, %s, %s)', payload)
+        """INSERT INTO address (street1,street2,city,zip,state,country,addressTypeID_address_FK) 
+        VALUES (%s, %s, %s, %s, %s, %s, %s)""", payload)
 
 
 def get_address_id(cursor):
-    cursor.execute('SELECT id FROM address ORDER BY id DESC LIMIT 1')
+    cursor.execute("""SELECT id FROM address ORDER BY id DESC LIMIT 1""")
     return cursor.fetchall()[0][0]
 
 
 def insert_user(cursor, payload):
-    '''
+    """
     cursor - cursor object from conn
 
     payload - (email,statusID_user_FK,pass, firstname, lastname)
-    '''
+    """
     cursor.execute(
-        'INSERT INTO user (email,statusID_user_FK,pass, firstname, lastname) VALUES (%s, %s, %s, %s, %s)', payload)
+        """
+        INSERT INTO user (email,statusID_user_FK,pass, firstname, lastname) 
+        VALUES (%s, %s, %s, %s, %s)
+        """, payload)
 
 
 def get_user_id(cursor, email):
-    cursor.execute('SELECT id FROM user WHERE email = %s', email)
+    cursor.execute("""SELECT id FROM user WHERE email = %s""", email)
     return cursor.fetchall()[0][0]
 
 
 def insert_useraddress(cursor, payload, email=None):
-    '''
+    """
     cursor - cursor object from conn
 
     email - user email
 
     payload - (userID_ua_FK, addressID_ua_FK)
-    '''
+    """
     if email is not None:
         cursor.execute(
-            'INSERT INTO user_address (userID_ua_FK, addressID_ua_FK) VALUES ((SELECT id FROM user WHERE email=%s), %s)', (email, payload[1]))
+            """INSERT INTO user_address (userID_ua_FK, addressID_ua_FK) 
+            VALUES ((SELECT id FROM user WHERE email=%s), %s)""", (email, payload[1]))
     else:
         cursor.execute(
-            'INSERT INTO user_address (userID_ua_FK, addressID_ua_FK) VALUES (%s, %s)', payload)
+            """INSERT INTO user_address (userID_ua_FK, addressID_ua_FK) VALUES (%s, %s)""", payload)
 
 
 def insert_userpayment(cursor, payload):
-    '''
+    """
     cursor - cursor object from conn
 
     payload - (userID_pm_FK, paymentID_pm_FK)
-    '''
+    """
     cursor.execute(
-        'INSERT INTO user_paymentmethod (userID_pm_FK, paymentID_pm_FK) VALUES (%s, %s)', payload)
+        """INSERT INTO user_paymentmethod (userID_pm_FK, paymentID_pm_FK) VALUES (%s, %s)""", payload)
 
 
 def insert_payment(cursor, payload):
-    '''
+    """
     cursor - cursor object from conn
 
-    payload - (firstname,lastname,cardNumber, cardType, expirationDate, billingAddress_addr_FK)
-    '''
+    payload - (firstname, lastname,cardNumber, cardType, expirationDate, billingAddress_addr_FK)
+    """
     cursor.execute(
-        'INSERT INTO payment_method (firstname,lastname,cardNumber, cardType, expirationDate, billingAddress_addr_FK) VALUES (%s,%s,%s, %s, %s, %s)', payload)
+        """INSERT INTO payment_method (firstname,lastname,cardNumber, cardType, expirationDate, billingAddress_addr_FK) 
+        VALUES (%s,%s,%s, %s, %s, %s)""", payload)
 
 
 def get_payment_id(cursor):
-    cursor.execute('SELECT id FROM payment_method ORDER BY id DESC LIMIT 1')
+    cursor.execute("""SELECT id FROM payment_method ORDER BY id DESC LIMIT 1""")
     return cursor.fetchall()[0][0]
 
 
 def get_book_orderdetails(cursor, user_id):
     cursor.execute(
-        'SELECT * FROM book_orderdetail JOIN shoppingcart ON book_orderdetail.id = shoppingcart.bod_sc_FK WHERE userID_bod_FK=%s', user_id)
+        """
+        SELECT * FROM book_orderdetail 
+        JOIN shoppingcart 
+        ON book_orderdetail.id = shoppingcart.bod_sc_FK 
+        WHERE userID_bod_FK=%s""", user_id)
     return cursor.fetchall()
 
 
@@ -167,9 +183,10 @@ def check_login(session) -> bool:
 def get_first_name(mysql, email):
     conn = mysql.connect()
     cursor = conn.cursor()
-    cursor.execute('SELECT firstname FROM user WHERE email=%s', (email))
+    cursor.execute("""SELECT firstname FROM user WHERE email=%s""", email)
     conn.close()
     return cursor.fetchall()[0][0]
+
 
 def save_cart(mysql, session):
     conn = mysql.connect()
@@ -177,11 +194,16 @@ def save_cart(mysql, session):
     cart = session['shopping_cart']
 
     for book_isbn, quantity in cart.items():
-        query = '''INSERT IGNORE INTO book_orderdetail (userID_bod_FK,ISBN_bod_FK,quantity) VALUES ((SELECT id FROM user WHERE email = %s), %s, %s)'''
+        query = """
+        INSERT IGNORE INTO book_orderdetail (userID_bod_FK,ISBN_bod_FK,quantity) 
+        VALUES ((SELECT id FROM user WHERE email = %s), %s, %s)
+        """
         cursor.execute(query, (session['email'], book_isbn, str(quantity)))
         conn.commit()
 
-        query = '''INSERT IGNORE INTO shoppingcart (userID_sc_FK, bod_sc_FK) VALUES ((SELECT id FROM user WHERE email = %s), (SELECT id FROM book_orderdetail ORDER BY id DESC LIMIT 1))'''
+        query = """INSERT IGNORE INTO shoppingcart (userID_sc_FK, bod_sc_FK) 
+        VALUES ((SELECT id FROM user WHERE email = %s), (SELECT id FROM book_orderdetail ORDER BY id DESC LIMIT 1))
+        """
         cursor.execute(query, (session['email']))
         conn.commit()
 
@@ -192,13 +214,13 @@ def load_cart(mysql, session):
     conn = mysql.connect()
     cursor = conn.cursor()
 
-    bod_id_query = '''SELECT bod_sc_FK FROM shoppingcart WHERE userID_sc_FK = (SELECT id FROM user WHERE email = %s)'''
+    bod_id_query = """SELECT bod_sc_FK FROM shoppingcart WHERE userID_sc_FK = (SELECT id FROM user WHERE email = %s)"""
     cursor.execute(bod_id_query, (session['email']))
     bod_ids = cursor.fetchall()
 
     book_payload = {}
     for bod_id in bod_ids:
-        book_query = '''SELECT ISBN_bod_FK,quantity FROM book_orderdetail WHERE id=%s'''
+        book_query = """SELECT ISBN_bod_FK,quantity FROM book_orderdetail WHERE id=%s"""
         cursor.execute(book_query, (bod_id))
         results = cursor.fetchall()
         book = results[0][0]
