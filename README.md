@@ -9,6 +9,7 @@
 Nile is a bookstore made with a variety of development tools. It features a responsive and material
 design which differs from many sites today, but presents a unique UI/UX offering.
 
+### Disclaimer
 Disclaimer! This site should **not** be used to fulfil any purchases with valid banking information. The Nile website lacks
 robust security standards and industry compliance protocols, while relying only on rudimentary protections.
 This site was made to fulfill our term-project requirement for CSCI 4050 - Software Engineering class at The University of Georgia.
