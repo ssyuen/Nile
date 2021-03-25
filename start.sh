@@ -101,6 +101,12 @@ if [[ -z "${MAIL_PASS}" ]]; then
   echo "exported MAIL_PASS"
 fi
 
+if [[ -z "${FERNET_KEY}" ]]; then
+  read -s -r -p "Enter the Encryption Key: "  fernet
+  printf "\n"
+  eval "export FERNET_KEY=$fernet"
+fi
+
 verAsInt=${version//[\.]/}
 
 if ! [[ $verAsInt -ge 375 ]];
