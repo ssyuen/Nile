@@ -102,9 +102,8 @@ if [[ -z "${MAIL_PASS}" ]]; then
 fi
 
 if [[ -z "${FERNET_KEY}" ]]; then
-  read -s -r -p "Enter the Encryption Key: "  fernet
-  printf "\n"
-  eval "export FERNET_KEY=$fernet"
+  eval "export FERNET_KEY=Testing1"
+  echo "exported FERNET_KEY"
 fi
 
 verAsInt=${version//[\.]/}

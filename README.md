@@ -19,6 +19,9 @@ All rights go to their respective owner(s). Any information on nilebookstore.com
 originating from errors or faults in retrieving information by our team.
 
 ## Implemented Features
+Features were developed using stories, epics, various diagrams, and delivered in an Agile fashion through a series
+of project deliverables.
+
 - Home Page
     - Search by Title
     - Search by ISBN
@@ -178,7 +181,13 @@ altered the pages. These mockups evolved into the designs under the "Screenshots
 
 ![Nile Mockup Shopping Cart page](demo/mock/ShoppingCart.PNG)  
 
-![Nile Mockup Profile page](demo/mock/Profile.PNG)  
+![Nile Mockup Profile page](demo/mock/Profile.PNG) 
+
+## EER Diagram
+Our was database schema was designed and implemented in MySQL. We strived to make the schema design
+comprehensive and sensible within the requirement constraints. The EER diagram is displayed below.
+
+![Nile Schema design](demo/diagram/NILE_DB_EER.png)
 
 # Execution Instructions
 
