@@ -5,42 +5,10 @@
   https://www.nilebookstore.com
 </p>
 
-# Execution Instructions
+# Introduction
+Nile is a bookstore made with a variety of development tools. It features a responsive and material
+design which differs from many sites today, but presents a unique UI/UX offering.
 
-## Requirements
-
-The following is required to run this project:
-
-- Python 3.7
-  - Using pip3 (or pip if you default to Python 3.7), install pipenv using this command: `pip3 install pipenv` or `pip install pipenv`.
-    - If you have trouble running this or get Permission denied, then try the following: `pip install pipenv -u`
-
-## Execution
-
-1. If you are on windows, run the following command in Powershell to set up the appropriate environment variables:
-``Set-Content ./.env "DB=niledb`nDB_HOST=localhost`nMAIL_SERVER=smtp.gmail.com`nMAIL_PORT=465`nMAIL_USER=rootatnilebookstore@gmail.com`nMAIL_PASS=Testing1"``
-where the `` `n `` is the newline break.
-
-2. If you are on mac or some variant of linux, run the following command to set up the appropriate environment variables:
-`printf "DB=niledb\nDB_HOST=localhost\nMAIL_SERVER=smtp.gmail.com\nMAIL_PORT=465\nMAIL_USER=rootatnilebookstore@gmail.com\nMAIL_PASS=Testing1" > .env`
-
-3. Clone this repository to your local via git clone <hhttps://github.com/ssyuen/Nile.git>
-
-4. Install MySql. Create a schema name `niledb`. Run the `NileDB8.0.sql` and `NileDB8.1.sql` script to create the necessary tables.
-
-5. cd into the cloned directory
-
-6. `pipenv shell` will activate the virtual environment.
-
-7. `pipenv install` will install the dependencies (i.e. flask and pandas)
-
-8. If you are on windows, run this to start the server: `pipenv run windows_server`
-   If you are on mac or some variant of linux, run this to start the server: `pipenv run server`
-
-9. Make sure when you are done with development, run `exit` to exit out of the virtual environment.
-This is important to make sure you will not have to delete and re-clone the repository.
-
-## Disclaimer
 Disclaimer! This site should **not** be used to fulfil any purchases with valid banking information. The Nile website lacks
 robust security standards and industry compliance protocols, while relying only on rudimentary protections.
 This site was made to fulfill our term-project requirement for CSCI 4050 - Software Engineering class at The University of Georgia.
@@ -162,41 +130,41 @@ originating from errors or faults in retrieving information by our team.
 
 ![Nile Login page](demo/Login.PNG)  
 
-![Nile Sign Up page](demo/Sign Up.PNG)  
+![Nile Sign Up page](demo/SignUp.PNG)  
 
-![Nile Sign Up page demo](demo/Sign Up Info.PNG)  
+![Nile Sign Up page demo](demo/SignUpInfo.PNG)  
 
 ![Nile Profile page](demo/Profile.PNG)  
 
-![Nile Order History page](demo/Order History.PNG)  
+![Nile Order History page](demo/OrderHistory.PNG)  
 
 ![Nile Order Product page](demo/Product.PNG)  
 
-![Nile Shopping Cart page](demo/Shopping Cart.PNG)  
+![Nile Shopping Cart page](demo/ShoppingCart.PNG)  
 
-![Nile Checkout-shipping page](demo/Checkout Shipping.PNG)  
+![Nile Checkout-shipping page](demo/CheckoutShipping.PNG)  
 
-![Nile Checkout-billing page](demo/Checkout Billing.PNG)  
+![Nile Checkout-billing page](demo/CheckoutBilling.PNG)  
 
-![Nile Checkout-review page](demo/Checkout Review.PNG)  
+![Nile Checkout-review page](demo/CheckoutReview.PNG)  
 
-![Nile Order History page](demo/Post Checkout Order History.PNG)  
+![Nile Order History page](demo/PostCheckoutOrderHistory.PNG)  
 
 ![Nile Footer](demo/Footer.PNG) 
 
-![Nile Footer Alternate](demo/Footer Alt.PNG)
+![Nile Footer Alternate](demo/FooterAlt.PNG)
 
 ### Responsive Design
 Responsiveness shown through an iPhone X.
 
-![Nile iPhone Product page](demo/iPhone/iPhone Product.png)
-![Nile iPhone Product page](demo/iPhone/iPhone Profile.png)
+![Nile iPhone Profile page](demo/iPhone/iPhoneProfile.PNG)
+![Nile iPhone Product page](demo/iPhone/iPhoneProduct.PNG)
 
 ## Admin Platform
 
-![Nile Admin Profile page](demo/Admin Profile.PNG) 
+![Nile Admin Profile page](demo/AdminProfile.PNG) 
 
-![Nile Create Promotions page](demo/Create Promotions.PNG) 
+![Nile Create Promotions page](demo/CreatePromotions.PNG) 
 
 ## Initial Mockups
 These mockups were designed prior to backend development as a prototype for the user interface. Our
@@ -207,6 +175,41 @@ altered the pages. These mockups evolved into the designs under the "Screenshots
 
 ![Nile Mockup Registration page](demo/mock/Registration.PNG)  
 
-![Nile Mockup Shopping Cart page](demo/mock/Shopping Cart.PNG)  
+![Nile Mockup Shopping Cart page](demo/mock/ShoppingCart.PNG)  
 
 ![Nile Mockup Profile page](demo/mock/Profile.PNG)  
+
+# Execution Instructions
+
+## Requirements
+
+The following is required to run this project:
+
+- Python 3.7
+  - Using pip3 (or pip if you default to Python 3.7), install pipenv using this command: `pip3 install pipenv` or `pip install pipenv`.
+    - If you have trouble running this or get Permission denied, then try the following: `pip install pipenv -u`
+
+## Execution
+
+1. If you are on windows, run the following command in Powershell to set up the appropriate environment variables:
+``Set-Content ./.env "DB=niledb`nDB_HOST=localhost`nMAIL_SERVER=smtp.gmail.com`nMAIL_PORT=465`nMAIL_USER=rootatnilebookstore@gmail.com`nMAIL_PASS=Testing1"``
+where the `` `n `` is the newline break.
+
+2. If you are on mac or some variant of linux, run the following command to set up the appropriate environment variables:
+`printf "DB=niledb\nDB_HOST=localhost\nMAIL_SERVER=smtp.gmail.com\nMAIL_PORT=465\nMAIL_USER=rootatnilebookstore@gmail.com\nMAIL_PASS=Testing1" > .env`
+
+3. Clone this repository to your local via git clone <hhttps://github.com/ssyuen/Nile.git>
+
+4. Install MySql. Create a schema name `niledb`. Run the `NileDB8.0.sql` and `NileDB8.1.sql` script to create the necessary tables.
+
+5. cd into the cloned directory
+
+6. `pipenv shell` will activate the virtual environment.
+
+7. `pipenv install` will install the dependencies (i.e. flask and pandas)
+
+8. If you are on windows, run this to start the server: `pipenv run windows_server`
+   If you are on mac or some variant of linux, run this to start the server: `pipenv run server`
+
+9. Make sure when you are done with development, run `exit` to exit out of the virtual environment.
+This is important to make sure you will not have to delete and re-clone the repository.
